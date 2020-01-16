@@ -1,13 +1,15 @@
 
-body { font-family: 'Open Sans', sans-serif; font-size: 15px; font-weight: 400; color: #888; line-height: 30px; text-align: center; }
+body { font-family: 'Open Sans', sans-serif; font-size: 15px; font-weight: 400; 
+	color: #888; line-height: 30px; text-align: center; }
 
 strong { font-weight: 600; }
 
 a { color: #856dc0; border-bottom: 1px dashed #856dc0; text-decoration: none; transition: all .3s; }
 a:hover, a:focus { color: #856dc0; border: 0; text-decoration: none; }
 
-h1, h2 { margin-top: 10px; font-size: 38px; font-weight: 300; color: #555; line-height: 50px; font-style: italic; }
-h3 { font-size: 22px; font-weight: 300; color: #555; line-height: 30px; font-style: italic; }
+h1, h2 { margin-top: 10px; font-size: 32px; font-weight: 300; color: #555; line-height: 50px;  }
+h3 { font-size: 22px; font-weight: 700; color: rgb(33, 9, 247); line-height: 50px;  }
+h4 { font-size: 22px; font-weight: 300; color: rgb(145, 4, 226); line-height: 50px;  }
 
 img { max-width: 100%; }
 
@@ -19,7 +21,7 @@ img { max-width: 100%; }
 
 /***** General style, all sections *****/
 
-.section-container { margin: 0 auto; padding-bottom: 80px; }
+.section-container { margin: 0 auto; padding-bottom: 30px; }
 
 .section-container-gray-bg { background: #f8f8f8; }
 
@@ -29,7 +31,7 @@ img { max-width: 100%; }
 
 .section-container-image-bg .divider-1 span { border-color: #fff; }
 
-.section-description { margin-top: 60px; padding-bottom: 10px; }
+.section-description { margin-top: 30px; padding-bottom: 10px; }
 
 .section-description p { margin-top: 20px; padding: 0 120px; }
 .section-container-image-bg .section-description p { opacity: 0.8; }
@@ -49,7 +51,7 @@ img { max-width: 100%; }
 	-o-transition: all .6s; -moz-transition: all .6s; -webkit-transition: all .6s; -ms-transition: all .6s; transition: all .6s;
 	backface-visibility: hidden;
 }
-.navbar.navbar-no-bg { background: #444; }
+.navbar.navbar-no-bg { background: rgb(0, 0, 0); }
 
 .navbar-dark .navbar-nav { font-size: 15px; color: #fff; text-transform: uppercase; }
 .navbar-dark .navbar-nav .nav-link { color: #fff; color: rgba(255, 255, 255, 0.8); border: 0; }
@@ -57,15 +59,6 @@ img { max-width: 100%; }
 .navbar-dark .navbar-nav .nav-link:focus { color: #fff; outline: 0; }
 
 .navbar-expand-md .navbar-nav .nav-link { padding-left: 1rem; padding-right: 1rem; }
-
-.navbar-brand {
-  width: 90px;
-  height:60px;
-	background: url(../img/logo.png) left center no-repeat;
-	border: 0;
-	text-indent: -99999px;
-}
-
 
 /***** Top content *****/
 

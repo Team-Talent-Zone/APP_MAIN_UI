@@ -1,0 +1,24 @@
+html,
+.container-fluid {
+padding: 20px 50px;
+}
+
+.bg-grey {
+background-color: aliceblue;
+}
+.logo {
+color: #f4511e;
+font-size: 100px;
+margin-top:20px;
+}
+.logo-small {
+color: #f4511e;
+font-size: 50px;
+margin-top:35px;
+}
+@media screen and (max-width: 768px) {
+.col-sm-4 {
+text-align: center;
+margin: 25px 0;
+}
+}

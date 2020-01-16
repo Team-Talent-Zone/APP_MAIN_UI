@@ -8,6 +8,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FooterComponent } from './footer/footer.component';
 import { LoginComponent } from './login/login.component';
 import { HomepriceComponent } from './homeprice/homeprice.component';
+import { HomecbasectionComponent } from './homecbasection/homecbasection.component';
+import { HomefusectionComponent } from './homefusection/homefusection.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +17,9 @@ import { HomepriceComponent } from './homeprice/homeprice.component';
     HomeComponent,
     FooterComponent,
     LoginComponent,
-    HomepriceComponent
+    HomepriceComponent,
+    HomecbasectionComponent,
+    HomefusectionComponent,
   ],
   imports: [
     BrowserModule,
