@@ -101,11 +101,11 @@ img { max-width: 100%; }
 .section-2-box-text .medium-paragraph { margin-top: 20px; margin-bottom: 20px; }
 
 
-/***** Section 3 *****/
+/***** Section 7 *****/
 
-.section-3-box { margin-top: 30px; text-align: left; }
+.section-7-box { margin-top: 30px; text-align: left; }
 
-.section-3-box .section-3-box-icon {
+.section-7-box .section-7-box-icon {
 	width: 60px; height: 60px; margin: 0 auto;
 
 	background: #7762ac; /* Old browsers */
@@ -121,7 +121,7 @@ img { max-width: 100%; }
     -moz-border-radius: 50%; -webkit-border-radius: 50%; border-radius: 50%;
 }
 
-.section-3-box h3 { margin-top: 0; padding: 0 0 10px 0; }
+.section-7-box h3 { margin-top: 0; padding: 0 0 10px 0; }
 
 
 /***** Footer *****/
