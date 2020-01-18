@@ -13,6 +13,10 @@ import { HomefusectionComponent } from './homefusection/homefusection.component'
 import { HeaderComponent } from './header/header.component';
 import { HomewhatwedoComponent } from './homewhatwedosection/homewhatwedo.component';
 import { HomeservicesectionComponent } from './homeservicesection/homeservicesection.component';
+import { SignupComponent } from './signup/signup.component';
+import { ModalModule, BsModalRef } from 'ngx-bootstrap/modal';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 
 @NgModule({
   declarations: [
@@ -26,13 +30,17 @@ import { HomeservicesectionComponent } from './homeservicesection/homeservicesec
     HeaderComponent,
     HomewhatwedoComponent,
     HomeservicesectionComponent,
+    SignupComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    FormsModule,
+    ReactiveFormsModule,
+    ModalModule.forRoot()
   ],
-  providers: [],
+  providers: [BsModalRef],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

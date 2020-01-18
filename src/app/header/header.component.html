@@ -26,12 +26,17 @@
                 <li class="nav-item">
                     <a class="nav-link scroll-link" href="#section-6">Contact Us</a>
                 </li>
+                
                 <li class="nav-item dropdown">
+                    <!-- Button to Open the Modal -->
                     <a class="nav-link scroll-link dropdown-toggle" data-toggle="dropdown" role="button"
                         aria-haspopup="true" aria-expanded="false">Sign up</a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">Client</a>
-                        <a class="dropdown-item" href="#">Freelancer</a>
+                        <a  class="dropdown-item" (click)="openSignupModal('cba')">
+                            Client
+                        </a>
+                        <a class="dropdown-item" (click)="openSignupModal('fu')"
+                            [routerLink]="['/signup','fu']">Freelancer</a>
                     </div>
                 </li>
                 <li class="nav-item">
@@ -59,4 +64,5 @@
             </div>
         </div>
     </div>
+
 </div>
