@@ -1,12 +1,16 @@
+import { ReferenceLookUpMapping } from './../AppPojo/ReferenceLookUpMapping';
+import { map } from 'rxjs/operators';
+import { Reference } from 'src/app/AppPojo/Reference';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 import { Component, OnInit, Inject } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 import {
   FormBuilder,
   FormGroup,
-  Validators,
-  FormControl
-} from '@angular/forms';
+  Validators} from '@angular/forms';
+import { config } from '../AppConstants/config';
+
 
 @Component({
   selector: 'app-signup',
@@ -18,17 +22,21 @@ export class SignupComponent implements OnInit {
   key: string;
   signupForm: FormGroup;
   issubmit = false;
+  referencedetails: any = [];
+  referencedetailsmap: any =  [];
+  referencedetailsmapsubcat: any = [];
+  referencedetailsmapsubcatselectedmapId: any = [];
 
-  constructor(public modalRef: BsModalRef,
+  constructor(public modalRef: BsModalRef, private http: HttpClient,
               @Inject(FormBuilder) private formBuilder: FormBuilder) {
    }
 
   ngOnInit() {
-    console.log('inside SignupComponent', this.key);
     this.formValidations();
-  }
+    this.getCategories();
+   }
 
-  formValidations() {
+ formValidations() {
     this.signupForm = this.formBuilder.group({
       password: ['', [Validators.required, Validators.minLength(8)]],
       username: ['', [Validators.required, Validators.email, Validators.maxLength(40)]],
@@ -37,6 +45,21 @@ export class SignupComponent implements OnInit {
       category: ['', [Validators.required]],
       subcategory: ['', [Validators.required]],
     });
+  }
+
+  getCategories() {
+    this.http.get<Reference[]>(`${environment.apiUrl}/getReferenceLookupByKey/` + config.key_domain,
+    config.httpHeaders).subscribe((data: Reference[]) => {
+      this.referencedetails = data;
+      for (const reflookup of this.referencedetails ) {
+      for (const reflookupmap of reflookup.referencelookupmapping) {
+        this.referencedetailsmap.push(reflookupmap);
+        for (const reflookupmapsubcat of reflookupmap.referencelookupmappingsubcategories) {
+          this.referencedetailsmapsubcat.push(reflookupmapsubcat);
+        }
+      }
+    }
+  });
   }
 
   get f() {
@@ -49,4 +72,13 @@ export class SignupComponent implements OnInit {
     }
   }
 
+  subCategoryByMapId(value: string) {
+    for (const listofcat of this.referencedetailsmapsubcat) {
+      if (listofcat.mapId == value) {
+         this.referencedetailsmapsubcatselectedmapId.push(listofcat);
+       } else {
+        this.referencedetailsmapsubcatselectedmapId = [];
+       }
+     }
+  }
 }

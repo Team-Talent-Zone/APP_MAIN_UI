@@ -70,25 +70,32 @@
         <span>
           <i class="fa fa fa-industry form-control-icon"></i>
         </span>
-        <select name="category" class="form-control" [ngClass]="{ 'is-invalid': issubmit && f.category.errors }">
-          <option value="" selected>Select industry</option>
-       
+        <select #sel (change)="subCategoryByMapId(sel.value);" formControlName="category" class="form-control"
+          [ngClass]="{ 'is-invalid': issubmit && f.category.errors }">
+          <option value="" selected>Select Category</option>
+          <option *ngFor="let referencelookupmap of referencedetailsmap" value="{{referencelookupmap.mapId}}">
+            {{referencelookupmap.label}}</option>
         </select>
         <div *ngIf="issubmit && f.category.errors" class="invalid-feedback">
           <div *ngIf="f.category.errors.required">Industry is required
           </div>
         </div>
       </div>
-      <div class="form-group">
-        <span>
-          <i class="fa fa fa-certificate	
+      <div *ngIf="referencedetailsmapsubcatselectedmapId.length > 0">
+        <div class="form-group">
+          <span>
+            <i class="fa fa fa-certificate	
            form-control-icon"></i>
-        </span>
-        <select class="form-control" class="form-control" [ngClass]="{ 'is-invalid': issubmit && f.subcategory.errors }">
-          <option>Select your skill</option>
-        </select>
-        <div *ngIf="issubmit && f.subcategory.errors" class="invalid-feedback">
-          <div *ngIf="f.subcategory.errors.required">Skill is required
+          </span>
+          <select class="form-control" class="form-control" formControlName="subcategory" 
+            [ngClass]="{ 'is-invalid': issubmit && f.subcategory.errors }">
+            <option value="" selected>Select your skill</option>
+            <option *ngFor="let referencelookupmapcat of referencedetailsmapsubcatselectedmapId"
+              value="{{referencelookupmapcat.code}}"> {{referencelookupmapcat.label}}</option>
+          </select>
+          <div *ngIf="issubmit && f.subcategory.errors" class="invalid-feedback">
+            <div *ngIf="f.subcategory.errors.required">Skill is required
+            </div>
           </div>
         </div>
       </div>
