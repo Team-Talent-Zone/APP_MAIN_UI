@@ -1,4 +1,5 @@
 <!-- Modal Header -->
+<alert></alert>
 <div class="modal-header">
   <h4 class="modal-title">
     <div *ngIf="key =='cba'; else elseFU">
@@ -10,7 +11,7 @@
   </h4>
   <button type="button" class="close" (click)="modalRef.hide()">&times;</button>
 </div>
-<form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="signupForm" (ngSubmit)="saveUser()">
   <!-- Modal body -->
   <div class="modal-body">
     <span id="reauth-email" class="reauth-email"></span>

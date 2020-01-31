@@ -13,8 +13,10 @@ import {
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
+  fpwdForm: FormGroup;
   issubmit = false;
-
+  isfpwdsubmit = false;
+  isfwd = false;
   constructor(@Inject(FormBuilder) private formBuilder: FormBuilder) {
    }
 
@@ -27,6 +29,9 @@ export class LoginComponent implements OnInit {
       password: ['', [Validators.required, Validators.minLength(8)]],
       username: ['', [Validators.required, Validators.email, Validators.maxLength(40)]]
       });
+    this.fpwdForm = this.formBuilder.group({
+          fpwdusername: ['', [Validators.required, Validators.email, Validators.maxLength(40)]]
+        });
   }
 
   get f() {
@@ -37,5 +42,12 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.invalid) {
       return;
     }
+  }
+  get fpwd() {
+    return this.fpwdForm.controls;
+  }
+  disFwd(isfwd: boolean) {
+    this.isfwd = isfwd;
+    console.log(this.isfwd);
   }
 }
