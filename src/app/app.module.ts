@@ -1,13 +1,29 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { HttpClientModule , HTTP_INTERCEPTORS} from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FooterComponent } from './footer/footer.component';
 import { LoginComponent } from './login/login.component';
-import { HomepriceComponent } from './homeprice/homeprice.component';
+import { HomepriceComponent } from './homepricesection/homeprice.component';
+import { HomecbasectionComponent } from './homecbasection/homecbasection.component';
+import { HomefusectionComponent } from './homefusection/homefusection.component';
+import { HeaderComponent } from './header/header.component';
+import { HomewhatwedoComponent } from './homewhatwedosection/homewhatwedo.component';
+import { HomeservicesectionComponent } from './homeservicesection/homeservicesection.component';
+import { HomeComponent } from './home/home.component';
+import { SignupComponent } from './signup/signup.component';
+import { ModalModule, BsModalRef } from 'ngx-bootstrap/modal';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReferenceAdapter} from './adapters/referenceadapter';
+import { AlertComponent } from './alert/alert.component';
+import { AlertsService } from './AppRestCall/alerts/alerts.service';
+import { UserService } from './AppRestCall/user/user.service';
+import { ReferenceService } from './AppRestCall/reference/reference.service';
+import { UserAdapter } from './adapters/useradapter';
+import { HttpErrorInterceptor } from './alert/http-error.interceptor';
+
 
 @NgModule({
   declarations: [
@@ -15,14 +31,37 @@ import { HomepriceComponent } from './homeprice/homeprice.component';
     HomeComponent,
     FooterComponent,
     LoginComponent,
-    HomepriceComponent
-  ],
+    HomepriceComponent,
+    HomecbasectionComponent,
+    HomefusectionComponent,
+    HeaderComponent,
+    HomewhatwedoComponent,
+    HomeservicesectionComponent,
+    SignupComponent,
+    AlertComponent
+    ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    FormsModule,
+    ReactiveFormsModule,
+    ModalModule.forRoot(),
+    HttpClientModule,
   ],
-  providers: [],
+  providers: [
+    BsModalRef,
+    ReferenceAdapter,
+    UserAdapter,
+    AlertsService ,
+    UserService ,
+    ReferenceService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpErrorInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

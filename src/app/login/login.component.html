@@ -1,26 +1,61 @@
-<div class="card card-container">
-  <img id="profile-img" class="profile-img-card" src="https://bootdey.com/img/Content/avatar/avatar6.png" />
-  <p id="profile-name" class="profile-name-card"></p>
-  <form>
-    <span id="reauth-email" class="reauth-email"></span>
-    <div class="form-group">
-      <input type="email" id="inputEmail" formControlName="username"
-        [ngClass]="{ 'is-invalid': loginSubmitted && loginvar.username.errors }" class="form-control"
-        placeholder="Email address" autofocus>
+<div class="section-4-container">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3">
+      </div>
+      <div class="col-md-6">
+        <div *ngIf="!isfwd; else elseFwd">
+          <div class="card card-container">
+            <img id="profile-img" class="profile-img-card" src="https://bootdey.com/img/Content/avatar/avatar6.png" />
+            <p id="profile-name" class="profile-name-card"></p>
+            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+              <span id="reauth-email" class="reauth-email"></span>
+              <div class="form-group">
+                <input type="email" formControlName="username"
+                  [ngClass]="{ 'is-invalid': issubmit && f.username.errors }" class="form-control"
+                  placeholder="Email Address" autofocus>
+                <div *ngIf="issubmit && f.username.errors" class="invalid-feedback">
+                  <div *ngIf="f.username.errors.required || f.username.errors.email">Email must be a valid email address
+                  </div>
+                  <div *ngIf="f.username.errors.maxlength">Username cant exceed 40
+                    char</div>
+                </div>
+              </div>
+              <div class="form-group">
+                <input type="password" id="inputPassword" class="form-control" placeholder="Password"
+                  formControlName="password" [ngClass]="{ 'is-invalid': issubmit && f.password.errors }">
+                <div *ngIf="issubmit && f.password.errors" class="invalid-feedback">
+                  <div *ngIf="f.password.errors.required">Password is required
+                  </div>
+                  <div *ngIf="f.password.errors.minlength">Password must be at least 8 characters</div>
+                </div>
+              </div>
+              <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Sign in</button>
+            </form>
+            <a (click)="disFwd(true)" class="forgot-password">
+              Forgot the password?
+            </a>
+          </div>
+        </div>
+        <ng-template #elseFwd>
+          <div class="card card-container">
+            <h4 class="card-title">Forgot Password</h4>
+            <form [formGroup]="fpwdForm">
+              <span id="reauth-email" class="reauth-email"></span>
+              <div class="form-group">
+                <input type="email" id="inputEmail" formControlName="fpwdusername"
+                  [ngClass]="{ 'is-invalid': isfpwdsubmit && fPwdvar.fpwdusername.errors }" class="form-control"
+                  placeholder="Email address" autofocus>
+                <div *ngIf="isfpwdsubmit && fpwd.fpwdusername.errors" class="invalid-feedback">
+                  <div *ngIf="fpwd.fpwdusername.errors.required">Username is required</div>
+                </div>
+              </div>
+              <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Send Password</button>
+              <a (click)="disFwd(false)" class="btn  btn-sm">Back to LOGIN?</a>
+            </form>
+          </div>
+        </ng-template>
+      </div>
     </div>
-    <div class="form-group">
-      <input type="password" id="inputPassword" class="form-control" placeholder="Password" formControlName="password"
-        [ngClass]="{ 'is-invalid': loginSubmitted && loginvar.password.errors }">
-    </div>
-    <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Sign in</button>
-  </form>
-  <a [routerLink]="['/_nav', '_fpwd'] " class="forgot-password">
-    Forgot the password?
-  </a>
-  <a [routerLink]="['/_nav', '_signup'] " class="btn  btn-sm">Do not have an account?
-    SIGN UP</a>
-
-
-
-
-</div><!-- /card-container -->
+  </div>
+</div>
