@@ -18,7 +18,9 @@ export class UserAdapter implements Adapter<User> {
             item.updatedon,
             item.avtarurl,
             item.userroles,
-            item.userbizdetails
+            item.userbizdetails,
+            item.freeLanceDetails,
+            item.freelancehistoryentity
           );
     }
 }

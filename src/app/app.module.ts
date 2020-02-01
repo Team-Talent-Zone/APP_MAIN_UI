@@ -23,6 +23,7 @@ import { UserService } from './AppRestCall/user/user.service';
 import { ReferenceService } from './AppRestCall/reference/reference.service';
 import { UserAdapter } from './adapters/useradapter';
 import { HttpErrorInterceptor } from './alert/http-error.interceptor';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 
 @NgModule({
@@ -38,7 +39,8 @@ import { HttpErrorInterceptor } from './alert/http-error.interceptor';
     HomewhatwedoComponent,
     HomeservicesectionComponent,
     SignupComponent,
-    AlertComponent
+    AlertComponent,
+    DashboardComponent
     ],
   imports: [
     BrowserModule,

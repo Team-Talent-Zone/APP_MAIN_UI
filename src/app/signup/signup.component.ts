@@ -1,8 +1,7 @@
 import { User } from 'src/app/appmodels/User';
 import { ReferenceAdapter } from '../adapters/referenceadapter';
-import { map, first, catchError } from 'rxjs/operators';
+import { map, first } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
 import { Component, OnInit, Inject } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import {
@@ -10,14 +9,11 @@ import {
   FormGroup,
   Validators} from '@angular/forms';
 import { config } from '../AppConstants/config';
-import { Observable, throwError } from 'rxjs';
 import { AlertsService } from '../AppRestCall/alerts/alerts.service';
 import { UserService } from '../AppRestCall/user/user.service';
 import { UserAdapter } from '../adapters/useradapter';
 import { ReferenceService } from '../AppRestCall/reference/reference.service';
-import { UserRole } from '../appmodels/UserRole';
-import { UserBiz } from '../appmodels/UserBiz';
-import { ConfigMsg } from '../appconstants/configmsg';
+import { ConfigMsg } from '../AppConstants/configmsg';
 
 @Component({
   selector: 'app-signup',
@@ -29,6 +25,7 @@ export class SignupComponent implements OnInit {
   key: string;
   signupForm: FormGroup;
   issubmit = false;
+  issubcatdisplay = false;
   referencedetailsmap: any =  [];
   referencedetailsmapsubcat: any = [];
   referencedetailsmapsubcatselectedmapId: any = [];
@@ -70,7 +67,7 @@ export class SignupComponent implements OnInit {
       subcategory: ['', [Validators.required]],
    });
   }
-}
+} 
 
   getAllCategories() {
    this.referService.getReferenceLookupByKey(config.key_domain).pipe(map((data: any[]) => data.map(item => this.refAdapter.adapt(item))),
@@ -95,8 +92,10 @@ export class SignupComponent implements OnInit {
     for (const listofcat of this.referencedetailsmapsubcat) {
       if (listofcat.mapId == value) {
          this.referencedetailsmapsubcatselectedmapId.push(listofcat);
+         this.issubcatdisplay = false;
        } else {
         this.referencedetailsmapsubcatselectedmapId = [];
+        this.issubcatdisplay = true;
        }
      }
   }
@@ -110,18 +109,21 @@ export class SignupComponent implements OnInit {
     if (this.signupForm.invalid) {
       return;
     }
-    this.userService.checkusername(
+    this.userService.checkusernamenotexist(
       this.signupForm.get('username').value
       ).subscribe(
         (data: any) => {
           this.referService.getReferenceLookupByShortKey(this.key).subscribe(
             refCode => {
               this.userService.saveUser(
-                this.signupForm.value , refCode.toString()
+                this.signupForm.value , refCode.toString() , this.key
                 ).pipe(first()).subscribe(
                   (resp) => {
                     this.usrObj = this.userAdapter.adapt(resp);
                     this.alertService.success(ConfigMsg.signup_successmsg , true);
+                  },
+                  error => {
+                    this.alertService.error(error);
                   }
                 );
             });

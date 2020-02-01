@@ -2,13 +2,14 @@
   <div class="container">
     <div class="row">
       <div class="col-md-3">
+        <alert></alert>
       </div>
       <div class="col-md-6">
         <div *ngIf="!isfwd; else elseFwd">
           <div class="card card-container">
             <img id="profile-img" class="profile-img-card" src="https://bootdey.com/img/Content/avatar/avatar6.png" />
             <p id="profile-name" class="profile-name-card"></p>
-            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <form [formGroup]="loginForm" (ngSubmit)="loginUserByUsername()">
               <span id="reauth-email" class="reauth-email"></span>
               <div class="form-group">
                 <input type="email" formControlName="username"
@@ -32,7 +33,7 @@
               </div>
               <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Sign in</button>
             </form>
-            <a (click)="disFwd(true)" class="forgot-password">
+            <a (click)="disFwd(true)" class="btn  btn-sm" >
               Forgot the password?
             </a>
           </div>

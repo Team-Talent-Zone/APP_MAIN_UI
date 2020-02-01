@@ -7,4 +7,6 @@ export const config = {
   shortkey_role_fu: 'fu',
   shortkey_role_csst: 'csst',
   shortkey_role_cssm: 'cssm'
-}
+};
+
+
