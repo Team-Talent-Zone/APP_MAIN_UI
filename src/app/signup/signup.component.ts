@@ -73,8 +73,7 @@ export class SignupComponent implements OnInit {
 }
 
   getAllCategories() {
-    this.http.get(`${environment.apiUrl}/getReferenceLookupByKey/` + config.key_domain,
-    config.httpHeaders).pipe(map((data: any[]) => data.map(item => this.refAdapter.adapt(item))),
+   this.referService.getReferenceLookupByKey(config.key_domain).pipe(map((data: any[]) => data.map(item => this.refAdapter.adapt(item))),
     ).subscribe(
       data => {
         for (const reflookup of data ) {
@@ -87,11 +86,10 @@ export class SignupComponent implements OnInit {
         }
       },
       error => {
-         this.alertService.error(error.message);
+         this.alertService.error(error);
     }
     );
   }
-
 
   subCategoryByMapId(value: string) {
     for (const listofcat of this.referencedetailsmapsubcat) {
@@ -116,10 +114,7 @@ export class SignupComponent implements OnInit {
       this.signupForm.get('username').value
       ).subscribe(
         (data: any) => {
-         if (data.userId > 0) {
-            this.alertService.error(ConfigMsg.signup_useralreadyexist);
-          } else {
-            this.referService.getReferenceLookupByShortKey(this.key).subscribe(
+          this.referService.getReferenceLookupByShortKey(this.key).subscribe(
             refCode => {
               this.userService.saveUser(
                 this.signupForm.value , refCode.toString()
@@ -127,19 +122,12 @@ export class SignupComponent implements OnInit {
                   (resp) => {
                     this.usrObj = this.userAdapter.adapt(resp);
                     this.alertService.success(ConfigMsg.signup_successmsg , true);
-                  },
-                  error => {
-                    this.alertService.error(error.message);
                   }
                 );
-            },
-            error => {
-              this.alertService.error(error.message);
             });
-           }
-        },
+         },
         error => {
-          this.alertService.error(error.message);
+          this.alertService.error(error);
         }
       );
   }

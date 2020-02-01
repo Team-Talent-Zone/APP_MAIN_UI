@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule , HTTP_INTERCEPTORS} from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -22,6 +22,8 @@ import { AlertsService } from './AppRestCall/alerts/alerts.service';
 import { UserService } from './AppRestCall/user/user.service';
 import { ReferenceService } from './AppRestCall/reference/reference.service';
 import { UserAdapter } from './adapters/useradapter';
+import { HttpErrorInterceptor } from './alert/http-error.interceptor';
+
 
 @NgModule({
   declarations: [
@@ -53,7 +55,12 @@ import { UserAdapter } from './adapters/useradapter';
     UserAdapter,
     AlertsService ,
     UserService ,
-    ReferenceService
+    ReferenceService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpErrorInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })

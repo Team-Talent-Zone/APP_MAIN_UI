@@ -15,4 +15,8 @@ getReferenceLookupByShortKey(shortkey: string) {
  return this.http.get(`${environment.apiUrl}/getReferenceLookupByShortKey/` + shortkey,
   config.httpHeaders);
 }
+getReferenceLookupByKey(key: string) {
+  return this.http.get(`${environment.apiUrl}/getReferenceLookupByKey/` + key,
+  config.httpHeaders);
+}
 }
