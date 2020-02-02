@@ -17,6 +17,7 @@ export class UserAdapter implements Adapter<User> {
             item.updateby,
             item.updatedon,
             item.avtarurl,
+            item.preferlang,
             item.userroles,
             item.userbizdetails,
             item.freeLanceDetails,

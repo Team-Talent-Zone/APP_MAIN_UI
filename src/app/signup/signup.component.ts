@@ -1,3 +1,5 @@
+import { config } from 'src/app/appconstants/config';
+import { Util } from 'src/app/appmodels/Util';
 import { User } from 'src/app/appmodels/User';
 import { ReferenceAdapter } from '../adapters/referenceadapter';
 import { map, first } from 'rxjs/operators';
@@ -8,12 +10,14 @@ import {
   FormBuilder,
   FormGroup,
   Validators} from '@angular/forms';
-import { config } from '../AppConstants/config';
 import { AlertsService } from '../AppRestCall/alerts/alerts.service';
 import { UserService } from '../AppRestCall/user/user.service';
 import { UserAdapter } from '../adapters/useradapter';
 import { ReferenceService } from '../AppRestCall/reference/reference.service';
 import { ConfigMsg } from '../AppConstants/configmsg';
+import { SendemailService } from '../AppRestCall/sendemail/sendemail.service';
+import { ReferenceLookUpTemplateAdapter } from '../adapters/referencelookuptemplateadapter';
+import { ReferenceLookUpTemplate } from '../appmodels/ReferenceLookUpTemplate';
 
 @Component({
   selector: 'app-signup',
@@ -30,6 +34,8 @@ export class SignupComponent implements OnInit {
   referencedetailsmapsubcat: any = [];
   referencedetailsmapsubcatselectedmapId: any = [];
   usrObj: User;
+  templateObj: ReferenceLookUpTemplate;
+  util: Util;
 
   constructor(
               public  modalRef: BsModalRef,
@@ -39,8 +45,9 @@ export class SignupComponent implements OnInit {
               private userAdapter: UserAdapter,
               private alertService: AlertsService,
               private userService: UserService,
-              private referService: ReferenceService
-
+              private referService: ReferenceService,
+              private sendemailService: SendemailService,
+              private reflookuptemplateAdapter: ReferenceLookUpTemplateAdapter,
               ) {
    }
 
@@ -55,7 +62,8 @@ export class SignupComponent implements OnInit {
       password: ['', [Validators.required, Validators.minLength(8)]],
       username: ['', [Validators.required, Validators.email, Validators.maxLength(40)]],
       firstname: ['', [Validators.required, Validators.maxLength(40)]],
-      lastname: ['', [Validators.required, Validators.maxLength(40)]]
+      lastname: ['', [Validators.required, Validators.maxLength(40)]],
+      preferlang: ['', [Validators.required]],
     });
    } else {
     this.signupForm = this.formBuilder.group({
@@ -63,11 +71,12 @@ export class SignupComponent implements OnInit {
       username: ['', [Validators.required, Validators.email, Validators.maxLength(40)]],
       firstname: ['', [Validators.required, Validators.maxLength(40)]],
       lastname: ['', [Validators.required, Validators.maxLength(40)]],
+      preferlang: ['', [Validators.required]],
       category: ['', [Validators.required]],
       subcategory: ['', [Validators.required]],
    });
   }
-} 
+}
 
   getAllCategories() {
    this.referService.getReferenceLookupByKey(config.key_domain).pipe(map((data: any[]) => data.map(item => this.refAdapter.adapt(item))),
@@ -120,7 +129,28 @@ export class SignupComponent implements OnInit {
                 ).pipe(first()).subscribe(
                   (resp) => {
                     this.usrObj = this.userAdapter.adapt(resp);
-                    this.alertService.success(ConfigMsg.signup_successmsg , true);
+                    if (this.usrObj.userId > 0) {
+                      this.referService.getLookupTemplateEntityByShortkey(config.shortkey_email_verificationemailaddress).subscribe(
+                        referencetemplate => {
+                          this.templateObj = this.reflookuptemplateAdapter.adapt(referencetemplate);
+                          this.util = new Util();
+                          this.util.fromuser = config.email_default_fromuser;
+                          this.util.subject = config.email_verficationemailaddress_subj;
+                          this.util.touser = this.usrObj.username;
+                          this.util.templateurl = this.templateObj.url;
+                          this.util.array = [this.usrObj.firstname, config.dev_ui_url];
+                          this.sendemailService.sendEmail(this.util).subscribe(
+                            util => {
+                              this.alertService.success(ConfigMsg.signup_successmsg , true);
+                            },
+                            error => {
+                              this.alertService.error(error);
+                            });
+                        },
+                        error => {
+                          this.alertService.error(error);
+                        });
+                    }
                   },
                   error => {
                     this.alertService.error(error);

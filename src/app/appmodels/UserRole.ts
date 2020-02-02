@@ -5,6 +5,5 @@ export class UserRole  {
     public userId: number;
 
     constructor(
-        
     ) { }
 }

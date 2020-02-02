@@ -17,6 +17,7 @@ export class User  {
         public updateby: string,
         public updatedon: string,
         public avtarurl: string,
+        public preferlang: string,
         public userroles: UserRole,
         public userbizdetails: UserBiz,
         public freeLanceDetails: Freelance,

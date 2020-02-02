@@ -26,6 +26,7 @@ import { HttpErrorInterceptor } from './alert/http-error.interceptor';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import { ReferenceLookUpTemplateAdapter } from './adapters/referencelookuptemplateadapter';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -67,6 +68,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     BsModalRef,
     ReferenceAdapter,
     UserAdapter,
+    ReferenceLookUpTemplateAdapter,
     AlertsService ,
     UserService ,
     ReferenceService,

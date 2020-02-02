@@ -19,4 +19,9 @@ getReferenceLookupByKey(key: string) {
   return this.http.get(`${environment.apiUrl}/getReferenceLookupByKey/` + key,
   config.httpHeaders);
 }
+
+getLookupTemplateEntityByShortkey(shortkey: string) {
+  return this.http.get(`${environment.apiUrl}/getLookupTemplateEntityByShortkey/` + shortkey,
+  config.httpHeaders);
+}
 }
