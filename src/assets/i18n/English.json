@@ -1,0 +1,19 @@
+{
+    "HOMENAV": {
+      "WHATWEDO": "What we do",
+      "ONBOARD": "OnBoard",
+      "SERVICE": "Service",
+      "PRICING": "Pricing",
+      "CONTACTUS": "Contact Us",
+      "SIGNUP": "Sign Up",
+      "CLIENT": "Client",
+      "FREELANCER": "Freelancer",
+      "LOGIN": "login",
+      "BETTERSERVICECAPTION":"BETTER SERVICE IN BETTER WAY"
+    },
+    "HOMEWHATWEDO": {
+      "WHATWEDO": "What we do",
+      "SERVICE": "Service"
+    }
+  }
+  

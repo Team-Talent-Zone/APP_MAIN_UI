@@ -2,6 +2,7 @@ import { SignupComponent } from './../signup/signup.component';
 import { Component, OnInit } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-header',
@@ -13,7 +14,14 @@ export class HeaderComponent implements OnInit {
   modalRef: BsModalRef;
   shortkey: string;
 
-  constructor(private modalService: BsModalService) { }
+  constructor(
+    private modalService: BsModalService,
+    public translate: TranslateService) {
+    translate.addLangs(['English', 'తెలుగు', 'हिंदी']);
+    translate.setDefaultLang('English');
+    const browserLang = translate.getBrowserLang();
+    translate.use(browserLang.match(/English|తెలుగు|हिंदी/) ? browserLang : 'English');
+  }
 
   ngOnInit() {
     console.log('inside HeaderComponent');

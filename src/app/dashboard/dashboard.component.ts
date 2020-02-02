@@ -15,9 +15,6 @@ export class DashboardComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    if (this.userService.currentUserValue) {
-      console.log('Current User Object' , this.userService.currentUserValue);
-      }
   }
 
   logout() {

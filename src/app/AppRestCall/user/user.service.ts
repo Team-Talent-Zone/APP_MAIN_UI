@@ -29,7 +29,7 @@ export class UserService {
 
   public get currentUserValue(): User {
     return this.currentUserSubject.value;
-}
+  }
   loginUserByUsername(username: string) {
     return this.http.get(`${environment.apiUrl}/getUser/` + username + '/' ,
     config.httpHeaders) .pipe(map(user => {

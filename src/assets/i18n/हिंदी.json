@@ -1,0 +1,18 @@
+{
+  "HOMENAV": {
+    "WHATWEDO": "हम क्या करते हैं",
+    "ONBOARD": "सवार",
+    "SERVICE": "सेवा",
+    "PRICING": "मूल्य निर्धारण",
+    "CONTACTUS": "संपर्क करें",
+    "SIGNUP": "साइन अप करें",
+    "CLIENT": "ग्राहक",
+    "FREELANCER": "फ्रीलांसर",
+    "LOGIN": "लॉग इन करें",
+    "BETTERSERVICECAPTION":"बेहतर सेवा में बेहतर सेवा"
+  },
+  "HOMEWHATWEDO": {
+    "WHATWEDO": "हम क्या करते हैं",
+    "SERVICE": "सेवा"
+  }
+}

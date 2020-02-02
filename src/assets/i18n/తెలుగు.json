@@ -1,0 +1,18 @@
+{
+  "HOMENAV": {
+    "WHATWEDO": "మనం చేసేది",
+    "ONBOARD": "ఆన్బోర్డ్",
+    "SERVICE": "సేవలు",
+    "PRICING": "ధర",
+    "CONTACTUS": "మమ్మల్ని సంప్రదించండి",
+    "SIGNUP": "చేరడం",
+    "CLIENT": "క్లయింట్",
+    "FREELANCER": "ఫ్రీలాన్సర్గా",
+    "LOGIN": "ప్రవేశించండి",
+    "BETTERSERVICECAPTION":"మంచి మార్గంలో మంచి సేవ"
+  },
+  "HOMEWHATWEDO": {
+    "WHATWEDO": "మనం చేసేది",
+    "SERVICE": "సర్వీస్"
+  }
+}
