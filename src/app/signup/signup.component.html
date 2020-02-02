@@ -3,10 +3,10 @@
 <div class="modal-header">
   <h4 class="modal-title">
     <div *ngIf="key =='cba'; else elseFU">
-      Sign Up
+      {{'HOMESIGNUP.SIGNUP' | translate}}
     </div>
     <ng-template #elseFU>
-      Sign up as freelancer
+      {{'HOMESIGNUP.SIGNUPFU' | translate}}
     </ng-template>
   </h4>
   <button type="button" class="close" (click)="modalRef.hide()">&times;</button>
@@ -19,7 +19,7 @@
       <span>
         <i class="fa fa-user form-control-icon"></i>
       </span>
-      <input class="form-control" formControlName="username" placeholder="Email Address" type="email" ngModel
+      <input class="form-control" formControlName="username" placeholder="{{'HOMESIGNUP.EMAILADDRESS' | translate}}" type="email" ngModel
         email="true" [ngClass]="{ 'is-invalid': issubmit && f.username.errors }">
       <div *ngIf="issubmit && f.username.errors" class="invalid-feedback">
         <div *ngIf="f.username.errors.required || f.username.errors.email">Email must be a valid email address
@@ -32,7 +32,7 @@
       <span>
         <i class="fa fa-asterisk form-control-icon"></i>
       </span>
-      <input class="form-control" placeholder="Password" type="password" formControlName="password"
+      <input class="form-control" placeholder="{{'HOMESIGNUP.PASSWORD' | translate}}" type="password" formControlName="password"
         [ngClass]="{ 'is-invalid': issubmit && f.password.errors }" />
       <div *ngIf="issubmit && f.password.errors" class="invalid-feedback">
         <div *ngIf="f.password.errors.required">Password is required
@@ -44,7 +44,7 @@
       <span>
         <i class="fa fa fa-user-o form-control-icon"></i>
       </span>
-      <input class="form-control" formControlName="firstname" placeholder="First Name"
+      <input class="form-control" formControlName="firstname" placeholder="{{'HOMESIGNUP.FIRSTNAME' | translate}}"
         [ngClass]="{ 'is-invalid': issubmit && f.firstname.errors }">
       <div *ngIf="issubmit && f.firstname.errors" class="invalid-feedback">
         <div *ngIf="f.firstname.errors.required">First Name is required
@@ -57,7 +57,7 @@
       <span>
         <i class="fa fa fa-user-o form-control-icon"></i>
       </span>
-      <input class="form-control" formControlName="lastname" placeholder="Last Name"
+      <input class="form-control" formControlName="lastname" placeholder="{{'HOMESIGNUP.LASTNAME' | translate}}"
         [ngClass]="{ 'is-invalid': issubmit && f.lastname.errors }">
       <div *ngIf="issubmit && f.lastname.errors" class="invalid-feedback">
         <div *ngIf="f.lastname.errors.required">Last Name is required
@@ -73,7 +73,7 @@
         </span>
         <select #sel (change)="subCategoryByMapId(sel.value);" formControlName="category" class="form-control"
           [ngClass]="{ 'is-invalid': issubmit && f.category.errors }">
-          <option value="" selected>Select Category</option>
+          <option value="" selected>{{'HOMESIGNUP.CATEGORY' | translate}}</option>
           <option *ngFor="let referencelookupmap of referencedetailsmap" value="{{referencelookupmap.mapId}}">
             {{referencelookupmap.label}}</option>
         </select>
@@ -90,7 +90,7 @@
           </span>
           <select class="form-control" class="form-control" formControlName="subcategory" 
             [ngClass]="{ 'is-invalid': issubmit && f.subcategory.errors }">
-            <option value="" selected>Select your skill</option>
+            <option value="" selected>{{'HOMESIGNUP.SKILL' | translate}}</option>
             <option *ngFor="let referencelookupmapcat of referencedetailsmapsubcatselectedmapId"
               value="{{referencelookupmapcat.code}}"> {{referencelookupmapcat.label}}</option>
           </select>

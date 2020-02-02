@@ -9,10 +9,21 @@
     "CLIENT": "ग्राहक",
     "FREELANCER": "फ्रीलांसर",
     "LOGIN": "लॉग इन करें",
-    "BETTERSERVICECAPTION":"बेहतर सेवा में बेहतर सेवा"
+    "BETTERSERVICECAPTION":"बेहतर सेवा में बेहतर सेवा",
+    "BETTERSERVICESUBCAPTION":"व्यवसायिक जरूरतों को पूरा करने के लिए वैश्विक सेवाएं। हम यहां आपके व्यवसाय के विकास के लिए हैं।"
   },
   "HOMEWHATWEDO": {
     "WHATWEDO": "हम क्या करते हैं",
     "SERVICE": "सेवा"
+  },
+  "HOMESIGNUP": {
+    "SIGNUP": "साइन अप करें",
+    "SIGNUPFU": "फ्रीलांसर के रूप में साइन अप करें",
+    "EMAILADDRESS": "ईमेल पता",
+    "PASSWORD": "कुंजिका",
+    "FIRSTNAME": "पहला नाम",
+    "LASTNAME": "उपनाम",
+    "CATEGORY": "श्रेणी का चयन करें",
+    "SKILL": "अपने कौशल का चयन करें"
   }
 }
