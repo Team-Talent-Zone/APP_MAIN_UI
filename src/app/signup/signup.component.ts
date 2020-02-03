@@ -138,7 +138,8 @@ export class SignupComponent implements OnInit {
                           this.util.subject = config.email_verficationemailaddress_subj;
                           this.util.touser = this.usrObj.username;
                           this.util.templateurl = this.templateObj.url;
-                          this.util.array = [this.usrObj.firstname, config.dev_ui_url];
+                          this.util.arrayfromui = JSON.stringify({ firstName: this.usrObj.firstname ,
+                                                  platformURL: 'http://localhost:4200/' });
                           this.sendemailService.sendEmail(this.util).subscribe(
                             util => {
                               this.alertService.success(ConfigMsg.signup_successmsg , true);

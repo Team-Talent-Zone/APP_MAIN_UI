@@ -3,11 +3,10 @@ export class Util {
     public touser: string;
     public subject: string;
     public body: string;
-    public array: string [];
+    public arrayfromui: string;
     public templateurl: string;
     public lastreturncode: number;
     public lastserverresponse: string;
-
     constructor(
     ) {
     }
