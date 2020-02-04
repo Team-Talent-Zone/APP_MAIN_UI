@@ -8,7 +8,7 @@
     <ng-template #elseFU>
       {{'HOMESIGNUP.SIGNUPFU' | translate}}
     </ng-template>
-  </h4>
+  </h4> 
   <button type="button" class="close" (click)="modalRef.hide()">&times;</button>
 </div>
 <form [formGroup]="signupForm" (ngSubmit)="saveUser()">
@@ -130,3 +130,5 @@
     <button type="button" class="btn btn-danger" (click)="modalRef.hide()">Close</button>
   </div>
 </form>
+
+

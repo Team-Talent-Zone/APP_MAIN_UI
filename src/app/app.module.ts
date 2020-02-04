@@ -27,6 +27,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import { ReferenceLookUpTemplateAdapter } from './adapters/referencelookuptemplateadapter';
+import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -46,7 +47,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     HomeservicesectionComponent,
     SignupComponent,
     AlertComponent,
-    DashboardComponent
+    DashboardComponent,
     ],
   imports: [
     BrowserModule,
@@ -62,8 +63,10 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
         useFactory: HttpLoaderFactory,
         deps: [HttpClient]
       }
-    })
+    }),
+    Ng4LoadingSpinnerModule.forRoot()
   ],
+  entryComponents: [AlertComponent],
   providers: [
     BsModalRef,
     ReferenceAdapter,

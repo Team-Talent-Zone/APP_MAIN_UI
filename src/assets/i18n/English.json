@@ -23,7 +23,7 @@
       "PASSWORD": "Password",
       "FIRSTNAME": "First Name",
       "LASTNAME": "Last Name",
-      "PREFERLANG": "Prefer your language",
+      "PREFERLANG": "Preferred Language",
       "CATEGORY": "Select Category",
       "SKILL": "Select your skill"
     }

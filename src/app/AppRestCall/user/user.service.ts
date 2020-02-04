@@ -68,4 +68,9 @@ export class UserService {
     return this.http.get(`${environment.apiUrl}/checkusername/` + username + '/' ,
      config.httpHeaders);
    }
+
+   getIpAddress() {
+    return this.http
+          .get('https://api.ipify.org/?format=json');
+  }
 }

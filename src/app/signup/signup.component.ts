@@ -3,7 +3,6 @@ import { Util } from 'src/app/appmodels/Util';
 import { User } from 'src/app/appmodels/User';
 import { ReferenceAdapter } from '../adapters/referenceadapter';
 import { map, first } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, Inject } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import {
@@ -18,12 +17,15 @@ import { ConfigMsg } from '../AppConstants/configmsg';
 import { SendemailService } from '../AppRestCall/sendemail/sendemail.service';
 import { ReferenceLookUpTemplateAdapter } from '../adapters/referencelookuptemplateadapter';
 import { ReferenceLookUpTemplate } from '../appmodels/ReferenceLookUpTemplate';
+import { environment } from 'src/environments/environment';
+import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css']
 })
+
 export class SignupComponent implements OnInit {
 
   key: string;
@@ -38,8 +40,8 @@ export class SignupComponent implements OnInit {
   util: Util;
 
   constructor(
+              private spinnerService: Ng4LoadingSpinnerService,
               public  modalRef: BsModalRef,
-              private http: HttpClient,
               private formBuilder: FormBuilder,
               private refAdapter: ReferenceAdapter,
               private userAdapter: UserAdapter,
@@ -118,6 +120,7 @@ export class SignupComponent implements OnInit {
     if (this.signupForm.invalid) {
       return;
     }
+    this.spinnerService.show();
     this.userService.checkusernamenotexist(
       this.signupForm.get('username').value
       ).subscribe(
@@ -139,7 +142,7 @@ export class SignupComponent implements OnInit {
                           this.util.touser = this.usrObj.username;
                           this.util.templateurl = this.templateObj.url;
                           this.util.arrayfromui = JSON.stringify({ firstName: this.usrObj.firstname ,
-                                                  platformURL: 'http://localhost:4200/' });
+                                                  platformURL: `${environment.uiUrl}` + 'confirm/' + this.usrObj.username });
                           this.sendemailService.sendEmail(this.util).subscribe(
                             util => {
                               this.alertService.success(ConfigMsg.signup_successmsg , true);
@@ -147,6 +150,7 @@ export class SignupComponent implements OnInit {
                             error => {
                               this.alertService.error(error);
                             });
+                         // setTimeout(() => this.spinnerService.hide(), 8000);
                         },
                         error => {
                           this.alertService.error(error);

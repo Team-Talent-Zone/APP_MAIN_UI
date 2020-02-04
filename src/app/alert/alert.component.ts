@@ -13,7 +13,9 @@ export class AlertComponent implements OnInit {
   private subscription: Subscription;
   message: any;
 
-  constructor(private alertService: AlertsService) { }
+  constructor(
+    private alertService: AlertsService,
+    ) { }
 
   ngOnInit() {
     this.subscription = this.alertService.getMessage()
@@ -26,7 +28,6 @@ export class AlertComponent implements OnInit {
                 message.cssClass = 'alert alert-danger';
                 break;
         }
-
         this.message = message;
       });
   }

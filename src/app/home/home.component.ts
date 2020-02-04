@@ -7,8 +7,9 @@ import { UserService } from '../AppRestCall/user/user.service';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+
   constructor(
-    private userService: UserService,
+    private userService: UserService
     ) {
       }
   ngOnInit() {
@@ -16,5 +17,6 @@ export class HomeComponent implements OnInit {
       console.log('Current User Object' , this.userService.currentUserValue);
       }
   }
+
 }
 

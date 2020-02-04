@@ -24,12 +24,10 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('inside HeaderComponent');
   }
 
     openSignupModal(shortkey) {
     console.log('HeaderComponent shortkey : ', shortkey);
-
     this.modalRef = this.modalService.show(SignupComponent,  {
       initialState: {
         title: 'Modal title',
