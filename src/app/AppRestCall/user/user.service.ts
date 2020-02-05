@@ -80,4 +80,9 @@ export class UserService {
     config.httpHeaders);
    }
 
+   forgetPassword(username: string) {
+    return this.http.get(`${environment.apiUrl}/forgetPassword/` + username + '/' ,
+    config.httpHeaders);
+   }
+
 }

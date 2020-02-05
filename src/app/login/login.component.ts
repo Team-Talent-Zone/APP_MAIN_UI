@@ -1,4 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
+import { Util } from 'src/app/appmodels/Util';
 import {
   FormBuilder,
   FormGroup,
@@ -13,6 +14,13 @@ import { map, first } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
+import { ReferenceService } from '../AppRestCall/reference/reference.service';
+import { ReferenceLookUpTemplate } from '../appmodels/ReferenceLookUpTemplate';
+import { ReferenceLookUpTemplateAdapter } from '../adapters/referencelookuptemplateadapter';
+import { config } from 'src/app/appconstants/config';
+import { environment } from 'src/environments/environment';
+import { SendemailService } from '../AppRestCall/sendemail/sendemail.service';
+import { ConfigMsg } from '../AppConstants/configmsg';
 
 @Component({
   selector: 'app-login',
@@ -26,6 +34,8 @@ export class LoginComponent implements OnInit {
   isfpwdsubmit = false;
   isfwd = false;
   usrObj: User;
+  templateObj: ReferenceLookUpTemplate;
+  util: Util;
 
   constructor(
     private modalService: BsModalService,
@@ -35,6 +45,9 @@ export class LoginComponent implements OnInit {
     private userAdapter: UserAdapter,
     private router: Router,
     private spinnerService: Ng4LoadingSpinnerService,
+    private referService: ReferenceService,
+    private reflookuptemplateAdapter: ReferenceLookUpTemplateAdapter,
+    private sendemailService: SendemailService,
     ) {
       }
 
@@ -49,8 +62,8 @@ export class LoginComponent implements OnInit {
       username: ['', [Validators.required, Validators.email, Validators.maxLength(40)]]
       });
     this.fpwdForm = this.formBuilder.group({
-          fpwdusername: ['', [Validators.required, Validators.email, Validators.maxLength(40)]]
-        });
+      fpwdusername: ['', [Validators.required, Validators.email, Validators.maxLength(40)]]
+      });
   }
 
   get f() {
@@ -83,15 +96,69 @@ export class LoginComponent implements OnInit {
         error => {
           this.spinnerService.hide();
           this.alertService.error(error);
-        //  this.router.navigate(['/dashboard']);
+         // this.router.navigate(['/dashboard']);
         });
-
-
   }
   get fpwd() {
     return this.fpwdForm.controls;
   }
   disFwd(isfwd: boolean) {
     this.isfwd = isfwd;
+  }
+  forgotPassword() {
+    this.isfpwdsubmit = true;
+    if (this.fpwdForm.invalid) {
+      return;
+    }
+    this.spinnerService.show();
+    this.userService.forgetPassword(this.fpwdForm.get('fpwdusername').value)
+          .pipe(first()).subscribe(
+            (resp) => {
+            this.usrObj = this.userAdapter.adapt(resp);
+            if (this.usrObj.userId > 0) {
+                  this.referService.getLookupTemplateEntityByShortkey(config.shortkey_email_forgotpassword).subscribe(
+                    referencetemplate => {
+                      this.templateObj = this.reflookuptemplateAdapter.adapt(referencetemplate);
+                      this.util = new Util();
+                      this.util.fromuser = ConfigMsg.email_default_fromuser;
+                      this.util.subject = ConfigMsg.email_forgotpasswordemailaddress_subj;
+                      this.util.touser = this.usrObj.username;
+                      this.util.templateurl = this.templateObj.url;
+                      this.util.arrayfromui = JSON.stringify({ firstName: this.usrObj.firstname ,
+                                              platformURL: `${environment.uiUrl}`,
+                                              userName: this.usrObj.username ,
+                                              tempPassword: this.usrObj.password });
+                      this.sendemailService.sendEmail(this.util).subscribe(
+                        (util: any) => {
+                          if (util.lastreturncode === 250) {
+                            this.userService.saveorupdate(this.usrObj)
+                            .pipe(first()).subscribe(
+                            (usrObjRsp) => {
+                              this.usrObj = this.userAdapter.adapt(usrObjRsp);
+                              if (this.usrObj.userId > 0) {
+                                this.spinnerService.hide();
+                                this.alertService.success(ConfigMsg.fwdpassword_successmsg , true);
+                                  }
+                              },
+                    error => {
+                              this.spinnerService.hide();
+                              this.alertService.error(error);
+                            });
+                          }},
+                    error => {
+                          this.spinnerService.hide();
+                          this.alertService.error(error);
+                        });
+                    },
+                    error => {
+                      this.spinnerService.hide();
+                      this.alertService.error(error);
+                    });
+                }
+            },
+          error => {
+            this.spinnerService.hide();
+            this.alertService.error(error);
+          });
   }
 }

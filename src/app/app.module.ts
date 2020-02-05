@@ -28,7 +28,6 @@ import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import { ReferenceLookUpTemplateAdapter } from './adapters/referencelookuptemplateadapter';
 import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
-import { ConfirmationComponent } from './confirmation/confirmation.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -49,7 +48,6 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     SignupComponent,
     AlertComponent,
     DashboardComponent,
-    ConfirmationComponent,
     ],
   imports: [
     BrowserModule,
@@ -68,7 +66,6 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     }),
     Ng4LoadingSpinnerModule.forRoot()
   ],
-  entryComponents: [ConfirmationComponent , AlertComponent],
   providers: [
     BsModalRef,
     ReferenceAdapter,

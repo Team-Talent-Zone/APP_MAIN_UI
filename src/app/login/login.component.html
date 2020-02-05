@@ -40,15 +40,18 @@
         <ng-template #elseFwd>
           <div class="card card-container">
             <h4 class="card-title">Forgot Password</h4>
-            <form [formGroup]="fpwdForm">
+            <form [formGroup]="fpwdForm" (ngSubmit)="forgotPassword()">
               <span id="reauth-email" class="reauth-email"></span>
               <div class="form-group">
                 <input type="email" id="inputEmail" formControlName="fpwdusername"
-                  [ngClass]="{ 'is-invalid': isfpwdsubmit && fPwdvar.fpwdusername.errors }" class="form-control"
+                  [ngClass]="{ 'is-invalid': isfpwdsubmit && fpwd.fpwdusername.errors }" class="form-control"
                   placeholder="Email address" autofocus>
-                <div *ngIf="isfpwdsubmit && fpwd.fpwdusername.errors" class="invalid-feedback">
-                  <div *ngIf="fpwd.fpwdusername.errors.required">Username is required</div>
-                </div>
+                  <div *ngIf="isfpwdsubmit && fpwd.fpwdusername.errors" class="invalid-feedback">
+                    <div *ngIf="fpwd.fpwdusername.errors.required || fpwd.fpwdusername.errors.email">Email must be a valid email address
+                    </div>
+                    <div *ngIf="fpwd.fpwdusername.errors.maxlength">Username cant exceed 40
+                      char</div>
+                  </div>
               </div>
               <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Send Password</button>
               <a (click)="disFwd(false)" class="btn  btn-sm">Back to LOGIN?</a>
@@ -59,4 +62,5 @@
     </div>
   </div>
 </div>
+ 
 

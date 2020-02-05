@@ -4,14 +4,15 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { AlertComponent } from './alert/alert.component';
 
 const routes: Routes = [
   {
     path: 'home',
-    component: HomeComponent
+    component: HomeComponent,
   },
   {
-    path: 'confirm/:id',
+    path: 'home/:name/:id',
     component: HomeComponent,
   },
   {

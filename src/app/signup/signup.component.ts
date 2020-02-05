@@ -39,7 +39,6 @@ export class SignupComponent implements OnInit {
   templateObj: ReferenceLookUpTemplate;
   util: Util;
   isSelectedCategoryVal: string;
-  isalert: boolean;
 
   constructor(
               private spinnerService: Ng4LoadingSpinnerService,
@@ -57,7 +56,9 @@ export class SignupComponent implements OnInit {
 
   ngOnInit() {
     this.formValidations();
-    this.getAllCategories();
+    if (this.key === config.shortkey_role_fu) {
+      this.getAllCategories();
+    }
    }
 
  formValidations() {
@@ -83,6 +84,7 @@ export class SignupComponent implements OnInit {
 }
 
   getAllCategories() {
+   this.spinnerService.show();
    this.referService.getReferenceLookupByKey(config.key_domain).pipe(map((data: any[]) => data.map(item => this.refAdapter.adapt(item))),
     ).subscribe(
       data => {
@@ -94,10 +96,11 @@ export class SignupComponent implements OnInit {
             }
           }
         }
+        this.spinnerService.hide();
       },
       error => {
-         this.isalert = true;
          this.alertService.error(error);
+         this.spinnerService.hide();
     }
     );
   }
@@ -141,33 +144,31 @@ export class SignupComponent implements OnInit {
                         referencetemplate => {
                           this.templateObj = this.reflookuptemplateAdapter.adapt(referencetemplate);
                           this.util = new Util();
-                          this.util.fromuser = config.email_default_fromuser;
-                          this.util.subject = config.email_verficationemailaddress_subj;
+                          this.util.fromuser = ConfigMsg.email_default_fromuser;
+                          this.util.subject = ConfigMsg.email_verficationemailaddress_subj;
                           this.util.touser = this.usrObj.username;
                           this.util.templateurl = this.templateObj.url;
                           this.util.arrayfromui = JSON.stringify({ firstName: this.usrObj.firstname ,
-                                                  platformURL: `${environment.uiUrl}` + 'confirm/' + this.usrObj.userId });
+                                                  platformURL: `${environment.uiUrl}` + config.confirmation_fullpathname
+                                                  + '/' + this.usrObj.userId});
                           this.sendemailService.sendEmail(this.util).subscribe(
                             util => {
-                              this.isalert = true;
                               this.alertService.success(ConfigMsg.signup_successmsg , true);
+                              this.spinnerService.hide();
                             },
                             error => {
                               this.spinnerService.hide();
-                              this.isalert = true;
                               this.alertService.error(error);
                             });
                         },
                         error => {
                           this.spinnerService.hide();
-                          this.isalert = true;
                           this.alertService.error(error);
                         });
                     }
                   },
                   error => {
                     this.spinnerService.hide();
-                    this.isalert = true;
                     this.alertService.error(error);
                   }
                 );
@@ -175,7 +176,6 @@ export class SignupComponent implements OnInit {
          },
         error => {
           this.spinnerService.hide();
-          this.isalert = true;
           this.alertService.error(error);
         }
       );
