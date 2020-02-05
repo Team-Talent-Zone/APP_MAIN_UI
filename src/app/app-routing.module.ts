@@ -11,6 +11,10 @@ const routes: Routes = [
     component: HomeComponent
   },
   {
+    path: 'confirm/:id',
+    component: HomeComponent,
+  },
+  {
     path: 'signup/:id',
     component: HomeComponent,
     children: [

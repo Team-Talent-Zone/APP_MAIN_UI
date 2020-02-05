@@ -2,7 +2,7 @@ import { config } from 'src/app/appconstants/config';
 import { Util } from 'src/app/appmodels/Util';
 import { User } from 'src/app/appmodels/User';
 import { ReferenceAdapter } from '../adapters/referenceadapter';
-import { map, first } from 'rxjs/operators';
+import { map, first, catchError } from 'rxjs/operators';
 import { Component, OnInit, Inject } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import {
@@ -38,6 +38,8 @@ export class SignupComponent implements OnInit {
   usrObj: User;
   templateObj: ReferenceLookUpTemplate;
   util: Util;
+  isSelectedCategoryVal: string;
+  isalert: boolean;
 
   constructor(
               private spinnerService: Ng4LoadingSpinnerService,
@@ -94,12 +96,14 @@ export class SignupComponent implements OnInit {
         }
       },
       error => {
+         this.isalert = true;
          this.alertService.error(error);
     }
     );
   }
 
   subCategoryByMapId(value: string) {
+    this.isSelectedCategoryVal = value;
     for (const listofcat of this.referencedetailsmapsubcat) {
       if (listofcat.mapId == value) {
          this.referencedetailsmapsubcatselectedmapId.push(listofcat);
@@ -142,28 +146,36 @@ export class SignupComponent implements OnInit {
                           this.util.touser = this.usrObj.username;
                           this.util.templateurl = this.templateObj.url;
                           this.util.arrayfromui = JSON.stringify({ firstName: this.usrObj.firstname ,
-                                                  platformURL: `${environment.uiUrl}` + 'confirm/' + this.usrObj.username });
+                                                  platformURL: `${environment.uiUrl}` + 'confirm/' + this.usrObj.userId });
                           this.sendemailService.sendEmail(this.util).subscribe(
                             util => {
+                              this.isalert = true;
                               this.alertService.success(ConfigMsg.signup_successmsg , true);
                             },
                             error => {
+                              this.spinnerService.hide();
+                              this.isalert = true;
                               this.alertService.error(error);
                             });
-                         // setTimeout(() => this.spinnerService.hide(), 8000);
                         },
                         error => {
+                          this.spinnerService.hide();
+                          this.isalert = true;
                           this.alertService.error(error);
                         });
                     }
                   },
                   error => {
+                    this.spinnerService.hide();
+                    this.isalert = true;
                     this.alertService.error(error);
                   }
                 );
             });
          },
         error => {
+          this.spinnerService.hide();
+          this.isalert = true;
           this.alertService.error(error);
         }
       );

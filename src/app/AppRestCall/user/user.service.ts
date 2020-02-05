@@ -69,8 +69,15 @@ export class UserService {
      config.httpHeaders);
    }
 
-   getIpAddress() {
-    return this.http
-          .get('https://api.ipify.org/?format=json');
-  }
+   saveorupdate(user: User) {
+    user.updateby = user.firstname;
+    user.isactive = true;
+    return this.http.post(`${environment.apiUrl}/saveorupdateuser/`, user, config.httpHeaders);
+   }
+
+   getUserByUserId(userId: number) {
+    return this.http.get(`${environment.apiUrl}/getUserByUserId/` + userId + '/' ,
+    config.httpHeaders);
+   }
+
 }

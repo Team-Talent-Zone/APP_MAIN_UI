@@ -1,134 +1,134 @@
 <!-- Modal Header -->
 <alert></alert>
-<div class="modal-header">
-  <h4 class="modal-title">
-    <div *ngIf="key =='cba'; else elseFU">
-      {{'HOMESIGNUP.SIGNUP' | translate}}
-    </div>
-    <ng-template #elseFU>
-      {{'HOMESIGNUP.SIGNUPFU' | translate}}
-    </ng-template>
-  </h4> 
-  <button type="button" class="close" (click)="modalRef.hide()">&times;</button>
-</div>
-<form [formGroup]="signupForm" (ngSubmit)="saveUser()">
-  <!-- Modal body -->
-  <div class="modal-body">
-    <span id="reauth-email" class="reauth-email"></span>
-    <div class="form-group">
-      <span>
-        <i class="fa fa-user form-control-icon"></i>
-      </span>
-      <input class="form-control" formControlName="username" placeholder="{{'HOMESIGNUP.EMAILADDRESS' | translate}}" type="email" ngModel
-        email="true" [ngClass]="{ 'is-invalid': issubmit && f.username.errors }">
-      <div *ngIf="issubmit && f.username.errors" class="invalid-feedback">
-        <div *ngIf="f.username.errors.required || f.username.errors.email">Email must be a valid email address
-        </div>
-        <div *ngIf="f.username.errors.maxlength">Username cant exceed 40
-          char</div>
+<div *ngIf="!isalert">
+  <div class="modal-header">
+    <h4 class="modal-title">
+      <div *ngIf="key =='cba'; else elseFU">
+        {{'HOMESIGNUP.SIGNUP' | translate}}
       </div>
-    </div>
-    <div class="form-group">
-      <span>
-        <i class="fa fa-asterisk form-control-icon"></i>
-      </span>
-      <input class="form-control" placeholder="{{'HOMESIGNUP.PASSWORD' | translate}}" type="password" formControlName="password"
-        [ngClass]="{ 'is-invalid': issubmit && f.password.errors }" />
-      <div *ngIf="issubmit && f.password.errors" class="invalid-feedback">
-        <div *ngIf="f.password.errors.required">Password is required
-        </div>
-        <div *ngIf="f.password.errors.minlength">Password must be at least 8 characters</div>
-      </div>
-    </div>
-    <div class="form-group">
-      <span>
-        <i class="fa fa fa-user-o form-control-icon"></i>
-      </span>
-      <input class="form-control" formControlName="firstname" placeholder="{{'HOMESIGNUP.FIRSTNAME' | translate}}"
-        [ngClass]="{ 'is-invalid': issubmit && f.firstname.errors }">
-      <div *ngIf="issubmit && f.firstname.errors" class="invalid-feedback">
-        <div *ngIf="f.firstname.errors.required">First Name is required
-        </div>
-        <div *ngIf="f.firstname.errors.maxlength">First Name cant exceed 40
-          char</div>
-      </div>
-    </div>
-    <div class="form-group">
-      <span>
-        <i class="fa fa fa-user-o form-control-icon"></i>
-      </span>
-      <input class="form-control" formControlName="lastname" placeholder="{{'HOMESIGNUP.LASTNAME' | translate}}"
-        [ngClass]="{ 'is-invalid': issubmit && f.lastname.errors }">
-      <div *ngIf="issubmit && f.lastname.errors" class="invalid-feedback">
-        <div *ngIf="f.lastname.errors.required">Last Name is required
-        </div>
-        <div *ngIf="f.lastname.errors.maxlength">Last Name cant exceed 40
-          char</div>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <span>
-        <i class="fa fa fa-language	
-       form-control-icon"></i>
-      </span>
-      <select #sel  class="form-control" class="form-control" formControlName="preferlang"
-      [ngClass]="{ 'is-invalid': issubmit && f.preferlang.errors }">
-        <option value="">{{'HOMESIGNUP.PREFERLANG' | translate}}</option>
-        <option value="en">English</option>
-        <option value="hin">हिंदी</option>
-        <option value="te">తెలుగు</option>
-      </select>
-      <div *ngIf="issubmit && f.preferlang.errors" class="invalid-feedback">
-        <div *ngIf="f.preferlang.errors.required">Prefer Language is required
-        </div>
-      </div>
-    </div>
-    
-    <div *ngIf="key==='fu'">
+      <ng-template #elseFU>
+        {{'HOMESIGNUP.SIGNUPFU' | translate}}
+      </ng-template>
+    </h4>
+    <button type="button" class="close" (click)="modalRef.hide()">&times;</button>
+  </div>
+  <form [formGroup]="signupForm" (ngSubmit)="saveUser()">
+    <!-- Modal body -->
+    <div class="modal-body">
+      <span id="reauth-email" class="reauth-email"></span>
       <div class="form-group">
         <span>
-          <i class="fa fa fa-industry form-control-icon"></i>
+          <i class="fa fa-user form-control-icon"></i>
         </span>
-        <select #sel (change)="subCategoryByMapId(sel.value);" formControlName="category" class="form-control"
-          [ngClass]="{ 'is-invalid': issubmit && f.category.errors }">
-          <option value="" selected>{{'HOMESIGNUP.CATEGORY' | translate}}</option>
-          <option *ngFor="let referencelookupmap of referencedetailsmap" value="{{referencelookupmap.mapId}}">
-            {{referencelookupmap.label}}</option>
+        <input class="form-control" formControlName="username" placeholder="{{'HOMESIGNUP.EMAILADDRESS' | translate}}"
+          type="email" ngModel email="true" [ngClass]="{ 'is-invalid': issubmit && f.username.errors }">
+        <div *ngIf="issubmit && f.username.errors" class="invalid-feedback">
+          <div *ngIf="f.username.errors.required || f.username.errors.email">Email must be a valid email address
+          </div>
+          <div *ngIf="f.username.errors.maxlength">Username cant exceed 40
+            char</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <span>
+          <i class="fa fa-asterisk form-control-icon"></i>
+        </span>
+        <input class="form-control" placeholder="{{'HOMESIGNUP.PASSWORD' | translate}}" type="password"
+          formControlName="password" [ngClass]="{ 'is-invalid': issubmit && f.password.errors }" />
+        <div *ngIf="issubmit && f.password.errors" class="invalid-feedback">
+          <div *ngIf="f.password.errors.required">Password is required
+          </div>
+          <div *ngIf="f.password.errors.minlength">Password must be at least 8 characters</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <span>
+          <i class="fa fa fa-user-o form-control-icon"></i>
+        </span>
+        <input class="form-control" formControlName="firstname" placeholder="{{'HOMESIGNUP.FIRSTNAME' | translate}}"
+          [ngClass]="{ 'is-invalid': issubmit && f.firstname.errors }">
+        <div *ngIf="issubmit && f.firstname.errors" class="invalid-feedback">
+          <div *ngIf="f.firstname.errors.required">First Name is required
+          </div>
+          <div *ngIf="f.firstname.errors.maxlength">First Name cant exceed 40
+            char</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <span>
+          <i class="fa fa fa-user-o form-control-icon"></i>
+        </span>
+        <input class="form-control" formControlName="lastname" placeholder="{{'HOMESIGNUP.LASTNAME' | translate}}"
+          [ngClass]="{ 'is-invalid': issubmit && f.lastname.errors }">
+        <div *ngIf="issubmit && f.lastname.errors" class="invalid-feedback">
+          <div *ngIf="f.lastname.errors.required">Last Name is required
+          </div>
+          <div *ngIf="f.lastname.errors.maxlength">Last Name cant exceed 40
+            char</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <span>
+          <i class="fa fa fa-language	
+       form-control-icon"></i>
+        </span>
+        <select #sel class="form-control" class="form-control" formControlName="preferlang"
+          [ngClass]="{ 'is-invalid': issubmit && f.preferlang.errors }">
+          <option value="">{{'HOMESIGNUP.PREFERLANG' | translate}}</option>
+          <option value="en">English</option>
+          <option value="hin">हिंदी</option>
+          <option value="te">తెలుగు</option>
         </select>
-        <div *ngIf="issubmit && f.category.errors" class="invalid-feedback">
-          <div *ngIf="f.category.errors.required">Industry is required
+        <div *ngIf="issubmit && f.preferlang.errors" class="invalid-feedback">
+          <div *ngIf="f.preferlang.errors.required">Prefer Language is required
           </div>
         </div>
       </div>
-      <div *ngIf="referencedetailsmapsubcatselectedmapId.length > 0">
+
+      <div *ngIf="key==='fu'">
         <div class="form-group">
           <span>
-            <i class="fa fa fa-certificate	
-           form-control-icon"></i>
+            <i class="fa fa fa-industry form-control-icon"></i>
           </span>
-          <select class="form-control" class="form-control" formControlName="subcategory" 
-            [ngClass]="{ 'is-invalid': issubmit && f.subcategory.errors }">
-            <option value="" selected>{{'HOMESIGNUP.SKILL' | translate}}</option>
-            <option *ngFor="let referencelookupmapcat of referencedetailsmapsubcatselectedmapId"
-              value="{{referencelookupmapcat.code}}"> {{referencelookupmapcat.label}}</option>
+          <select #sel (change)="subCategoryByMapId(sel.value);" formControlName="category" class="form-control"
+            [ngClass]="{ 'is-invalid': issubmit && f.category.errors }">
+            <option value="" selected>{{'HOMESIGNUP.CATEGORY' | translate}}</option>
+            <option *ngFor="let referencelookupmap of referencedetailsmap" value="{{referencelookupmap.mapId}}">
+              {{referencelookupmap.label}}</option>
           </select>
-          <div *ngIf="issubmit && f.subcategory.errors" class="invalid-feedback">
-            <div *ngIf="f.subcategory.errors.required">Skill is required
+          <div *ngIf="issubmit && f.category.errors" class="invalid-feedback">
+            <div *ngIf="f.category.errors.required">Industry is required
             </div>
           </div>
         </div>
-      </div>
-      <div *ngIf="issubcatdisplay">
+        <div *ngIf="referencedetailsmapsubcatselectedmapId.length > 0">
+          <div class="form-group">
+            <span>
+              <i class="fa fa fa-certificate	
+           form-control-icon"></i>
+            </span>
+            <select class="form-control" class="form-control" formControlName="subcategory"
+              [ngClass]="{ 'is-invalid': issubmit && f.subcategory.errors }">
+              <option value="" selected>{{'HOMESIGNUP.SKILL' | translate}}</option>
+              <option *ngFor="let referencelookupmapcat of referencedetailsmapsubcatselectedmapId"
+                value="{{referencelookupmapcat.code}}"> {{referencelookupmapcat.label}}</option>
+            </select>
+            <div *ngIf="issubmit && f.subcategory.errors" class="invalid-feedback">
+              <div *ngIf="f.subcategory.errors.required">Skill is required
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="issubcatdisplay && isSelectedCategoryVal.length > 0">
           <h4>No Skills for the Category</h4>
+        </div>
+      </div>
     </div>
+    <!-- Modal footer -->
+    <div class="modal-footer">
+      <button class="btn  btn-primary" type="submit">Submit</button>
+      <button type="button" class="btn btn-danger" (click)="modalRef.hide()">Close</button>
     </div>
-    <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Sign up</button>
-  </div>
-  <!-- Modal footer -->
-  <div class="modal-footer">
-    <button type="button" class="btn btn-danger" (click)="modalRef.hide()">Close</button>
-  </div>
-</form>
-
-
+  </form>
+</div>

@@ -11,6 +11,8 @@ import { UserAdapter } from '../adapters/useradapter';
 import { User } from '../appmodels/User';
 import { map, first } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 
 @Component({
   selector: 'app-login',
@@ -26,11 +28,13 @@ export class LoginComponent implements OnInit {
   usrObj: User;
 
   constructor(
+    private modalService: BsModalService,
     private formBuilder: FormBuilder,
     private userService: UserService,
     private alertService: AlertsService,
     private userAdapter: UserAdapter,
     private router: Router,
+    private spinnerService: Ng4LoadingSpinnerService,
     ) {
       }
 
@@ -58,6 +62,7 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.invalid) {
       return;
     }
+    this.spinnerService.show();
     this.userService.checkusername(
       this.loginForm.get('username').value
       ).subscribe(
@@ -66,14 +71,17 @@ export class LoginComponent implements OnInit {
             this.loginForm.get('username').value)
             .pipe(first()).subscribe(
               (resp) => {
+                this.spinnerService.hide();
                 this.router.navigate(['/dashboard']);
               },
               error => {
+                this.spinnerService.hide();
                 this.alertService.error(error);
               }
             );
         },
         error => {
+          this.spinnerService.hide();
           this.alertService.error(error);
         //  this.router.navigate(['/dashboard']);
         });
@@ -85,6 +93,5 @@ export class LoginComponent implements OnInit {
   }
   disFwd(isfwd: boolean) {
     this.isfwd = isfwd;
-    console.log(this.isfwd);
   }
 }

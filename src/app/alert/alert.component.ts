@@ -1,6 +1,7 @@
 import { Component, OnInit , OnDestroy} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AlertsService } from '../AppRestCall/alerts/alerts.service';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
   // tslint:disable-next-line: component-selector
@@ -15,9 +16,11 @@ export class AlertComponent implements OnInit {
 
   constructor(
     private alertService: AlertsService,
+    public  modalRef: BsModalRef,
     ) { }
 
   ngOnInit() {
+    console.log('Inside AlertComponent');
     this.subscription = this.alertService.getMessage()
     .subscribe(message => {
         switch (message && message.type) {
