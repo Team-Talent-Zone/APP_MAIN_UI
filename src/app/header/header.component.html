@@ -12,34 +12,39 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link scroll-link" href="#section-1">What we do</a>
+                    <a class="nav-link scroll-link" href="#section-1">{{ 'HOMENAV.WHATWEDO' | translate }}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link scroll-link" href="#section-2">Onboard</a>
+                    <a class="nav-link scroll-link" href="#section-2">{{ 'HOMENAV.ONBOARD' | translate }}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link scroll-link" href="#section-7">Services</a>
+                    <a class="nav-link scroll-link" href="#section-7">{{ 'HOMENAV.SERVICE' | translate }}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link scroll-link" href="#section-5">Pricing</a>
+                    <a class="nav-link scroll-link" href="#section-5">{{ 'HOMENAV.PRICING' | translate }}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link scroll-link" href="#section-6">Contact Us</a>
+                    <a class="nav-link scroll-link" href="#section-6">{{ 'HOMENAV.CONTACTUS' | translate }}</a>
                 </li>
 
                 <li class="nav-item dropdown">
-                    <!-- Button to Open the Modal -->
                     <a class="nav-link scroll-link dropdown-toggle" data-toggle="dropdown" role="button"
-                        aria-haspopup="true" aria-expanded="false">Sign up</a>
+                        aria-haspopup="true" aria-expanded="false">{{ 'HOMENAV.SIGNUP' | translate }}</a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" (click)="openSignupModal('cba')">
-                            Client
+                            {{ 'HOMENAV.CLIENT' | translate }}
                         </a>
-                        <a class="dropdown-item" (click)="openSignupModal('fu')">Freelancer</a>
+                        <a class="dropdown-item" (click)="openSignupModal('fu')"> {{ 'HOMENAV.FREELANCER' | translate }}</a>
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link scroll-link" href="#section-4"><i class="fas fa-sign-in-alt"></i>&nbsp;LOGIN</a>
+                    <a class="nav-link scroll-link" href="#section-4"><i class="fas fa-sign-in-alt"></i>&nbsp;{{ 'HOMENAV.LOGIN' | translate }}</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <select #langSelect (change)="translate.use(langSelect.value)">
+                        <option *ngFor="let lang of translate.getLangs()" [value]="lang"
+                            [selected]="lang === translate.currentLang">{{ lang }}</option>
+                    </select>
                 </li>
             </ul>
         </div>
@@ -51,12 +56,11 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-8 offset-md-2 text">
-                    <h1 class="wow fadeInLeftBig">BETTER SERVICE IN BETTER WAY
+                    <h1 class="wow fadeInLeftBig">{{'HOMENAV.BETTERSERVICECAPTION' | translate}}
                     </h1>
                     <div class="description wow fadeInUp">
                         <p>
-                            The global services to fulfil you're business needs.
-                            We are here to grow you're business.
+                            {{'HOMENAV.BETTERSERVICESUBCAPTION' | translate}}
                         </p>
                     </div>
                 </div>

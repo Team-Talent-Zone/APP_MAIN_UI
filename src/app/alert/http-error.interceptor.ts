@@ -1,3 +1,4 @@
+import { ConfigMsg } from './../AppConstants/configmsg';
 import {
     HttpEvent,
     HttpInterceptor,
@@ -21,7 +22,14 @@ export class HttpErrorInterceptor implements HttpInterceptor {
               errorMessage = `Error: ${error.error.message}`;
             } else {
               // server-side error
+              if (error.status === 0) {
+               errorMessage = ConfigMsg.server_down;
+              } else
+              if (error.status === 404) {
+                errorMessage = ConfigMsg.server_internal_error;
+              } else {
               errorMessage = `Error Code: ${error.status}\nMessage: ${error.error.errormessage}`;
+              }
             }
             return throwError(errorMessage);
           })

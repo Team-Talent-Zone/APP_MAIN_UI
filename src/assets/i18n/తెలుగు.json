@@ -1,0 +1,30 @@
+{
+  "HOMENAV": {
+    "WHATWEDO": "మనం చేసేది",
+    "ONBOARD": "ఆన్బోర్డ్",
+    "SERVICE": "సేవలు",
+    "PRICING": "ధర",
+    "CONTACTUS": "మమ్మల్ని సంప్రదించండి",
+    "SIGNUP": "చేరడం",
+    "CLIENT": "క్లయింట్",
+    "FREELANCER": "ఫ్రీలాన్సర్గా",
+    "LOGIN": "ప్రవేశించండి",
+    "BETTERSERVICECAPTION":"మంచి మార్గంలో మంచి సేవ",
+    "BETTERSERVICESUBCAPTION":"మీరు వ్యాపార అవసరాలను తీర్చడానికి ప్రపంచ సేవలు. మీరు వ్యాపారం పెంచుకోవడానికి మేము ఇక్కడ ఉన్నాము."
+  },
+  "HOMEWHATWEDO": {
+    "WHATWEDO": "మనం చేసేది",
+    "SERVICE": "సర్వీస్"
+  },
+  "HOMESIGNUP": {
+    "SIGNUP": "చేరడం",
+    "SIGNUPFU": "ఫ్రీలాన్సర్‌గా సైన్ అప్ చేయండి",
+    "EMAILADDRESS": "ఇమెయిల్ చిరునామా",
+    "PASSWORD": "పాస్వర్డ్",
+    "FIRSTNAME": "మొదటి పేరు",
+    "LASTNAME": "చివరి పేరు",
+    "PREFERLANG": "ప్రాధాన్య భాష",
+    "CATEGORY": "వర్గం ఎంచుకోండి",
+    "SKILL": "మీ నైపుణ్యాన్ని ఎంచుకోండి"
+  }
+}

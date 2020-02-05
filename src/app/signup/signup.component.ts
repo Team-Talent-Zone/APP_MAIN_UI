@@ -1,55 +1,64 @@
+import { config } from 'src/app/appconstants/config';
+import { Util } from 'src/app/appmodels/Util';
 import { User } from 'src/app/appmodels/User';
 import { ReferenceAdapter } from '../adapters/referenceadapter';
 import { map, first, catchError } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
 import { Component, OnInit, Inject } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import {
   FormBuilder,
   FormGroup,
   Validators} from '@angular/forms';
-import { config } from '../AppConstants/config';
-import { Observable, throwError } from 'rxjs';
 import { AlertsService } from '../AppRestCall/alerts/alerts.service';
 import { UserService } from '../AppRestCall/user/user.service';
 import { UserAdapter } from '../adapters/useradapter';
 import { ReferenceService } from '../AppRestCall/reference/reference.service';
-import { UserRole } from '../appmodels/UserRole';
-import { UserBiz } from '../appmodels/UserBiz';
-import { ConfigMsg } from '../appconstants/configmsg';
+import { ConfigMsg } from '../AppConstants/configmsg';
+import { SendemailService } from '../AppRestCall/sendemail/sendemail.service';
+import { ReferenceLookUpTemplateAdapter } from '../adapters/referencelookuptemplateadapter';
+import { ReferenceLookUpTemplate } from '../appmodels/ReferenceLookUpTemplate';
+import { environment } from 'src/environments/environment';
+import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css']
 })
+
 export class SignupComponent implements OnInit {
 
   key: string;
   signupForm: FormGroup;
   issubmit = false;
+  issubcatdisplay = false;
   referencedetailsmap: any =  [];
   referencedetailsmapsubcat: any = [];
   referencedetailsmapsubcatselectedmapId: any = [];
   usrObj: User;
+  templateObj: ReferenceLookUpTemplate;
+  util: Util;
+  isSelectedCategoryVal: string;
 
   constructor(
+              private spinnerService: Ng4LoadingSpinnerService,
               public  modalRef: BsModalRef,
-              private http: HttpClient,
               private formBuilder: FormBuilder,
               private refAdapter: ReferenceAdapter,
               private userAdapter: UserAdapter,
               private alertService: AlertsService,
               private userService: UserService,
-              private referService: ReferenceService
-
+              private referService: ReferenceService,
+              private sendemailService: SendemailService,
+              private reflookuptemplateAdapter: ReferenceLookUpTemplateAdapter,
               ) {
    }
 
   ngOnInit() {
     this.formValidations();
-    this.getAllCategories();
+    if (this.key === config.shortkey_role_fu) {
+      this.getAllCategories();
+    }
    }
 
  formValidations() {
@@ -58,7 +67,8 @@ export class SignupComponent implements OnInit {
       password: ['', [Validators.required, Validators.minLength(8)]],
       username: ['', [Validators.required, Validators.email, Validators.maxLength(40)]],
       firstname: ['', [Validators.required, Validators.maxLength(40)]],
-      lastname: ['', [Validators.required, Validators.maxLength(40)]]
+      lastname: ['', [Validators.required, Validators.maxLength(40)]],
+      preferlang: ['', [Validators.required]],
     });
    } else {
     this.signupForm = this.formBuilder.group({
@@ -66,6 +76,7 @@ export class SignupComponent implements OnInit {
       username: ['', [Validators.required, Validators.email, Validators.maxLength(40)]],
       firstname: ['', [Validators.required, Validators.maxLength(40)]],
       lastname: ['', [Validators.required, Validators.maxLength(40)]],
+      preferlang: ['', [Validators.required]],
       category: ['', [Validators.required]],
       subcategory: ['', [Validators.required]],
    });
@@ -73,6 +84,7 @@ export class SignupComponent implements OnInit {
 }
 
   getAllCategories() {
+   this.spinnerService.show();
    this.referService.getReferenceLookupByKey(config.key_domain).pipe(map((data: any[]) => data.map(item => this.refAdapter.adapt(item))),
     ).subscribe(
       data => {
@@ -84,19 +96,24 @@ export class SignupComponent implements OnInit {
             }
           }
         }
+        this.spinnerService.hide();
       },
       error => {
          this.alertService.error(error);
+         this.spinnerService.hide();
     }
     );
   }
 
   subCategoryByMapId(value: string) {
+    this.isSelectedCategoryVal = value;
     for (const listofcat of this.referencedetailsmapsubcat) {
       if (listofcat.mapId == value) {
          this.referencedetailsmapsubcatselectedmapId.push(listofcat);
+         this.issubcatdisplay = false;
        } else {
         this.referencedetailsmapsubcatselectedmapId = [];
+        this.issubcatdisplay = true;
        }
      }
   }
@@ -110,23 +127,55 @@ export class SignupComponent implements OnInit {
     if (this.signupForm.invalid) {
       return;
     }
-    this.userService.checkusername(
+    this.spinnerService.show();
+    this.userService.checkusernamenotexist(
       this.signupForm.get('username').value
       ).subscribe(
         (data: any) => {
           this.referService.getReferenceLookupByShortKey(this.key).subscribe(
             refCode => {
               this.userService.saveUser(
-                this.signupForm.value , refCode.toString()
+                this.signupForm.value , refCode.toString() , this.key
                 ).pipe(first()).subscribe(
                   (resp) => {
                     this.usrObj = this.userAdapter.adapt(resp);
-                    this.alertService.success(ConfigMsg.signup_successmsg , true);
+                    if (this.usrObj.userId > 0) {
+                      this.referService.getLookupTemplateEntityByShortkey(config.shortkey_email_verificationemailaddress).subscribe(
+                        referencetemplate => {
+                          this.templateObj = this.reflookuptemplateAdapter.adapt(referencetemplate);
+                          this.util = new Util();
+                          this.util.fromuser = ConfigMsg.email_default_fromuser;
+                          this.util.subject = ConfigMsg.email_verficationemailaddress_subj;
+                          this.util.touser = this.usrObj.username;
+                          this.util.templateurl = this.templateObj.url;
+                          this.util.arrayfromui = JSON.stringify({ firstName: this.usrObj.firstname ,
+                                                  platformURL: `${environment.uiUrl}` + config.confirmation_fullpathname
+                                                  + '/' + this.usrObj.userId});
+                          this.sendemailService.sendEmail(this.util).subscribe(
+                            util => {
+                              this.alertService.success(ConfigMsg.signup_successmsg , true);
+                              this.spinnerService.hide();
+                            },
+                            error => {
+                              this.spinnerService.hide();
+                              this.alertService.error(error);
+                            });
+                        },
+                        error => {
+                          this.spinnerService.hide();
+                          this.alertService.error(error);
+                        });
+                    }
+                  },
+                  error => {
+                    this.spinnerService.hide();
+                    this.alertService.error(error);
                   }
                 );
             });
          },
         error => {
+          this.spinnerService.hide();
           this.alertService.error(error);
         }
       );

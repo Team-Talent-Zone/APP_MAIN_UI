@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule , HTTP_INTERCEPTORS} from '@angular/common/http';
+import { HttpClient, HttpClientModule , HTTP_INTERCEPTORS} from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -23,7 +23,15 @@ import { UserService } from './AppRestCall/user/user.service';
 import { ReferenceService } from './AppRestCall/reference/reference.service';
 import { UserAdapter } from './adapters/useradapter';
 import { HttpErrorInterceptor } from './alert/http-error.interceptor';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import { ReferenceLookUpTemplateAdapter } from './adapters/referencelookuptemplateadapter';
+import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 
+export function HttpLoaderFactory(httpClient: HttpClient) {
+  return new TranslateHttpLoader(httpClient);
+}
 
 @NgModule({
   declarations: [
@@ -38,7 +46,8 @@ import { HttpErrorInterceptor } from './alert/http-error.interceptor';
     HomewhatwedoComponent,
     HomeservicesectionComponent,
     SignupComponent,
-    AlertComponent
+    AlertComponent,
+    DashboardComponent,
     ],
   imports: [
     BrowserModule,
@@ -48,11 +57,20 @@ import { HttpErrorInterceptor } from './alert/http-error.interceptor';
     ReactiveFormsModule,
     ModalModule.forRoot(),
     HttpClientModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    }),
+    Ng4LoadingSpinnerModule.forRoot()
   ],
   providers: [
     BsModalRef,
     ReferenceAdapter,
     UserAdapter,
+    ReferenceLookUpTemplateAdapter,
     AlertsService ,
     UserService ,
     ReferenceService,

@@ -1,0 +1,31 @@
+{
+    "HOMENAV": {
+      "WHATWEDO": "What we do",
+      "ONBOARD": "OnBoard",
+      "SERVICE": "Service",
+      "PRICING": "Pricing",
+      "CONTACTUS": "Contact Us",
+      "SIGNUP": "Sign Up",
+      "CLIENT": "Client",
+      "FREELANCER": "Freelancer",
+      "LOGIN": "login",
+      "BETTERSERVICECAPTION":"BETTER SERVICE IN BETTER WAY",
+      "BETTERSERVICESUBCAPTION":"The global services to fulfil you're business needs. We are here to grow you're business."
+    },
+    "HOMEWHATWEDO": {
+      "WHATWEDO": "What we do",
+      "SERVICE": "Service"
+    },
+    "HOMESIGNUP": {
+      "SIGNUP": "Sign Up",
+      "SIGNUPFU": "Sign Up as Freelancer",
+      "EMAILADDRESS": "Email Address",
+      "PASSWORD": "Password",
+      "FIRSTNAME": "First Name",
+      "LASTNAME": "Last Name",
+      "PREFERLANG": "Preferred Language",
+      "CATEGORY": "Select Category",
+      "SKILL": "Select your skill"
+    }
+  }
+  
