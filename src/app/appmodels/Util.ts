@@ -7,6 +7,7 @@ export class Util {
     public templateurl: string;
     public lastreturncode: number;
     public lastserverresponse: string;
+    public preferlang: string;
     constructor(
     ) {
     }

@@ -13,6 +13,7 @@ export class HeaderComponent implements OnInit {
 
   modalRef: BsModalRef;
   shortkey: string;
+  langSelected = 'English';
 
   constructor(
     private modalService: BsModalService,
@@ -26,14 +27,19 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
   }
 
-    openSignupModal(shortkey) {
+  translateToLanguage(langSelect: string) {
+   this.translate.use(langSelect);
+  }
+
+  openSignupModal(shortkey) {
     console.log('HeaderComponent shortkey : ', shortkey);
     this.modalRef = this.modalService.show(SignupComponent,  {
-      initialState: {
-        title: 'Modal title',
-        key: shortkey
-      }
-    });
-  }
+    initialState: {
+      title: 'Modal title',
+      key: shortkey,
+      langSelected: this.langSelected
+    }
+  });
+}
 
 }

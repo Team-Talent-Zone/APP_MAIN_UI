@@ -30,8 +30,8 @@ export class UserService {
   public get currentUserValue(): User {
     return this.currentUserSubject.value;
   }
-  loginUserByUsername(username: string) {
-    return this.http.get(`${environment.apiUrl}/getUser/` + username + '/' ,
+  loginUserByUsername(username: string , password: string) {
+    return this.http.get(`${environment.apiUrl}/findByUsername/` + username + '/' + password  + '/',
     config.httpHeaders) .pipe(map(user => {
       this.usrObj = this.userAdapter.adapt(user);
      // store user details and jwt token in local storage to keep user logged in between page refreshes
