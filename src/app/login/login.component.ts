@@ -20,7 +20,7 @@ import { ReferenceLookUpTemplateAdapter } from '../adapters/referencelookuptempl
 import { config } from 'src/app/appconstants/config';
 import { environment } from 'src/environments/environment';
 import { SendemailService } from '../AppRestCall/sendemail/sendemail.service';
-import { ConfigMsg } from '../AppConstants/configmsg';
+import { ConfigMsg } from '../appconstants/configmsg';
 
 @Component({
   selector: 'app-login',
@@ -80,8 +80,9 @@ export class LoginComponent implements OnInit {
       this.loginForm.get('username').value
       ).subscribe(
         (data: any) => {
-          this.userService.loginUserByUsername(
-            this.loginForm.get('username').value)
+           this.userService.loginUserByUsername(
+            this.loginForm.get('username').value,
+            this.loginForm.get('password').value)
             .pipe(first()).subscribe(
               (resp) => {
                 this.spinnerService.hide();
@@ -96,7 +97,7 @@ export class LoginComponent implements OnInit {
         error => {
           this.spinnerService.hide();
           this.alertService.error(error);
-          this.router.navigate(['/dashboard']);
+          //this.router.navigate(['/dashboard']);
         });
   }
   get fpwd() {
@@ -120,6 +121,7 @@ export class LoginComponent implements OnInit {
                     referencetemplate => {
                       this.templateObj = this.reflookuptemplateAdapter.adapt(referencetemplate);
                       this.util = new Util();
+                      this.util.preferlang = this.usrObj.preferlang;
                       this.util.fromuser = ConfigMsg.email_default_fromuser;
                       this.util.subject = ConfigMsg.email_forgotpasswordemailaddress_subj;
                       this.util.touser = this.usrObj.username;

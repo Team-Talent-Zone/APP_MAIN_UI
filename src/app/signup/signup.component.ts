@@ -13,7 +13,7 @@ import { AlertsService } from '../AppRestCall/alerts/alerts.service';
 import { UserService } from '../AppRestCall/user/user.service';
 import { UserAdapter } from '../adapters/useradapter';
 import { ReferenceService } from '../AppRestCall/reference/reference.service';
-import { ConfigMsg } from '../AppConstants/configmsg';
+import { ConfigMsg } from '../appconstants/configmsg';
 import { SendemailService } from '../AppRestCall/sendemail/sendemail.service';
 import { ReferenceLookUpTemplateAdapter } from '../adapters/referencelookuptemplateadapter';
 import { ReferenceLookUpTemplate } from '../appmodels/ReferenceLookUpTemplate';
@@ -29,6 +29,7 @@ import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 export class SignupComponent implements OnInit {
 
   key: string;
+  langSelected: string;
   signupForm: FormGroup;
   issubmit = false;
   issubcatdisplay = false;
@@ -55,6 +56,7 @@ export class SignupComponent implements OnInit {
    }
 
   ngOnInit() {
+    console.log('Lang Selected Sigup' , this.langSelected);
     this.formValidations();
     if (this.key === config.shortkey_role_fu) {
       this.getAllCategories();

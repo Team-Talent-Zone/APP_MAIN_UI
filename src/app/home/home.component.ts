@@ -15,7 +15,7 @@ import { ReferenceLookUpTemplate } from '../appmodels/ReferenceLookUpTemplate';
 import { Util } from 'src/app/appmodels/Util';
 import { ReferenceLookUpTemplateAdapter } from '../adapters/referencelookuptemplateadapter';
 import { ReferenceService } from '../AppRestCall/reference/reference.service';
-import { ConfigMsg } from '../AppConstants/configmsg';
+import { ConfigMsg } from '../appconstants/configmsg';
 import { environment } from 'src/environments/environment';
 
 @Component({
