@@ -52,16 +52,11 @@ export class HomeComponent implements OnInit {
      }
 
   ngOnInit() {
-    if (this.userService.currentUserValue) {
-      console.log('Current User Object' , this.userService.currentUserValue);
-      }
     this.checkConfirmation();
   }
 
   checkConfirmation() {
-    console.log('Current Id' , this.id);
-    console.log('Current Name' , this.name);
-    if (this.id > 0  && this.name === config.confirmation_shortpathname) {
+     if (this.id > 0  && this.name === config.confirmation_shortpathname) {
       this.spinnerService.show();
       this.userService.getUserByUserId(this.id).pipe(first()).subscribe(
         (resp) => {
@@ -81,6 +76,7 @@ export class HomeComponent implements OnInit {
                       this.templateObj = this.reflookuptemplateAdapter.adapt(referencetemplate);
                       this.util = new Util();
                       this.util.fromuser = ConfigMsg.email_default_fromuser;
+                      this.util.preferlang = this.usrObj.preferlang;
                       this.util.subject = ConfigMsg.email_welcomeemailaddress_subj;
                       this.util.touser = this.usrObj.username;
                       this.util.templateurl = this.templateObj.url;

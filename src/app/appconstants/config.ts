@@ -1,7 +1,7 @@
 import { HttpHeaders } from '@angular/common/http';
 
 export const config = {
-  httpHeaders : { headers: new HttpHeaders({Authorization: 'Basic cmVzdHNlcnZpY2ViYXNpY2F1dGh1c2VyOlRMIzIwMTdAUkVTVCo4MzI0NjMkIw=='})},
+//  httpHeaders : { headers: new HttpHeaders({Authorization: 'Basic cmVzdHNlcnZpY2ViYXNpY2F1dGh1c2VyOlRMIzIwMTdAUkVTVCo4MzI0NjMkIw=='})},
   key_domain: 'domain',
   confirmation_fullpathname: 'home/_confirm',
   confirmation_shortpathname: '_confirm',

@@ -5,7 +5,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { AlertComponent } from './alert/alert.component';
+import { AuthgaurdService } from './AppRestCall/authgaurd/authgaurd.service';
 
 const routes: Routes = [
   {
@@ -28,7 +28,8 @@ const routes: Routes = [
   },
   {
     path: 'dashboard',
-    component: DashboardComponent
+    component: DashboardComponent,
+    canActivate: [AuthgaurdService]
   },
   {
     path: '',
@@ -39,10 +40,6 @@ const routes: Routes = [
     path: '**',
     redirectTo: '/home',
     pathMatch: 'full'
-  },
-  {
-    path: 'app',
-    component: AppComponent
   }
 ];
 

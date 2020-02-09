@@ -146,6 +146,7 @@ export class SignupComponent implements OnInit {
                         referencetemplate => {
                           this.templateObj = this.reflookuptemplateAdapter.adapt(referencetemplate);
                           this.util = new Util();
+                          this.util.preferlang = this.usrObj.preferlang;
                           this.util.fromuser = ConfigMsg.email_default_fromuser;
                           this.util.subject = ConfigMsg.email_verficationemailaddress_subj;
                           this.util.touser = this.usrObj.username;

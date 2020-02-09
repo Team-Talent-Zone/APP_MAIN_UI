@@ -14,6 +14,6 @@ export class SendemailService {
   ) { }
 
   sendEmail(util: Util) {
-    return this.http.post(`${environment.apiUrl}/sendemail/`, util, config.httpHeaders);
+    return this.http.post(`${environment.apiUrl}/sendemail/`, util);
   }
 }

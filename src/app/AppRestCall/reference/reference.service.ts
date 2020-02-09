@@ -12,16 +12,13 @@ export class ReferenceService {
 constructor(private http: HttpClient) { }
 
 getReferenceLookupByShortKey(shortkey: string) {
- return this.http.get(`${environment.apiUrl}/getReferenceLookupByShortKey/` + shortkey,
-  config.httpHeaders);
+ return this.http.get(`${environment.apiUrl}/getReferenceLookupByShortKey/` + shortkey);
 }
 getReferenceLookupByKey(key: string) {
-  return this.http.get(`${environment.apiUrl}/getReferenceLookupByKey/` + key,
-  config.httpHeaders);
+  return this.http.get(`${environment.apiUrl}/getReferenceLookupByKey/` + key);
 }
 
 getLookupTemplateEntityByShortkey(shortkey: string) {
-  return this.http.get(`${environment.apiUrl}/getLookupTemplateEntityByShortkey/` + shortkey,
-  config.httpHeaders);
+  return this.http.get(`${environment.apiUrl}/getLookupTemplateEntityByShortkey/` + shortkey);
 }
 }

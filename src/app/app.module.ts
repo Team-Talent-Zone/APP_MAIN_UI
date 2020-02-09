@@ -28,6 +28,8 @@ import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import { ReferenceLookUpTemplateAdapter } from './adapters/referencelookuptemplateadapter';
 import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
+import { AuthgaurdService } from './AppRestCall/authgaurd/authgaurd.service';
+import { BasicAuthHtppInterceptorService } from './AppRestCall/authgaurd/basicauthhttpinterceptor/basicauthhttpinterceptor.service';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -74,10 +76,14 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     AlertsService ,
     UserService ,
     ReferenceService,
+    AuthgaurdService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpErrorInterceptor,
       multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS, useClass: BasicAuthHtppInterceptorService, multi: true
     }
   ],
   bootstrap: [AppComponent]

@@ -31,8 +31,7 @@ export class UserService {
     return this.currentUserSubject.value;
   }
   loginUserByUsername(username: string , password: string) {
-    return this.http.get(`${environment.apiUrl}/findByUsername/` + username + '/' + password  + '/',
-    config.httpHeaders) .pipe(map(user => {
+    return this.http.get(`${environment.apiUrl}/findByUsername/` + username + '/' + password  + '/') .pipe(map(user => {
       this.usrObj = this.userAdapter.adapt(user);
      // store user details and jwt token in local storage to keep user logged in between page refreshes
       localStorage.setItem('currentUser', JSON.stringify(this.usrObj));
@@ -56,33 +55,29 @@ export class UserService {
       user.freeLanceDetails = new Freelance();
       user.freelancehistoryentity = new FreelanceHistory();
     }
-    return this.http.post(`${environment.apiUrl}/saveUser/`, user, config.httpHeaders);
+    return this.http.post(`${environment.apiUrl}/saveUser/`, user);
   }
 
   checkusernamenotexist(username: string) {
-   return this.http.get(`${environment.apiUrl}/checkusernamenotexist/` + username + '/' ,
-    config.httpHeaders);
+   return this.http.get(`${environment.apiUrl}/checkusernamenotexist/` + username + '/');
   }
 
   checkusername(username: string) {
-    return this.http.get(`${environment.apiUrl}/checkusername/` + username + '/' ,
-     config.httpHeaders);
+    return this.http.get(`${environment.apiUrl}/checkusername/` + username + '/');
    }
 
    saveorupdate(user: User) {
     user.updateby = user.firstname;
     user.isactive = true;
-    return this.http.post(`${environment.apiUrl}/saveorupdateuser/`, user, config.httpHeaders);
+    return this.http.post(`${environment.apiUrl}/saveorupdateuser/`, user);
    }
 
    getUserByUserId(userId: number) {
-    return this.http.get(`${environment.apiUrl}/getUserByUserId/` + userId + '/' ,
-    config.httpHeaders);
+    return this.http.get(`${environment.apiUrl}/getUserByUserId/` + userId + '/');
    }
 
    forgetPassword(username: string) {
-    return this.http.get(`${environment.apiUrl}/forgetPassword/` + username + '/' ,
-    config.httpHeaders);
+    return this.http.get(`${environment.apiUrl}/forgetPassword/` + username + '/');
    }
 
 }
