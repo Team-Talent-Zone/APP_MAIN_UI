@@ -19,6 +19,7 @@ import { ReferenceLookUpTemplateAdapter } from '../adapters/referencelookuptempl
 import { ReferenceLookUpTemplate } from '../appmodels/ReferenceLookUpTemplate';
 import { environment } from 'src/environments/environment';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
+import { UserNotification } from 'src/app/appmodels/UserNotification';
 
 @Component({
   selector: 'app-signup',
@@ -40,6 +41,8 @@ export class SignupComponent implements OnInit {
   templateObj: ReferenceLookUpTemplate;
   util: Util;
   isSelectedCategoryVal: string;
+  usernotification: UserNotification;
+  today =  new Date();
 
   constructor(
               private spinnerService: Ng4LoadingSpinnerService,
@@ -151,14 +154,28 @@ export class SignupComponent implements OnInit {
                           this.util.subject = ConfigMsg.email_verficationemailaddress_subj;
                           this.util.touser = this.usrObj.username;
                           this.util.templateurl = this.templateObj.url;
-                          this.util.arrayfromui = JSON.stringify({ firstName: this.usrObj.firstname ,
+                          this.util.templatedynamicdata = JSON.stringify({ firstName: this.usrObj.firstname ,
                                                   platformURL: `${environment.uiUrl}` + config.confirmation_fullpathname
                                                   + '/' + this.usrObj.userId});
                           this.sendemailService.sendEmail(this.util).subscribe(
-                            util => {
-                              this.alertService.success(ConfigMsg.signup_successmsg , true);
-                              this.spinnerService.hide();
-                            },
+                            (util: any) => {
+                              if (util.lastreturncode === 250) {
+                                this.usernotification = new UserNotification();
+                                this.usernotification.templateid = this.templateObj.templateid;
+                                this.usernotification.sentby = this.usrObj.firstname;
+                                this.usernotification.userid = this.usrObj.userId;
+                                this.usernotification.senton = this.today.toString();
+                                this.userService.saveUserNotification(this.usernotification).subscribe(
+                                  (notificationobj: any) => {
+                                     this.spinnerService.hide();
+                                     this.alertService.success(ConfigMsg.signup_successmsg , true);
+                                  },
+                                 error => {
+                                  this.spinnerService.hide();
+                                  this.alertService.error(error);
+                                });
+                                }
+                                  },
                             error => {
                               this.spinnerService.hide();
                               this.alertService.error(error);

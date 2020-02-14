@@ -10,6 +10,7 @@ import { FreelanceHistory } from 'src/app/appmodels/FreelanceHistory';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UserAdapter } from 'src/app/adapters/useradapter';
+import { UserNotification } from 'src/app/appmodels/UserNotification';
 
 @Injectable({
   providedIn: 'root'
@@ -78,6 +79,10 @@ export class UserService {
 
    forgetPassword(username: string) {
     return this.http.get(`${environment.apiUrl}/forgetPassword/` + username + '/');
+   }
+
+   saveUserNotification(usernotification: UserNotification) {
+    return this.http.post(`${environment.apiUrl}/saveUserNotification/`, usernotification);
    }
 
 }

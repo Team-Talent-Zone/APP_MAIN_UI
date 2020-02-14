@@ -21,6 +21,7 @@ import { config } from 'src/app/appconstants/config';
 import { environment } from 'src/environments/environment';
 import { SendemailService } from '../AppRestCall/sendemail/sendemail.service';
 import { ConfigMsg } from '../appconstants/configmsg';
+import { UserNotification } from 'src/app/appmodels/UserNotification';
 
 @Component({
   selector: 'app-login',
@@ -36,6 +37,8 @@ export class LoginComponent implements OnInit {
   usrObj: User;
   templateObj: ReferenceLookUpTemplate;
   util: Util;
+  usernotification: UserNotification;
+  today =  new Date();
 
   constructor(
     private modalService: BsModalService,
@@ -126,7 +129,7 @@ export class LoginComponent implements OnInit {
                       this.util.subject = ConfigMsg.email_forgotpasswordemailaddress_subj;
                       this.util.touser = this.usrObj.username;
                       this.util.templateurl = this.templateObj.url;
-                      this.util.arrayfromui = JSON.stringify({ firstName: this.usrObj.firstname ,
+                      this.util.templatedynamicdata = JSON.stringify({ firstName: this.usrObj.firstname ,
                                               platformURL: `${environment.uiUrl}`,
                                               userName: this.usrObj.username ,
                                               tempPassword: this.usrObj.password });
@@ -138,9 +141,21 @@ export class LoginComponent implements OnInit {
                             (usrObjRsp) => {
                               this.usrObj = this.userAdapter.adapt(usrObjRsp);
                               if (this.usrObj.userId > 0) {
-                                this.spinnerService.hide();
-                                this.alertService.success(ConfigMsg.fwdpassword_successmsg , true);
-                                  }
+                                this.usernotification = new UserNotification();
+                                this.usernotification.templateid = this.templateObj.templateid;
+                                this.usernotification.sentby = this.usrObj.firstname;
+                                this.usernotification.userid = this.usrObj.userId;
+                                this.usernotification.senton = this.today.toString();
+                                this.userService.saveUserNotification(this.usernotification).subscribe(
+                                  (notificationobj: any) => {
+                                    this.spinnerService.hide();
+                                    this.alertService.success(ConfigMsg.fwdpassword_successmsg , true);
+                                 },
+                                 error => {
+                                  this.spinnerService.hide();
+                                  this.alertService.error(error);
+                                });
+                                }
                               },
                     error => {
                               this.spinnerService.hide();

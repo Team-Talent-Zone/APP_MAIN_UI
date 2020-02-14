@@ -17,6 +17,8 @@ import { ReferenceLookUpTemplateAdapter } from '../adapters/referencelookuptempl
 import { ReferenceService } from '../AppRestCall/reference/reference.service';
 import { ConfigMsg } from '../appconstants/configmsg';
 import { environment } from 'src/environments/environment';
+import { UserNotification } from 'src/app/appmodels/UserNotification';
+
 
 @Component({
   selector: 'app-home',
@@ -32,6 +34,8 @@ export class HomeComponent implements OnInit {
   templateObj: ReferenceLookUpTemplate;
   util: Util;
   shortkeybyrolecode: string;
+  usernotification: UserNotification;
+  today =  new Date();
 
   constructor(
     private userService: UserService,
@@ -80,14 +84,28 @@ export class HomeComponent implements OnInit {
                       this.util.subject = ConfigMsg.email_welcomeemailaddress_subj;
                       this.util.touser = this.usrObj.username;
                       this.util.templateurl = this.templateObj.url;
-                      this.util.arrayfromui = JSON.stringify({ firstName: this.usrObj.firstname ,
+                      this.util.templatedynamicdata = JSON.stringify({ firstName: this.usrObj.firstname ,
                                               platformURL: `${environment.uiUrl}`});
                       this.sendemailService.sendEmail(this.util).subscribe(
                             (util: any) => {
-                              this.spinnerService.hide();
-                              this.router.navigate(['/']);
-                              this.alertService.success(ConfigMsg.email_verficationemailaddress_successmsg);
-                            },
+                              if (util.lastreturncode === 250) {
+                                this.usernotification = new UserNotification();
+                                this.usernotification.templateid = this.templateObj.templateid;
+                                this.usernotification.sentby = this.usrObj.firstname;
+                                this.usernotification.userid = this.usrObj.userId;
+                                this.usernotification.senton = this.today.toString();
+                                this.userService.saveUserNotification(this.usernotification).subscribe(
+                                  (notificationobj: any) => {
+                                    this.spinnerService.hide();
+                                    this.router.navigate(['/']);
+                                    this.alertService.success(ConfigMsg.email_verficationemailaddress_successmsg);
+                             },
+                                 error => {
+                                  this.spinnerService.hide();
+                                  this.alertService.error(error);
+                                });
+                                }
+                                   },
               error => {
                 this.alertService.error(error);
                 this.spinnerService.hide();
