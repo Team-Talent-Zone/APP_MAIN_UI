@@ -8,6 +8,7 @@ export class Util {
     public lastreturncode: number;
     public lastserverresponse: string;
     public preferlang: string;
+    public translateresp: string;
     constructor(
     ) {
     }

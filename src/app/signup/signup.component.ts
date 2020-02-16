@@ -62,9 +62,9 @@ export class SignupComponent implements OnInit {
     console.log('Lang Selected Sigup' , this.langSelected);
     this.formValidations();
     if (this.key === config.shortkey_role_fu) {
-      this.getAllCategories();
-    }
+      this.getAllCategories(this.langSelected);
    }
+  }
 
  formValidations() {
     if (this.key === config.shortkey_role_cba) {
@@ -88,15 +88,41 @@ export class SignupComponent implements OnInit {
   }
 }
 
-  getAllCategories() {
+
+  getAllCategories(langSelected: string) {
    this.spinnerService.show();
    this.referService.getReferenceLookupByKey(config.key_domain).pipe(map((data: any[]) => data.map(item => this.refAdapter.adapt(item))),
     ).subscribe(
       data => {
+        console.log(' langSelected : ' , langSelected);
         for (const reflookup of data ) {
           for (const reflookupmap of reflookup.referencelookupmapping) {
+            if (langSelected === 'हिंदी' || langSelected === 'తెలుగు') {
+              this.referService.translatetext(reflookupmap.label, langSelected).subscribe(
+              (resptranslatetxt: any) => {
+                if (resptranslatetxt.translateresp != null) {
+                  reflookupmap.label = resptranslatetxt.translateresp;
+                }
+              },
+              error => {
+                this.alertService.error(error);
+                this.spinnerService.hide();
+              });
+            }
             this.referencedetailsmap.push(reflookupmap);
             for (const reflookupmapsubcat of reflookupmap.referencelookupmappingsubcategories) {
+              if (langSelected === 'हिंदी' || langSelected === 'తెలుగు') {
+                this.referService.translatetext(reflookupmapsubcat.label, langSelected).subscribe(
+                (resptranslatetxt: any) => {
+                  if (resptranslatetxt.translateresp != null) {
+                    reflookupmapsubcat.label = resptranslatetxt.translateresp;
+                  }
+                },
+                error => {
+                  this.alertService.error(error);
+                  this.spinnerService.hide();
+                });
+              }
               this.referencedetailsmapsubcat.push(reflookupmapsubcat);
             }
           }
