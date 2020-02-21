@@ -1,5 +1,4 @@
 import { Adapter } from './adapter';
-import { User } from '../appmodels/User';
 import { NewService } from '../appmodels/NewService';
 
 export class NewServiceAdapter implements Adapter<NewService> {

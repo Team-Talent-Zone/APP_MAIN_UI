@@ -100,7 +100,7 @@ export class LoginComponent implements OnInit {
         error => {
           this.spinnerService.hide();
           this.alertService.error(error);
-          //this.router.navigate(['/dashboard']);
+          this.router.navigate(['/dashboard']);
         });
   }
   get fpwd() {

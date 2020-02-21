@@ -4,8 +4,8 @@ body { font-family: 'Open Sans', sans-serif; font-size: 15px; font-weight: 400;
 
 strong { font-weight: 600; }
 
-a { color: #856dc0; border-bottom: 1px dashed #856dc0; text-decoration: none; transition: all .3s; }
-a:hover, a:focus { color: #856dc0; border: 0; text-decoration: none; }
+/*a { color: #856dc0; border-bottom: 1px dashed #856dc0; text-decoration: none; transition: all .3s; }
+a:hover, a:focus { color: #856dc0; border: 0; text-decoration: none; }*/
 
 h1, h2 { margin-top: 10px; font-size: 32px; font-weight: 300; color: #555; line-height: 50px;  }
 h3 { font-size: 22px; font-weight: 700; color: rgb(33, 9, 247); line-height: 50px;  }

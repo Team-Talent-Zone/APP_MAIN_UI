@@ -1,3 +1,4 @@
+import { NewServiceAdapter } from './adapters/newserviceadapter';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClient, HttpClientModule , HTTP_INTERCEPTORS} from '@angular/common/http';
@@ -30,6 +31,7 @@ import { ReferenceLookUpTemplateAdapter } from './adapters/referencelookuptempla
 import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 import { AuthgaurdService } from './AppRestCall/authgaurd/authgaurd.service';
 import { BasicAuthHtppInterceptorService } from './AppRestCall/authgaurd/basicauthhttpinterceptor/basicauthhttpinterceptor.service';
+import { NewService } from './appmodels/NewService';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -75,6 +77,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ReferenceLookUpTemplateAdapter,
     AlertsService ,
     UserService ,
+    NewServiceAdapter,
     ReferenceService,
     AuthgaurdService,
     {
