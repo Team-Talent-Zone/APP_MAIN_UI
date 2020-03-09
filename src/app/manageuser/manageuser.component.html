@@ -36,7 +36,7 @@
         <div class="card text-white bg-info h-100">
             <div class="card-body">
                 <div class="rotate">
-                    <i class="fa fa-user fa-4x"></i>
+                    <i class="fa fa-user-secret fa-4x"></i>
                 </div>
                 <h6 class="text-uppercase">Admin</h6>
                 <h1 class="display-4">{{usrObjPlatformAdmins.length}}</h1>
@@ -131,19 +131,19 @@
                                     <td *ngIf="fu.freeLanceDetails !=null">
                                         <div *ngIf="fu.freeLanceDetails.bgStarted">
                                             <div *ngIf="fu.freeLanceDetails.bgDone">
-                                                <i class="fa fa-thumbs-up"></i>
+                                                <i class="fa fa-thumbs-up" title="Bg is approved" style="color: rgb(37, 165, 37)"></i>
                                             </div>
                                             <div *ngIf="!fu.freeLanceDetails.bgDone">
-                                                <i class="fa fa-thumbs-down"></i>
+                                                <i class="fa fa-thumbs-down" title="Bg is rejected" style="color:rgb(199, 25, 25)"></i>
                                             </div>
                                         </div>
                                     </td>
                                     <td *ngIf="fu.freeLanceDetails !=null">
                                         <div *ngIf="fu.freeLanceDetails.bgStarted; else elseIsBgNotDone">
-                                            <i class="fa fa-check"></i>
+                                            <i class="fa fa-check" title="Bg is completed" style="color: rgb(37, 165, 37)"></i>
                                         </div>
                                         <ng-template #elseIsBgNotDone>
-                                            <i class="fa fa-ban"></i>
+                                            <i class="fa fa-ban" title="Bg not started yet" style="color:rgb(199, 25, 25)"></i>
                                         </ng-template>
                                     </td>
                                 </tr>
