@@ -71,6 +71,7 @@ export class UserService {
    saveorupdate(user: User) {
     user.updateby = user.firstname;
     user.isactive = true;
+    console.log('user :' ,user);
     return this.http.post(`${environment.apiUrl}/saveorupdateuser/`, user);
    }
 
