@@ -54,6 +54,16 @@ const routes: Routes = [
     ]
   },
   {
+    path: 'vieworeditprofile/:id',
+    component: DashboardComponent,
+    children: [
+      {
+        path: '',
+        component: EditprofileComponent
+      }
+    ]
+  },
+  {
     path: '',
     redirectTo: '/home',
     pathMatch: 'full'
