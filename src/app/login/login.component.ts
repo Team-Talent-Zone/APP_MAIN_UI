@@ -39,6 +39,7 @@ export class LoginComponent implements OnInit {
   util: Util;
   usernotification: UserNotification;
   today =  new Date();
+  avatarURL: any = config.default_avatar;
 
   constructor(
     private modalService: BsModalService,

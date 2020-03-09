@@ -1,0 +1,181 @@
+<div class="row mb-3">
+    <div class="col-xl-3 col-sm-6 py-2">
+        <div class="card bg-success text-white h-100">
+            <div class="card-body bg-success">
+                <div class="rotate">
+                    <i class="fa fa-users fa-4x"></i>
+                </div>
+                <h6 class="text-uppercase">Total Users</h6>
+                <h1 class="display-4">{{usrObj.length}}</h1>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-sm-6 py-2">
+        <div class="card text-white bg-info h-100">
+            <div class="card-body bg-info">
+                <div class="rotate">
+                    <i class="fa fa-briefcase  fa-4x"></i>
+                </div>
+                <h6 class="text-uppercase">CBA</h6>
+                <h1 class="display-4">{{usrObjCBAs.length}}</h1>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-sm-6 py-2">
+        <div class="card text-white bg-info h-100">
+            <div class="card-body bg-info">
+                <div class="rotate">
+                    <i class="fa fa-user fa-4x"></i>
+                </div>
+                <h6 class="text-uppercase">FU</h6>
+                <h1 class="display-4" >{{usrObjFUs.length}}</h1>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-sm-6 py-2">
+        <div class="card text-white bg-info h-100">
+            <div class="card-body">
+                <div class="rotate">
+                    <i class="fa fa-user fa-4x"></i>
+                </div>
+                <h6 class="text-uppercase">Admin</h6>
+                <h1 class="display-4">{{usrObjPlatformAdmins.length}}</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <section class="container py-4">
+        <div class="row">
+            <div class="col-md-12">
+                <ul id="tabs" class="nav nav-tabs">
+                    <li class="nav-item"><a href="" data-target="#cbatab" data-toggle="tab"
+                            class="nav-link medium text-uppercase active">Client Business Administrator</a></li>
+                    <li class="nav-item"><a href="" data-target="#futab" data-toggle="tab"
+                            class="nav-link medium text-uppercase ">FreeLancer</a></li>
+                    <li class="nav-item"><a href="" data-target="#admintab" data-toggle="tab"
+                            class="nav-link medium text-uppercase">Platform Administrator</a></li>
+                     </ul>
+                <br>
+                <div id="tabsContent" class="tab-content">
+                    <div id="cbatab" class="tab-pane active fade show">
+                        <table id="example" class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Username</th>
+                                    <th>Created On</th>
+                                    <th>Created By</th>
+                                    <th>Prefered Language</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let cbu of usrObjCBAs">
+                                    <td>
+                                        <a routerLink='/editprofile/{{cbu.userId}}'>
+                                            {{cbu.lastname}} {{cbu.firstname}}
+                                        </a>
+                                    </td>
+                                    <td>{{cbu.username}}</td>
+                                    <td>{{cbu.createdon}}</td>
+                                    <td>{{cbu.createdby}}</td>
+                                    <td>
+                                        <div *ngIf="cbu.preferlang == 'en'">
+                                            English
+                                        </div>
+                                        <div *ngIf="cbu.preferlang == 'te'">
+                                            తెలుగు
+                                        </div>
+                                        <div *ngIf="cbu.preferlang == 'hi'">
+                                            हिंदी
+                                        </div>
+                                    </td>
+                                </tr>
+                        </table>
+
+                    </div>
+                    <div id="futab" class="tab-pane fade  ">
+                        <table id="example" class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Username</th>
+                                    <th>Created On</th>
+                                    <th>Created By</th>
+                                    <th>Prefered Language</th>
+                                    <th>Background Check</th>
+                                    <th>Background Started</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let fu of usrObjFUs">
+                                    <td>
+                                        <a routerLink='/editprofile/{{fu.userId}}'>
+                                            {{fu.lastname}} {{fu.firstname}}
+                                        </a>
+                                    </td>
+                                    <td>{{fu.username}}</td>
+                                    <td>{{fu.createdon}}</td>
+                                    <td>{{fu.createdby}}</td>
+                                    <td>
+                                        <div *ngIf="fu.preferlang == 'en'">
+                                            English
+                                        </div>
+                                        <div *ngIf="fu.preferlang == 'te'">
+                                            తెలుగు
+                                        </div>
+                                        <div *ngIf="fu.preferlang == 'hi'">
+                                            हिंदी
+                                        </div>
+                                    </td>
+                                    <td *ngIf="fu.freeLanceDetails !=null">
+                                        <div *ngIf="fu.freeLanceDetails.bgStarted">
+                                            <div *ngIf="fu.freeLanceDetails.bgDone">
+                                                <i class="fa fa-thumbs-up"></i>
+                                            </div>
+                                            <div *ngIf="!fu.freeLanceDetails.bgDone">
+                                                <i class="fa fa-thumbs-down"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td *ngIf="fu.freeLanceDetails !=null">
+                                        <div *ngIf="fu.freeLanceDetails.bgStarted; else elseIsBgNotDone">
+                                            <i class="fa fa-check"></i>
+                                        </div>
+                                        <ng-template #elseIsBgNotDone>
+                                            <i class="fa fa-ban"></i>
+                                        </ng-template>
+                                    </td>
+                                </tr>
+                        </table>
+                    </div>
+                    <div id="admintab" class="tab-pane fade">
+                        <table id="example" class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Username</th>
+                                    <th>Role</th>
+                                    <th>Created On</th>
+                                    <th>Created By</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let platformuser of usrObjPlatformAdmins">
+                                    <td>
+                                        <a routerLink='/editprofile/{{platformuser.userId}}'>
+                                            {{platformuser.lastname}} {{platformuser.firstname}}
+                                        </a>
+                                    </td>
+                                    <td>{{platformuser.username}}</td>
+                                    <td>{{platformuser.userroles.rolecode}}</td>
+                                    <td>{{platformuser.createdon}}</td>
+                                    <td>{{platformuser.createdby}}</td>
+                                </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

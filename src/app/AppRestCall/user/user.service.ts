@@ -48,6 +48,7 @@ export class UserService {
 
   saveUser(user: User , refCode: string , shortkey: string) {
     user.createdby = user.firstname;
+    user.avtarurl = config.default_avatar;
     user.updateby = user.firstname;
     user.userroles = new UserRole();
     user.userroles.rolecode = refCode;
@@ -85,4 +86,7 @@ export class UserService {
     return this.http.post(`${environment.apiUrl}/saveUserNotification/`, usernotification);
    }
 
+   getAllUsers() {
+    return this.http.get<User[]>(`${environment.apiUrl}/getAllUsers/`);
+   }
 }

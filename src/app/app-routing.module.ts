@@ -1,3 +1,5 @@
+import { EditprofileComponent } from './editprofile/editprofile.component';
+import { ManageuserComponent } from './manageuser/manageuser.component';
 import { AppComponent } from './app.component';
 import { SignupComponent } from './signup/signup.component';
 import { LoginComponent } from './login/login.component';
@@ -10,7 +12,7 @@ import { AuthgaurdService } from './AppRestCall/authgaurd/authgaurd.service';
 const routes: Routes = [
   {
     path: 'home',
-    component: HomeComponent,
+    component: HomeComponent
   },
   {
     path: 'home/:name/:id',
@@ -30,6 +32,26 @@ const routes: Routes = [
     path: 'dashboard',
     component: DashboardComponent,
     canActivate: [AuthgaurdService]
+  },
+  {
+    path: 'manageuser',
+    component: DashboardComponent,
+    children: [
+      {
+        path: '',
+        component: ManageuserComponent
+      }
+    ]
+  },
+  {
+    path: 'editprofile/:id',
+    component: DashboardComponent,
+    children: [
+      {
+        path: '',
+        component: EditprofileComponent
+      }
+    ]
   },
   {
     path: '',

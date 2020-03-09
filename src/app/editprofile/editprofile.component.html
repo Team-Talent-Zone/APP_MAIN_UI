@@ -1,0 +1,266 @@
+<div class="container p-0">
+    <div class="row">
+        <div class="col-md-5 col-xl-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Settings</h5>
+                </div>
+                <div class="list-group list-group-flush" role="tablist">
+                    <a class="list-group-item list-group-item-action active" data-toggle="list" href="#account"
+                        role="tab">
+                        Account Details
+                    </a>
+                    <a class="list-group-item list-group-item-action" data-toggle="list" href="#password" role="tab">
+                        Change Password
+                    </a>
+                    <a *ngIf="roleCode =='CORE_SERVICE_SUPPORT_TEAM' || roleCode =='CORE_SERVICE_SUPPORT_MANAGER'"
+                        class="list-group-item list-group-item-action" data-toggle="list" routerLink='/manageuser'
+                        role="tab">
+                        <a class="fa fa-backward">
+                            &nbsp; Manage Users
+                        </a>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-7 col-xl-8">
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="account" role="tabpanel">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-actions float-right">
+                            </div>
+                            <h5 class="card-title mb-0">Basic info</h5>
+                        </div>
+                        <div class="card-body">
+                            <form [formGroup]="editProfileForm" (ngSubmit)="saveorupdate()">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <label for="inputUsername">Username</label>
+                                            <input readonly=true type="text" class="form-control" 
+                                                formControlName="username" value="{{edituserobj.username}}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputFirstName">First name</label>
+                                            <input type="text" class="form-control" id="inputFirstName"
+                                                [ngClass]="{ 'is-invalid': issubmit && f.firstname.errors }"
+                                                formControlName="firstname" 
+                                                placeholder="First name">
+                                            <div *ngIf="issubmit && f.firstname.errors" class="invalid-feedback">
+                                                <div *ngIf="f.firstname.errors.required">First Name is required
+                                                </div>
+                                                <div *ngIf="f.firstname.errors.maxlength">First Name cant exceed 40
+                                                    char</div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputLastName">Last name</label>
+                                            <input type="text" class="form-control" id="inputLastName"
+                                                formControlName="lastname" 
+                                                [ngClass]="{ 'is-invalid': issubmit && f.lastname.errors }">
+                                                <div *ngIf="issubmit && f.lastname.errors" class="invalid-feedback">
+                                                    <div *ngIf="f.lastname.errors.required">Last Name is required
+                                                    </div>
+                                                    <div *ngIf="f.lastname.errors.maxlength">Last Name cant exceed 40
+                                                      char</div>
+                                                  </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputPreferedLang">Prefered Language</label>
+                                            <select id="inputPreferedLang" class="form-control"
+                                                formControlName="preferlang">
+                                                <option value="en">English</option>
+                                                <option value="hi">हिंदी</option>
+                                                <option value="te">తెలుగు</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="text-center">
+                                            <div class="mt-2">
+                                                <div class="avatar-upload">
+                                                    <div class="avatar-edit">
+                                                        <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg"
+                                                            #fileInput (change)="uploadFile($event)" />
+                                                    </div>
+                                                    <div class="avatar-preview">
+                                                        <div id="imagePreview"
+                                                            [style.backgroundImage]="'url('+ avatarURL +')'">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <button type="button" class="btn btn-danger btn-lg btn-block"
+                                                    (click)="fileInput.click()">Upload</button>
+                                            </div>
+                                            <small>For best results, use an image at least 128px by 128px in .jpg
+                                                format</small>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-actions float-right">
+                            </div>
+                            <h5 class="card-title mb-0">Business info</h5>
+                        </div>
+                        <div class="card-body">
+                            <form>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="inputFirstName">Business Name</label>
+                                        <input type="text" class="form-control" id="inputFirstName"
+                                            placeholder="Business name">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="inputLastName">Business Website</label>
+                                        <input type="text" class="form-control" id="inputLastName"
+                                            placeholder="Business website">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputEmail4">About Business</label>
+                                    <textarea class="form-control" id="inputEmail4" placeholder="Email">
+                                        </textarea>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="inputFirstName">Business Type</label>
+                                        <input type="text" class="form-control" id="inputFirstName"
+                                            placeholder="Business type">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="inputLastName">Designation</label>
+                                        <input type="text" class="form-control" id="inputLastName"
+                                            placeholder="Designation">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputEmail4">Purpose of Signup</label>
+                                    <textarea class="form-control" id="inputEmail4" placeholder="Email">
+                                        </textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputAddress">Address</label>
+                                    <input type="text" class="form-control" id="inputAddress"
+                                        placeholder="1234 Main St">
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputAddress2">Address 2</label>
+                                    <input type="text" class="form-control" id="inputAddress2"
+                                        placeholder="Apartment, studio, or floor">
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="inputCity">City</label>
+                                        <input type="text" class="form-control" id="inputCity">
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="inputState">State</label>
+                                        <select id="inputState" class="form-control">
+                                            <option selected="">Choose...</option>
+                                            <option>...</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label for="inputZip">Zip</label>
+                                        <input type="text" class="form-control" id="inputZip">
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </form>
+
+                        </div>
+                    </div>
+                    <div class="card" *ngIf="edituserobj.userroles.rolecode =='FREELANCER_USER'">
+                        <div class="card-header">
+                            <div class="card-actions float-right">
+                            </div>
+                            <h5 class="card-title mb-0">Rates info</h5>
+                        </div>
+                        <div class="card-body">
+                            <form>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="inputFirstName">Category</label>
+                                        <input type="text" class="form-control" id="inputFirstName"
+                                            placeholder="Category">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="inputLastName">Sub-Category</label>
+                                        <input type="text" class="form-control" id="inputLastName"
+                                            placeholder="Sub-Category">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputEmail4">About You</label>
+                                    <textarea class="form-control" id="inputEmail4" placeholder="Email">
+                                        </textarea>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="inputFirstName">Total Experience</label>
+                                        <input type="text" class="form-control" id="inputFirstName"
+                                            placeholder="Total Experience">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="inputLastName">Hourly Rate</label>
+                                        <input type="text" class="form-control" id="inputLastName"
+                                            placeholder="Designation">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="inputLastName">Upload National Id</label>
+                                        <input type="file" class="form-control" id="inputLastName"
+                                            placeholder="Hourly Rate">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="inputLastName">Deducated %</label>
+                                        <input type="text" class="form-control" id="inputLastName"
+                                            placeholder="Deducated">
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </form>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="tab-pane fade" id="password" role="tabpanel">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Password</h5>
+
+                            <form>
+                                <div class="form-group">
+                                    <label for="inputPasswordCurrent">Current password</label>
+                                    <input type="password" class="form-control" id="inputPasswordCurrent">
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputPasswordNew">New password</label>
+                                    <input type="password" class="form-control" id="inputPasswordNew">
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputPasswordNew2">Verify password</label>
+                                    <input type="password" class="form-control" id="inputPasswordNew2">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
