@@ -104,7 +104,7 @@ export class EditprofileComponent implements OnInit {
           this.userService.currentUserValue.firstname = this.edituserobj.firstname;
 
         }
-        this.alertService.success('Profile Edited');
+        this.alertService.success('Basic Info Updated for ' + this.userService.currentUserValue.firstname);
       },
       error => {
         this.spinnerService.hide();
