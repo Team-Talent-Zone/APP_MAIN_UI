@@ -44,16 +44,6 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'editprofile/:id',
-    component: DashboardComponent,
-    children: [
-      {
-        path: '',
-        component: EditprofileComponent
-      }
-    ]
-  },
-  {
     path: 'vieworeditprofile/:id',
     component: DashboardComponent,
     children: [

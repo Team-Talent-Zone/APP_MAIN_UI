@@ -14,6 +14,10 @@ export const config = {
   shortkey_email_welcometofu: 'eventgen31',
   shortkey_email_welcometocba: 'eventgen30',
   user_rolecode_cbu: 'CLIENT_BUSINESS_ADMINISTRATOR',
+  user_rolecode_fu: 'FREELANCER_USER',
+  user_rolecode_csct: 'CORE_SERVICE_SUPPORT_TEAM',
+  user_rolecode_cscm: 'CORE_SERVICE_SUPPORT_MANAGER',
+
   default_avatar: 'https://platform-asserts.s3.amazonaws.com/Platform+Imgs/avatar1.png'
 
 };

@@ -1,3 +1,4 @@
+import { SignupComponent } from './../signup/signup.component';
 import { UserService } from '../AppRestCall/user/user.service';
 import { ActivatedRoute } from '@angular/router';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
@@ -7,10 +8,13 @@ import { User } from '../appmodels/User';
 import { Component, OnInit, ChangeDetectorRef, ElementRef, ViewChild } from '@angular/core';
 import { UtilService } from '../AppRestCall/util/util.service';
 import { UserAdapter } from '../adapters/useradapter';
+import { config } from 'src/app/appconstants/config';
+
 import {
   FormBuilder,
   FormGroup,
-  Validators} from '@angular/forms';
+  Validators,
+  FormControl} from '@angular/forms';
 
 @Component({
   selector: 'app-editprofile',
@@ -27,8 +31,9 @@ export class EditprofileComponent implements OnInit {
   el: ElementRef;
   avatarURL: any ;
   editprofileuserId: number;
-  editProfileForm: FormGroup;
+  editprofileForm: FormGroup;
   usrObj: User;
+  langSelected = 'en';
 
   constructor(
     public fb: FormBuilder,
@@ -40,7 +45,7 @@ export class EditprofileComponent implements OnInit {
     private utilService: UtilService,
     private formBuilder: FormBuilder,
     private userAdapter: UserAdapter,
-
+    private signupComponent: SignupComponent,
   ) {
     route.params.subscribe(params => {
       this.id = params.id;
@@ -50,18 +55,63 @@ export class EditprofileComponent implements OnInit {
   ngOnInit() {
     this.roleCode = this.userService.currentUserValue.userroles.rolecode;
     this.openEditUser();
-    this.formValidations();
+    this.editProfileFormValidations();
+    if (this.roleCode === config.user_rolecode_fu) {
+      console.log('this.userService.currentUserValue.preferlang' , this.userService.currentUserValue.preferlang);
+      if (this.userService.currentUserValue.preferlang === 'hi') {
+        this.langSelected = 'हिंदी';
+      } else
+      if (this.userService.currentUserValue.preferlang === 'te') {
+        this.langSelected = 'తెలుగు';
+      }
+      console.log('this.langSelected ' , this.langSelected );
+      this.signupComponent.getAllCategories(this.langSelected);
+    }
+
   }
 
-  formValidations() {
-    this.editProfileForm = this.formBuilder.group({
-      firstname: ['', [Validators.required, Validators.maxLength(40)]],
-      lastname: ['', [Validators.required, Validators.maxLength(40)]],
-      preferlang: ['', [Validators.required]],
-    });
+  editProfileFormValidations() {
+        if (this.roleCode === config.user_rolecode_cbu) {
+        this.editprofileForm = this.formBuilder.group({
+        username: ['', [Validators.required]],
+        firstname: ['', [Validators.required, Validators.maxLength(40)]],
+        lastname: ['', [Validators.required, Validators.maxLength(40)]],
+        preferlang: ['', [Validators.required]],
+        fulladdress: ['', [Validators.required]],
+        bizname: ['', [Validators.required, Validators.maxLength(40)]],
+        biztype: ['', [Validators.required, Validators.maxLength(40)]],
+        bizwebsite: ['', [Validators.required, Validators.maxLength(40)]],
+        abtbiz: ['', [Validators.required]],
+        purposeofsignup: ['', [Validators.required]],
+        designation: ['', [Validators.required, Validators.maxLength(40)]],
+      });
+    } else
+      if (this.roleCode === config.user_rolecode_fu) {
+        this.editprofileForm = this.formBuilder.group({
+        username: ['', [Validators.required]],
+        firstname: ['', [Validators.required, Validators.maxLength(40)]],
+        lastname: ['', [Validators.required, Validators.maxLength(40)]],
+        preferlang: ['', [Validators.required]],
+        fulladdress: ['', [Validators.required]],
+        subCategory: ['', [Validators.required]],
+        category: ['', [Validators.required]],
+        experienceInField: ['', [Validators.required  , Validators.maxLength(2) , Validators.pattern('^[0-9]*$')]],
+        abt: ['', [Validators.required]],
+        hourlyRate: ['', [Validators.required, Validators.maxLength(5),  Validators.pattern('^[0-9]*$')]],
+        percentageDeduct: ['', [Validators.required, Validators.maxLength(5) ,  Validators.pattern('^[0-9]*$')]],
+      });
+    }  else {
+        this.editprofileForm = this.formBuilder.group({
+        username: ['', [Validators.required]],
+        firstname: ['', [Validators.required, Validators.maxLength(40)]],
+        lastname: ['', [Validators.required, Validators.maxLength(40)]],
+        preferlang: ['', [Validators.required]],
+        fulladdress: ['', [Validators.required]],
+             });
+    }
   }
   get f() {
-    return this.editProfileForm.controls;
+    return this.editprofileForm.controls;
   }
   openEditUser() {
     if (this.id > 0) {
@@ -72,11 +122,30 @@ export class EditprofileComponent implements OnInit {
         this.avatarURL = this.edituserobj.avtarurl;
         this.editprofileuserId = this.edituserobj.userId;
         this.spinnerService.hide();
-        this.editProfileForm.patchValue({username: this.edituserobj.username});
-        this.editProfileForm.patchValue({firstname: this.edituserobj.firstname});
-        this.editProfileForm.patchValue({lastname: this.edituserobj.lastname});
-        this.editProfileForm.patchValue({preferlang: this.edituserobj.preferlang});
-       },
+        this.editprofileForm.patchValue({username: this.edituserobj.username});
+        this.editprofileForm.patchValue({firstname: this.edituserobj.firstname});
+        this.editprofileForm.patchValue({lastname: this.edituserobj.lastname});
+        this.editprofileForm.patchValue({preferlang: this.edituserobj.preferlang});
+        this.editprofileForm.patchValue({fulladdress: this.edituserobj.userbizdetails.fulladdress});
+        if (this.roleCode === config.user_rolecode_cbu) {
+          this.editprofileForm.patchValue({bizname: this.edituserobj.userbizdetails.bizname});
+          this.editprofileForm.patchValue({biztype: this.edituserobj.userbizdetails.biztype});
+          this.editprofileForm.patchValue({bizwebsite: this.edituserobj.userbizdetails.bizwebsite});
+          this.editprofileForm.patchValue({abtbiz: this.edituserobj.userbizdetails.abtbiz});
+          this.editprofileForm.patchValue({purposeofsignup: this.edituserobj.userbizdetails.purposeofsignup});
+          this.editprofileForm.patchValue({designation: this.edituserobj.userbizdetails.designation});
+        }
+        if (this.roleCode === config.user_rolecode_fu) {
+          this.editprofileForm.patchValue({category: this.edituserobj.freeLanceDetails.category});
+          this.editprofileForm.patchValue({experienceInField: this.edituserobj.freeLanceDetails.experienceInField});
+          this.editprofileForm.patchValue({subCategory: this.edituserobj.freeLanceDetails.subCategory});
+          this.editprofileForm.patchValue({abt: this.edituserobj.freeLanceDetails.abt});
+          this.editprofileForm.patchValue({hourlyRate: this.edituserobj.freeLanceDetails.hourlyRate});
+          this.editprofileForm.patchValue({percentageDeduct: this.edituserobj.freeLanceDetails.percentageDeduct});
+          this.editprofileForm.patchValue({uploadValidPhotoidImgUrl: this.edituserobj.freeLanceDetails.uploadValidPhotoidImgUrl});
+          this.editprofileForm.patchValue({uploadAdditionalDocZipFileUrl: this.edituserobj.freeLanceDetails.uploadAdditionalDocZipFileUrl});
+        }
+         },
        error => {
         this.alertService.error(error);
         this.spinnerService.hide();
@@ -84,27 +153,43 @@ export class EditprofileComponent implements OnInit {
       }
   }
 
-  saveorupdate() {
+  saveorupdateeditprofile() {
     this.issubmit = true;
-    if (this.editProfileForm.invalid) {
+    if (this.editprofileForm.invalid) {
       return;
     }
-    this.edituserobj.firstname = this.editProfileForm.get('firstname').value;
-    this.edituserobj.lastname = this.editProfileForm.get('lastname').value;
-    this.edituserobj.preferlang = this.editProfileForm.get('preferlang').value;
+    this.edituserobj.username = this.editprofileForm.get('username').value;
+    this.edituserobj.firstname = this.editprofileForm.get('firstname').value;
+    this.edituserobj.lastname = this.editprofileForm.get('lastname').value;
+    this.edituserobj.preferlang = this.editprofileForm.get('preferlang').value;
     this.edituserobj.avtarurl = this.avatarURL;
+    this.edituserobj.userbizdetails.fulladdress = this.editprofileForm.get('fulladdress').value;
+    if (this.roleCode === config.user_rolecode_cbu) {
+      this.edituserobj.userbizdetails.bizname = this.editprofileForm.get('bizname').value;
+      this.edituserobj.userbizdetails.biztype = this.editprofileForm.get('biztype').value;
+      this.edituserobj.userbizdetails.bizwebsite = this.editprofileForm.get('bizwebsite').value;
+      this.edituserobj.userbizdetails.abtbiz = this.editprofileForm.get('abtbiz').value;
+      this.edituserobj.userbizdetails.purposeofsignup = this.editprofileForm.get('purposeofsignup').value;
+      this.edituserobj.userbizdetails.designation = this.editprofileForm.get('designation').value;
+    }
+    if (this.roleCode === config.user_rolecode_fu) {
+      this.edituserobj.freeLanceDetails.category = this.editprofileForm.get('category').value;
+      this.edituserobj.freeLanceDetails.experienceInField = this.editprofileForm.get('experienceInField').value;
+      this.edituserobj.freeLanceDetails.subCategory = this.editprofileForm.get('subCategory').value;
+      this.edituserobj.freeLanceDetails.abt = this.editprofileForm.get('abt').value;
+      this.edituserobj.freeLanceDetails.hourlyRate = this.editprofileForm.get('hourlyRate').value;
+      this.edituserobj.freeLanceDetails.percentageDeduct = this.editprofileForm.get('percentageDeduct').value;
+    }
     this.spinnerService.show();
     this.userService.saveorupdate(this.edituserobj).subscribe(
       (userObj: any) => {
         this.spinnerService.hide();
         this.usrObj = this.userAdapter.adapt(userObj);
         if (this.userService.currentUserValue.userId === this.usrObj.userId) {
-          console.log('saveorupdate');
-          this.userService.currentUserValue.avtarurl = this.edituserobj.avtarurl;
-          this.userService.currentUserValue.firstname = this.edituserobj.firstname;
-
+          this.userService.currentUserValue.avtarurl = this.usrObj.avtarurl;
+          this.userService.currentUserValue.firstname = this.usrObj.firstname;
         }
-        this.alertService.success('Basic Info Updated for ' + this.usrObj.firstname);
+        this.alertService.success( this.usrObj.firstname + ' account details is updated');
       },
       error => {
         this.spinnerService.hide();

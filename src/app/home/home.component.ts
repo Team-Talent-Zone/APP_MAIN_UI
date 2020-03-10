@@ -66,6 +66,8 @@ export class HomeComponent implements OnInit {
         (resp) => {
           this.usrObj = this.userAdapter.adapt(resp);
           if ( this.usrObj.userId > 0 && this.usrObj.isactive === false ) {
+            this.usrObj.updateby = this.usrObj.firstname;
+            this.usrObj.isactive = true;
             this.userService.saveorupdate(this.usrObj).pipe(first()).subscribe(
               (userObj) => {
                 this.usrObj = this.userAdapter.adapt(userObj);

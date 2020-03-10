@@ -65,20 +65,17 @@
                                     <th>Name</th>
                                     <th>Username</th>
                                     <th>Created On</th>
-                                    <th>Created By</th>
                                     <th>Prefered Language</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr *ngFor="let cbu of usrObjCBAs">
                                     <td>
-                                        <a routerLink='/editprofile/{{cbu.userId}}'>
                                             {{cbu.lastname}} {{cbu.firstname}}
-                                        </a>
                                     </td>
                                     <td>{{cbu.username}}</td>
                                     <td>{{cbu.createdon}}</td>
-                                    <td>{{cbu.createdby}}</td>
                                     <td>
                                         <div *ngIf="cbu.preferlang == 'en'">
                                             English
@@ -90,6 +87,11 @@
                                             हिंदी
                                         </div>
                                     </td>
+                                    <td>
+                                        <i title="View Account Details" class="fa fa-eye"></i>
+                                        &nbsp;
+                                        <i title="View Service Details" class="fa fa-briefcase"></i>
+                                    </td>
                                 </tr>
                         </table>
 
@@ -100,24 +102,19 @@
                                 <tr>
                                     <th>Name</th>
                                     <th>Username</th>
-                                    <th>Created On</th>
-                                    <th>Created By</th>
                                     <th>Prefered Language</th>
                                     <th>Background Check</th>
                                     <th>Background Started</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr *ngFor="let fu of usrObjFUs">
                                     <td>
-                                        <a routerLink='/editprofile/{{fu.userId}}'>
                                             {{fu.lastname}} {{fu.firstname}}
-                                        </a>
                                     </td>
                                     <td>{{fu.username}}</td>
-                                    <td>{{fu.createdon}}</td>
-                                    <td>{{fu.createdby}}</td>
-                                    <td>
+                                     <td>
                                         <div *ngIf="fu.preferlang == 'en'">
                                             English
                                         </div>
@@ -131,20 +128,25 @@
                                     <td *ngIf="fu.freeLanceDetails !=null">
                                         <div *ngIf="fu.freeLanceDetails.bgStarted">
                                             <div *ngIf="fu.freeLanceDetails.bgDone">
-                                                <i class="fa fa-thumbs-up" title="Bg is approved" style="color: rgb(37, 165, 37)"></i>
+                                                <i class="fa fa-thumbs-up" title="Bg verification is success" style="color: rgb(37, 165, 37)"></i>
                                             </div>
                                             <div *ngIf="!fu.freeLanceDetails.bgDone">
-                                                <i class="fa fa-thumbs-down" title="Bg is rejected" style="color:rgb(199, 25, 25)"></i>
+                                                <i class="fa fa-thumbs-down" title="Bg verification is failed" style="color:rgb(199, 25, 25)"></i>
                                             </div>
                                         </div>
                                     </td>
                                     <td *ngIf="fu.freeLanceDetails !=null">
                                         <div *ngIf="fu.freeLanceDetails.bgStarted; else elseIsBgNotDone">
-                                            <i class="fa fa-check" title="Bg is completed" style="color: rgb(37, 165, 37)"></i>
+                                            <i class="fa fa-check" title="Bg  verification completed" style="color: rgb(37, 165, 37)"></i>
                                         </div>
                                         <ng-template #elseIsBgNotDone>
-                                            <i class="fa fa-ban" title="Bg not started yet" style="color:rgb(199, 25, 25)"></i>
+                                            <i class="fa fa-ban" title="Bg verification not started" style="color:rgb(199, 25, 25)"></i>
                                         </ng-template>
+                                    </td>
+                                    <td>
+                                        <i title="View Account Details" class="fa fa-eye"></i>
+                                        &nbsp;
+                                        <i title="Upload BG Documents" class="fa fa-upload"></i>
                                     </td>
                                 </tr>
                         </table>
@@ -155,22 +157,22 @@
                                 <tr>
                                     <th>Name</th>
                                     <th>Username</th>
-                                    <th>Role</th>
                                     <th>Created On</th>
                                     <th>Created By</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr *ngFor="let platformuser of usrObjPlatformAdmins">
                                     <td>
-                                        <a routerLink='/editprofile/{{platformuser.userId}}'>
                                             {{platformuser.lastname}} {{platformuser.firstname}}
-                                        </a>
                                     </td>
                                     <td>{{platformuser.username}}</td>
-                                    <td>{{platformuser.userroles.rolecode}}</td>
                                     <td>{{platformuser.createdon}}</td>
                                     <td>{{platformuser.createdby}}</td>
+                                    <td>
+                                        <i title="View Account Details" class="fa fa-eye"></i>
+                                    </td>
                                 </tr>
                         </table>
                     </div>

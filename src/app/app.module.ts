@@ -84,6 +84,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     NewServiceAdapter,
     ReferenceService,
     AuthgaurdService,
+    SignupComponent,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpErrorInterceptor,

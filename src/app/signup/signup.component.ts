@@ -59,7 +59,6 @@ export class SignupComponent implements OnInit {
    }
 
   ngOnInit() {
-    console.log('Lang Selected Sigup' , this.langSelected);
     this.formValidations();
     if (this.key === config.shortkey_role_fu) {
       this.getAllCategories(this.langSelected);
@@ -94,7 +93,6 @@ export class SignupComponent implements OnInit {
    this.referService.getReferenceLookupByKey(config.key_domain).pipe(map((data: any[]) => data.map(item => this.refAdapter.adapt(item))),
     ).subscribe(
       data => {
-        console.log(' langSelected : ' , langSelected);
         for (const reflookup of data ) {
           for (const reflookupmap of reflookup.referencelookupmapping) {
             if (langSelected === 'हिंदी' || langSelected === 'తెలుగు') {
@@ -139,6 +137,7 @@ export class SignupComponent implements OnInit {
   subCategoryByMapId(value: string) {
     this.isSelectedCategoryVal = value;
     for (const listofcat of this.referencedetailsmapsubcat) {
+      console.log('this.value :' , listofcat);
       if (listofcat.mapId == value) {
          this.referencedetailsmapsubcatselectedmapId.push(listofcat);
          this.issubcatdisplay = false;
