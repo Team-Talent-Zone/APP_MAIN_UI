@@ -1,3 +1,6 @@
+import { FreelanceHistory } from './../appmodels/FreelanceHistory';
+import { UserBiz } from 'src/app/appmodels/UserBiz';
+import { UserRole } from 'src/app/appmodels/UserRole';
 import { config } from 'src/app/appconstants/config';
 import { Util } from 'src/app/appmodels/Util';
 import { User } from 'src/app/appmodels/User';
@@ -20,6 +23,7 @@ import { ReferenceLookUpTemplate } from '../appmodels/ReferenceLookUpTemplate';
 import { environment } from 'src/environments/environment';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { UserNotification } from 'src/app/appmodels/UserNotification';
+import { Freelance } from '../appmodels/Freelance';
 
 @Component({
   selector: 'app-signup',
@@ -43,6 +47,7 @@ export class SignupComponent implements OnInit {
   isSelectedCategoryVal: string;
   usernotification: UserNotification;
   today =  new Date();
+  user: User;
 
   constructor(
               private spinnerService: Ng4LoadingSpinnerService,
@@ -163,9 +168,10 @@ export class SignupComponent implements OnInit {
       ).subscribe(
         (data: any) => {
           this.referService.getReferenceLookupByShortKey(this.key).subscribe(
-            refCode => {
+            (refCode: any) => {
               this.userService.saveUser(
-                this.signupForm.value , refCode.toString() , this.key
+                this.signupForm.value , refCode.toString() , this.key ,
+                this.signupForm.get('category').value , this.signupForm.get('subcategory').value
                 ).pipe(first()).subscribe(
                   (resp) => {
                     this.usrObj = this.userAdapter.adapt(resp);

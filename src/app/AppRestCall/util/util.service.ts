@@ -20,11 +20,11 @@ export class UtilService {
     return this.http.post(`${environment.apiUrl}/uploadavatar/`, this.uploadutil);
   }
 
-  uploadBgDocsInS3(base64image: any , userId: number) {
+  uploadBgDocsInS3(base64image: any , userId: number , fileextension: string ) {
     this.uploadutil = new UploadUtil();
     this.uploadutil.base64image = base64image;
     this.uploadutil.userid = userId;
-    console.log('this.uploadutil' , this.uploadutil);
+    this.uploadutil.fileextension = fileextension;
     return this.http.post(`${environment.apiUrl}/uploadbgdocs/`, this.uploadutil);
   }
 

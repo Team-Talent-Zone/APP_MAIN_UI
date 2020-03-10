@@ -58,7 +58,6 @@ export class EditprofileComponent implements OnInit {
     this.openEditUser();
     this.editProfileFormValidations();
     if (this.roleCode === config.user_rolecode_fu) {
-      console.log('this.userService.currentUserValue.preferlang' , this.userService.currentUserValue.preferlang);
       if (this.userService.currentUserValue.preferlang === 'hi') {
         this.langSelected = 'हिंदी';
       } else
@@ -220,11 +219,10 @@ export class EditprofileComponent implements OnInit {
           );
           };
         if (type === 'nationalid') {
-            this.utilService.uploadBgDocsInS3(  reader.result , this.editprofileuserId).subscribe(
+            this.utilService.uploadBgDocsInS3(reader.result , this.editprofileuserId , 'pdf').subscribe(
                 (returnURL: string) => {
                   this.spinnerService.hide();
                   this.nationalIDPDFURL = returnURL;
-                  console.log('this.nationalIDPDFURL' , this.nationalIDPDFURL);
                 },
                 error => {
                   this.spinnerService.hide();

@@ -46,7 +46,7 @@ export class UserService {
     this.currentUserSubject.next(null);
 }
 
-  saveUser(user: User , refCode: string , shortkey: string) {
+  saveUser(user: User , refCode: string , shortkey: string , category: string , subcategory: string) {
     user.createdby = user.firstname;
     user.avtarurl = config.default_avatar;
     user.updateby = user.firstname;
@@ -55,6 +55,8 @@ export class UserService {
     user.userbizdetails = new UserBiz();
     if (shortkey === config.shortkey_role_fu) {
       user.freeLanceDetails = new Freelance();
+      user.freeLanceDetails.category = category;
+      user.freeLanceDetails.subCategory = subcategory;
       user.freelancehistoryentity = new FreelanceHistory();
     }
     return this.http.post(`${environment.apiUrl}/saveUser/`, user);
