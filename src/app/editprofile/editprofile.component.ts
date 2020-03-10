@@ -30,6 +30,7 @@ export class EditprofileComponent implements OnInit {
   /*########################## File Upload ########################*/
   el: ElementRef;
   avatarURL: any ;
+  nationalIDPDFURL: any;
   editprofileuserId: number;
   editprofileForm: FormGroup;
   usrObj: User;
@@ -98,7 +99,6 @@ export class EditprofileComponent implements OnInit {
         experienceInField: ['', [Validators.required  , Validators.maxLength(2) , Validators.pattern('^[0-9]*$')]],
         abt: ['', [Validators.required]],
         hourlyRate: ['', [Validators.required, Validators.maxLength(5),  Validators.pattern('^[0-9]*$')]],
-        percentageDeduct: ['', [Validators.required, Validators.maxLength(5) ,  Validators.pattern('^[0-9]*$')]],
       });
     }  else {
         this.editprofileForm = this.formBuilder.group({
@@ -141,10 +141,9 @@ export class EditprofileComponent implements OnInit {
           this.editprofileForm.patchValue({subCategory: this.edituserobj.freeLanceDetails.subCategory});
           this.editprofileForm.patchValue({abt: this.edituserobj.freeLanceDetails.abt});
           this.editprofileForm.patchValue({hourlyRate: this.edituserobj.freeLanceDetails.hourlyRate});
-          this.editprofileForm.patchValue({percentageDeduct: this.edituserobj.freeLanceDetails.percentageDeduct});
-          this.editprofileForm.patchValue({uploadValidPhotoidImgUrl: this.edituserobj.freeLanceDetails.uploadValidPhotoidImgUrl});
-          this.editprofileForm.patchValue({uploadAdditionalDocZipFileUrl: this.edituserobj.freeLanceDetails.uploadAdditionalDocZipFileUrl});
-        }
+          this.nationalIDPDFURL = this.edituserobj.freeLanceDetails.uploadValidPhotoidImgUrl;
+
+            }
          },
        error => {
         this.alertService.error(error);
@@ -178,7 +177,7 @@ export class EditprofileComponent implements OnInit {
       this.edituserobj.freeLanceDetails.subCategory = this.editprofileForm.get('subCategory').value;
       this.edituserobj.freeLanceDetails.abt = this.editprofileForm.get('abt').value;
       this.edituserobj.freeLanceDetails.hourlyRate = this.editprofileForm.get('hourlyRate').value;
-      this.edituserobj.freeLanceDetails.percentageDeduct = this.editprofileForm.get('percentageDeduct').value;
+      this.edituserobj.freeLanceDetails.uploadValidPhotoidImgUrl = this.nationalIDPDFURL;
     }
     this.spinnerService.show();
     this.userService.saveorupdate(this.edituserobj).subscribe(
@@ -197,7 +196,7 @@ export class EditprofileComponent implements OnInit {
       });
   }
 
-  uploadFile(event) {
+  uploadFile(event , type) {
     let reader = new FileReader(); // HTML5 FileReader API
     let file = event.target.files[0];
 
@@ -207,16 +206,32 @@ export class EditprofileComponent implements OnInit {
       // When file uploads set it to file formcontrol
       reader.onload = () => {
         this.spinnerService.show();
+        
+        if (type === 'avatar') {
         this.utilService.uploadAvatarsInS3(  reader.result , this.editprofileuserId).subscribe(
-           (returnURL: string) => {
-            this.spinnerService.hide();
-            this.avatarURL = returnURL;
-           },
-           error => {
-            this.spinnerService.hide();
-            this.alertService.error(error);
-          }
-         );
+            (returnURL: string) => {
+              this.spinnerService.hide();
+              this.avatarURL = returnURL;
+            },
+            error => {
+              this.spinnerService.hide();
+              this.alertService.error(error);
+            }
+          );
+          };
+        if (type === 'nationalid') {
+            this.utilService.uploadBgDocsInS3(  reader.result , this.editprofileuserId).subscribe(
+                (returnURL: string) => {
+                  this.spinnerService.hide();
+                  this.nationalIDPDFURL = returnURL;
+                  console.log('this.nationalIDPDFURL' , this.nationalIDPDFURL);
+                },
+                error => {
+                  this.spinnerService.hide();
+                  this.alertService.error(error);
+                }
+              );
+              }
       };
       // ChangeDetectorRef since file is loading outside the zone
       this.cd.markForCheck();

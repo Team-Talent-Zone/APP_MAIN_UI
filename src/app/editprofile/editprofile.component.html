@@ -67,9 +67,10 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="inputPreferedLang" title="Re-login to see language reflects.">Preferred Language
+                                            <label for="inputPreferedLang"
+                                                title="Re-login to see language reflects.">Preferred Language
                                                 <i class="fa fa-question-circle"
-                                                style="font-size:10px;color:rgb(35, 124, 226)"></i>
+                                                    style="font-size:10px;color:rgb(35, 124, 226)"></i>
                                             </label>
                                             <select id="inputPreferedLang" class="form-control"
                                                 formControlName="preferlang">
@@ -95,7 +96,7 @@
                                                 <div class="avatar-upload">
                                                     <div class="avatar-edit">
                                                         <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg"
-                                                            #fileInput (change)="uploadFile($event)" />
+                                                            #fileInput (change)="uploadFile($event , 'avatar')" />
                                                     </div>
                                                     <div class="avatar-preview">
                                                         <div id="imagePreview"
@@ -202,7 +203,7 @@
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label for="inputFirstName">Category</label>
-                                        <select disabled  formControlName="category" class="form-control">
+                                        <select disabled formControlName="category" class="form-control">
                                             <option
                                                 *ngFor="let referencelookupmap of this.signupComponent.referencedetailsmap"
                                                 value="{{referencelookupmap.mapId}}">
@@ -211,13 +212,13 @@
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="inputLastName">Sub-Category</label>
-                                        <select class="form-control"  formControlName="subCategory">
+                                        <select class="form-control" formControlName="subCategory">
                                             <option
                                                 *ngFor="let referencelookupmapcat of this.signupComponent.referencedetailsmapsubcat"
                                                 value="{{referencelookupmapcat.code}}"> {{referencelookupmapcat.label}}
                                             </option>
                                         </select>
-                                        
+
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -256,38 +257,20 @@
                                     </div>
                                 </div>
                                 <div *ngIf="roleCode =='FREELANCER_USER'">
-                                    <label for="inputLastName" title="aadhar card , pan card">Upload any national Id
+                                    <label for="inputLastName" title="aadhar or pan card & *.pdf only">Upload National
+                                        Id
                                         <i class="fa fa-question-circle"
                                             style="font-size:10px;color:rgb(35, 124, 226)"></i>
                                     </label>
-                                    <input type="file" class="form-control" title="sadsad">
-                                </div>
-                                <div
-                                    *ngIf="roleCode =='CORE_SERVICE_SUPPORT_TEAM' || roleCode =='CORE_SERVICE_SUPPORT_MANAGER'">
-                                    <label for="inputLastName">Valid National Id URL</label>
-                                    <input readonly type="text" class="form-control"
-                                        formControlName="uploadValidPhotoidImgUrl">
-                                </div>
-                                <div class="form-row"
-                                    *ngIf="roleCode =='CORE_SERVICE_SUPPORT_TEAM' || roleCode =='CORE_SERVICE_SUPPORT_MANAGER'">
-                                    <div class="form-group col-md-6">
-                                        <label for="inputLastName">Deducated % Rate*</label>
-                                        <input type="text" class="form-control" formControlName="percentageDeduct"
-                                            [ngClass]="{ 'is-invalid': issubmit && f.percentageDeduct.errors }">
-                                        <div *ngIf="issubmit && f.percentageDeduct.errors" class="invalid-feedback">
-                                            <div *ngIf="f.percentageDeduct.errors.required">Percentage Deduction Rate is
-                                                required
-                                            </div>
-                                            <div *ngIf="f.percentageDeduct.errors.maxlength">Percentage Deduction Rate
-                                                cant exceed 5
-                                                digits</div>
-                                            <div *ngIf="f.percentageDeduct.errors.pattern">Must be digit only</div>
+                                    <div class="avatar-upload">
+                                        <div class="avatar-edit">
+                                            <input type='file' accept=".pdf" #fileInput
+                                                (change)="uploadFile($event , 'nationalid')" />
                                         </div>
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label for="inputLastName">Upload Additional Documents</label>
-                                        <input type="file" class="form-control">
-                                    </div>
+                                            <a href="{{nationalIDPDFURL}}" target="_blank" *ngIf="nationalIDPDFURL != null">Click to view the document</a>
+                                     </div>
+                                    <button type="button" class="btn btn-secondary btn-sm"
+                                        (click)="fileInput.click()">Upload</button>
                                 </div>
                             </div>
                         </div>
