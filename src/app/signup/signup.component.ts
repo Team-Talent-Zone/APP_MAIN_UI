@@ -1,6 +1,3 @@
-import { FreelanceHistory } from './../appmodels/FreelanceHistory';
-import { UserBiz } from 'src/app/appmodels/UserBiz';
-import { UserRole } from 'src/app/appmodels/UserRole';
 import { config } from 'src/app/appconstants/config';
 import { Util } from 'src/app/appmodels/Util';
 import { User } from 'src/app/appmodels/User';
@@ -23,7 +20,6 @@ import { ReferenceLookUpTemplate } from '../appmodels/ReferenceLookUpTemplate';
 import { environment } from 'src/environments/environment';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { UserNotification } from 'src/app/appmodels/UserNotification';
-import { Freelance } from '../appmodels/Freelance';
 
 @Component({
   selector: 'app-signup',

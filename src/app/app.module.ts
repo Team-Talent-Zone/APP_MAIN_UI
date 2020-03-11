@@ -31,7 +31,6 @@ import { ReferenceLookUpTemplateAdapter } from './adapters/referencelookuptempla
 import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 import { AuthgaurdService } from './AppRestCall/authgaurd/authgaurd.service';
 import { BasicAuthHtppInterceptorService } from './AppRestCall/authgaurd/basicauthhttpinterceptor/basicauthhttpinterceptor.service';
-import { NewService } from './appmodels/NewService';
 import { ManageuserComponent } from './manageuser/manageuser.component';
 import { EditprofileComponent } from './editprofile/editprofile.component';
 import { ViewaccountdetailsComponent } from './viewaccountdetails/viewaccountdetails.component';
@@ -96,6 +95,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       provide: HTTP_INTERCEPTORS, useClass: BasicAuthHtppInterceptorService, multi: true
     }
   ],
+  entryComponents: [ViewaccountdetailsComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

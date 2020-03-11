@@ -1,3 +1,4 @@
+import { ViewaccountdetailsComponent } from './../viewaccountdetails/viewaccountdetails.component';
 import { Component, OnInit } from '@angular/core';
 import * as $ from 'jquery';
 import { UserService } from '../AppRestCall/user/user.service';
@@ -8,6 +9,8 @@ import { User } from '../appmodels/User';
 import { first } from 'rxjs/operators';
 import { ReferenceService } from '../AppRestCall/reference/reference.service';
 import { config } from 'src/app/appconstants/config';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
 @Component({
   selector: 'app-manageuser',
@@ -23,7 +26,10 @@ export class ManageuserComponent implements OnInit {
   usrObj: any = [];
   usrobjById: User;
   refDataObj: any = [];
+  modalRef: BsModalRef;
+
   constructor(
+    private modalService: BsModalService,
     private userService: UserService,
     private spinnerService: Ng4LoadingSpinnerService,
     private userAdapter: UserAdapter,
@@ -122,5 +128,12 @@ executeBGVerificationCheck(userId: number) {
         this.spinnerService.hide();
         this.alertService.error(error);
       });
+}
+openViewAccountDetailsModal(userId: number) {
+  this.modalRef = this.modalService.show(ViewaccountdetailsComponent,  {
+  initialState: {
+    userid: userId,
+  }
+});
 }
 }

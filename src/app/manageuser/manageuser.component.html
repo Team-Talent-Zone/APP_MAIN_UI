@@ -96,7 +96,9 @@
                                         </i>
                                     </td>
                                     <td>
-                                        <i title="View {{mywork.firstname}} Account Details" class="fa fa-eye"></i>
+                                        <a class="btn  btn-sm" (click) = 'openViewAccountDetailsModal(mywork.userId)' >
+                                            <i title="View {{mywork.firstname}} Account Details" class="fa fa-eye"></i>
+                                        </a>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -138,7 +140,9 @@
                                         </div>
                                     </td>
                                     <td>
+                                        <a class="btn  btn-sm" (click) = 'openViewAccountDetailsModal(cbu.userId)' >
                                         <i title="View {{cbu.firstname}} Account Details" class="fa fa-eye"></i>
+                                        </a>
                                     </td>
                                     <td>
                                         <i title="View {{cbu.firstname}} Service Details" class="fa fa-briefcase"></i>
@@ -217,7 +221,9 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <i title="View {{fu.firstname}} Account Details" class="fa fa-eye"></i>
+                                        <a class="btn  btn-sm" (click) = 'openViewAccountDetailsModal(fu.userId)' >
+                                            <i title="View {{fu.firstname}} Account Details" class="fa fa-eye"></i>
+                                        </a>
                                     </td>
                                     <td *ngIf="fu.freeLanceDetails.isprofilecompleted && !fu.freeLanceDetails.isbgstarted">
                                         <a *ngIf="fu.freeLanceDetails.isprofilecompleted && !fu.freeLanceDetails.isbgstarted"  class="btn  btn-sm" (click)='executeBGVerificationCheck(fu.userId)'>
@@ -247,7 +253,9 @@
                                     <td>{{platformuser.createdon}}</td>
                                     <td>{{platformuser.createdby}}</td>
                                     <td>
-                                        <i title="View {{platformuser.firstname}} Account Details" class="fa fa-eye"></i>
+                                        <a class="btn  btn-sm" (click) = 'openViewAccountDetailsModal(platformuser.userId)' >
+                                            <i title="View {{platformuser.firstname}} Account Details" class="fa fa-eye"></i>
+                                        </a>
                                     </td>
                                 </tr>
                         </table>

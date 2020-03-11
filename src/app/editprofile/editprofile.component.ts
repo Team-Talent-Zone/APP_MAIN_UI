@@ -64,7 +64,6 @@ export class EditprofileComponent implements OnInit {
       if (this.userService.currentUserValue.preferlang === 'te') {
         this.langSelected = 'తెలుగు';
       }
-      console.log('this.langSelected ' , this.langSelected );
       this.signupComponent.getAllCategories(this.langSelected);
     }
 
