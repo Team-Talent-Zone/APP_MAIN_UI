@@ -1,9 +1,9 @@
 export class Freelance  {
     public userId: number;
-    public nationalIdNumber: string;
     public uploadValidPhotoidImgUrl: string;
     public isBgDone: boolean;
-    public isBgStarted: boolean;
+    public isprofilecompleted: boolean;
+    public isbgstarted: boolean;
     public uploadAdditionalDocZipFileUrl: string;
     public isJobAvailable: boolean;
     public subCategory: string;

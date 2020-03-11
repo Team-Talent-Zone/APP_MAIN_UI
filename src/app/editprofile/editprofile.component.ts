@@ -177,6 +177,12 @@ export class EditprofileComponent implements OnInit {
       this.edituserobj.freeLanceDetails.abt = this.editprofileForm.get('abt').value;
       this.edituserobj.freeLanceDetails.hourlyRate = this.editprofileForm.get('hourlyRate').value;
       this.edituserobj.freeLanceDetails.uploadValidPhotoidImgUrl = this.nationalIDPDFURL;
+      if (this.edituserobj.freeLanceDetails.experienceInField != null &&
+        this.edituserobj.freeLanceDetails.hourlyRate != null &&
+        this.edituserobj.freeLanceDetails.uploadValidPhotoidImgUrl != null &&
+        this.edituserobj.userbizdetails.fulladdress != null) {
+        this.edituserobj.freeLanceDetails.isprofilecompleted = true;
+        }
     }
     this.spinnerService.show();
     this.userService.saveorupdate(this.edituserobj).subscribe(

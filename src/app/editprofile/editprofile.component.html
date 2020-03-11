@@ -258,7 +258,7 @@
                                 </div>
                                 <div *ngIf="roleCode =='FREELANCER_USER'">
                                     <label for="inputLastName" title="upload aadhar or pan card & it should be *.pdf only">National
-                                        Id
+                                        Id*
                                         <i class="fa fa-question-circle"
                                             style="font-size:10px;color:rgb(35, 124, 226)"></i>
                                     </label>
@@ -270,11 +270,16 @@
                                             <a href="{{nationalIDPDFURL}}" target="_blank" *ngIf="nationalIDPDFURL != null">Click to view the document</a>
                                      </div>
                                     <button type="button" class="btn btn-secondary btn-sm"
-                                        (click)="fileInput.click()">Upload</button>
+                                        (click)="fileInput.click()">
+                                      <span *ngIf="nationalIDPDFURL != null ; else elseNoNationalID">Re-Upload</span>  
+                                      <ng-template #elseNoNationalID>
+                                          Upload
+                                    </ng-template>
+                                    </button>
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="submit" class="btn btn-primary" >Save changes</button>
                     </form>
                 </div>
                 <div class="tab-pane fade" id="password" role="tabpanel">

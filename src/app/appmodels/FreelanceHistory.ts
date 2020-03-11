@@ -1,13 +1,12 @@
 export class FreelanceHistory  {
-
     public eventId: number;
-    public userId: number;
-    public decisionBy: string;
-    public decisionOn: string;
-    public bgStatus: boolean;
+    public userid: number;
+    public decisionby: string;
+    public decisionon: string;
+    public bgstatus: string;
     public bgComment: string;
-    public isLocked: boolean;
-    public managerId: number;
+    public islocked: boolean;
+    public managerid: number;
     constructor(
     ) {
     }
