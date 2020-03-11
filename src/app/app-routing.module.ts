@@ -1,3 +1,5 @@
+import { EditprofileComponent } from './editprofile/editprofile.component';
+import { ManageuserComponent } from './manageuser/manageuser.component';
 import { AppComponent } from './app.component';
 import { SignupComponent } from './signup/signup.component';
 import { LoginComponent } from './login/login.component';
@@ -5,12 +7,12 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { AlertComponent } from './alert/alert.component';
+import { AuthgaurdService } from './AppRestCall/authgaurd/authgaurd.service';
 
 const routes: Routes = [
   {
     path: 'home',
-    component: HomeComponent,
+    component: HomeComponent
   },
   {
     path: 'home/:name/:id',
@@ -28,7 +30,28 @@ const routes: Routes = [
   },
   {
     path: 'dashboard',
-    component: DashboardComponent
+    component: DashboardComponent,
+    canActivate: [AuthgaurdService]
+  },
+  {
+    path: 'manageuser',
+    component: DashboardComponent,
+    children: [
+      {
+        path: '',
+        component: ManageuserComponent
+      }
+    ]
+  },
+  {
+    path: 'vieworeditprofile/:id',
+    component: DashboardComponent,
+    children: [
+      {
+        path: '',
+        component: EditprofileComponent
+      }
+    ]
   },
   {
     path: '',
@@ -39,10 +62,6 @@ const routes: Routes = [
     path: '**',
     redirectTo: '/home',
     pathMatch: 'full'
-  },
-  {
-    path: 'app',
-    component: AppComponent
   }
 ];
 

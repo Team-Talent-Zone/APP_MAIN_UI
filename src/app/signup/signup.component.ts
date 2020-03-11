@@ -1,3 +1,6 @@
+import { FreelanceHistory } from './../appmodels/FreelanceHistory';
+import { UserBiz } from 'src/app/appmodels/UserBiz';
+import { UserRole } from 'src/app/appmodels/UserRole';
 import { config } from 'src/app/appconstants/config';
 import { Util } from 'src/app/appmodels/Util';
 import { User } from 'src/app/appmodels/User';
@@ -19,6 +22,8 @@ import { ReferenceLookUpTemplateAdapter } from '../adapters/referencelookuptempl
 import { ReferenceLookUpTemplate } from '../appmodels/ReferenceLookUpTemplate';
 import { environment } from 'src/environments/environment';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
+import { UserNotification } from 'src/app/appmodels/UserNotification';
+import { Freelance } from '../appmodels/Freelance';
 
 @Component({
   selector: 'app-signup',
@@ -40,6 +45,9 @@ export class SignupComponent implements OnInit {
   templateObj: ReferenceLookUpTemplate;
   util: Util;
   isSelectedCategoryVal: string;
+  usernotification: UserNotification;
+  today =  new Date();
+  user: User;
 
   constructor(
               private spinnerService: Ng4LoadingSpinnerService,
@@ -56,12 +64,11 @@ export class SignupComponent implements OnInit {
    }
 
   ngOnInit() {
-    console.log('Lang Selected Sigup' , this.langSelected);
     this.formValidations();
     if (this.key === config.shortkey_role_fu) {
-      this.getAllCategories();
-    }
+      this.getAllCategories(this.langSelected);
    }
+  }
 
  formValidations() {
     if (this.key === config.shortkey_role_cba) {
@@ -85,15 +92,40 @@ export class SignupComponent implements OnInit {
   }
 }
 
-  getAllCategories() {
+
+  getAllCategories(langSelected: string) {
    this.spinnerService.show();
    this.referService.getReferenceLookupByKey(config.key_domain).pipe(map((data: any[]) => data.map(item => this.refAdapter.adapt(item))),
     ).subscribe(
       data => {
         for (const reflookup of data ) {
           for (const reflookupmap of reflookup.referencelookupmapping) {
+            if (langSelected === 'हिंदी' || langSelected === 'తెలుగు') {
+              this.referService.translatetext(reflookupmap.label, langSelected).subscribe(
+              (resptranslatetxt: any) => {
+                if (resptranslatetxt.translateresp != null) {
+                  reflookupmap.label = resptranslatetxt.translateresp;
+                }
+              },
+              error => {
+                this.alertService.error(error);
+                this.spinnerService.hide();
+              });
+            }
             this.referencedetailsmap.push(reflookupmap);
             for (const reflookupmapsubcat of reflookupmap.referencelookupmappingsubcategories) {
+              if (langSelected === 'हिंदी' || langSelected === 'తెలుగు') {
+                this.referService.translatetext(reflookupmapsubcat.label, langSelected).subscribe(
+                (resptranslatetxt: any) => {
+                  if (resptranslatetxt.translateresp != null) {
+                    reflookupmapsubcat.label = resptranslatetxt.translateresp;
+                  }
+                },
+                error => {
+                  this.alertService.error(error);
+                  this.spinnerService.hide();
+                });
+              }
               this.referencedetailsmapsubcat.push(reflookupmapsubcat);
             }
           }
@@ -110,6 +142,7 @@ export class SignupComponent implements OnInit {
   subCategoryByMapId(value: string) {
     this.isSelectedCategoryVal = value;
     for (const listofcat of this.referencedetailsmapsubcat) {
+      console.log('this.value :' , listofcat);
       if (listofcat.mapId == value) {
          this.referencedetailsmapsubcatselectedmapId.push(listofcat);
          this.issubcatdisplay = false;
@@ -135,9 +168,10 @@ export class SignupComponent implements OnInit {
       ).subscribe(
         (data: any) => {
           this.referService.getReferenceLookupByShortKey(this.key).subscribe(
-            refCode => {
+            (refCode: any) => {
               this.userService.saveUser(
-                this.signupForm.value , refCode.toString() , this.key
+                this.signupForm.value , refCode.toString() , this.key ,
+                this.signupForm.get('category').value , this.signupForm.get('subcategory').value
                 ).pipe(first()).subscribe(
                   (resp) => {
                     this.usrObj = this.userAdapter.adapt(resp);
@@ -146,18 +180,33 @@ export class SignupComponent implements OnInit {
                         referencetemplate => {
                           this.templateObj = this.reflookuptemplateAdapter.adapt(referencetemplate);
                           this.util = new Util();
+                          this.util.preferlang = this.usrObj.preferlang;
                           this.util.fromuser = ConfigMsg.email_default_fromuser;
                           this.util.subject = ConfigMsg.email_verficationemailaddress_subj;
                           this.util.touser = this.usrObj.username;
                           this.util.templateurl = this.templateObj.url;
-                          this.util.arrayfromui = JSON.stringify({ firstName: this.usrObj.firstname ,
+                          this.util.templatedynamicdata = JSON.stringify({ firstName: this.usrObj.firstname ,
                                                   platformURL: `${environment.uiUrl}` + config.confirmation_fullpathname
                                                   + '/' + this.usrObj.userId});
                           this.sendemailService.sendEmail(this.util).subscribe(
-                            util => {
-                              this.alertService.success(ConfigMsg.signup_successmsg , true);
-                              this.spinnerService.hide();
-                            },
+                            (util: any) => {
+                              if (util.lastreturncode === 250) {
+                                this.usernotification = new UserNotification();
+                                this.usernotification.templateid = this.templateObj.templateid;
+                                this.usernotification.sentby = this.usrObj.firstname;
+                                this.usernotification.userid = this.usrObj.userId;
+                                this.usernotification.senton = this.today.toString();
+                                this.userService.saveUserNotification(this.usernotification).subscribe(
+                                  (notificationobj: any) => {
+                                     this.spinnerService.hide();
+                                     this.alertService.success(ConfigMsg.signup_successmsg , true);
+                                  },
+                                 error => {
+                                  this.spinnerService.hide();
+                                  this.alertService.error(error);
+                                });
+                                }
+                                  },
                             error => {
                               this.spinnerService.hide();
                               this.alertService.error(error);

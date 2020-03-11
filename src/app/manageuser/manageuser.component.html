@@ -1,0 +1,260 @@
+<div class="row mb-4  justify-content-between">
+    <div class="col-xl-2 col-sm-6 py-2">
+        <div class="card bg-success text-white h-100">
+            <div class="card-body bg-warning">
+                <div class="rotate">
+                    <i class="fa fa-reorder fa-4x"></i>
+                </div>
+                <h6 class="text-uppercase">My Bg Work</h6>
+                <h1 class="display-4">{{usrObjMyWork.length}}</h1>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-2 col-sm-6 py-2">
+        <div class="card text-white bg-info h-100">
+            <div class="card-body bg-info">
+                <div class="rotate">
+                    <i class="fa fa-briefcase  fa-4x"></i>
+                </div>
+                <h6 class="text-uppercase">CBA</h6>
+                <h1 class="display-4">{{usrObjCBAs.length}}</h1>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-2 col-sm-6 py-2">
+        <div class="card text-white bg-info h-100">
+            <div class="card-body bg-info">
+                <div class="rotate">
+                    <i class="fa fa-user fa-4x"></i>
+                </div>
+                <h6 class="text-uppercase">FU</h6>
+                <h1 class="display-4" >{{usrObjFUs.length}}</h1>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-2 col-sm-6 py-2">
+        <div class="card text-white bg-info h-100">
+            <div class="card-body">
+                <div class="rotate">
+                    <i class="fa fa-user-secret fa-4x"></i>
+                </div>
+                <h6 class="text-uppercase">Admin</h6>
+                <h1 class="display-4">{{usrObjPlatformAdmins.length}}</h1>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-2 col-sm-6 py-2">
+        <div class="card bg-success text-white h-100">
+            <div class="card-body bg-success">
+                <div class="rotate">
+                    <i class="fa fa-users fa-4x"></i>
+                </div>
+                <h6 class="text-uppercase">Total Users</h6>
+                <h1 class="display-4">{{usrObj.length}}</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <section class="container py-4">
+        <div class="row">
+            <div class="col-md-12">
+                <ul id="tabs" class="nav nav-tabs">
+                    <li class="nav-item"><a href=""  data-target="#myworktab" data-toggle="tab"
+                        class="nav-link medium text-uppercase active">My Bg Work</a></li>
+                    <li class="nav-item"><a href="" data-target="#cbatab" data-toggle="tab"
+                            class="nav-link medium text-uppercase">Client Business Administrator</a></li>
+                    <li class="nav-item"><a href="" data-target="#futab" data-toggle="tab"
+                            class="nav-link medium text-uppercase ">FreeLancer</a></li>
+                    <li class="nav-item"><a href="" data-target="#admintab" data-toggle="tab"
+                            class="nav-link medium text-uppercase">Platform Administrator</a></li>
+                     </ul>
+                <br>
+                <div id="tabsContent" class="tab-content">
+                    <div id="myworktab" class="tab-pane active fade show" >
+                        <table id="example" class="table table-sm table-bordered" >
+                            <thead *ngIf="usrObjMyWork != ''">
+                                <tr >
+                                    <th>Name</th>
+                                    <th>Username</th>
+                                    <th>Created On</th>
+                                    <th>Last Updated On</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody *ngIf="usrObjMyWork != ''; else elseNoBGWork">
+                                <tr *ngFor="let mywork of usrObjMyWork">
+                                    <td>
+                                            {{mywork.lastname}} {{mywork.firstname}}
+                                    </td>
+                                    <td>{{mywork.username}}</td>
+                                    <td>{{mywork.createdon}}</td>
+                                    <td>{{mywork.updatedon}}</td>
+                                    <td>
+                                        <i title= "You can start working.." class="fa fa-lock" style="color: rgb(37, 165, 37)" *ngIf="mywork.freelancehistoryentity.islocked;">
+                                        </i>
+                                    </td>
+                                    <td>
+                                        <i title="View {{mywork.firstname}} Account Details" class="fa fa-eye"></i>
+                                    </td>
+                                </tr>
+                                </tbody>
+                                <ng-template #elseNoBGWork>
+                                    <tbody align="center">
+                                        No New Background Verification Cases
+                                    </tbody>
+                                </ng-template>
+                        </table>
+                    </div>
+                    <div id="cbatab" class="tab-pane fade ">
+                        <table id="example" class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Username</th>
+                                    <th>Created On</th>
+                                    <th>Language</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let cbu of usrObjCBAs">
+                                    <td>
+                                            {{cbu.lastname}} {{cbu.firstname}}
+                                    </td>
+                                    <td>{{cbu.username}}</td>
+                                    <td>{{cbu.createdon}}</td>
+                                    <td>
+                                        <div *ngIf="cbu.preferlang == 'en'">
+                                            English
+                                        </div>
+                                        <div *ngIf="cbu.preferlang == 'te'">
+                                            తెలుగు
+                                        </div>
+                                        <div *ngIf="cbu.preferlang == 'hi'">
+                                            हिंदी
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <i title="View {{cbu.firstname}} Account Details" class="fa fa-eye"></i>
+                                    </td>
+                                    <td>
+                                        <i title="View {{cbu.firstname}} Service Details" class="fa fa-briefcase"></i>
+                                    </td>
+                                </tr>
+                        </table>
+
+                    </div>
+                    <div id="futab" class="tab-pane fade">
+                        <table id="example" class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Username</th>
+                                    <th>Language</th>
+                                    <th>Is BG Complete</th>
+                                    <th>Is BG Start</th>
+                                    <th>Is Profile Complete</th>
+                                    <th>Status</th>
+                                    <th></th>
+                                   
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr  *ngFor="let fu of usrObjFUs">
+                                    <td>
+                                            {{fu.lastname}} {{fu.firstname}}
+                                    </td>
+                                    <td >{{fu.username}}</td>
+                                     <td>
+                                        <div *ngIf="fu.preferlang == 'en'">
+                                            English
+                                        </div>
+                                        <div *ngIf="fu.preferlang == 'te'">
+                                            తెలుగు
+                                        </div>
+                                        <div *ngIf="fu.preferlang == 'hi'">
+                                            हिंदी
+                                        </div>
+                                    </td>
+                                    <td *ngIf="fu.freeLanceDetails !=null">
+                                        <div *ngIf="fu.freeLanceDetails.isbgstarted">
+                                            <div *ngIf="fu.freeLanceDetails.bgDone">
+                                                <i class="fa fa-check" title="Bg verification is completed" style="color: rgb(37, 165, 37)"></i>
+                                            </div>
+                                            <div *ngIf="!fu.freeLanceDetails.bgDone">
+                                                <i class="fa fa-spinner" title="Bg verification is in-progress" style="color:rgb(16, 0, 238)"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td *ngIf="fu.freeLanceDetails !=null">
+                                        <div *ngIf="fu.freeLanceDetails.isbgstarted; else elseIsBgNotDone">
+                                            <i class="fa fa-check" title="Bg  verification started" style="color: rgb(37, 165, 37)"></i>
+                                        </div>
+                                        <ng-template #elseIsBgNotDone>
+                                            <i class="fa fa-ban" title="Bg verification not started" style="color:rgb(199, 25, 25)"></i>
+                                        </ng-template>
+                                    </td>
+                                    <td *ngIf="fu.freeLanceDetails !=null">
+                                        <div *ngIf="fu.freeLanceDetails.isprofilecompleted; else elseIsProfileCompleted">
+                                            <i class="fa fa-check" title="Profile data is available" style="color: rgb(37, 165, 37)"></i>
+                                        </div>
+                                        <ng-template #elseIsProfileCompleted>
+                                            <i class="fa fa-ban" title="Profile data not available" style="color:rgb(199, 25, 25)"></i>
+                                        </ng-template>
+                                    </td>
+                                    <td *ngIf="fu.freelancehistoryentity !=null">
+                                        <div *ngFor="let refdata of refDataObj">
+                                            <div *ngIf="refdata.code === fu.freelancehistoryentity.bgstatus">
+                                                {{refdata.label}}
+                                                <label title="{{fu.freelancehistoryentity.decisionby}}" >
+                                                <i class="fa fa-question-circle"
+                                                style="font-size:10px;color:rgb(35, 124, 226)"></i>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <i title="View {{fu.firstname}} Account Details" class="fa fa-eye"></i>
+                                    </td>
+                                    <td *ngIf="fu.freeLanceDetails.isprofilecompleted && !fu.freeLanceDetails.isbgstarted">
+                                        <a *ngIf="fu.freeLanceDetails.isprofilecompleted && !fu.freeLanceDetails.isbgstarted"  class="btn  btn-sm" (click)='executeBGVerificationCheck(fu.userId)'>
+                                            <i title="Initiate Background verification"  class="fa fa-play" style="color: rgb(37, 165, 37)"></i>
+                                            </a>
+                                    </td>
+                                </tr>
+                        </table>
+                    </div>
+                    <div id="admintab" class="tab-pane fade">
+                        <table id="example" class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Username</th>
+                                    <th>Created On</th>
+                                    <th>Created By</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let platformuser of usrObjPlatformAdmins">
+                                    <td>
+                                            {{platformuser.lastname}} {{platformuser.firstname}}
+                                    </td>
+                                    <td>{{platformuser.username}}</td>
+                                    <td>{{platformuser.createdon}}</td>
+                                    <td>{{platformuser.createdby}}</td>
+                                    <td>
+                                        <i title="View {{platformuser.firstname}} Account Details" class="fa fa-eye"></i>
+                                    </td>
+                                </tr>
+                        </table>
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

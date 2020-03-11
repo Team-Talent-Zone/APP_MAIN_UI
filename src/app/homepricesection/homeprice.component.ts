@@ -1,3 +1,6 @@
+import { NewServiceAdapter } from './../adapters/newserviceadapter';
+import { NewsvcService } from './../AppRestCall/newsvc/newsvc.service';
+import { NewService } from './../appmodels/NewService';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,9 +10,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomepriceComponent implements OnInit {
 
-  constructor() { }
+  newsvcobject: NewService;
+
+  constructor(
+    private newsvcservice: NewsvcService,
+    private newsvcadapter: NewServiceAdapter) { }
 
   ngOnInit() {
+    this.getAllNewServiceDetails();
   }
 
+  getAllNewServiceDetails() {
+    this.newsvcservice.getAllNewServiceDetails().subscribe((newsvcserviceRsp) => {
+      this.newsvcobject = this.newsvcadapter.adapt(newsvcserviceRsp);
+      console.log('this is list of new services' , this.newsvcobject);
+    });
+  }
 }

@@ -1,6 +1,6 @@
 {
     "/RestAPI": {
-        "target": "http://ec2-54-159-110-166.compute-1.amazonaws.com:8080",
+        "target": "http://localhost:8080",
         "secure": true,
         "changeOrigin": true
     }

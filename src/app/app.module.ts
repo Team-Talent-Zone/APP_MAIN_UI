@@ -1,3 +1,4 @@
+import { NewServiceAdapter } from './adapters/newserviceadapter';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClient, HttpClientModule , HTTP_INTERCEPTORS} from '@angular/common/http';
@@ -28,6 +29,11 @@ import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import { ReferenceLookUpTemplateAdapter } from './adapters/referencelookuptemplateadapter';
 import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
+import { AuthgaurdService } from './AppRestCall/authgaurd/authgaurd.service';
+import { BasicAuthHtppInterceptorService } from './AppRestCall/authgaurd/basicauthhttpinterceptor/basicauthhttpinterceptor.service';
+import { NewService } from './appmodels/NewService';
+import { ManageuserComponent } from './manageuser/manageuser.component';
+import { EditprofileComponent } from './editprofile/editprofile.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -48,6 +54,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     SignupComponent,
     AlertComponent,
     DashboardComponent,
+    ManageuserComponent,
+    EditprofileComponent,
     ],
   imports: [
     BrowserModule,
@@ -73,11 +81,17 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ReferenceLookUpTemplateAdapter,
     AlertsService ,
     UserService ,
+    NewServiceAdapter,
     ReferenceService,
+    AuthgaurdService,
+    SignupComponent,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpErrorInterceptor,
       multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS, useClass: BasicAuthHtppInterceptorService, multi: true
     }
   ],
   bootstrap: [AppComponent]

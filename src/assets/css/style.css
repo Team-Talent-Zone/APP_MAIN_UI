@@ -4,10 +4,10 @@ body { font-family: 'Open Sans', sans-serif; font-size: 15px; font-weight: 400;
 
 strong { font-weight: 600; }
 
-a { color: #856dc0; border-bottom: 1px dashed #856dc0; text-decoration: none; transition: all .3s; }
-a:hover, a:focus { color: #856dc0; border: 0; text-decoration: none; }
+/*a { color: #856dc0; border-bottom: 1px dashed #856dc0; text-decoration: none; transition: all .3s; }
+a:hover, a:focus { color: #856dc0; border: 0; text-decoration: none; }*/
 
-h1, h2 { margin-top: 10px; font-size: 32px; font-weight: 300; color: #555; line-height: 50px;  }
+h1,h2 { margin-top: 10px; font-size: 32px; font-weight: 300; color: #555; line-height: 50px;  }
 h3 { font-size: 22px; font-weight: 700; color: rgb(33, 9, 247); line-height: 50px;  }
 h4 { font-size: 22px; font-weight: 300; color: rgb(145, 4, 226); line-height: 50px;  }
 
@@ -72,7 +72,7 @@ img { max-width: 100%; }
 
 /***** Section 1 *****/
 
-.section-1-box { padding-top: 30px; text-align: left; }
+.section-1-box { padding-top: 30px; text-align: center; }
 
 .section-1-box .section-1-box-icon {
 	width: 80px; height: 80px; margin: 0 auto;
@@ -86,7 +86,7 @@ img { max-width: 100%; }
 	background: linear-gradient(to bottom,  #856dc0 0%,#7762ac 100%); /* W3C */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#856dc0', endColorstr='#7762ac',GradientType=0 ); /* IE6-9 */
 
-    font-size: 40px; color: #fff; line-height: 80px; text-align: center;
+    font-size: 40px; color: #fff; line-height: 80px;
     -moz-border-radius: 50%; -webkit-border-radius: 50%; border-radius: 50%;
     -o-transition: all .6s; -moz-transition: all .6s; -webkit-transition: all .6s; -ms-transition: all .6s; transition: all .6s;
 }
@@ -96,14 +96,14 @@ img { max-width: 100%; }
 
 /***** Section 2 *****/
 
-.section-2-box { margin-top: 30px; text-align: left; }
+.section-2-box { margin-top: 30px; text-align: center; }
 .section-2-box h3 { margin-top: 0; }
 .section-2-box-text .medium-paragraph { margin-top: 20px; margin-bottom: 20px; }
 
 
 /***** Section 7 *****/
 
-.section-7-box { margin-top: 30px; text-align: left; }
+.section-7-box { margin-top: 30px; text-align: center; }
 
 .section-7-box .section-7-box-icon {
 	width: 60px; height: 60px; margin: 0 auto;
@@ -117,7 +117,7 @@ img { max-width: 100%; }
 	background: linear-gradient(to bottom,  #856dc0 0%,#7762ac 100%); /* W3C */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#856dc0', endColorstr='#7762ac',GradientType=0 ); /* IE6-9 */
 
-    font-size: 28px; color: #fff; line-height: 60px; text-align: center;
+    font-size: 28px; color: #fff; line-height: 60px;
     -moz-border-radius: 50%; -webkit-border-radius: 50%; border-radius: 50%;
 }
 

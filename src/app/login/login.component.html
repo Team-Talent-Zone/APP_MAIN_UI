@@ -6,7 +6,7 @@
       <div class="col-md-6">
         <div *ngIf="!isfwd; else elseFwd">
           <div class="card card-container">
-            <img id="profile-img" class="profile-img-card" src="https://bootdey.com/img/Content/avatar/avatar6.png" />
+            <img id="profile-img" class="profile-img-card" src="{{avatarURL}}" />
             <p id="profile-name" class="profile-name-card"></p>
             <form [formGroup]="loginForm" (ngSubmit)="loginUserByUsername()">
               <span id="reauth-email" class="reauth-email"></span>
