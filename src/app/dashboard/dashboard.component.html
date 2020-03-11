@@ -64,26 +64,6 @@
             <!--/row-->
 
             <hr>
-            <div class="row placeholders mb-5 justify-content-between"  *ngIf="usrObj.userroles.rolecode =='FREELANCER_USER'">
-                <div class="col-6 col-sm-2 placeholder text-center">
-                    <img src="{{stage1Img}}"  class="mx-auto img-fluid rounded-circle" >
-                    <h6>Fill out In-Complete Profile</h6>
-                </div>
-                <div class="stepConectorPiece" [ngStyle]="{'background': userService.currentUserValue.freeLanceDetails.isprofilecompleted ? 'green':'lightgrey'}"></div>
-                <div class="col-6 col-sm-2 placeholder text-center">
-                    <img src="{{stage2Img}}" class="mx-auto img-fluid rounded-circle" alt="Generic placeholder thumbnail">
-                    <h6>BG Verification Started</h6>
-                </div>
-                <div class="stepConectorPiece" [ngStyle]="{'background': userService.currentUserValue.freeLanceDetails.isbgstarted ? 'green':'lightgrey'}"></div>
-                <div class="col-6 col-sm-2 placeholder text-center">
-                    <img src="{{stage3Img}}" class="mx-auto img-fluid rounded-circle" alt="Background Verification is completed">
-                    <h6>BG Verification Completed</h6>
-                </div>
-                <div class="stepConectorPiece" [ngStyle]="{'background': userService.currentUserValue.freeLanceDetails.isbgdone ? 'green':'lightgrey'}"></div>
-                <div class="col-6 col-sm-2 placeholder text-center">
-                    <img src="{{stage4Img}}" class="mx-auto img-fluid rounded-circle" alt="Final Result">
-                    <h6>BG Verification Final Result</h6>
-                </div>
-            </div>
+            
             <router-outlet></router-outlet>
 </div>

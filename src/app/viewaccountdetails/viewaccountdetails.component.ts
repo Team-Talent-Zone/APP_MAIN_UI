@@ -14,7 +14,7 @@ import { UserAdapter } from '../adapters/useradapter';
 })
 export class ViewaccountdetailsComponent implements OnInit {
   userid: number;
-  viewaccountuserobj: User;
+  viewaccountuserobj: any = [];
   constructor(
     public  modalRef: BsModalRef,
     private userService: UserService,
@@ -32,7 +32,6 @@ export class ViewaccountdetailsComponent implements OnInit {
      this.userService.getUserByUserId(userid).pipe(first()).subscribe(
        (respuser: any) => {
         this.viewaccountuserobj = this.userAdapter.adapt(respuser);
-        console.log('this.viewaccountuserobj' , this.viewaccountuserobj.firstname);
         this.spinnerService.hide();
        },
        error => {

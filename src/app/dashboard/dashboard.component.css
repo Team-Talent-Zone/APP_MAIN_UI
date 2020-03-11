@@ -2,12 +2,7 @@ body, html {
     height:100%;
   }
 
-  .stepConectorPiece {
-    height:3px;
-    background:lightgrey;
-    flex:1;
-    margin-top:70px;
-  }
+ 
 
   /*
    * Off Canvas sidebar at medium breakpoint
