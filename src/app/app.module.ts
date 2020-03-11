@@ -34,6 +34,7 @@ import { BasicAuthHtppInterceptorService } from './AppRestCall/authgaurd/basicau
 import { NewService } from './appmodels/NewService';
 import { ManageuserComponent } from './manageuser/manageuser.component';
 import { EditprofileComponent } from './editprofile/editprofile.component';
+import { ViewaccountdetailsComponent } from './viewaccountdetails/viewaccountdetails.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -56,6 +57,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     DashboardComponent,
     ManageuserComponent,
     EditprofileComponent,
+    ViewaccountdetailsComponent,
     ],
   imports: [
     BrowserModule,

@@ -19,7 +19,8 @@ export const config = {
   user_rolecode_fu: 'FREELANCER_USER',
   user_rolecode_csct: 'CORE_SERVICE_SUPPORT_TEAM',
   user_rolecode_cscm: 'CORE_SERVICE_SUPPORT_MANAGER',
-
+  bg_code_approved: 'BG_APPROVED',
+  bg_code_rejected: 'BG_REJECTED',
   default_avatar: 'https://platform-asserts.s3.amazonaws.com/Platform+Imgs/avatar1.png'
 
 };

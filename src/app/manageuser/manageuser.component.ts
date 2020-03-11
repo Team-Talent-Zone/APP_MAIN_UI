@@ -93,7 +93,6 @@ executeBGVerificationCheck(userId: number) {
         this.usrobjById.freelancehistoryentity.bgstatus = refCode.toString();
         this.usrobjById.freelancehistoryentity.decisionby = this.userService.currentUserValue.username;
         this.usrobjById.freelancehistoryentity.islocked = true;
-        console.log('usrobjById', this.usrobjById);
         this.userService.saveorupdate(this.usrobjById).subscribe(
       (userObj: any) => {
         this.usrObj = this.userAdapter.adapt(userObj);

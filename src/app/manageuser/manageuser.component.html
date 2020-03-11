@@ -76,7 +76,7 @@
                             <thead *ngIf="usrObjMyWork != ''">
                                 <tr >
                                     <th>Name</th>
-                                    <th>Username</th>
+                                    <th>Email Address</th>
                                     <th>Created On</th>
                                     <th>Last Updated On</th>
                                     <th></th>
@@ -112,7 +112,7 @@
                             <thead>
                                 <tr>
                                     <th>Name</th>
-                                    <th>Username</th>
+                                    <th>Email Address</th>
                                     <th>Created On</th>
                                     <th>Language</th>
                                     <th></th>
@@ -152,7 +152,7 @@
                             <thead>
                                 <tr>
                                     <th>Name</th>
-                                    <th>Username</th>
+                                    <th>Email Address</th>
                                     <th>Language</th>
                                     <th>Is BG Complete</th>
                                     <th>Is BG Start</th>
@@ -181,10 +181,10 @@
                                     </td>
                                     <td *ngIf="fu.freeLanceDetails !=null">
                                         <div *ngIf="fu.freeLanceDetails.isbgstarted">
-                                            <div *ngIf="fu.freeLanceDetails.bgDone">
+                                            <div *ngIf="fu.freeLanceDetails.isbgdone">
                                                 <i class="fa fa-check" title="Bg verification is completed" style="color: rgb(37, 165, 37)"></i>
                                             </div>
-                                            <div *ngIf="!fu.freeLanceDetails.bgDone">
+                                            <div *ngIf="!fu.freeLanceDetails.isbgdone">
                                                 <i class="fa fa-spinner" title="Bg verification is in-progress" style="color:rgb(16, 0, 238)"></i>
                                             </div>
                                         </div>
@@ -232,7 +232,7 @@
                             <thead>
                                 <tr>
                                     <th>Name</th>
-                                    <th>Username</th>
+                                    <th>Email Address</th>
                                     <th>Created On</th>
                                     <th>Created By</th>
                                     <th></th>

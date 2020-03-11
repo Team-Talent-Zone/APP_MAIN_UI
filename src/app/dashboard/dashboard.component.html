@@ -40,7 +40,7 @@
                 <li class="nav-item" *ngIf="usrObj.userroles.rolecode =='CLIENT_BUSINESS_ADMINISTRATOR'">
                     <a class="nav-link" href="#">My Services</a>
                 </li>
-                <li class="nav-item" *ngIf="usrObj.userroles.rolecode =='FREELANCER_USER'">
+                <li class="nav-item" *ngIf="usrObj.userroles.rolecode =='FREELANCER_USER' && showmenufu">
                     <a class="nav-link" href="#">My Job</a>
                 </li>
                 <li class="nav-item" *ngIf="usrObj.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM' || usrObj.userroles.rolecode =='CORE_SERVICE_SUPPORT_MANAGER'">
@@ -64,22 +64,25 @@
             <!--/row-->
 
             <hr>
-            <div class="row placeholders mb-5"  *ngIf="usrObj.userroles.rolecode =='FREELANCER_USER'">
-                <div class="col-6 col-sm-3 placeholder text-center">
-                    <img src="//placehold.it/200/dddddd/fff?text=1" class="mx-auto img-fluid rounded-circle" alt="Generic placeholder thumbnail">
-                    <h4>Fill out In-Complete Profile</h4>
+            <div class="row placeholders mb-5 justify-content-between"  *ngIf="usrObj.userroles.rolecode =='FREELANCER_USER'">
+                <div class="col-6 col-sm-2 placeholder text-center">
+                    <img src="{{stage1Img}}"  class="mx-auto img-fluid rounded-circle" >
+                    <h6>Fill out In-Complete Profile</h6>
                 </div>
-                <div class="col-6 col-sm-3 placeholder text-center">
-                    <img src="//placehold.it/200/e4e4e4/fff?text=2" class="mx-auto img-fluid rounded-circle" alt="Generic placeholder thumbnail">
-                    <h4>BG Verification Started</h4>
+                <div class="stepConectorPiece" [ngStyle]="{'background': userService.currentUserValue.freeLanceDetails.isprofilecompleted ? 'green':'lightgrey'}"></div>
+                <div class="col-6 col-sm-2 placeholder text-center">
+                    <img src="{{stage2Img}}" class="mx-auto img-fluid rounded-circle" alt="Generic placeholder thumbnail">
+                    <h6>BG Verification Started</h6>
                 </div>
-                <div class="col-6 col-sm-3 placeholder text-center">
-                    <img src="//placehold.it/200/d6d6d6/fff?text=3" class="mx-auto img-fluid rounded-circle" alt="Generic placeholder thumbnail">
-                    <h4>BG Verification In-Progress</h4>
+                <div class="stepConectorPiece" [ngStyle]="{'background': userService.currentUserValue.freeLanceDetails.isbgstarted ? 'green':'lightgrey'}"></div>
+                <div class="col-6 col-sm-2 placeholder text-center">
+                    <img src="{{stage3Img}}" class="mx-auto img-fluid rounded-circle" alt="Background Verification is completed">
+                    <h6>BG Verification Completed</h6>
                 </div>
-                <div class="col-6 col-sm-3 placeholder text-center">
-                    <img src="//placehold.it/200/d6d6d6/fff?text=4" class="mx-auto img-fluid rounded-circle" alt="Generic placeholder thumbnail">
-                    <h4>BG Verification Finished</h4>
+                <div class="stepConectorPiece" [ngStyle]="{'background': userService.currentUserValue.freeLanceDetails.isbgdone ? 'green':'lightgrey'}"></div>
+                <div class="col-6 col-sm-2 placeholder text-center">
+                    <img src="{{stage4Img}}" class="mx-auto img-fluid rounded-circle" alt="Final Result">
+                    <h6>BG Verification Final Result</h6>
                 </div>
             </div>
             <router-outlet></router-outlet>
