@@ -57,7 +57,7 @@ export class UserService {
       user.freeLanceDetails = new Freelance();
       user.freeLanceDetails.category = category;
       user.freeLanceDetails.subCategory = subcategory;
-      user.freelancehistoryentity = new FreelanceHistory();
+      user.freelancehistoryentity[1] = new FreelanceHistory();
     }
     return this.http.post(`${environment.apiUrl}/saveUser/`, user);
   }

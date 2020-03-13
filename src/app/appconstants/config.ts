@@ -21,6 +21,8 @@ export const config = {
   user_rolecode_cscm: 'CORE_SERVICE_SUPPORT_MANAGER',
   bg_code_approved: 'BG_APPROVED',
   bg_code_rejected: 'BG_REJECTED',
+  bg_code_incompleteprofile: 'BG_INCOMPLETEPROFILE',
+
   default_avatar: 'https://platform-asserts.s3.amazonaws.com/Platform+Imgs/avatar1.png'
 
 };

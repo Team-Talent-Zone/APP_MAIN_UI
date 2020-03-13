@@ -35,10 +35,10 @@ export class DashboardbyuseroleComponent implements OnInit {
       if (this.userService.currentUserValue.freeLanceDetails.isbgdone) {
         this.stage3Img = this.stageCompletedImg;
         }
-      if (this.userService.currentUserValue.freelancehistoryentity.bgstatus === config.bg_code_approved) {
+      if (this.userService.currentUserValue.freelancehistoryentity[1].bgstatus === config.bg_code_approved) {
           this.stage4Img = this.stageBgStatusApprovedImg;
           }
-      if (this.userService.currentUserValue.freelancehistoryentity.bgstatus === config.bg_code_rejected) {
+      if (this.userService.currentUserValue.freelancehistoryentity[1].bgstatus === config.bg_code_rejected) {
             this.stage4Img = this.stageBgStatusRejectedImg;
           }
     }

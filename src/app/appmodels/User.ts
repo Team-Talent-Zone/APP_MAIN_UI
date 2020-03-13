@@ -21,7 +21,7 @@ export class User  {
         public userroles: UserRole,
         public userbizdetails: UserBiz,
         public freeLanceDetails: Freelance,
-        public freelancehistoryentity: FreelanceHistory
+        public freelancehistoryentity: FreelanceHistory[]
     ) {
 
     }

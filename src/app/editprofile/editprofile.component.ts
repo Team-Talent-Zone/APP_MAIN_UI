@@ -117,6 +117,7 @@ export class EditprofileComponent implements OnInit {
      this.userService.getUserByUserId(this.id).pipe(first()).subscribe(
        (respuser: any) => {
         this.edituserobj = respuser;
+        this.userService.currentUserValue.avtarurl = this.edituserobj.avtarurl;
         this.avatarURL = this.edituserobj.avtarurl;
         this.editprofileuserId = this.edituserobj.userId;
         this.spinnerService.hide();
@@ -125,6 +126,7 @@ export class EditprofileComponent implements OnInit {
         this.editprofileForm.patchValue({lastname: this.edituserobj.lastname});
         this.editprofileForm.patchValue({preferlang: this.edituserobj.preferlang});
         this.editprofileForm.patchValue({fulladdress: this.edituserobj.userbizdetails.fulladdress});
+        
         if (this.roleCode === config.user_rolecode_cbu) {
           this.editprofileForm.patchValue({bizname: this.edituserobj.userbizdetails.bizname});
           this.editprofileForm.patchValue({biztype: this.edituserobj.userbizdetails.biztype});

@@ -21,6 +21,7 @@ export class ManageuserComponent implements OnInit {
 
   usrObjCBAs: any = [];
   usrObjFUs: any = [];
+  usrObjAllFUs: any = [];
   usrObjPlatformAdmins: any = [];
   usrObjMyWork: any = [];
   usrObj: any = [];
@@ -67,19 +68,37 @@ export class ManageuserComponent implements OnInit {
           this.usrObjCBAs.push(element);
         }
         if (element.userroles.rolecode === 'FREELANCER_USER') {
-          this.usrObjFUs.push(element);
-        }
-        if (element.userroles.rolecode === 'FREELANCER_USER' &&
-            element.freelancehistoryentity.decisionby === this.userService.currentUserValue.username &&
-            element.freelancehistoryentity.islocked === true
-            ) {
-          this.usrObjMyWork.push(element);
+          this.usrObjAllFUs.push(element);
         }
         if (element.userroles.rolecode === 'CORE_SERVICE_SUPPORT_TEAM' ||
             element.userroles.rolecode === 'CORE_SERVICE_SUPPORT_MANAGER') {
           this.usrObjPlatformAdmins.push(element);
         }
       });
+      this.usrObjAllFUs.forEach((element: any) => {
+      if (element.userroles.rolecode === 'FREELANCER_USER') {
+        if (element.freelancehistoryentity != null) {
+          element.freelancehistoryentity.forEach(
+            (elementFhistory: any) => {
+              if (elementFhistory.islocked && elementFhistory.decisionby ===
+                  this.userService.currentUserValue.username) {
+                  element.freelancehistoryentity = elementFhistory ;
+                  this.usrObjMyWork.push(element);
+            }
+              if (elementFhistory.bgstatus === config.bg_code_incompleteprofile ||
+                  elementFhistory.islocked ||
+                  elementFhistory.bgstatus === config.bg_code_approved ||
+                  elementFhistory.bgstatus === config.bg_code_rejected
+                 ) {
+                  element.freelancehistoryentity = elementFhistory ;
+                  this.usrObjFUs.push(element);
+                  console.log(' usrObjFUs' , this.usrObjFUs );
+              }
+          }
+        );
+      }
+      }
+    });
       this.spinnerService.hide();
     },
     error => {
@@ -96,9 +115,9 @@ executeBGVerificationCheck(userId: number) {
      this.usrobjById.freeLanceDetails.isbgstarted = true,
      this.referService.getReferenceLookupByShortKey(config.shortkey_bg_sentocsst).subscribe(
       (refCode: any) => {
-        this.usrobjById.freelancehistoryentity.bgstatus = refCode.toString();
-        this.usrobjById.freelancehistoryentity.decisionby = this.userService.currentUserValue.username;
-        this.usrobjById.freelancehistoryentity.islocked = true;
+        this.usrobjById.freelancehistoryentity[1].bgstatus = refCode.toString();
+        this.usrobjById.freelancehistoryentity[1].decisionby = this.userService.currentUserValue.username;
+        this.usrobjById.freelancehistoryentity[1].islocked = true;
         this.userService.saveorupdate(this.usrobjById).subscribe(
       (userObj: any) => {
         this.usrObj = this.userAdapter.adapt(userObj);

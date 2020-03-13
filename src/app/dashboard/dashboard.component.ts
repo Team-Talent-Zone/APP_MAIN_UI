@@ -21,11 +21,11 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.usrObj = this.userService.currentUserValue;
     if (this.usrObj.userroles.rolecode === config.user_rolecode_fu) {
-    if (this.userService.currentUserValue.freelancehistoryentity.bgstatus ===
+    if (this.userService.currentUserValue.freelancehistoryentity[1].bgstatus ===
         config.bg_code_approved) {
       this.showmenufu = true;
       }
-    if (this.userService.currentUserValue.freelancehistoryentity.bgstatus ===
+    if (this.userService.currentUserValue.freelancehistoryentity[1].bgstatus ===
         config.bg_code_rejected) {
         this.showmenufu = false;
       }
