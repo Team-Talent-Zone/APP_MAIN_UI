@@ -22,7 +22,7 @@ export const config = {
   bg_code_approved: 'BG_APPROVED',
   bg_code_rejected: 'BG_REJECTED',
   bg_code_incompleteprofile: 'BG_INCOMPLETEPROFILE',
-
+  bg_code_completedprofile: 'BG_COMPLETEDPROFILE',
   default_avatar: 'https://platform-asserts.s3.amazonaws.com/Platform+Imgs/avatar1.png'
 
 };

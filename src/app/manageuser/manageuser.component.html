@@ -214,7 +214,7 @@
                                             <div *ngIf="refdata.code === fu.freelancehistoryentity.bgstatus">
                                                 {{refdata.label}}
                                                 <label title="{{fu.freelancehistoryentity.decisionby}}" >
-                                                <i class="fa fa-question-circle" *ngIf="fu.freeLanceDetails.isprofilecompleted"
+                                                <i class="fa fa-question-circle" *ngIf="fu.freelancehistoryentity.decisionby != null"
                                                 style="font-size:10px;color:rgb(35, 124, 226)"></i>
                                                 </label>
                                             </div>

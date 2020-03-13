@@ -88,7 +88,8 @@ export class ManageuserComponent implements OnInit {
               if (elementFhistory.bgstatus === config.bg_code_incompleteprofile ||
                   elementFhistory.islocked ||
                   elementFhistory.bgstatus === config.bg_code_approved ||
-                  elementFhistory.bgstatus === config.bg_code_rejected
+                  elementFhistory.bgstatus === config.bg_code_rejected ||
+                  elementFhistory.bgstatus === config.bg_code_completedprofile
                  ) {
                   element.freelancehistoryentity = elementFhistory ;
                   this.usrObjFUs.push(element);
@@ -114,9 +115,9 @@ executeBGVerificationCheck(userId: number) {
      this.usrobjById.freeLanceDetails.isbgstarted = true,
      this.referService.getReferenceLookupByShortKey(config.shortkey_bg_sentocsst).subscribe(
       (refCode: any) => {
-        this.usrobjById.freelancehistoryentity[1].bgstatus = refCode.toString();
-        this.usrobjById.freelancehistoryentity[1].decisionby = this.userService.currentUserValue.username;
-        this.usrobjById.freelancehistoryentity[1].islocked = true;
+        this.usrobjById.freelancehistoryentity[0].bgstatus = refCode.toString();
+        this.usrobjById.freelancehistoryentity[0].decisionby = this.userService.currentUserValue.username;
+        this.usrobjById.freelancehistoryentity[0].islocked = true;
         this.userService.saveorupdate(this.usrobjById).subscribe(
       (userObj: any) => {
         this.usrObj = this.userAdapter.adapt(userObj);
@@ -124,6 +125,7 @@ executeBGVerificationCheck(userId: number) {
           this.userService.currentUserValue.avtarurl = this.usrObj.avtarurl;
           this.userService.currentUserValue.firstname = this.usrObj.firstname;
         }
+        this.usrObjAllFUs = [];
         this.usrObjFUs = [];
         this.usrObjCBAs = [];
         this.usrObjPlatformAdmins = [];

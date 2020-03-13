@@ -182,6 +182,7 @@ export class EditprofileComponent implements OnInit {
         this.edituserobj.freeLanceDetails.uploadValidPhotoidImgUrl != null &&
         this.edituserobj.userbizdetails.fulladdress != null) {
         this.edituserobj.freeLanceDetails.isprofilecompleted = true;
+        this.edituserobj.freelancehistoryentity[0].bgstatus = config.bg_code_completedprofile;
         }
     }
     this.spinnerService.show();
