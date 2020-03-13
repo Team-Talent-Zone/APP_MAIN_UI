@@ -56,7 +56,6 @@ export class LoginComponent implements OnInit {
       }
 
   ngOnInit() {
-    console.log('inside LoginComponent');
     this.formValidations();
   }
 

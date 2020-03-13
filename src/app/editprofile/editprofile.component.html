@@ -205,7 +205,7 @@
                                         <label for="inputFirstName">Category</label>
                                         <select disabled formControlName="category" class="form-control">
                                             <option
-                                                *ngFor="let referencelookupmap of this.signupComponent.referencedetailsmap"
+                                                *ngFor="let referencelookupmap of signupComponent.referencedetailsmap"
                                                 value="{{referencelookupmap.mapId}}">
                                                 {{referencelookupmap.label}}</option>
                                         </select>
@@ -214,7 +214,7 @@
                                         <label for="inputLastName">Sub-Category</label>
                                         <select class="form-control" formControlName="subCategory">
                                             <option
-                                                *ngFor="let referencelookupmapcat of this.signupComponent.referencedetailsmapsubcat"
+                                                *ngFor="let referencelookupmapcat of signupComponent.referencedetailsmapsubcat"
                                                 value="{{referencelookupmapcat.code}}"> {{referencelookupmapcat.label}}
                                             </option>
                                         </select>

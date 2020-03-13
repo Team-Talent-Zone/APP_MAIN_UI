@@ -3,6 +3,9 @@ import { UserService } from '../AppRestCall/user/user.service';
 import { Router } from '@angular/router';
 import { User } from '../appmodels/User';
 import { config } from '../appconstants/config';
+import { ActivatedRoute } from '@angular/router';
+import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
+import { AlertsService } from '../AppRestCall/alerts/alerts.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,24 +16,47 @@ export class DashboardComponent implements OnInit {
 
   usrObj: User;
   showmenufu: boolean;
+  name: string;
   constructor(
-    private userService: UserService,
+    public userService: UserService,
     private router: Router,
-  ) { }
+    private route: ActivatedRoute,
+    private spinnerService: Ng4LoadingSpinnerService,
+    private alertService: AlertsService,
+  ) {
+    route.params.subscribe(params => {
+    this.name = params.name; });
+    }
 
   ngOnInit() {
-    this.usrObj = this.userService.currentUserValue;
+    if (this.name != null) {
+      this.spinnerService.show();
+      this.userService.getUserByUserId(this.userService.currentUserValue.userId).subscribe(
+      (userresp: any) => {
+        this.userService.setCurrentUserValue(userresp);
+        this.usrObj = this.userService.currentUserValue;
+        this.spinnerService.hide();
+        console.log('this.usrObj' , this.usrObj);
+      },
+      error => {
+        this.alertService.error(error);
+        this.spinnerService.hide();
+      });
+    } else {
+       this.usrObj = this.userService.currentUserValue;
+    }
+
     if (this.usrObj.userroles.rolecode === config.user_rolecode_fu) {
-    if (this.userService.currentUserValue.freelancehistoryentity[1].bgstatus ===
+      if (this.userService.currentUserValue.freelancehistoryentity[0].bgstatus ===
         config.bg_code_approved) {
       this.showmenufu = true;
       }
-    if (this.userService.currentUserValue.freelancehistoryentity[1].bgstatus ===
+      if (this.userService.currentUserValue.freelancehistoryentity[0].bgstatus ===
         config.bg_code_rejected) {
         this.showmenufu = false;
       }
-    }
   }
+}
 
   logout() {
     this.userService.logout();

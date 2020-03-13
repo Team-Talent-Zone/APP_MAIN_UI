@@ -41,6 +41,17 @@ const routes: Routes = [
     ]
   },
   {
+    path: 'dashboard/:name',
+    component: DashboardComponent,
+    canActivate: [AuthgaurdService],
+    children: [
+      {
+        path: '',
+        component: DashboardbyuseroleComponent
+      }
+    ]
+  },
+  {
     path: 'manageuser',
     component: DashboardComponent,
     children: [

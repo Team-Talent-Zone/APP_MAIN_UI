@@ -25,12 +25,15 @@ export class UserService {
     private http: HttpClient,
     private userAdapter: UserAdapter,
   ) {
-    this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
-    this.currentUser = this.currentUserSubject.asObservable();
+      this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
+      this.currentUser = this.currentUserSubject.asObservable();
   }
 
   public get currentUserValue(): User {
     return this.currentUserSubject.value;
+  }
+  public setCurrentUserValue(userobj: User) {
+    this.currentUserSubject.next(userobj);
   }
   loginUserByUsername(username: string , password: string) {
     return this.http.get(`${environment.apiUrl}/findByUsername/` + username + '/' + password  + '/') .pipe(map(user => {
@@ -63,7 +66,6 @@ export class UserService {
       this.freelanceobj.bgstatus = config.bg_code_incompleteprofile;
       userobj.freelancehistoryentity.push(this.freelanceobj);
     }
-    console.log('userobj' , userobj);
     return this.http.post(`${environment.apiUrl}/saveUser/`, userobj);
   }
 

@@ -92,7 +92,6 @@ export class ManageuserComponent implements OnInit {
                  ) {
                   element.freelancehistoryentity = elementFhistory ;
                   this.usrObjFUs.push(element);
-                  console.log(' usrObjFUs' , this.usrObjFUs );
               }
           }
         );

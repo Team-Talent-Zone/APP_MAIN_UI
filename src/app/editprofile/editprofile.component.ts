@@ -46,7 +46,7 @@ export class EditprofileComponent implements OnInit {
     private utilService: UtilService,
     private formBuilder: FormBuilder,
     private userAdapter: UserAdapter,
-    private signupComponent: SignupComponent,
+    public signupComponent: SignupComponent,
   ) {
     route.params.subscribe(params => {
       this.id = params.id;
@@ -126,7 +126,6 @@ export class EditprofileComponent implements OnInit {
         this.editprofileForm.patchValue({lastname: this.edituserobj.lastname});
         this.editprofileForm.patchValue({preferlang: this.edituserobj.preferlang});
         this.editprofileForm.patchValue({fulladdress: this.edituserobj.userbizdetails.fulladdress});
-        
         if (this.roleCode === config.user_rolecode_cbu) {
           this.editprofileForm.patchValue({bizname: this.edituserobj.userbizdetails.bizname});
           this.editprofileForm.patchValue({biztype: this.edituserobj.userbizdetails.biztype});
