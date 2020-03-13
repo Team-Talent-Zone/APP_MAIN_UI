@@ -138,7 +138,6 @@ export class SignupComponent implements OnInit {
   subCategoryByMapId(value: string) {
     this.isSelectedCategoryVal = value;
     for (const listofcat of this.referencedetailsmapsubcat) {
-      console.log('this.value :' , listofcat);
       if (listofcat.mapId == value) {
          this.referencedetailsmapsubcatselectedmapId.push(listofcat);
          this.issubcatdisplay = false;
@@ -166,8 +165,7 @@ export class SignupComponent implements OnInit {
           this.referService.getReferenceLookupByShortKey(this.key).subscribe(
             (refCode: any) => {
               this.userService.saveUser(
-                this.signupForm.value , refCode.toString() , this.key ,
-                this.signupForm.get('category').value , this.signupForm.get('subcategory').value
+                this.signupForm.value , refCode.toString() , this.key , this.signupForm.value
                 ).pipe(first()).subscribe(
                   (resp) => {
                     this.usrObj = this.userAdapter.adapt(resp);

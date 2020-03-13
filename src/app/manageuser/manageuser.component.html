@@ -222,7 +222,7 @@
                                     </td>
                                     <td>
                                         <a class="btn  btn-sm" (click) = 'openViewAccountDetailsModal(fu.userId)' >
-                                            <i title="View {{fu.firstname}} Account Details" class="fa fa-eye" style="color:rgb(241, 18, 18)" 
+                                            <i title="{{fu.firstname}} BG is rejected . View Account Details" class="fa fa-eye" style="color:rgb(241, 18, 18)" 
                                                 *ngIf="fu.freelancehistoryentity.bgstatus == 'BG_REJECTED'; else elseNotRejected ">
                                              </i>
                                              <ng-template #elseNotRejected>

@@ -52,6 +52,7 @@ export class HomeComponent implements OnInit {
       route.params.subscribe(params => {
          this.id = params.id;
          this.name = params.name;
+         console.log('this.usrObj' , this.name);
         });
      }
 
@@ -68,9 +69,6 @@ export class HomeComponent implements OnInit {
           if ( this.usrObj.userId > 0 && this.usrObj.isactive === false ) {
             this.usrObj.updateby = this.usrObj.firstname;
             this.usrObj.isactive = true;
-            if ( this.usrObj.userroles.rolecode === config.user_rolecode_fu) {
-                 this.usrObj.freelancehistoryentity[1].bgstatus = config.bg_code_incompleteprofile;
-            }
             this.userService.saveorupdate(this.usrObj).pipe(first()).subscribe(
               (userObj) => {
                 this.usrObj = this.userAdapter.adapt(userObj);

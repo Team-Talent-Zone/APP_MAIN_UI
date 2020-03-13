@@ -20,6 +20,7 @@ export class UserService {
   private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
   usrObj: User;
+  freelanceobj: FreelanceHistory;
   constructor(
     private http: HttpClient,
     private userAdapter: UserAdapter,
@@ -46,20 +47,24 @@ export class UserService {
     this.currentUserSubject.next(null);
 }
 
-  saveUser(user: User , refCode: string , shortkey: string , category: string , subcategory: string) {
-    user.createdby = user.firstname;
-    user.avtarurl = config.default_avatar;
-    user.updateby = user.firstname;
-    user.userroles = new UserRole();
-    user.userroles.rolecode = refCode;
-    user.userbizdetails = new UserBiz();
+  saveUser(user: any , refCode: string , shortkey: string , userobj: User) {
+    userobj.createdby = user.firstname;
+    userobj.avtarurl = config.default_avatar;
+    userobj.updateby = user.firstname;
+    userobj.userroles = new UserRole();
+    userobj.userroles.rolecode = refCode;
+    userobj.userbizdetails = new UserBiz();
     if (shortkey === config.shortkey_role_fu) {
-      user.freeLanceDetails = new Freelance();
-      user.freeLanceDetails.category = category;
-      user.freeLanceDetails.subCategory = subcategory;
-      user.freelancehistoryentity[1] = new FreelanceHistory();
+      userobj.freeLanceDetails = new Freelance();
+      userobj.freeLanceDetails.category = user.category;
+      userobj.freeLanceDetails.subCategory = user.subcategory;
+      userobj.freelancehistoryentity = new Array<FreelanceHistory>();
+      this.freelanceobj = new FreelanceHistory();
+      this.freelanceobj.bgstatus = config.bg_code_incompleteprofile;
+      userobj.freelancehistoryentity.push(this.freelanceobj);
     }
-    return this.http.post(`${environment.apiUrl}/saveUser/`, user);
+    console.log('userobj' , userobj);
+    return this.http.post(`${environment.apiUrl}/saveUser/`, userobj);
   }
 
   checkusernamenotexist(username: string) {
