@@ -7,6 +7,7 @@ export class FreelanceHistory  {
     public bgcomment: string;
     public islocked: boolean;
     public managerid: number;
+    public csstid: number;
     constructor(
     ) {
     }

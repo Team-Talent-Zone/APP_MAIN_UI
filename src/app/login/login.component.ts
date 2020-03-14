@@ -3,14 +3,13 @@ import { Util } from 'src/app/appmodels/Util';
 import {
   FormBuilder,
   FormGroup,
-  Validators,
-  FormControl
+  Validators
 } from '@angular/forms';
 import { UserService } from '../AppRestCall/user/user.service';
 import { AlertsService } from '../AppRestCall/alerts/alerts.service';
 import { UserAdapter } from '../adapters/useradapter';
 import { User } from '../appmodels/User';
-import { map, first } from 'rxjs/operators';
+import { first } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
@@ -100,7 +99,6 @@ export class LoginComponent implements OnInit {
         error => {
           this.spinnerService.hide();
           this.alertService.error(error);
-          this.router.navigate(['/dashboard']);
         });
   }
   get fpwd() {

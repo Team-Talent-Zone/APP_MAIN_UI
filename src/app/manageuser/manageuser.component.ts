@@ -1,4 +1,4 @@
-import { FreelanceHistory } from './../appmodels/FreelanceHistory';
+import { ConfigMsg } from './../appconstants/configmsg';
 import { ProcessbgverificationComponent } from './../processbgverification/processbgverification.component';
 import { ViewaccountdetailsComponent } from './../viewaccountdetails/viewaccountdetails.component';
 import { Component, OnInit } from '@angular/core';
@@ -35,7 +35,7 @@ export class ManageuserComponent implements OnInit {
 
   constructor(
     private modalService: BsModalService,
-    private userService: UserService,
+    public userService: UserService,
     private spinnerService: Ng4LoadingSpinnerService,
     private userAdapter: UserAdapter,
     private alertService: AlertsService,
@@ -115,8 +115,9 @@ executeBGVerificationCheck(userId: number) {
         this.usrobjById.freelancehistoryentity[0].decisionby = this.userService.currentUserValue.username;
         this.usrobjById.freelancehistoryentity[0].islocked = true;
         this.usrobjById.freelancehistoryentity[0].managerid = this.userService.currentUserValue.usermanagerdetailsentity.managerid;
+        this.usrobjById.freelancehistoryentity[0].csstid = this.userService.currentUserValue.userId;
         this.userService.saveorupdate(this.usrobjById).subscribe(
-      (userObj: any) => {
+        (userObj: any) => {
         this.usrObj = this.userAdapter.adapt(userObj);
         if (this.userService.currentUserValue.userId === this.usrObj.userId) {
           this.userService.currentUserValue.avtarurl = this.usrObj.avtarurl;
@@ -147,7 +148,6 @@ executeBGVerificationCheck(userId: number) {
       });
 }
 openViewAccountDetailsModal(userId: number) {
-  const initialState = {userid: userId};
   this.usrObjTotalUsers.forEach((element: any) => {
     const initialState = {usrdetailsObj: element};
     if (element.userId === userId) {
@@ -164,15 +164,19 @@ openViewAccountDetailsModal(userId: number) {
 processbgverficiationopenmodal(userId: number) {
   this.usrObjTotalUsers.forEach((element: any) => {
     if (element.userId === userId) {
-      const initialState = {usrdetailsObj: element};
-      this.modalRef = this.modalService.show(ProcessbgverificationComponent, Object.assign(
-        {},
-        this.config,
-        {
-           initialState
+      this.usrObjMyWork.forEach((myworkusrobj: any) => {
+        if (myworkusrobj.userId === userId) {
+        const initialState = {usrdetailsObj: element , usrObjMyWork: myworkusrobj};
+        this.modalRef = this.modalService.show(ProcessbgverificationComponent, Object.assign(
+          {},
+          this.config,
+          {
+             initialState
+          }
+          )
+        );
         }
-        )
-      );
+      });
     }
   });
  }

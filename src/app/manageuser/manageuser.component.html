@@ -234,7 +234,7 @@
                                              </ng-template>
                                         </a>
                                     </td>
-                                    <td *ngIf="fu.freeLanceDetails.isprofilecompleted && !fu.freeLanceDetails.isbgstarted">
+                                    <td *ngIf="userService.currentUserValue.userroles.rolecode == 'CORE_SERVICE_SUPPORT_TEAM'">
                                         <a *ngIf="fu.freeLanceDetails.isprofilecompleted && !fu.freeLanceDetails.isbgstarted"  class="btn  btn-sm" (click)='executeBGVerificationCheck(fu.userId)'>
                                             <i title="Initiate Background verification"  class="fa fa-play" style="color: rgb(37, 165, 37)"></i>
                                             </a>

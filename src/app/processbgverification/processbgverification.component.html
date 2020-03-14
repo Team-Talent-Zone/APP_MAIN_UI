@@ -1,6 +1,6 @@
 <div class="modal-header">
     <h3 class="modal-title">
-        Background Verification Form of {{usrdetailsObj.firstname}}
+        Background Verification Form of {{usrdetailsObj.firstname}}&nbsp;{{usrdetailsObj.lastname}}
     </h3>
     <button type="button" class="close" (click)="modalRef.hide()">&times;</button>
 </div>
@@ -13,56 +13,62 @@
                         Workflow Decision
                     </div>
                     <div class="card-body py-md-4">
-                        <form _lpchecked="1">
-                            <div class="form-group">
-                                <input readonly type="text" readonly class="form-control"
-                                    value={{usrdetailsObj.username}}>
-                            </div>
+                        <form [formGroup]="bgverificationForm" (ngSubmit)="preparebgverfiDetailstoSave()">
                             <div class="form-group"
                                 *ngIf="userService.currentUserValue.userroles.rolecode == 'CORE_SERVICE_SUPPORT_MANAGER'">
-                                <select #sel class="form-control">
+                                <select #sel class="form-control" formControlName="bgstatus"
+                                [ngClass]="{ 'is-invalid': issubmit && f.bgstatus.errors }">
                                     <option value="">--Select Decision --</option>
                                     <option value="BG_APPROVED"> Approved</option>
                                     <option value="BG_REJECTED"> Rejected</option>
                                     <option value="BG_SENTTOCSST">Sent Back to CSST</option>
                                 </select>
+                                <div *ngIf="issubmit && f.bgstatus.errors" class="invalid-feedback">
+                                    <div *ngIf="f.bgstatus.errors.required">Decision is required
+                                    </div>
+                                  </div>
                             </div>
                             <div class="form-group">
-                                <label>Comment</label>
-                                <textarea class="form-control"></textarea>
+                                <label>Comment*</label>
+                                <textarea class="form-control" formControlName="bgcomment"
+                                [ngClass]="{ 'is-invalid': issubmit && f.bgcomment.errors }"></textarea>
+                                <div *ngIf="issubmit && f.bgcomment.errors" class="invalid-feedback">
+                                    <div *ngIf="f.bgcomment.errors.required">Comment is required
+                                    </div>
+                            </div>
                             </div>
                             <div class="form-group"
-                                *ngIf="userService.currentUserValue.userroles.rolecode == 'CORE_SERVICE_SUPPORT_CSST'">
+                                *ngIf="userService.currentUserValue.userroles.rolecode == 'CORE_SERVICE_SUPPORT_TEAM'">
                                 <label>Upload BG Additional Docs</label>
                                 <input type="file" class="form-control">
                             </div>
-                        </form>
                         <!-- Modal footer -->
                         <div class="modal-footer">
                             <button class="btn  btn-primary" type="submit">Submit</button>
                         </div>
+                    </form>
                     </div>
                 </div>
             </div>
 
             <div class="card">
                 <div class="card-header">
-                    Workflow Decision
+                    Bg Vertification All Stages - History
                 </div>
                 <div class="card-body py-md-4">
                     <table class="table table-bordered">
                         <thead>
                             <tr>
                                 <th>Date</th>
-                                <th>Worked By</th>
-                                <th>Comment</th>
+                                <th>Assigned To</th>
+                                <th>Notes</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let freehist of usrdetailsObj.freelancehistoryentity">
-                                <td>{{freehist.decisionon}}</td>
-                                <td>{{freehist.decisionby}}</td>
-                                <td>{{freehist.bgcomment}}</td>
+                                <td *ngIf="freehist.bgcomment !=null">{{freehist.decisionon}}</td>
+                                <td *ngIf="freehist.bgcomment !=null">{{freehist.decisionby}}</td>
+                                <td *ngIf="freehist.bgcomment !=null">{{freehist.bgcomment}}</td>
                             </tr>
                         </tbody>
                     </table>

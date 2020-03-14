@@ -78,7 +78,12 @@ export class UserService {
    }
 
    saveorupdate(user: User) {
+    console.log('this is save or update' , user);
     return this.http.post(`${environment.apiUrl}/saveorupdateuser/`, user);
+   }
+
+   saveFreeLanceHistory(freelanceHistory: FreelanceHistory) {
+    return this.http.post(`${environment.apiUrl}/saveFreeLanceHistory/`, freelanceHistory);
    }
 
    getUserByUserId(userId: number) {
