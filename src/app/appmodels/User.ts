@@ -1,9 +1,10 @@
+import { UserManagerDetails } from './UserManagerDetails';
 import { UserBiz } from './UserBiz';
 import { UserRole } from './UserRole';
 import { Freelance } from './Freelance';
 import { FreelanceHistory } from './FreelanceHistory';
 export class User  {
-     constructor(
+    constructor(
         public userId: number,
         public username: string,
         public password: string,
@@ -21,7 +22,8 @@ export class User  {
         public userroles: UserRole,
         public userbizdetails: UserBiz,
         public freeLanceDetails: Freelance,
-        public freelancehistoryentity: FreelanceHistory
+        public freelancehistoryentity: FreelanceHistory[] = [],
+        public usermanagerdetailsentity: UserManagerDetails,
     ) {
 
     }

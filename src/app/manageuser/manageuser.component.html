@@ -50,7 +50,7 @@
                     <i class="fa fa-users fa-4x"></i>
                 </div>
                 <h6 class="text-uppercase">Total Users</h6>
-                <h1 class="display-4">{{usrObj.length}}</h1>
+                <h1 class="display-4">{{usrObjTotalUsers.length}}</h1>
             </div>
         </div>
     </div>
@@ -76,7 +76,7 @@
                             <thead *ngIf="usrObjMyWork != ''">
                                 <tr >
                                     <th>Name</th>
-                                    <th>Username</th>
+                                    <th>Email Address</th>
                                     <th>Created On</th>
                                     <th>Last Updated On</th>
                                     <th></th>
@@ -92,11 +92,17 @@
                                     <td>{{mywork.createdon}}</td>
                                     <td>{{mywork.updatedon}}</td>
                                     <td>
-                                        <i title= "You can start working.." class="fa fa-lock" style="color: rgb(37, 165, 37)" *ngIf="mywork.freelancehistoryentity.islocked;">
-                                        </i>
+                                        <a class="btn  btn-sm" (click) = 'processbgverficiationopenmodal(mywork.userId)'>
+                                            <i title= "You can start working.."  
+                                                    class="fa fa-lock" style="color: rgb(37, 165, 37)" 
+                                                    *ngIf="mywork.freelancehistoryentity.islocked;">
+                                            </i>
+                                        </a>
                                     </td>
                                     <td>
-                                        <i title="View {{mywork.firstname}} Account Details" class="fa fa-eye"></i>
+                                        <a class="btn  btn-sm" (click) = 'openViewAccountDetailsModal(mywork.userId)' >
+                                            <i title="View {{mywork.firstname}} Account Details" class="fa fa-eye"></i>
+                                        </a>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -112,7 +118,7 @@
                             <thead>
                                 <tr>
                                     <th>Name</th>
-                                    <th>Username</th>
+                                    <th>Email Address</th>
                                     <th>Created On</th>
                                     <th>Language</th>
                                     <th></th>
@@ -138,7 +144,9 @@
                                         </div>
                                     </td>
                                     <td>
+                                        <a class="btn  btn-sm" (click) = 'openViewAccountDetailsModal(cbu.userId)' >
                                         <i title="View {{cbu.firstname}} Account Details" class="fa fa-eye"></i>
+                                        </a>
                                     </td>
                                     <td>
                                         <i title="View {{cbu.firstname}} Service Details" class="fa fa-briefcase"></i>
@@ -152,7 +160,7 @@
                             <thead>
                                 <tr>
                                     <th>Name</th>
-                                    <th>Username</th>
+                                    <th>Email Address</th>
                                     <th>Language</th>
                                     <th>Is BG Complete</th>
                                     <th>Is BG Start</th>
@@ -181,10 +189,10 @@
                                     </td>
                                     <td *ngIf="fu.freeLanceDetails !=null">
                                         <div *ngIf="fu.freeLanceDetails.isbgstarted">
-                                            <div *ngIf="fu.freeLanceDetails.bgDone">
+                                            <div *ngIf="fu.freeLanceDetails.isbgdone">
                                                 <i class="fa fa-check" title="Bg verification is completed" style="color: rgb(37, 165, 37)"></i>
                                             </div>
-                                            <div *ngIf="!fu.freeLanceDetails.bgDone">
+                                            <div *ngIf="!fu.freeLanceDetails.isbgdone">
                                                 <i class="fa fa-spinner" title="Bg verification is in-progress" style="color:rgb(16, 0, 238)"></i>
                                             </div>
                                         </div>
@@ -210,16 +218,23 @@
                                             <div *ngIf="refdata.code === fu.freelancehistoryentity.bgstatus">
                                                 {{refdata.label}}
                                                 <label title="{{fu.freelancehistoryentity.decisionby}}" >
-                                                <i class="fa fa-question-circle"
+                                                <i class="fa fa-question-circle" *ngIf="fu.freelancehistoryentity.decisionby != null"
                                                 style="font-size:10px;color:rgb(35, 124, 226)"></i>
                                                 </label>
                                             </div>
                                         </div>
                                     </td>
                                     <td>
-                                        <i title="View {{fu.firstname}} Account Details" class="fa fa-eye"></i>
+                                        <a class="btn  btn-sm" (click) = 'openViewAccountDetailsModal(fu.userId)' >
+                                            <i title="{{fu.firstname}} BG is rejected . View Account Details" class="fa fa-eye" style="color:rgb(241, 18, 18)" 
+                                                *ngIf="fu.freelancehistoryentity.bgstatus == 'BG_REJECTED'; else elseNotRejected ">
+                                             </i>
+                                             <ng-template #elseNotRejected>
+                                                <i title="View {{fu.firstname}} Account Details" class="fa fa-eye" ></i>
+                                             </ng-template>
+                                        </a>
                                     </td>
-                                    <td *ngIf="fu.freeLanceDetails.isprofilecompleted && !fu.freeLanceDetails.isbgstarted">
+                                    <td *ngIf="userService.currentUserValue.userroles.rolecode == 'CORE_SERVICE_SUPPORT_TEAM'">
                                         <a *ngIf="fu.freeLanceDetails.isprofilecompleted && !fu.freeLanceDetails.isbgstarted"  class="btn  btn-sm" (click)='executeBGVerificationCheck(fu.userId)'>
                                             <i title="Initiate Background verification"  class="fa fa-play" style="color: rgb(37, 165, 37)"></i>
                                             </a>
@@ -232,7 +247,7 @@
                             <thead>
                                 <tr>
                                     <th>Name</th>
-                                    <th>Username</th>
+                                    <th>Email Address</th>
                                     <th>Created On</th>
                                     <th>Created By</th>
                                     <th></th>
@@ -247,7 +262,9 @@
                                     <td>{{platformuser.createdon}}</td>
                                     <td>{{platformuser.createdby}}</td>
                                     <td>
-                                        <i title="View {{platformuser.firstname}} Account Details" class="fa fa-eye"></i>
+                                        <a class="btn  btn-sm" (click) = 'openViewAccountDetailsModal(platformuser.userId)' >
+                                            <i title="View {{platformuser.firstname}} Account Details" class="fa fa-eye"></i>
+                                        </a>
                                     </td>
                                 </tr>
                         </table>

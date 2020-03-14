@@ -28,7 +28,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
               if (error.status === 404) {
                 errorMessage = ConfigMsg.server_internal_error;
               } else {
-              errorMessage = `Error Code: ${error.status}\nMessage: ${error.error.errormessage}`;
+              errorMessage = `${error.error.errormessage}`;
               }
             }
             return throwError(errorMessage);

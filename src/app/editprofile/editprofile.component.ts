@@ -46,7 +46,7 @@ export class EditprofileComponent implements OnInit {
     private utilService: UtilService,
     private formBuilder: FormBuilder,
     private userAdapter: UserAdapter,
-    private signupComponent: SignupComponent,
+    public signupComponent: SignupComponent,
   ) {
     route.params.subscribe(params => {
       this.id = params.id;
@@ -64,7 +64,6 @@ export class EditprofileComponent implements OnInit {
       if (this.userService.currentUserValue.preferlang === 'te') {
         this.langSelected = 'తెలుగు';
       }
-      console.log('this.langSelected ' , this.langSelected );
       this.signupComponent.getAllCategories(this.langSelected);
     }
 
@@ -118,6 +117,7 @@ export class EditprofileComponent implements OnInit {
      this.userService.getUserByUserId(this.id).pipe(first()).subscribe(
        (respuser: any) => {
         this.edituserobj = respuser;
+        this.userService.currentUserValue.avtarurl = this.edituserobj.avtarurl;
         this.avatarURL = this.edituserobj.avtarurl;
         this.editprofileuserId = this.edituserobj.userId;
         this.spinnerService.hide();
@@ -182,6 +182,7 @@ export class EditprofileComponent implements OnInit {
         this.edituserobj.freeLanceDetails.uploadValidPhotoidImgUrl != null &&
         this.edituserobj.userbizdetails.fulladdress != null) {
         this.edituserobj.freeLanceDetails.isprofilecompleted = true;
+        this.edituserobj.freelancehistoryentity[0].bgstatus = config.bg_code_completedprofile;
         }
     }
     this.spinnerService.show();

@@ -31,9 +31,11 @@ import { ReferenceLookUpTemplateAdapter } from './adapters/referencelookuptempla
 import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 import { AuthgaurdService } from './AppRestCall/authgaurd/authgaurd.service';
 import { BasicAuthHtppInterceptorService } from './AppRestCall/authgaurd/basicauthhttpinterceptor/basicauthhttpinterceptor.service';
-import { NewService } from './appmodels/NewService';
 import { ManageuserComponent } from './manageuser/manageuser.component';
 import { EditprofileComponent } from './editprofile/editprofile.component';
+import { ViewaccountdetailsComponent } from './viewaccountdetails/viewaccountdetails.component';
+import { DashboardbyuseroleComponent } from './dashboardbyuserole/dashboardbyuserole.component';
+import { ProcessbgverificationComponent } from './processbgverification/processbgverification.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -56,6 +58,9 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     DashboardComponent,
     ManageuserComponent,
     EditprofileComponent,
+    ViewaccountdetailsComponent,
+    DashboardbyuseroleComponent,
+    ProcessbgverificationComponent,
     ],
   imports: [
     BrowserModule,
@@ -93,6 +98,10 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     {
       provide: HTTP_INTERCEPTORS, useClass: BasicAuthHtppInterceptorService, multi: true
     }
+  ],
+  entryComponents: [
+    ViewaccountdetailsComponent,
+    ProcessbgverificationComponent
   ],
   bootstrap: [AppComponent]
 })

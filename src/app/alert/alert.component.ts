@@ -16,7 +16,7 @@ export class AlertComponent implements OnInit {
 
   private subscription: Subscription;
   message: any;
-  config: ModalOptions = { class: 'modal-sm' };
+  config: ModalOptions = { class: 'modal-md' };
 
   constructor(
     private alertService: AlertsService,
@@ -36,7 +36,6 @@ export class AlertComponent implements OnInit {
                   break;
           }
           this.message = message;
-          console.log('this is alert componet message' , this.message);
           if (this.message != null) {
             this.openModal(this.modalTemplate);
           }

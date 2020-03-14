@@ -1,3 +1,4 @@
+import { DashboardbyuseroleComponent } from './dashboardbyuserole/dashboardbyuserole.component';
 import { EditprofileComponent } from './editprofile/editprofile.component';
 import { ManageuserComponent } from './manageuser/manageuser.component';
 import { AppComponent } from './app.component';
@@ -31,7 +32,24 @@ const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
-    canActivate: [AuthgaurdService]
+    canActivate: [AuthgaurdService],
+    children: [
+      {
+        path: '',
+        component: DashboardbyuseroleComponent
+      }
+    ]
+  },
+  {
+    path: 'dashboard/:name',
+    component: DashboardComponent,
+    canActivate: [AuthgaurdService],
+    children: [
+      {
+        path: '',
+        component: DashboardbyuseroleComponent
+      }
+    ]
   },
   {
     path: 'manageuser',

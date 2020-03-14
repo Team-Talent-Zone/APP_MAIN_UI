@@ -17,7 +17,6 @@ export class HomepriceComponent implements OnInit {
     private newsvcadapter: NewServiceAdapter) { }
 
   ngOnInit() {
-    this.getAllNewServiceDetails();
   }
 
   getAllNewServiceDetails() {

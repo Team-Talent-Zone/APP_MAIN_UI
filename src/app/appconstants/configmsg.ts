@@ -9,5 +9,5 @@ email_forgotpasswordemailaddress_subj: 'Forgot Password',
 email_welcomeemailaddress_subj: 'Welcome To Company',
 email_verficationemailaddress_successmsg: 'Welcome Back Again Please Login',
 email_verficationemailaddress_alreadydone: 'Your email verfiication is already completed. \n Please login with your username.',
-login_invalid_password: 'You entered invalid password'
+login_invalid_password: 'You entered invalid password',
 };
