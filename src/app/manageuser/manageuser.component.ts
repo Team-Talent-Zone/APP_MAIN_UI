@@ -148,14 +148,19 @@ executeBGVerificationCheck(userId: number) {
 }
 openViewAccountDetailsModal(userId: number) {
   const initialState = {userid: userId};
-  this.modalRef = this.modalService.show(ViewaccountdetailsComponent, Object.assign(
-    {},
-    this.config,
-    {
-       initialState
-    }
-    ), );
+  this.usrObjTotalUsers.forEach((element: any) => {
+    const initialState = {usrdetailsObj: element};
+    if (element.userId === userId) {
+    this.modalRef = this.modalService.show(ViewaccountdetailsComponent, Object.assign(
+      {},
+      this.config,
+      {
+        initialState
+      }
+      ), );
+}});
 }
+
 processbgverficiationopenmodal(userId: number) {
   this.usrObjTotalUsers.forEach((element: any) => {
     if (element.userId === userId) {
