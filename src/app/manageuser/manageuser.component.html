@@ -50,7 +50,7 @@
                     <i class="fa fa-users fa-4x"></i>
                 </div>
                 <h6 class="text-uppercase">Total Users</h6>
-                <h1 class="display-4">{{usrObj.length}}</h1>
+                <h1 class="display-4">{{usrObjTotalUsers.length}}</h1>
             </div>
         </div>
     </div>
@@ -92,8 +92,12 @@
                                     <td>{{mywork.createdon}}</td>
                                     <td>{{mywork.updatedon}}</td>
                                     <td>
-                                        <i title= "You can start working.." class="fa fa-lock" style="color: rgb(37, 165, 37)" *ngIf="mywork.freelancehistoryentity.islocked;">
-                                        </i>
+                                        <a class="btn  btn-sm" (click) = 'processbgverficiationopenmodal(mywork.userId)'>
+                                            <i title= "You can start working.."  
+                                                    class="fa fa-lock" style="color: rgb(37, 165, 37)" 
+                                                    *ngIf="mywork.freelancehistoryentity.islocked;">
+                                            </i>
+                                        </a>
                                     </td>
                                     <td>
                                         <a class="btn  btn-sm" (click) = 'openViewAccountDetailsModal(mywork.userId)' >

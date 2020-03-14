@@ -1,3 +1,4 @@
+import { FreelanceHistory } from './../../appmodels/FreelanceHistory';
 import { Injectable } from '@angular/core';
 import { User } from 'src/app/appmodels/User';
 import { HttpClient } from '@angular/common/http';
@@ -6,7 +7,6 @@ import { config } from 'src/app/appconstants/config';
 import { UserRole } from 'src/app/appmodels/UserRole';
 import { UserBiz } from 'src/app/appmodels/UserBiz';
 import { Freelance } from 'src/app/appmodels/Freelance';
-import { FreelanceHistory } from 'src/app/appmodels/FreelanceHistory';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UserAdapter } from 'src/app/adapters/useradapter';
@@ -94,6 +94,6 @@ export class UserService {
    }
 
    getAllUsers() {
-    return this.http.get<User[]>(`${environment.apiUrl}/getAllUsers/`);
+    return this.http.get(`${environment.apiUrl}/getAllUsers/`);
    }
 }

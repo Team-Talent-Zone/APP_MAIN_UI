@@ -1,4 +1,3 @@
-import { User } from 'src/app/appmodels/User';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../AppRestCall/user/user.service';

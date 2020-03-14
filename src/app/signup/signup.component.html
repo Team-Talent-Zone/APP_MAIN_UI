@@ -68,10 +68,9 @@
 
     <div class="form-group">
       <span>
-        <i class="fa fa fa-language	
-       form-control-icon"></i>
+        <i class="fa fa fa-language	form-control-icon"></i>
       </span>
-      <select #sel class="form-control" class="form-control" formControlName="preferlang"
+      <select #sel class="form-control" formControlName="preferlang"
         [ngClass]="{ 'is-invalid': issubmit && f.preferlang.errors }">
         <option value="">{{'HOMESIGNUP.PREFERLANG' | translate}}</option>
         <option value="en">English</option>

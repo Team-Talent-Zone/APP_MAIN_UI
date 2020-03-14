@@ -4,7 +4,7 @@ export class FreelanceHistory  {
     public decisionby: string;
     public decisionon: string;
     public bgstatus: string;
-    public bgComment: string;
+    public bgcomment: string;
     public islocked: boolean;
     public managerid: number;
     constructor(

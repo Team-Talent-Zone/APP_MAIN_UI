@@ -35,6 +35,7 @@ import { ManageuserComponent } from './manageuser/manageuser.component';
 import { EditprofileComponent } from './editprofile/editprofile.component';
 import { ViewaccountdetailsComponent } from './viewaccountdetails/viewaccountdetails.component';
 import { DashboardbyuseroleComponent } from './dashboardbyuserole/dashboardbyuserole.component';
+import { ProcessbgverificationComponent } from './processbgverification/processbgverification.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -59,6 +60,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     EditprofileComponent,
     ViewaccountdetailsComponent,
     DashboardbyuseroleComponent,
+    ProcessbgverificationComponent,
     ],
   imports: [
     BrowserModule,
@@ -97,7 +99,10 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       provide: HTTP_INTERCEPTORS, useClass: BasicAuthHtppInterceptorService, multi: true
     }
   ],
-  entryComponents: [ViewaccountdetailsComponent],
+  entryComponents: [
+    ViewaccountdetailsComponent,
+    ProcessbgverificationComponent
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

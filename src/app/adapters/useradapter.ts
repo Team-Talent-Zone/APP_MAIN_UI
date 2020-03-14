@@ -21,8 +21,8 @@ export class UserAdapter implements Adapter<User> {
             item.userroles,
             item.userbizdetails,
             item.freeLanceDetails,
-            item.usermanagerdetailsentity,
             item.freelancehistoryentity,
+            item.usermanagerdetailsentity,
           );
     }
 }

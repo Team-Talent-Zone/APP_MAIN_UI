@@ -1,3 +1,5 @@
+import { FreelanceHistory } from './../appmodels/FreelanceHistory';
+import { ProcessbgverificationComponent } from './../processbgverification/processbgverification.component';
 import { ViewaccountdetailsComponent } from './../viewaccountdetails/viewaccountdetails.component';
 import { Component, OnInit } from '@angular/core';
 import * as $ from 'jquery';
@@ -9,7 +11,7 @@ import { User } from '../appmodels/User';
 import { first } from 'rxjs/operators';
 import { ReferenceService } from '../AppRestCall/reference/reference.service';
 import { config } from 'src/app/appconstants/config';
-import { BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalService , ModalOptions} from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
 @Component({
@@ -21,13 +23,15 @@ export class ManageuserComponent implements OnInit {
 
   usrObjCBAs: any = [];
   usrObjFUs: any = [];
-  usrObjAllFUs: any = [];
+  usrObjTotalUsers: any = [];
   usrObjPlatformAdmins: any = [];
   usrObjMyWork: any = [];
   usrObj: any = [];
   usrobjById: User;
   refDataObj: any = [];
   modalRef: BsModalRef;
+  config: ModalOptions = { class: 'modal-lg' };
+  mapusrObj: User [];
 
   constructor(
     private modalService: BsModalService,
@@ -61,44 +65,36 @@ export class ManageuserComponent implements OnInit {
   this.getReferenceDataByKey();
   this.spinnerService.show();
   this.userService.getAllUsers().subscribe(
-    (usrObjRsp: any) => {
-      this.usrObj = usrObjRsp;
+    (usrObjRsp: User[]) => {
       usrObjRsp.forEach(element => {
-        if (element.userroles.rolecode === 'CLIENT_BUSINESS_ADMINISTRATOR') {
-          this.usrObjCBAs.push(element);
+        this.usrObj = this.userAdapter.adapt(element);
+        this.usrObjTotalUsers.push(this.userAdapter.adapt(element));
+        if (this.usrObj.userroles.rolecode === 'CLIENT_BUSINESS_ADMINISTRATOR') {
+          this.usrObjCBAs.push(this.usrObj);
         }
-        if (element.userroles.rolecode === 'FREELANCER_USER') {
-          this.usrObjAllFUs.push(element);
+        if (this.usrObj.freelancehistoryentity != null) {
+            this.usrObj.freelancehistoryentity.forEach((elementFhistory: any) => {
+            if (elementFhistory.islocked && elementFhistory.decisionby ===
+                this.userService.currentUserValue.username) {
+                this.usrObj.freelancehistoryentity = elementFhistory ;
+                this.usrObjMyWork.push(this.usrObj);
+              }
+            if (elementFhistory.bgstatus === config.bg_code_incompleteprofile ||
+                elementFhistory.islocked ||
+                elementFhistory.bgstatus === config.bg_code_approved ||
+                elementFhistory.bgstatus === config.bg_code_rejected ||
+                elementFhistory.bgstatus === config.bg_code_completedprofile
+               ) {
+                this.usrObj.freelancehistoryentity = elementFhistory ;
+                this.usrObjFUs.push(this.usrObj);
+              }
+          });
         }
-        if (element.userroles.rolecode === 'CORE_SERVICE_SUPPORT_TEAM' ||
-            element.userroles.rolecode === 'CORE_SERVICE_SUPPORT_MANAGER') {
-          this.usrObjPlatformAdmins.push(element);
+        if (this.usrObj.userroles.rolecode === 'CORE_SERVICE_SUPPORT_TEAM' ||
+          this.usrObj.userroles.rolecode === 'CORE_SERVICE_SUPPORT_MANAGER') {
+          this.usrObjPlatformAdmins.push(this.usrObj);
         }
       });
-      this.usrObjAllFUs.forEach((element: any) => {
-      if (element.userroles.rolecode === 'FREELANCER_USER') {
-        if (element.freelancehistoryentity != null) {
-          element.freelancehistoryentity.forEach(
-            (elementFhistory: any) => {
-              if (elementFhistory.islocked && elementFhistory.decisionby ===
-                  this.userService.currentUserValue.username) {
-                  element.freelancehistoryentity = elementFhistory ;
-                  this.usrObjMyWork.push(element);
-            }
-              if (elementFhistory.bgstatus === config.bg_code_incompleteprofile ||
-                  elementFhistory.islocked ||
-                  elementFhistory.bgstatus === config.bg_code_approved ||
-                  elementFhistory.bgstatus === config.bg_code_rejected ||
-                  elementFhistory.bgstatus === config.bg_code_completedprofile
-                 ) {
-                  element.freelancehistoryentity = elementFhistory ;
-                  this.usrObjFUs.push(element);
-              }
-          }
-        );
-      }
-      }
-    });
       this.spinnerService.hide();
     },
     error => {
@@ -126,7 +122,7 @@ executeBGVerificationCheck(userId: number) {
           this.userService.currentUserValue.avtarurl = this.usrObj.avtarurl;
           this.userService.currentUserValue.firstname = this.usrObj.firstname;
         }
-        this.usrObjAllFUs = [];
+        this.usrObjTotalUsers = [];
         this.usrObjFUs = [];
         this.usrObjCBAs = [];
         this.usrObjPlatformAdmins = [];
@@ -151,10 +147,28 @@ executeBGVerificationCheck(userId: number) {
       });
 }
 openViewAccountDetailsModal(userId: number) {
-  this.modalRef = this.modalService.show(ViewaccountdetailsComponent,  {
-  initialState: {
-    userid: userId,
-  }
-});
+  const initialState = {userid: userId};
+  this.modalRef = this.modalService.show(ViewaccountdetailsComponent, Object.assign(
+    {},
+    this.config,
+    {
+       initialState
+    }
+    ), );
 }
+processbgverficiationopenmodal(userId: number) {
+  this.usrObjTotalUsers.forEach((element: any) => {
+    if (element.userId === userId) {
+      const initialState = {usrObjMyWork: element};
+      this.modalRef = this.modalService.show(ProcessbgverificationComponent, Object.assign(
+        {},
+        this.config,
+        {
+           initialState
+        }
+        )
+      );
+    }
+  });
+ }
 }
