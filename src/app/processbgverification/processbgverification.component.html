@@ -1,6 +1,6 @@
 <div class="modal-header">
     <h3 class="modal-title">
-        Background Verification Form of {{usrObjMyWork.firstname}}
+        Background Verification Form of {{usrdetailsObj.firstname}}
     </h3>
     <button type="button" class="close" (click)="modalRef.hide()">&times;</button>
 </div>
@@ -16,7 +16,7 @@
                         <form _lpchecked="1">
                             <div class="form-group">
                                 <input readonly type="text" readonly class="form-control"
-                                    value={{usrObjMyWork.username}}>
+                                    value={{usrdetailsObj.username}}>
                             </div>
                             <div class="form-group"
                                 *ngIf="userService.currentUserValue.userroles.rolecode == 'CORE_SERVICE_SUPPORT_MANAGER'">
@@ -59,7 +59,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let freehist of usrObjMyWork.freelancehistoryentity">
+                            <tr *ngFor="let freehist of usrdetailsObj.freelancehistoryentity">
                                 <td>{{freehist.decisionon}}</td>
                                 <td>{{freehist.decisionby}}</td>
                                 <td>{{freehist.bgcomment}}</td>

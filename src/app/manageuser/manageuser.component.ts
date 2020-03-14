@@ -159,7 +159,7 @@ openViewAccountDetailsModal(userId: number) {
 processbgverficiationopenmodal(userId: number) {
   this.usrObjTotalUsers.forEach((element: any) => {
     if (element.userId === userId) {
-      const initialState = {usrObjMyWork: element};
+      const initialState = {usrdetailsObj: element};
       this.modalRef = this.modalService.show(ProcessbgverificationComponent, Object.assign(
         {},
         this.config,

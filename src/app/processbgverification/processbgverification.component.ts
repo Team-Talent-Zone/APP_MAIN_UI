@@ -10,7 +10,7 @@ import { UserService } from '../AppRestCall/user/user.service';
 })
 export class ProcessbgverificationComponent implements OnInit {
 
-  usrObjMyWork: User;
+  usrdetailsObj: User;
   constructor(
     public  modalRef: BsModalRef,
     public userService: UserService,
