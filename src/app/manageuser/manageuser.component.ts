@@ -109,6 +109,7 @@ executeBGVerificationCheck(userId: number) {
     (respuser: any) => {
      this.usrobjById = respuser;
      this.usrobjById.freeLanceDetails.isbgstarted = true,
+     this.usrobjById.freeLanceDetails.isbgdone = false,
      this.referService.getReferenceLookupByShortKey(config.shortkey_bg_sentocsst).subscribe(
       (refCode: any) => {
         this.usrobjById.freelancehistoryentity[0].bgstatus = refCode.toString();
