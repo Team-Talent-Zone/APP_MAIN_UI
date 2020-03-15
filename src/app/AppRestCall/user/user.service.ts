@@ -1,3 +1,4 @@
+import { FreelanceDocuments } from './../../appmodels/FreelanceDocuments';
 import { FreelanceHistory } from './../../appmodels/FreelanceHistory';
 import { Injectable } from '@angular/core';
 import { User } from 'src/app/appmodels/User';
@@ -78,12 +79,15 @@ export class UserService {
    }
 
    saveorupdate(user: User) {
-    console.log('this is save or update' , user);
     return this.http.post(`${environment.apiUrl}/saveorupdateuser/`, user);
    }
 
    saveFreeLanceHistory(freelanceHistory: FreelanceHistory) {
     return this.http.post(`${environment.apiUrl}/saveFreeLanceHistory/`, freelanceHistory);
+   }
+
+   saveFreeLanceDocument(freelanceDocuments: FreelanceDocuments) {
+    return this.http.post(`${environment.apiUrl}/saveFreeLanceDocument/`, freelanceDocuments);
    }
 
    getUserByUserId(userId: number) {

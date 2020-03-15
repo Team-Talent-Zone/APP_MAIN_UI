@@ -1,3 +1,4 @@
+import { FreelanceDocuments } from './FreelanceDocuments';
 import { UserManagerDetails } from './UserManagerDetails';
 import { UserBiz } from './UserBiz';
 import { UserRole } from './UserRole';
@@ -23,6 +24,7 @@ export class User  {
         public userbizdetails: UserBiz,
         public freeLanceDetails: Freelance,
         public freelancehistoryentity: FreelanceHistory[] = [],
+        public freelancedocumententity: FreelanceDocuments[] = [],
         public usermanagerdetailsentity: UserManagerDetails,
     ) {
 

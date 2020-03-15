@@ -212,7 +212,6 @@ export class EditprofileComponent implements OnInit {
       // When file uploads set it to file formcontrol
       reader.onload = () => {
         this.spinnerService.show();
-        
         if (type === 'avatar') {
         this.utilService.uploadAvatarsInS3(  reader.result , this.editprofileuserId).subscribe(
             (returnURL: string) => {
@@ -226,7 +225,7 @@ export class EditprofileComponent implements OnInit {
           );
           };
         if (type === 'nationalid') {
-            this.utilService.uploadBgDocsInS3(reader.result , this.editprofileuserId , 'pdf').subscribe(
+            this.utilService.uploadBgDocsInS3(reader.result , this.editprofileuserId).subscribe(
                 (returnURL: string) => {
                   this.spinnerService.hide();
                   this.nationalIDPDFURL = returnURL;

@@ -37,14 +37,30 @@
                                     </div>
                             </div>
                             </div>
-                            <div class="form-group"
-                                *ngIf="userService.currentUserValue.userroles.rolecode == 'CORE_SERVICE_SUPPORT_TEAM'">
-                                <label>Upload BG Additional Docs</label>
-                                <input type="file" class="form-control">
+                            <div class="form-group" *ngIf="additiondocreturnURL != null && userService.currentUserValue.userroles.rolecode == 'CORE_SERVICE_SUPPORT_TEAM'">
+                                <label>Document Name*</label>
+                                <input type="text" formControlName="docname" class="form-control"
+                                [ngClass]="{ 'is-invalid': issubmit && f.docname.errors }">
+                                <div *ngIf="issubmit && f.docname.errors" class="invalid-feedback">
+                                    <div *ngIf="f.docname.errors.required">Document name is required
+                                    </div>
+                                </div>
                             </div>
+                            <div class="avatar-upload" >
+                                <div class="avatar-edit">
+                                    <input type='file' accept=".pdf" #fileInput
+                                        (change)="uploadFile($event)" />
+                                </div>
+                                <a href="{{additiondocreturnURL}}" target="_blank" 
+                                *ngIf="additiondocreturnURL != null">Click to view the document</a>
+                             </div>
+                            <button type="button" *ngIf="userService.currentUserValue.userroles.rolecode == 'CORE_SERVICE_SUPPORT_TEAM'"
+                                 class="btn btn-info btn-sm btn-block"
+                                (click)="fileInput.click()"> Click to Upload addition docs
+                             </button>
                         <!-- Modal footer -->
                         <div class="modal-footer">
-                            <button class="btn  btn-primary" type="submit">Submit</button>
+                            <button class="btn  btn-primary" type="submit">Save</button>
                         </div>
                     </form>
                     </div>
