@@ -4,7 +4,6 @@ export class Freelance  {
     public isbgdone: boolean;
     public isprofilecompleted: boolean;
     public isbgstarted: boolean;
-    public uploadAdditionalDocZipFileUrl: string;
     public isJobAvailable: boolean;
     public subCategory: string;
     public category: string;

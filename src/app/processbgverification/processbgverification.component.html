@@ -1,13 +1,13 @@
 <div class="modal-header">
     <h3 class="modal-title">
         Background Verification Form of {{usrdetailsObj.firstname}}&nbsp;{{usrdetailsObj.lastname}}
+        &nbsp;-&nbsp;{{usrdetailsObj.userId}}
     </h3>
     <button type="button" class="close" (click)="modalRef.hide()">&times;</button>
 </div>
 <div class="modal-body">
     <div class="container">
         <div class="row">
-            <div class="col-xl-7">
                 <div class="card">
                     <div class="card-header">
                         Workflow Decision
@@ -17,7 +17,7 @@
                             <div class="form-group"
                                 *ngIf="userService.currentUserValue.userroles.rolecode == 'CORE_SERVICE_SUPPORT_MANAGER'">
                                 <select #sel class="form-control" formControlName="bgstatus"
-                                [ngClass]="{ 'is-invalid': issubmit && f.bgstatus.errors }">
+                                    [ngClass]="{ 'is-invalid': issubmit && f.bgstatus.errors }">
                                     <option value="">--Select Decision --</option>
                                     <option value="BG_APPROVED"> Approved</option>
                                     <option value="BG_REJECTED"> Rejected</option>
@@ -26,55 +26,60 @@
                                 <div *ngIf="issubmit && f.bgstatus.errors" class="invalid-feedback">
                                     <div *ngIf="f.bgstatus.errors.required">Decision is required
                                     </div>
-                                  </div>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label>Comment*</label>
                                 <textarea class="form-control" formControlName="bgcomment"
-                                [ngClass]="{ 'is-invalid': issubmit && f.bgcomment.errors }"></textarea>
+                                    [ngClass]="{ 'is-invalid': issubmit && f.bgcomment.errors }"></textarea>
                                 <div *ngIf="issubmit && f.bgcomment.errors" class="invalid-feedback">
                                     <div *ngIf="f.bgcomment.errors.required">Comment is required
                                     </div>
+                                </div>
                             </div>
-                            </div>
-                            <div class="form-group" *ngIf="additiondocreturnURL != null && userService.currentUserValue.userroles.rolecode == 'CORE_SERVICE_SUPPORT_TEAM'">
+                            <div class="form-group"
+                                *ngIf="additiondocreturnURL != null && userService.currentUserValue.userroles.rolecode == 'CORE_SERVICE_SUPPORT_TEAM'">
                                 <label>Document Name*</label>
                                 <input type="text" formControlName="docname" class="form-control"
-                                [ngClass]="{ 'is-invalid': issubmit && f.docname.errors }">
+                                    [ngClass]="{ 'is-invalid': issubmit && f.docname.errors }">
                                 <div *ngIf="issubmit && f.docname.errors" class="invalid-feedback">
                                     <div *ngIf="f.docname.errors.required">Document name is required
                                     </div>
                                 </div>
                             </div>
-                            <div class="avatar-upload" >
+                            <div class="avatar-upload">
                                 <div class="avatar-edit">
-                                    <input type='file' accept=".pdf" #fileInput
-                                        (change)="uploadFile($event)" />
+                                    <input type='file' accept=".pdf" #fileInput (change)="uploadFile($event)" />
                                 </div>
-                                <a href="{{additiondocreturnURL}}" target="_blank" 
-                                *ngIf="additiondocreturnURL != null">Click to view the document</a>
-                             </div>
-                            <button type="button" *ngIf="userService.currentUserValue.userroles.rolecode == 'CORE_SERVICE_SUPPORT_TEAM'"
-                                 class="btn btn-info btn-sm btn-block"
-                                (click)="fileInput.click()"> Click to Upload addition docs
-                             </button>
-                        <!-- Modal footer -->
-                        <div class="modal-footer">
-                            <button class="btn  btn-primary" type="submit">Save</button>
-                        </div>
-                    </form>
+                                <a class="form-control" style="color:blue" href="{{additiondocreturnURL}}"
+                                    target="_blank" *ngIf="additiondocreturnURL != null">Click to View the uploaded
+                                    document</a>
+                            </div>
+                            <button type="button"
+                                *ngIf="userService.currentUserValue.userroles.rolecode == 'CORE_SERVICE_SUPPORT_TEAM'"
+                                class="btn btn-info btn-sm btn-block" (click)="fileInput.click()">
+                                <span>
+                                    Click to Upload Addition Doc (If any)
+                                </span>
+                            </button>
+                            <!-- Modal footer -->
+                            <div class="modal-footer">
+                                <button class="btn  btn-primary" type="submit">Save</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
-            </div>
+             
 
             <div class="card" *ngIf="usrdetailsObj.freelancehistoryentity.length > 1">
                 <div class="card-header">
-                    Bg Vertification All Stages - History 
+                    Bg Verification - Workflow History
                 </div>
-                <div class="card-body py-md-4">
+                <div class="card-body">
+                    <div class="panel-body">
                     <table class="table table-bordered">
                         <thead>
-                            <tr>
+                            <tr >
                                 <th>Date</th>
                                 <th>Assigned To</th>
                                 <th>Notes</th>
@@ -82,9 +87,31 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let freehist of usrdetailsObj.freelancehistoryentity">
-                                <td *ngIf="freehist.bgcomment !=null">{{freehist.decisionon}}</td>
+                                <td style ="word-break:break-all;" *ngIf="freehist.bgcomment !=null">{{freehist.decisionon}}</td>
                                 <td *ngIf="freehist.bgcomment !=null">{{freehist.decisionby}}</td>
                                 <td *ngIf="freehist.bgcomment !=null">{{freehist.bgcomment}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+            </div>
+            <div class="card" *ngIf="usrdetailsObj.freelancedocumententity != null">
+                <div class="card-header">
+                    Bg Verification - Documents
+                </div>
+                <div class="card-body py-md-4">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Document Name</th>
+                                <th>Upload Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let freedoc of usrdetailsObj.freelancedocumententity">
+                                <td><a href={{freedoc.docurl}} target="_blank">{{freedoc.docname}}</a></td>
+                                <td>{{freedoc.uploaddate}}</td>
                             </tr>
                         </tbody>
                     </table>

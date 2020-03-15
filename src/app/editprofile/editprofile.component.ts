@@ -96,6 +96,7 @@ export class EditprofileComponent implements OnInit {
         category: ['', [Validators.required]],
         experienceInField: ['', [Validators.required  , Validators.maxLength(2) , Validators.pattern('^[0-9]*$')]],
         abt: ['', [Validators.required]],
+        uploadValidPhotoidImgUrl: ['', [Validators.required]],
         hourlyRate: ['', [Validators.required, Validators.maxLength(5),  Validators.pattern('^[0-9]*$')]],
       });
     }  else {
@@ -141,7 +142,7 @@ export class EditprofileComponent implements OnInit {
           this.editprofileForm.patchValue({abt: this.edituserobj.freeLanceDetails.abt});
           this.editprofileForm.patchValue({hourlyRate: this.edituserobj.freeLanceDetails.hourlyRate});
           this.nationalIDPDFURL = this.edituserobj.freeLanceDetails.uploadValidPhotoidImgUrl;
-
+          this.editprofileForm.patchValue({uploadValidPhotoidImgUrl: this.edituserobj.freeLanceDetails.uploadValidPhotoidImgUrl});
             }
          },
        error => {
@@ -152,6 +153,9 @@ export class EditprofileComponent implements OnInit {
   }
 
   saveorupdateeditprofile() {
+    if (this.roleCode === config.user_rolecode_fu) {
+        this.editprofileForm.patchValue({uploadValidPhotoidImgUrl: this.nationalIDPDFURL});
+    }
     this.issubmit = true;
     if (this.editprofileForm.invalid) {
       return;
@@ -194,7 +198,7 @@ export class EditprofileComponent implements OnInit {
           this.userService.currentUserValue.avtarurl = this.usrObj.avtarurl;
           this.userService.currentUserValue.firstname = this.usrObj.firstname;
         }
-        this.alertService.success( this.usrObj.firstname + ' account details is updated');
+        this.alertService.success( this.usrObj.firstname + ' your account details is updated');
       },
       error => {
         this.spinnerService.hide();

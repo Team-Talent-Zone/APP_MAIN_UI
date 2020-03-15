@@ -92,10 +92,10 @@
                                     <td>{{mywork.createdon}}</td>
                                     <td>{{mywork.updatedon}}</td>
                                     <td>
-                                        <a class="btn  btn-sm" (click) = 'processbgverficiationopenmodal(mywork.userId)'>
+                                        <a  *ngIf="mywork.freelancehistoryentity.islocked" class="btn  btn-sm" (click) = 'processbgverficiationopenmodal(mywork.userId)'>
                                             <i title= "You can start working.."  
                                                     class="fa fa-lock" style="color: rgb(37, 165, 37)" 
-                                                    *ngIf="mywork.freelancehistoryentity.islocked;">
+                                                    >
                                             </i>
                                         </a>
                                     </td>
