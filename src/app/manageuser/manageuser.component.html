@@ -263,7 +263,17 @@
                                     <td>{{platformuser.username}}</td>
                                     <td>{{platformuser.createdon}}</td>
                                     <td>{{platformuser.createdby}}</td>
-                                    <td>{{platformuser.preferlang}}</td>
+                                    <td>
+                                        <div *ngIf="platformuser.preferlang == 'en'">
+                                            English
+                                        </div>
+                                        <div *ngIf="platformuser.preferlang == 'te'">
+                                            తెలుగు
+                                        </div>
+                                        <div *ngIf="platformuser.preferlang == 'hi'">
+                                            हिंदी
+                                        </div>
+                                    </td>
                                     <td>
                                         <a class="btn  btn-sm" (click) = 'openViewAccountDetailsModal(platformuser.userId)' >
                                             <i title="View {{platformuser.firstname}} Account Details" class="fa fa-eye"></i>

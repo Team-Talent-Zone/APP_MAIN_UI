@@ -35,12 +35,14 @@ export class DashboardbyuseroleComponent implements OnInit {
       if (this.userService.currentUserValue.freeLanceDetails.isbgdone) {
         this.stage3Img = this.stageCompletedImg;
         }
-      if (this.userService.currentUserValue.freelancehistoryentity[0].bgstatus === config.bg_code_approved) {
-          this.stage4Img = this.stageBgStatusApprovedImg;
-          }
-      if (this.userService.currentUserValue.freelancehistoryentity[0].bgstatus === config.bg_code_rejected) {
-            this.stage4Img = this.stageBgStatusRejectedImg;
-          }
+      if (this.userService.currentUserValue.freelancehistoryentity != null) {
+          if (this.userService.currentUserValue.freelancehistoryentity[0].bgstatus === config.bg_code_approved) {
+              this.stage4Img = this.stageBgStatusApprovedImg;
+              }
+          if (this.userService.currentUserValue.freelancehistoryentity[0].bgstatus === config.bg_code_rejected) {
+                this.stage4Img = this.stageBgStatusRejectedImg;
+              }
+        }
     }
   }
 
