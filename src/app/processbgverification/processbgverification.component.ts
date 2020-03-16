@@ -9,11 +9,17 @@ import { first } from 'rxjs/operators';
 import { AlertsService } from '../AppRestCall/alerts/alerts.service';
 import { Router } from '@angular/router';
 import { UtilService } from '../AppRestCall/util/util.service';
+import { ConfigMsg } from '../appconstants/configmsg';
+import { SendemailService } from '../AppRestCall/sendemail/sendemail.service';
 import {
   FormBuilder,
   FormGroup,
   Validators} from '@angular/forms';
 import { config } from 'src/app/appconstants/config';
+import { Util } from 'src/app/appmodels/Util';
+import { ReferenceLookUpTemplateAdapter } from '../adapters/referencelookuptemplateadapter';
+import { ReferenceService } from '../AppRestCall/reference/reference.service';
+import { ReferenceLookUpTemplate } from '../appmodels/ReferenceLookUpTemplate';
 
 @Component({
   selector: 'app-processbgverification',
@@ -30,6 +36,12 @@ export class ProcessbgverificationComponent implements OnInit {
   freedocObj: FreelanceDocuments;
   existingfreelancehistoryObj: any;
   additiondocreturnURL: string = null;
+  util: Util;
+  templateObj: ReferenceLookUpTemplate;
+  refDataObj: any = [];
+  statusTxt: string;
+  bgshortkeyTxt: string;
+
   constructor(
     public  modalRef: BsModalRef,
     public userService: UserService,
@@ -39,12 +51,16 @@ export class ProcessbgverificationComponent implements OnInit {
     private router: Router,
     private cd: ChangeDetectorRef,
     private utilService: UtilService,
+    private reflookuptemplateAdapter: ReferenceLookUpTemplateAdapter,
+    private referService: ReferenceService,
+    private sendemailService: SendemailService,
   ) { }
 
   ngOnInit() {
     this.bgformValidations();
   }
-bgformValidations() {
+
+  bgformValidations() {
   this.bgverificationForm = this.formBuilder.group({
     bgstatus: ['', [Validators.required]],
     bgcomment: ['', [Validators.required]],
@@ -75,8 +91,27 @@ preparebgverfiDetailstoSave() {
         let list = new Array<FreelanceHistory>();
         list.push( this.usrObjMyWork.freelancehistoryentity);
         this.usrObjMyWork.freelancehistoryentity = list;
-        this.userService.saveorupdate(this.usrObjMyWork).subscribe(
-          (userObj: any) => {
+        this.referService.getLookupTemplateEntityByShortkey(config.shortkey_email_senttocssm).subscribe(
+          referencetemplate => {
+            this.templateObj = this.reflookuptemplateAdapter.adapt(referencetemplate);
+            this.util = new Util();
+            this.util.preferlang = respuser.preferlang;
+            this.util.fromuser = this.userService.currentUserValue.username;
+            this.util.subject = ConfigMsg.email_bgverification_subj +  this.usrObjMyWork.firstname +
+                                ' - ' + ConfigMsg.bg_status_txt_cssm_msg;
+            this.util.touser = respuser.username;
+            this.util.templateurl = this.templateObj.url;
+            this.util.templatedynamicdata = JSON.stringify({
+              bgstatus: ConfigMsg.bg_status_txt_cssm_msg,
+              firstname: this.usrObjMyWork.firstname,
+              name: respuser.firstname,
+              decisionby: this.userService.currentUserValue.firstname + ' ' + this.userService.currentUserValue.lastname,
+            });
+            this.sendemailService.sendEmail(this.util).subscribe(
+              (util: any) => {
+                if (util.lastreturncode === 250) {
+            this.userService.saveorupdate(this.usrObjMyWork).subscribe(
+            (userObj: any) => {
             this.freehistObj = new FreelanceHistory();
             this.freehistObj.decisionby = respuser.username;
             this.freehistObj.islocked = true;
@@ -95,7 +130,7 @@ preparebgverfiDetailstoSave() {
                     (freedocObj: any) => {
                       this.modalRef.hide();
                       this.spinnerService.hide();
-                      this.alertService.success('Addition Doc Upload and Sent BG verification to ' + freehisObj.decisionby);
+                      this.alertService.success('Additional Doc Uploaded and Sent background verification to ' + freehisObj.decisionby);
                     },
                     error => {
                       this.alertService.error(error);
@@ -116,11 +151,19 @@ preparebgverfiDetailstoSave() {
             this.alertService.error(error);
             this.spinnerService.hide();
           });
+        }
       },
       error => {
         this.alertService.error(error);
         this.spinnerService.hide();
       });
+    },
+    error => {
+      this.alertService.error(error);
+      this.spinnerService.hide();
+    });
+  }
+      );
   }
   if ( this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_cscm) {
     if (this.bgverificationForm.get('bgstatus').value === config.bg_code_approved ||
@@ -128,19 +171,65 @@ preparebgverfiDetailstoSave() {
           this.usrObjMyWork.freelancehistoryentity.bgcomment = this.bgverificationForm.get('bgcomment').value;
           this.usrObjMyWork.freelancehistoryentity.bgstatus = this.bgverificationForm.get('bgstatus').value;
           this.usrObjMyWork.freeLanceDetails.isbgdone = true;
+          let csstid = this.usrObjMyWork.freelancehistoryentity.csstid;
           let list = new Array<FreelanceHistory>();
           list.push( this.usrObjMyWork.freelancehistoryentity);
           this.usrObjMyWork.freelancehistoryentity = list;
-          this.userService.saveorupdate(this.usrObjMyWork).subscribe(
-          (userObj: any) => {
-            this.alertService.success(' Bg verification done ');
-            this.spinnerService.hide();
-            this.modalRef.hide();
-          },
-          error => {
-            this.alertService.error(error);
-            this.spinnerService.hide();
-          });
+          this.spinnerService.show();
+          this.userService.getUserByUserId(csstid).pipe(first()).subscribe(
+            (respuser: any) => {
+          if (this.bgverificationForm.get('bgstatus').value === config.bg_code_approved) {
+            this.statusTxt = ConfigMsg.bg_status_txt_approve_msg;
+            this.bgshortkeyTxt = config.shortkey_email_approved;
+          } else {
+            this.statusTxt = ConfigMsg.bg_status_txt_rejected_msg;
+            this.bgshortkeyTxt = config.shortkey_email_rejected;
+          }
+          this.referService.getLookupTemplateEntityByShortkey(this.bgshortkeyTxt).subscribe(
+            referencetemplate => {
+              this.templateObj = this.reflookuptemplateAdapter.adapt(referencetemplate);
+              this.util = new Util();
+              this.util.preferlang = respuser.preferlang;
+              this.util.fromuser = this.userService.currentUserValue.username;
+              this.util.subject = ConfigMsg.email_bgverification_subj +  this.usrObjMyWork.firstname + ' - ' + this.statusTxt;
+              this.util.touser = respuser.username;
+              this.util.templateurl = this.templateObj.url;
+              this.util.templatedynamicdata = JSON.stringify({
+                bgstatus: this.statusTxt,
+                firstname: this.usrObjMyWork.firstname,
+                bgcomment: this.bgverificationForm.get('bgcomment').value,
+                name: respuser.firstname,
+                decisionby: this.userService.currentUserValue.firstname + ' ' + this.userService.currentUserValue.lastname,
+              });
+              this.sendemailService.sendEmail(this.util).subscribe(
+                (util: any) => {
+                  if (util.lastreturncode === 250) {
+                    this.userService.saveorupdate(this.usrObjMyWork).subscribe(
+                      (userObj: any) => {
+                        this.alertService.success(' Bg verification is completed ');
+                        this.spinnerService.hide();
+                        this.modalRef.hide();
+                      },
+                      error => {
+                        this.alertService.error(error);
+                        this.spinnerService.hide();
+                      });
+                }
+              },
+                error => {
+                  this.alertService.error(error);
+                  this.spinnerService.hide();
+                });
+              },
+              error => {
+                this.alertService.error(error);
+                this.spinnerService.hide();
+              });
+            },
+            error => {
+              this.alertService.error(error);
+              this.spinnerService.hide();
+            });
     } else {
       this.userService.getUserByUserId(this.usrObjMyWork.freelancehistoryentity.csstid).pipe(first()).subscribe(
         (respuser: any) => {
@@ -149,30 +238,60 @@ preparebgverfiDetailstoSave() {
         let list = new Array<FreelanceHistory>();
         list.push( this.usrObjMyWork.freelancehistoryentity);
         this.usrObjMyWork.freelancehistoryentity = list;
-        this.userService.saveorupdate(this.usrObjMyWork).subscribe(
-        (userObj: any) => {
-          this.freehistObj = new FreelanceHistory();
-          this.freehistObj.decisionby = respuser.username;
-          this.freehistObj.islocked = true;
-          this.freehistObj.bgstatus = config.bg_code_senttoccst;
-          this.freehistObj.userid = userObj.userId;
-          this.freehistObj.managerid = this.userService.currentUserValue.userId;
-          this.freehistObj.csstid = respuser.userId;
-          this.userService.saveFreeLanceHistory(this.freehistObj).subscribe(
-            (freehisObj: any) => {
-              this.alertService.success(' Sent BG verification back to ' + respuser.username);
-              this.spinnerService.hide();
-              this.modalRef.hide();
-            },
-            error => {
-              this.alertService.error(error);
-              this.spinnerService.hide();
+        this.referService.getLookupTemplateEntityByShortkey(config.shortkey_email_senttocsst).subscribe(
+          referencetemplate => {
+            this.templateObj = this.reflookuptemplateAdapter.adapt(referencetemplate);
+            this.util = new Util();
+            this.util.preferlang = respuser.preferlang;
+            this.util.fromuser = this.userService.currentUserValue.username;
+            this.util.subject = ConfigMsg.email_bgverification_subj +  this.usrObjMyWork.firstname +
+                                ' - ' + ConfigMsg.bg_status_txt_csst_msg;
+            this.util.touser = respuser.username;
+            this.util.templateurl = this.templateObj.url;
+            this.util.templatedynamicdata = JSON.stringify({
+              bgstatus: ConfigMsg.bg_status_txt_csst_msg,
+              firstname: this.usrObjMyWork.firstname,
+              name: respuser.firstname,
+              decisionby: this.userService.currentUserValue.firstname + ' ' + this.userService.currentUserValue.lastname,
             });
-        },
-        error => {
-          this.alertService.error(error);
-          this.spinnerService.hide();
-        });
+            this.sendemailService.sendEmail(this.util).subscribe(
+              (util: any) => {
+                if (util.lastreturncode === 250) {
+                  this.userService.saveorupdate(this.usrObjMyWork).subscribe(
+                    (userObj: any) => {
+                      this.freehistObj = new FreelanceHistory();
+                      this.freehistObj.decisionby = respuser.username;
+                      this.freehistObj.islocked = true;
+                      this.freehistObj.bgstatus = config.bg_code_senttoccst;
+                      this.freehistObj.userid = userObj.userId;
+                      this.freehistObj.managerid = this.userService.currentUserValue.userId;
+                      this.freehistObj.csstid = respuser.userId;
+                      this.userService.saveFreeLanceHistory(this.freehistObj).subscribe(
+                        (freehisObj: any) => {
+                          this.alertService.success('Background verification sent back to ' + respuser.username);
+                          this.spinnerService.hide();
+                          this.modalRef.hide();
+                        },
+                        error => {
+                          this.alertService.error(error);
+                          this.spinnerService.hide();
+                        });
+                    },
+                    error => {
+                      this.alertService.error(error);
+                      this.spinnerService.hide();
+                    });
+                }
+              },
+              error => {
+                this.alertService.error(error);
+                this.spinnerService.hide();
+              });
+          },
+          error => {
+            this.alertService.error(error);
+            this.spinnerService.hide();
+          });
        },
         error => {
           this.alertService.error(error);

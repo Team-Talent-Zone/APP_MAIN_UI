@@ -251,6 +251,7 @@
                                     <th>Email Address</th>
                                     <th>Created On</th>
                                     <th>Created By</th>
+                                    <th>Language</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -262,6 +263,7 @@
                                     <td>{{platformuser.username}}</td>
                                     <td>{{platformuser.createdon}}</td>
                                     <td>{{platformuser.createdby}}</td>
+                                    <td>{{platformuser.preferlang}}</td>
                                     <td>
                                         <a class="btn  btn-sm" (click) = 'openViewAccountDetailsModal(platformuser.userId)' >
                                             <i title="View {{platformuser.firstname}} Account Details" class="fa fa-eye"></i>
