@@ -257,24 +257,27 @@
                                     </div>
                                 </div>
                                 <div *ngIf="roleCode =='FREELANCER_USER'">
-                                    <label for="inputLastName" title="upload aadhar or pan card & it should be *.pdf only">Photo Identification*
+                                    <label for="inputLastName" title="upload aadhar or pan card & it should be *.png,*.jpg,*.jpeg only">Photo Identification*
                                         <i class="fa fa-question-circle"
                                             style="font-size:10px;color:rgb(35, 124, 226)"></i>
                                     </label>
-                                    <div  *ngIf="nationalIDPDFURL == null">
+                                    <div  *ngIf="nationalIDURL == null">
                                        <span style="font-size:13px;color:rgb(255, 30, 0)">Photo Id is required </span>
                                       </div>
                                     <div class="avatar-upload">
                                         <div class="avatar-edit">
-                                            <input type='file'  accept=".pdf" #fileInput
+                                            <input type='file'  accept=".png, .jpg, .jpeg" #fileInput
                                                 (change)="uploadFile($event , 'nationalid')" />
                                         </div>
-                                            <a class="form-control" style="color:blue" href="{{nationalIDPDFURL}}" target="_blank" *ngIf="nationalIDPDFURL != null">Click to View National Photo Identification Id</a>
+                                            <div class="avatar-square-preview" *ngIf="nationalIDURL != null">
+                                                <div id="imagePreview" [style.backgroundImage]="'url('+ nationalIDURL +')'">
+                                                </div>
+                                            </div>
                                      </div>
                                     <button type="button" class="btn btn-info btn-sm"
                                         (click)="fileInput.click()">
                                         
-                                      <span *ngIf="nationalIDPDFURL != null ; else elseNoNationalID">Re-Upload National Photo Identification Id</span>  
+                                      <span *ngIf="nationalIDURL != null ; else elseNoNationalID">Re-Upload National Photo Identification Id</span>  
                                       <ng-template #elseNoNationalID>
                                           Upload National Identification Photo Id
                                          

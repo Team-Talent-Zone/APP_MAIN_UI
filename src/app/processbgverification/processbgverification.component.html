@@ -49,18 +49,20 @@
                             </div>
                             <div class="avatar-upload">
                                 <div class="avatar-edit">
-                                    <input type='file' accept=".pdf" #fileInput (change)="uploadFile($event)" />
+                                    <input type='file' accept=".pdf, .zip" #fileInput (change)="uploadFile($event)" />
+                                    
                                 </div>
-                                <a class="form-control" style="color:blue" href="{{additiondocreturnURL}}"
+                                <a class="form-control" style="color:blue" [style.backgroundImage]="'url('+ additiondocreturnURL +')'"
                                     target="_blank" *ngIf="additiondocreturnURL != null">Click to View the uploaded
                                     document</a>
                             </div>
                             <button type="button"
                                 *ngIf="userService.currentUserValue.userroles.rolecode == 'CORE_SERVICE_SUPPORT_TEAM'"
                                 class="btn btn-info btn-sm btn-block" (click)="fileInput.click()">
-                                <span>
-                                    Click to Upload Addition Doc (If any)
-                                </span>
+                                <label for="inputLastName" title="accept one file as *.pdf and multiple files as *.zip">Click to Upload Addition Doc (If any)
+                                    <i class="fa fa-question-circle"
+                                        style="font-size:10px;color:rgb(255, 251, 0)"></i>
+                                </label>
                             </button>
                             <!-- Modal footer -->
                             <div class="modal-footer">

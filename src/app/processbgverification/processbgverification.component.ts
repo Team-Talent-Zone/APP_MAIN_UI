@@ -35,7 +35,7 @@ export class ProcessbgverificationComponent implements OnInit {
   freehistObj: FreelanceHistory;
   freedocObj: FreelanceDocuments;
   existingfreelancehistoryObj: any;
-  additiondocreturnURL: string = null;
+  additiondocreturnURL: any = null;
   util: Util;
   templateObj: ReferenceLookUpTemplate;
   refDataObj: any = [];
@@ -304,14 +304,14 @@ preparebgverfiDetailstoSave() {
 uploadFile(event) {
   let reader = new FileReader(); // HTML5 FileReader API
   let file = event.target.files[0];
-
+  console.log('file name :' ,file.name);
   if (event.target.files && event.target.files[0]) {
     reader.readAsDataURL(file);
 
     // When file uploads set it to file formcontrol
     reader.onload = () => {
       this.spinnerService.show();
-      this.utilService.uploadBgDocsInS3(reader.result , this.usrObjMyWork.userId).subscribe(
+      this.utilService.uploadBgDocsInS3(reader.result , this.usrObjMyWork.userId , file.name).subscribe(
         (returnURL: string) => {
         this.additiondocreturnURL = returnURL;
         this.spinnerService.hide();
