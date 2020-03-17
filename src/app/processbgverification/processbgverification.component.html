@@ -52,9 +52,8 @@
                                     <input type='file' accept=".pdf, .zip" #fileInput (change)="uploadFile($event)" />
                                     
                                 </div>
-                                <a class="form-control" style="color:blue" [style.backgroundImage]="'url('+ additiondocreturnURL +')'"
-                                    target="_blank" *ngIf="additiondocreturnURL != null">Click to View the uploaded
-                                    document</a>
+                                <a class="form-control" style="color:blue" href="{{additiondocreturnURL}}"
+                                target="_blank" download *ngIf="additiondocreturnURL != null">Download or View the document</a>
                             </div>
                             <button type="button"
                                 *ngIf="userService.currentUserValue.userroles.rolecode == 'CORE_SERVICE_SUPPORT_TEAM'"
@@ -112,7 +111,7 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let freedoc of usrdetailsObj.freelancedocumententity">
-                                <td><a href={{freedoc.docurl}} target="_blank">{{freedoc.docname}}</a></td>
+                                <td><a href={{freedoc.docurl}} target="_blank" download>{{freedoc.docname}}</a></td>
                                 <td>{{freedoc.uploaddate}}</td>
                             </tr>
                         </tbody>
