@@ -13,8 +13,7 @@ import { config } from 'src/app/appconstants/config';
 import {
   FormBuilder,
   FormGroup,
-  Validators,
-  FormControl} from '@angular/forms';
+  Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-editprofile',

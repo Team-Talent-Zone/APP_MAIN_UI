@@ -1,3 +1,4 @@
+import { SignupadminComponent } from './signupadmin/signupadmin.component';
 import { DashboardbyuseroleComponent } from './dashboardbyuserole/dashboardbyuserole.component';
 import { EditprofileComponent } from './editprofile/editprofile.component';
 import { ManageuserComponent } from './manageuser/manageuser.component';
@@ -58,6 +59,16 @@ const routes: Routes = [
       {
         path: '',
         component: ManageuserComponent
+      }
+    ]
+  },
+  {
+    path: 'signupadmin',
+    component: DashboardComponent,
+    children: [
+      {
+        path: '',
+        component: SignupadminComponent
       }
     ]
   },

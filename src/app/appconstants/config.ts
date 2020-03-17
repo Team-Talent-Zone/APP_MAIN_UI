@@ -11,6 +11,7 @@ export const config = {
   shortkey_role_csst: 'csst',
   shortkey_role_cssm: 'cssm',
   shortkey_email_verificationemailaddress: 'eventgen28',
+  shortkey_email_welcometocsstorcssm: 'eventgen32',
   shortkey_email_forgotpassword: 'eventgen15',
   shortkey_email_welcometofu: 'eventgen31',
   shortkey_email_welcometocba: 'eventgen30',
@@ -29,8 +30,8 @@ export const config = {
   bg_code_senttoccst: 'BG_SENTTOCSST',
   bg_code_incompleteprofile: 'BG_INCOMPLETEPROFILE',
   bg_code_completedprofile: 'BG_COMPLETEDPROFILE',
-  default_avatar: 'https://platform-asserts.s3.amazonaws.com/Platform+Imgs/avatar1.png'
-
+  default_avatar: 'https://platform-asserts.s3.amazonaws.com/Platform+Imgs/avatar1.png',
+  default_prefer_lang: 'en'
 };
 
 

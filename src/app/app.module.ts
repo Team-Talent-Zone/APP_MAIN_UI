@@ -36,6 +36,7 @@ import { EditprofileComponent } from './editprofile/editprofile.component';
 import { ViewaccountdetailsComponent } from './viewaccountdetails/viewaccountdetails.component';
 import { DashboardbyuseroleComponent } from './dashboardbyuserole/dashboardbyuserole.component';
 import { ProcessbgverificationComponent } from './processbgverification/processbgverification.component';
+import { SignupadminComponent } from './signupadmin/signupadmin.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -61,6 +62,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ViewaccountdetailsComponent,
     DashboardbyuseroleComponent,
     ProcessbgverificationComponent,
+    SignupadminComponent,
     ],
   imports: [
     BrowserModule,
