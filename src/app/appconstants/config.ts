@@ -31,7 +31,9 @@ export const config = {
   bg_code_incompleteprofile: 'BG_INCOMPLETEPROFILE',
   bg_code_completedprofile: 'BG_COMPLETEDPROFILE',
   default_avatar: 'https://platform-asserts.s3.amazonaws.com/Platform+Imgs/avatar1.png',
-  default_prefer_lang: 'en'
+  default_prefer_lang: 'en',
+  GOOGLE_MAPS_API_KEY: 'AIzaSyCaKbVhcX_22R_pRKDYuNA7vox-PtGaDkI'
+
 };
 
 

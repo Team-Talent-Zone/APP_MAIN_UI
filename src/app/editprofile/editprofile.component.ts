@@ -9,12 +9,12 @@ import { Component, OnInit, ChangeDetectorRef, ElementRef, ViewChild } from '@an
 import { UtilService } from '../AppRestCall/util/util.service';
 import { UserAdapter } from '../adapters/useradapter';
 import { config } from 'src/app/appconstants/config';
-
 import {
   FormBuilder,
   FormGroup,
   Validators} from '@angular/forms';
-
+import { ApiService , Maps } from '../adapters/api.service';
+ 
 @Component({
   selector: 'app-editprofile',
   templateUrl: './editprofile.component.html',
@@ -22,6 +22,8 @@ import {
 })
 export class EditprofileComponent implements OnInit {
 
+  @ViewChild('search', null)
+  public searchElementRef: ElementRef;
   id: number;
   edituserobj: User;
   roleCode: string;
@@ -41,6 +43,7 @@ export class EditprofileComponent implements OnInit {
   typenationalid: string;
   msgflag = false;
   msgflagboth = false;
+
   constructor(
     public fb: FormBuilder,
     private cd: ChangeDetectorRef,
@@ -52,10 +55,14 @@ export class EditprofileComponent implements OnInit {
     private formBuilder: FormBuilder,
     private userAdapter: UserAdapter,
     public signupComponent: SignupComponent,
+    apiService: ApiService
   ) {
     route.params.subscribe(params => {
       this.id = params.id;
      });
+    apiService.api.then(maps => {
+      this.initAutocomplete(maps);
+    });
    }
 
   ngOnInit() {
@@ -72,6 +79,9 @@ export class EditprofileComponent implements OnInit {
       this.signupComponent.getAllCategories(this.langSelected);
     }
 
+  }
+  initAutocomplete(maps: Maps) {
+    let autocomplete =  new maps.places.Autocomplete(this.searchElementRef.nativeElement);
   }
 
   editProfileFormValidations() {
@@ -158,20 +168,20 @@ export class EditprofileComponent implements OnInit {
   }
 
   saveorupdateeditprofile() {
-    if (this.roleCode === config.user_rolecode_fu) {
+   if (this.roleCode === config.user_rolecode_fu) {
         this.editprofileForm.patchValue({uploadValidPhotoidImgUrl: this.nationalIDURL});
     }
-    this.issubmit = true;
-    if (this.editprofileForm.invalid) {
+   this.issubmit = true;
+   if (this.editprofileForm.invalid) {
       return;
     }
-    this.spinnerService.show();
-    this.edituserobj.username = this.editprofileForm.get('username').value;
-    this.edituserobj.firstname = this.editprofileForm.get('firstname').value;
-    this.edituserobj.lastname = this.editprofileForm.get('lastname').value;
-    this.edituserobj.preferlang = this.editprofileForm.get('preferlang').value;
-    this.edituserobj.userbizdetails.fulladdress = this.editprofileForm.get('fulladdress').value;
-    if (this.roleCode === config.user_rolecode_cbu) {
+   this.spinnerService.show();
+   this.edituserobj.username = this.editprofileForm.get('username').value;
+   this.edituserobj.firstname = this.editprofileForm.get('firstname').value;
+   this.edituserobj.lastname = this.editprofileForm.get('lastname').value;
+   this.edituserobj.preferlang = this.editprofileForm.get('preferlang').value;
+   this.edituserobj.userbizdetails.fulladdress = this.searchElementRef.nativeElement.value;
+   if (this.roleCode === config.user_rolecode_cbu) {
       this.edituserobj.userbizdetails.bizname = this.editprofileForm.get('bizname').value;
       this.edituserobj.userbizdetails.biztype = this.editprofileForm.get('biztype').value;
       this.edituserobj.userbizdetails.bizwebsite = this.editprofileForm.get('bizwebsite').value;
@@ -179,7 +189,7 @@ export class EditprofileComponent implements OnInit {
       this.edituserobj.userbizdetails.purposeofsignup = this.editprofileForm.get('purposeofsignup').value;
       this.edituserobj.userbizdetails.designation = this.editprofileForm.get('designation').value;
     }
-    if (this.roleCode === config.user_rolecode_fu) {
+   if (this.roleCode === config.user_rolecode_fu) {
       this.edituserobj.freeLanceDetails.category = this.editprofileForm.get('category').value;
       this.edituserobj.freeLanceDetails.experienceInField = this.editprofileForm.get('experienceInField').value;
       this.edituserobj.freeLanceDetails.subCategory = this.editprofileForm.get('subCategory').value;
@@ -193,7 +203,7 @@ export class EditprofileComponent implements OnInit {
         this.edituserobj.freelancehistoryentity[0].bgstatus = config.bg_code_completedprofile;
         }
     }
-    if (this.typeavt === 'avatar' && this.typenationalid !== 'nationalid') {
+   if (this.typeavt === 'avatar' && this.typenationalid !== 'nationalid') {
       this.msgflag = true;
     } else
     if (this.typeavt !== 'avatar' && this.typenationalid === 'nationalid') {
@@ -202,7 +212,7 @@ export class EditprofileComponent implements OnInit {
     if (this.typenationalid !== 'nationalid' && this.typeavt !== 'avatar') {
       this.msgflag = true;
     }
-    if (this.typenationalid !== 'nationalid' && this.typeavt !== 'avatar') {
+   if (this.typenationalid !== 'nationalid' && this.typeavt !== 'avatar') {
       this.saveorupdateedituser(this.edituserobj , null );
       if (this.msgflag) {
         this.alertService.success( this.edituserobj.firstname + ' your account details');
@@ -224,7 +234,7 @@ export class EditprofileComponent implements OnInit {
           }
         );
     }
-    if (this.typenationalid === 'nationalid') {
+   if (this.typenationalid === 'nationalid') {
       this.utilService.uploadBgDocsInS3(this.nationalIDURL , this.editprofileuserId , this.filename).subscribe(
         (returnURL: string) => {
             console.log(' typenationalid: ' , this.typenationalid);
@@ -267,6 +277,10 @@ export class EditprofileComponent implements OnInit {
         this.spinnerService.hide();
         this.alertService.error(error);
       });
+  }
+
+  public onFocusInput(event) {
+    console.log('fullAddressValue :' ,event.target.value);
   }
 
   uploadFile(event , type) {
