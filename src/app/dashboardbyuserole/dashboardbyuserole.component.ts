@@ -20,7 +20,7 @@ export class DashboardbyuseroleComponent implements OnInit {
   usrObj: any;
 
   constructor(
-    private userService: UserService,
+    public userService: UserService,
   ) { }
 
   ngOnInit() {

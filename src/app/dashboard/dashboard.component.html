@@ -13,7 +13,11 @@
             
         </ul>
         <ul class="navbar-nav ml-auto">
-            
+            <li class="nav-item  btn btn-sm">
+                <a class="nav-link"  (click)="logout()">
+                    <i class="fa fa-undo "><label>&nbsp;LogOut</label></i>
+                </a>
+            </li>
             <li class="nav-item ">
                 <a routerLink='/vieworeditprofile/{{userService.currentUserValue.userId}}'>
                 <img id="profile-img" class="profile-img-card" src="{{userService.currentUserValue.avtarurl}}">
@@ -52,11 +56,6 @@
                 <li class="nav-item" *ngIf="usrObj.userroles.rolecode =='CORE_SERVICE_SUPPORT_MANAGER'">
                     <a class="nav-link" [routerLink]="['/newservice']">
                         <i class="fa fa-plus"> <label>&nbsp;Create New Service</label></i>
-                    </a>
-                </li>
-                <li class="nav-item  btn btn-sm">
-                    <a class="nav-link"  (click)="logout()">
-                        <i class="fa fa-undo "><label>&nbsp;LogOut</label></i>
                     </a>
                 </li>
             </ul>
