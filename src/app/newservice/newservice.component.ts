@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UserService } from '../AppRestCall/user/user.service';
 
 @Component({
   selector: 'app-newservice',
@@ -7,9 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NewserviceComponent implements OnInit {
 
-  constructor() { }
+  roleCode: string;
+
+  constructor(
+    private userService: UserService,
+  ) { }
 
   ngOnInit() {
+    this.roleCode = this.userService.currentUserValue.userroles.rolecode;
   }
 
 }

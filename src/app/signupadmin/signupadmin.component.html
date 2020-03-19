@@ -1,74 +1,93 @@
-<div class="container p-0">
+<div class="container p-1">
     <div class="row">
-        <div class="col-md-5 col-xl-3">
+        <div class="col-md-5 col-xl-2">
         </div>
         <div class="col-md-7 col-xl-8">
             <div class="card">
                 <div class="card-header">
-                    <div class="card-actions float-right">
-                    </div>
-                    <h5 class="card-title mb-0">Basic info</h5>
+                    <h4 class="card-title mb-0">Create New User Request Form</h4>
                 </div>
                 <form [formGroup]="signupAdminForm" (ngSubmit)="saveAdmin()">
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-2">
+
+                        <span id="reauth-email" class="reauth-email"></span>
+                        <div class="form-row">
+                            <div class="form-group col-md-3"></div>
+                            <div class="form-group col-md-7">
+                                <span>
+                                    <i class="fa fa-user form-control-icon"></i>
+                                </span>
+                                <input type="text" placeholder="Email Address*" class="form-control"
+                                    formControlName="username" email="true"
+                                    [ngClass]="{ 'is-invalid': issubmit && f.username.errors }">
+                                <div *ngIf="issubmit && f.username.errors" class="invalid-feedback">
+                                    <div *ngIf="f.username.errors.required || f.username.errors.email">Email must be a
+                                        valid
+                                        email address
+                                    </div>
+                                    <div *ngIf="f.username.errors.maxlength">Username cant exceed 40
+                                        char</div>
+                                </div>
                             </div>
-                            <div class="col-md-7">
-                                <div class="form-group">
-                                    <label for="inputUsername">Email Address</label>
-                                    <input type="text" class="form-control" formControlName="username"
-                                    email="true" [ngClass]="{ 'is-invalid': issubmit && f.username.errors }">
-                                    <div *ngIf="issubmit && f.username.errors" class="invalid-feedback">
-                                        <div *ngIf="f.username.errors.required || f.username.errors.email">Email must be a valid email address
-                                        </div>
-                                        <div *ngIf="f.username.errors.maxlength">Username cant exceed 40
-                                          char</div>
-                                      </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputFirstName">First Name*</label>
-                                    <input type="text" class="form-control" id="inputFirstName"
-                                        [ngClass]="{ 'is-invalid': issubmit && f.firstname.errors }"
-                                        formControlName="firstname">
-                                    <div *ngIf="issubmit && f.firstname.errors" class="invalid-feedback">
-                                        <div *ngIf="f.firstname.errors.required">First Name is required
-                                        </div>
-                                        <div *ngIf="f.firstname.errors.maxlength">First Name cant exceed 40
-                                            char</div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-3"></div>
+                            <div class="form-group col-md-7">
+                                <span>
+                                    <i class="fa fa-user-circle form-control-icon"></i>
+                                </span>
+                                <input type="text" placeholder="First Name*" class="form-control" id="inputFirstName"
+                                    [ngClass]="{ 'is-invalid': issubmit && f.firstname.errors }"
+                                    formControlName="firstname">
+                                <div *ngIf="issubmit && f.firstname.errors" class="invalid-feedback">
+                                    <div *ngIf="f.firstname.errors.required">First Name is required
                                     </div>
+                                    <div *ngIf="f.firstname.errors.maxlength">First Name cant exceed 40
+                                        char</div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="inputLastName">Last Name*</label>
-                                    <input type="text" class="form-control" id="inputLastName"
-                                        formControlName="lastname"
-                                        [ngClass]="{ 'is-invalid': issubmit && f.lastname.errors }">
-                                    <div *ngIf="issubmit && f.lastname.errors" class="invalid-feedback">
-                                        <div *ngIf="f.lastname.errors.required">Last Name is required
-                                        </div>
-                                        <div *ngIf="f.lastname.errors.maxlength">Last Name cant exceed 40
-                                            char</div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-3"></div>
+                            <div class="form-group col-md-7">
+                                <span>
+                                    <i class="fa fa-user-circle form-control-icon"></i>
+                                </span>
+                                <input type="text" placeholder="Last Name*" class="form-control" id="inputLastName"
+                                    formControlName="lastname"
+                                    [ngClass]="{ 'is-invalid': issubmit && f.lastname.errors }">
+                                <div *ngIf="issubmit && f.lastname.errors" class="invalid-feedback">
+                                    <div *ngIf="f.lastname.errors.required">Last Name is required
                                     </div>
+                                    <div *ngIf="f.lastname.errors.maxlength">Last Name cant exceed 40
+                                        char</div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="inputPreferedLang">User Group*
-                                    </label>
-                                    <select class="form-control" formControlName="rolecode"
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-3"></div>
+                            <div class="form-group col-md-7">
+                                <span>
+                                    <i class="fa fa fa-users	form-control-icon"></i>
+                                </span>
+                                <select class="form-control" formControlName="rolecode"
                                     [ngClass]="{ 'is-invalid': issubmit && f.rolecode.errors }">
-                                        <option value="">-- Select User Group --</option>
-                                        <option value="CORE_SERVICE_SUPPORT_TEAM">Core Service Support Team</option>
-                                        <option value="CORE_SERVICE_SUPPORT_MANAGER">Core Service Support Manager</option>
-                                    </select>
-                                    <div *ngIf="issubmit && f.rolecode.errors" class="invalid-feedback">
-                                        <div *ngIf="f.rolecode.errors.required">User Group is required
-                                        </div>
-                                      </div>
+                                    <option value="">Select Group</option>
+                                    <option value="CORE_SERVICE_SUPPORT_TEAM">Core Service Support Team</option>
+                                    <option value="CORE_SERVICE_SUPPORT_MANAGER">Core Service Support Manager</option>
+                                </select>
+                                <div *ngIf="issubmit && f.rolecode.errors" class="invalid-feedback">
+                                    <div *ngIf="f.rolecode.errors.required">User Group is required
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                     <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
                 </form>
             </div>

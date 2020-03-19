@@ -34,7 +34,7 @@
                 <li class="nav-item"  *ngIf="usrObj.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM' || usrObj.userroles.rolecode =='CORE_SERVICE_SUPPORT_MANAGER'">
                     <a class="nav-link" [routerLink]="['/manageuser']" >Manage Users</a>
                 </li>
-                <li class="nav-item"  *ngIf="usrObj.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM' || usrObj.userroles.rolecode =='CORE_SERVICE_SUPPORT_MANAGER'">
+                <li class="nav-item"  *ngIf="usrObj.userroles.rolecode =='CORE_SERVICE_SUPPORT_MANAGER'">
                     <a class="nav-link" [routerLink]="['/manageservice']">Manage New Services</a>
                 </li>
                 <li class="nav-item"  *ngIf="usrObj.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM' || usrObj.userroles.rolecode =='CORE_SERVICE_SUPPORT_MANAGER'">
@@ -51,7 +51,7 @@
                         <i class="fa fa-plus">&nbsp;Create New User</i>
                     </a> 
                 </li>
-                <li class="nav-item" *ngIf="usrObj.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM' || usrObj.userroles.rolecode =='CORE_SERVICE_SUPPORT_MANAGER'">
+                <li class="nav-item" *ngIf="usrObj.userroles.rolecode =='CORE_SERVICE_SUPPORT_MANAGER'">
                     <a class="nav-link" [routerLink]="['/newservice']">
                         <i class="fa fa-plus">&nbsp;Create New Service</i>
                     </a>
