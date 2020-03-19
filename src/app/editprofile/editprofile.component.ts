@@ -262,7 +262,7 @@ export class EditprofileComponent implements OnInit {
         );
     }
   }
-
+ 
   private saveorupdateedituser(edituserobj: User , type: any) {
      this.userService.saveorupdate(edituserobj).subscribe(
       (userObj: any) => {
