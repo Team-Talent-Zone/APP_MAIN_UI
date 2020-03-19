@@ -304,7 +304,8 @@ preparebgverfiDetailstoSave() {
 uploadFile(event) {
   let reader = new FileReader(); // HTML5 FileReader API
   let file = event.target.files[0];
-  console.log('file name :' ,file.name);
+  console.log('this is file' ,file);
+  if ( file.type === 'application/pdf' || file.type === 'application/x-zip-compressed') {
   if (event.target.files && event.target.files[0]) {
     reader.readAsDataURL(file);
 
@@ -325,5 +326,8 @@ uploadFile(event) {
     // ChangeDetectorRef since file is loading outside the zone
     this.cd.markForCheck();
   }
+} else {
+  this.alertService.error('Invalid file format. it should be .pdf,.zip');
+}
  }
 }

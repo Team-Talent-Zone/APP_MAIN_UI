@@ -66,7 +66,6 @@ export class ManageuserComponent implements OnInit {
   this.spinnerService.show();
   this.userService.getAllUsers().subscribe(
     (usrObjRsp: User[]) => {
-      console.log('usrObjRsp' ,usrObjRsp);
       usrObjRsp.forEach(element => {
         this.usrObj = this.userAdapter.adapt(element);
         this.usrObjTotalUsers.push(this.userAdapter.adapt(element));
