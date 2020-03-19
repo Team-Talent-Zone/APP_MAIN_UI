@@ -9,71 +9,91 @@
                         <h4 class="card-title mb-0">New Service Request Form</h4>
                     </div>
                     <div class="card-body">
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <span>
-                                    <i class="fa fa-user form-control-icon"></i>
-                                </span>
-                                <input type="text"  placeholder="Service Name*" class="form-control" formControlName="username">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-row">
+                                    <div class="form-group col-md-12">
+                                        <span>
+                                            <i class="fa fa-user form-control-icon"></i>
+                                        </span>
+                                        <input type="text" placeholder="Service Name*" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <span>
+                                            <i class="fa fa-user form-control-icon"></i>
+                                        </span>
+                                        <select id="inputPreferedLang" class="form-control">
+                                            <option value="">Select Domain</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <span>
+                                            <i class="fa fa-user form-control-icon"></i>
+                                        </span>
+                                        <select id="inputPreferedLang" class="form-control">
+                                            <option value="">Select Category</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <span>
+                                            <i class="fa fa-user form-control-icon"></i>
+                                        </span>
+                                        <textarea placeholder="Full Content*" rows="4" cols="50" class="form-control"></textarea>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <span>
+                                            <i class="fa fa-user form-control-icon"></i>
+                                        </span>
+                                        <textarea placeholder="Description*" rows="4" cols="50" class="form-control"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <span>
+                                            <i class="fa fa-user form-control-icon"></i>
+                                        </span>
+                                        <select  class="form-control">
+                                            <option value="">Select Term</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <span>
+                                            <i class="fa fa-user form-control-icon"></i>
+                                        </span>
+                                        <input type="text" placeholder="Price*" class="form-control">
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group col-md-6">
-                                <span>
-                                    <i class="fa fa-user form-control-icon"></i>
-                                </span>
-                                <input type="text" placeholder="Service Image*" class="form-control">
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <span>
-                                    <i class="fa fa-user form-control-icon"></i>
-                                </span>
-                                <input type="text" placeholder="Domain*" class="form-control">
-                            </div>
-                            <div class="form-group col-md-6">
-                                <span>
-                                    <i class="fa fa-user form-control-icon"></i>
-                                </span>
-                                <select id="inputPreferedLang" class="form-control" formControlName="preferlang">
-                                    <option value="en">English</option>
-                                    <option value="hi">हिंदी</option>
-                                    <option value="te">తెలుగు</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <span>
-                                    <i class="fa fa-user form-control-icon"></i>
-                                </span>
-                                <textarea  placeholder="Full Content*" class="form-control"></textarea>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <span>
-                                    <i class="fa fa-user form-control-icon"></i>
-                                </span>
-                                <textarea   placeholder="Description*" class="form-control"></textarea>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <span>
-                                    <i class="fa fa-user form-control-icon"></i>
-                                </span>
-                                <input type="text" placeholder="Valid Period*" class="form-control" formControlName="username">
-                            </div>
-                            <div class="form-group col-md-6">
-                                <span>
-                                    <i class="fa fa-user form-control-icon"></i>
-                                </span>
-                                <input type="text" placeholder="Price*" class="form-control">
+                            <div class="col-md-4">
+                                <div class="text-center">
+                                    <div class="mt-2">
+                                        <div class="avatar-upload">
+                                            <div class="avatar-edit">
+                                                <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg"
+                                                    #fileInput  />
+                                            </div>
+                                            <div class="avatar-preview">
+                                                <div id="imagePreview">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn btn-info btn-md btn-block"
+                                            (click)="fileInput.click()">Upload Service Image</button>
+                                    </div>
+                                    <small>For best results, use an image at least 128px by 128px in .png, .jpg, .jpeg
+                                        format</small>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
-               
+
                 </div>
             </form>
         </div>
