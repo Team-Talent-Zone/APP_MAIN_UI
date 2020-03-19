@@ -115,7 +115,7 @@
                                                 <button type="button" class="btn btn-danger btn-sm btn-block"
                                                     (click)="fileInput.click()">Upload Profile Pic</button>
                                             </div>
-                                            <small>For best results, use an image at least 128px by 128px in .jpg,.png
+                                            <small>For best results, use an image at least 128px by 128px in .png,.jpg,.jpeg
                                                 format</small>
                                         </div>
                                     </div>
@@ -307,7 +307,7 @@
                                         </div>
                                         <div class="avatar-upload">
                                             <div class="avatar-edit">
-                                                <input type='file' accept=".png, .jpg, .jpeg" #fileInput
+                                                <input type='file' accept=".png,.jpg,.jpeg" #fileInput
                                                     (change)="uploadFile($event , 'nationalid')" />
                                             </div>
                                             <div class="avatar-square-preview" *ngIf="nationalIDURL != null">
@@ -324,7 +324,7 @@
                                             </ng-template>
                                         </button>
                                     </div>
-                                    <small>For best results, use an image at least 128px by 128px in .jpg,.png
+                                    <small>For best results, use an image at least 128px by 128px in .png,.jpg,.jpeg
                                         format</small>
                                 </div>
                                     </div>

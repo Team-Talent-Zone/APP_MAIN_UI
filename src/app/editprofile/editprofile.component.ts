@@ -237,8 +237,6 @@ export class EditprofileComponent implements OnInit {
    if (this.typenationalid === 'nationalid') {
       this.utilService.uploadBgDocsInS3(this.nationalIDURL , this.editprofileuserId , this.filename).subscribe(
         (returnURL: string) => {
-            console.log(' typenationalid: ' , this.typenationalid);
-            console.log(' typeavt: ' , this.typeavt);
             if (this.typenationalid === 'nationalid' && this.typeavt === 'avatar') {
               this.msgflagboth = true;
             }
@@ -279,32 +277,32 @@ export class EditprofileComponent implements OnInit {
       });
   }
 
-  public onFocusInput(event) {
-    console.log('fullAddressValue :' ,event.target.value);
-  }
-
   uploadFile(event , type) {
     let reader = new FileReader(); // HTML5 FileReader API
     let file = event.target.files[0];
-    if (event.target.files && event.target.files[0]) {
-      reader.readAsDataURL(file);
+    if ( file.type === 'image/png' || file.type === 'image/jpeg' || file.type === 'image/jpg') {
+      if (event.target.files && event.target.files[0]) {
+        reader.readAsDataURL(file);
 
-      // When file uploads set it to file formcontrol
-      reader.onload = () => {
-        this.filename = file.name;
-        if (type === 'avatar') {
-          this.typeavt = type;
-          this.avatarURL = reader.result;
-        }
-        if (type === 'nationalid') {
-          this.typenationalid = type;
-          this.nationalIDURL = reader.result;
-        }
-        this.spinnerService.show();
-        this.spinnerService.hide();
-      };
-      // ChangeDetectorRef since file is loading outside the zone
-      this.cd.markForCheck();
+        // When file uploads set it to file formcontrol
+        reader.onload = () => {
+          this.filename = file.name;
+          if (type === 'avatar') {
+            this.typeavt = type;
+            this.avatarURL = reader.result;
+          }
+          if (type === 'nationalid') {
+            this.typenationalid = type;
+            this.nationalIDURL = reader.result;
+          }
+          this.spinnerService.show();
+          this.spinnerService.hide();
+        };
+        // ChangeDetectorRef since file is loading outside the zone
+        this.cd.markForCheck();
+      }
+    } else {
+      this.alertService.error('Invalid file format. it should be .png,.jpg,.jpeg');
     }
   }
 }
