@@ -252,7 +252,7 @@ export class EditprofileComponent implements OnInit {
 
              }
             if (this.msgflagboth) {
-              this.alertService.success( this.edituserobj.firstname + ' your account details');
+              this.alertService.success( this.edituserobj.firstname + ' your account details is updated');
               this.msgflagboth = false;
               this.typenationalid = null;
               this.typeavt = null;
