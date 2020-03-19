@@ -215,7 +215,7 @@ export class EditprofileComponent implements OnInit {
    if (this.typenationalid !== 'nationalid' && this.typeavt !== 'avatar') {
       this.saveorupdateedituser(this.edituserobj , null );
       if (this.msgflag) {
-        this.alertService.success( this.edituserobj.firstname + ' your account details');
+        this.alertService.success( this.edituserobj.firstname + ' your account details is updated');
         this.msgflag = false;
         this.spinnerService.hide();
       }
