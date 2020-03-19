@@ -1,6 +1,6 @@
 {
     "HOMENAV": {
-      "WHATWEDO": "What we do",
+      "ABOUTUS": "ABOUT US",
       "ONBOARD": "OnBoard",
       "SERVICE": "Service",
       "PRICING": "Pricing",
@@ -13,9 +13,11 @@
       "BETTERSERVICESUBCAPTION":"The global services to fulfil you're business needs. We are here to grow you're business."
     },
     "HOMEWHATWEDO": {
-      "WHATWEDO": "What we do",
-      "SERVICE": "Service",
-      "SERVICE_DETAILS" : "Uber Technologies, Inc., commonly known as Uber, is an American multinational ride-hailing company offering services that include peer-to-peer ridesharing, ride service hailing, food delivery (Uber Eats), and a micromobility system with electric bikes and scooters. The company is based in San Francisco and has operations in over 785 metropolitan areas worldwide."
+      "ABOUTUS": "ABOUT US",
+      "WHOWEARE" : "Who Are We",
+      "WHOWEARE_DETAILS" : "Company name is the best web based software offering organization in the market today.By improving collaboration & interaction we change the way you require or render service. Whether you are a freelancer looking to render service, or an organization looking to recruit an employee, it is the fastest way to discover what the company name can do for you. Providing a scalable and robust platform for your all services, we help organizations and users succeed hand in hand.",
+      "WHATWEDO": "What We Do",
+      "WHATWEDO_DETAILS": "We provide a platform to manage your business on the cloud.Company Name is the window for finding the niche talent in the market, an opportunity to get the talented candidate without much hassle.Company Name gives freelancers the opportunity to work with Top-Brands and high quality projects that pay well."
     },
     "HOMESIGNUP": {
       "SIGNUP": "Sign Up",
