@@ -5,6 +5,35 @@
     <button type="button" class="close" (click)="modalRef.hide()">&times;</button>
 </div>
 <div class="modal-body">
-    <h6>{{usrdetailsObj.firstname}} &nbsp; {{usrdetailsObj.lastname}}</h6>
+    <table style="width:100%">
+        <tr>
+          <th>First Name :</th>
+          <td>{{usrdetailsObj.firstname}} </td>
+        </tr>
+        <tr>
+            <th>Last Name :</th>
+            <td>{{usrdetailsObj.lastname}}</td>
+          </tr>
+        <tr>
+          <th>User ID:</th>
+          <td>{{usrdetailsObj.userId}}</td>
+        </tr>
+        <tr>
+          <th>Email Address :</th>
+          <td> {{usrdetailsObj.username}}</td>
+        </tr>
+        <tr>
+            <th>Created On :</th>
+            <td> {{usrdetailsObj.createdon}}</td>
+          </tr>
+          <tr>
+            <th>Created By :</th>
+            <td> {{usrdetailsObj.createdby}}</td>
+          </tr>
+          <tr>
+            <th>Prefered Language :</th>
+            <td> {{usrdetailsObj.preferlang}}</td>
+          </tr>
+      </table>
 </div>
  
