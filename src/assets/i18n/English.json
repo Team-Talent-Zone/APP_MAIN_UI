@@ -47,17 +47,68 @@
       "OURSERVICE": "Our Services",
       "APARTMENT" : "Apartment",
       "APARTMENT1" : "COMPANY NAME is the best service provider for your living spaces be it an Apartment, individual house,  Villa. The unique app for managing your infrastructure, visitors, security, Bill Payments, Facility Booking, Networking,  recommendations, deals and offers from the Neighborhood and much more. Get a software for all your Infrastructure needs, manage flat details, owner specifications, renter details, emergency contacts, payment details etc. Effectively manage all visitors by updating their details in advance, with full permissions under your control.  Get connected with local community for all  requirements, maintanance works, shopping and groceries. Do not miss out on important communications , notices and broadcast messages ensure residents do not miss significant updates about their community. Get connected with your neighbors in the easiest way possible ensuring seamless connect. Book verified services by trusted agents, vendor details and classifieds are updated regularly. Using our services you can be rest assured.",
-    
-      "GRABTHESERVICE":"Grab The Service",
-      "PAYFORSERVICE" : "Pay For Service",
-     "PUBLISHYOUOWNPLATFORM":"Publish You Own Platform",
-     
       "FREELANCERJOBS": "FreeLancer Jobs",
-      "FREELANCERJOBS1" : "",
+      "FREELANCERJOBS1" : "We are here to help you get the best possible opportunities to showcase your skills & talents, CompanyName being the largest medium to onboard skilled & efficient workers, this will help you choose the the best among the top opportunities comming your way. You can render services at your convinient time, your preferred location & your instrested workplace. Every penny you earn would give you the satisfaction and pleasure of collaborating with us. Your profile would be rewarded and rated as per your performance and this could help you put your best foot forward and be counted among the top performers nationwide.",
+      "CLIENTCUSTOMERSERVICE":"Client / Customer Service",
+      "CLIENTCUSTOMERSERVICE1":"We at the Company Name are here for answering all your software requirements for creating your own infrastrcuture space. You could easily manage your Financial institutions, Education Institutions, Residential spaces and many more using our high end software. Get all your manual tasks automated, maintain all the necassary information easily on your fingertips, send out automated emails / replies to one or many by following simple process. We go under a lot of research and repeated communication with the customers to understand their needs and cater to their every special need independently. The software would simplify all the tedious tasks and help you get better results in quite a short span of time with very less manual workload and intervention.",
+      "GRABTHESERVICE":"Grab The Service",
+      "GRABTHESERVICE1": "Pick the service best for your needs & budget. We have customised packages, helping you choose only the services your require and saving you from unecessary spending and junk.",
+      "PAYFORSERVICE" : "Pay For Service",
+      "PAYFORSERVICE1" : "We manage all the payments via secured gateways and ensure all safety measures to be taken care of while handling your hard earned money. We have a wide variety of payment options helping you choose the apt payment option for your need.",
+      "PUBLISHYOUOWNPLATFORM":"Publish You Own Platform",
+      "PUBLISHYOUOWNPLATFORM1":"One answer to all your software requirements, Manage all your tedious tasks, manual workload and managment related tasks all at one place. New features and advacements would be updated automatically based on the plan you choose. The customized widgets and user friendly interface would add personal touch to your software. ",
       "UPDATEYOURACCOUNT" : "Update Your Account",
+      "UPDATEYOURACCOUNT1" : "Complete all your profile details making sure you fill the category of service and related sub category based on your skill and experience. Every feild would help us get more details about you and help us to direct you to the best channels possible.",
       "BACKGROUNDCHECK" : "Background Check",
+      "BACKGROUNDCHECK1" : "Every profile is verified by our team of experts. Within a time peroid of 7 days the authentication of your documents and the proofs submitted is recorded and maintained for future needs.",
       "PAYFOROPPORTUNITY":"Pay For Opportunity",
-      "JOBASSIGNMENT":"Job Assignment"
+      "PAYFOROPPORTUNITY1":"You would receive a notification from us, on sucessful verification of your profile. You can now proceed with our secured payment process to get connected with the nationwide Job opportunities.",
+      "JOBASSIGNMENT":"Job Assignment",
+      "JOBASSIGNMENT1":"Waiting is paining. To avoid, we have designed an automated system which always connect with you by sending job notification based on your skills. Grab IT, Accept IT, Finish IT."
+    },
+    "PRICE": {
+      "TITLE" : "Plans & Pricing",
+      "DESC1" : "We have a plan for every service.",
+      "DESC2" : "Whether you're a business or an individual, no credit card required for signup.",
+      "INDIVIDUAL":"Individual",
+      "PACKAGE":"Package",
+      "APARTMENTSERVICE":"Apartment Service",
+      "INCLUDES":"Includes:",
+      "UNLIMITEDPAYMENTS":"Unlimited Payments",
+      "UNLIMITEDCLASSIFIED":"Unlimited Classified",
+      "UMLIMITEDFREELANCER":"Unlimited Freelancer",
+      "FREECUSTOMERSUPPORT":"Free Customer Support",
+      "SIGNUP":"Sign up",
+      "CURRENTLYNOPACKAGESERVICES":"Currently No Package Services"
+    },
+
+    "QUESTIONS": {
+      "FREQUENTLYASKEDQUESTIONS":"Frequently asked questions",
+      "DOINEEDCREDITCARDTOSIGNUP":"Do I need a credit card to sign up?",
+      "DOINEEDCREDITCARDTOSIGNUP1":"",
+      "DOYOUOFFERAFREETRAIL":"Do you offer a free trial?",
+      "DOYOUOFFERAFREETRAIL1":"",
+      "WHATIFIDECIDETOCANCELMYPLAN":"What if I decide to cancel my plan?",
+      "WHATIFIDECIDETOCANCELMYPLAN1":"",
+      "CANICANCELATANYTIME":"Can I cancel at anytime?",
+      "CANICANCELATANYTIME1":""
+    },
+    "TOUCH": {
+      "GETINTOUCH":"Get in touch",
+      "ADDRESS":"Address:",
+      "DONTSENDANYTHING":"Please don't send anything to this address.",
+      "EMAIL":"Email:",
+      "PHONE":"Phone:",
+      "CHOOSE":"Choose ...",
+      "NEWBUYER":"New Buyer",
+      "AUCTION":"Auction",
+      "COMPLAINT":"Complaint",
+      "FEEDBACK":"Feedback",
+      "SUBMIT":"Submit",
+      "MOBILENO":"Mobile No.",
+      "YOURMESSAGE":"Your Message",
+      "FULLNAME":"Full Name",
+      "EMAIL1":"Email"
     }
   }
   
