@@ -85,13 +85,13 @@
   "QUESTIONS": {
     "FREQUENTLYASKEDQUESTIONS":"తరచుగా అడుగు ప్రశ్నలు",
     "DOINEEDCREDITCARDTOSIGNUP":"సైన్ అప్ చేయడానికి నాకు క్రెడిట్ కార్డ్ అవసరమా?",
-    "DOINEEDCREDITCARDTOSIGNUP1":"",
+    "DOINEEDCREDITCARDTOSIGNUP1":"లేదు. మీరు మాతో ఉచితంగా సైన్ అప్ చేయవచ్చు.",
     "DOYOUOFFERAFREETRAIL" :"మీరు నాకు ఉచిత ట్రయల్ ఇస్తున్నారా?",
-    "DOYOUOFFERAFREETRAIL1":"",
+    "DOYOUOFFERAFREETRAIL1":"అవును కాని అవకాశాలు పరిమితం, అందువల్ల దానిలోని విస్తారమైన లక్షణాలను ఉపయోగించుకోవడానికి ప్యాకేజీని కొనమని సూచిస్తుంది",
     "WHATIFIDECIDETOCANCELMYPLAN":"నా ప్రణాళికను రద్దు చేయాలని నేను నిర్ణయించుకుంటే?",
-    "WHATIFIDECIDETOCANCELMYPLAN1":"",
+    "WHATIFIDECIDETOCANCELMYPLAN1":"మీరు వెళ్ళడం చూడటం బాధ కలిగిస్తుంది, మీరు ఎప్పుడైనా మనతో ఏ ఫిర్యాదులకైనా మాట్లాడవచ్చు.",
     "CANICANCELATANYTIME":"నేను ఎప్పుడైనా రద్దు చేయవచ్చా?",
-    "CANICANCELATANYTIME1":""
+    "CANICANCELATANYTIME1":"అవును, మేము ఎల్లప్పుడూ మీ చేతుల్లో నియంత్రణను ఉంచుతాము, కాని మా నుండి విడిపోయే ముందు మాతో మాట్లాడమని మిమ్మల్ని అభ్యర్థిస్తాము. అయితే, మేము మీ నగదును తిరిగి చెల్లించలేము."
   },
   "TOUCH": {
     "GETINTOUCH":"అందుబాటులో ఉండు",

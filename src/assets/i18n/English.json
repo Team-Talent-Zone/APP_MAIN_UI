@@ -85,13 +85,13 @@
     "QUESTIONS": {
       "FREQUENTLYASKEDQUESTIONS":"Frequently asked questions",
       "DOINEEDCREDITCARDTOSIGNUP":"Do I need a credit card to sign up?",
-      "DOINEEDCREDITCARDTOSIGNUP1":"",
+      "DOINEEDCREDITCARDTOSIGNUP1":"No. You can signup with us for free.",
       "DOYOUOFFERAFREETRAIL":"Do you offer a free trial?",
-      "DOYOUOFFERAFREETRAIL1":"",
+      "DOYOUOFFERAFREETRAIL1":"Yes but the possibilities are limited, thus would suggest you to buy the package to make use of the vast features in it.",
       "WHATIFIDECIDETOCANCELMYPLAN":"What if I decide to cancel my plan?",
-      "WHATIFIDECIDETOCANCELMYPLAN1":"",
+      "WHATIFIDECIDETOCANCELMYPLAN1":"It would hurt to see you go, you could speak to us anytime for any grievances.",
       "CANICANCELATANYTIME":"Can I cancel at anytime?",
-      "CANICANCELATANYTIME1":""
+      "CANICANCELATANYTIME1":"Yes, we put the control in your hands always, but would request you to speak to us before parting from us. However, we would not be able to process your refund."
     },
     "TOUCH": {
       "GETINTOUCH":"Get in touch",
