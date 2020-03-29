@@ -9,13 +9,12 @@ import { Component, OnInit, ChangeDetectorRef, ElementRef, ViewChild } from '@an
 import { UtilService } from '../AppRestCall/util/util.service';
 import { UserAdapter } from '../adapters/useradapter';
 import { config } from 'src/app/appconstants/config';
-
 import {
   FormBuilder,
   FormGroup,
-  Validators,
-  FormControl} from '@angular/forms';
-
+  Validators} from '@angular/forms';
+import { ApiService , Maps } from '../adapters/api.service';
+ 
 @Component({
   selector: 'app-editprofile',
   templateUrl: './editprofile.component.html',
@@ -23,6 +22,8 @@ import {
 })
 export class EditprofileComponent implements OnInit {
 
+  @ViewChild('search', null)
+  public searchElementRef: ElementRef;
   id: number;
   edituserobj: User;
   roleCode: string;
@@ -30,11 +31,18 @@ export class EditprofileComponent implements OnInit {
   /*########################## File Upload ########################*/
   el: ElementRef;
   avatarURL: any ;
-  nationalIDPDFURL: any;
+  avatarReturnURL: any;
+  nationalIDURL: any;
+  nationalIDReturnURL: any;
   editprofileuserId: number;
   editprofileForm: FormGroup;
   usrObj: User;
   langSelected = 'en';
+  filename: string;
+  typeavt: string;
+  typenationalid: string;
+  msgflag = false;
+  msgflagboth = false;
 
   constructor(
     public fb: FormBuilder,
@@ -47,10 +55,14 @@ export class EditprofileComponent implements OnInit {
     private formBuilder: FormBuilder,
     private userAdapter: UserAdapter,
     public signupComponent: SignupComponent,
+    apiService: ApiService
   ) {
     route.params.subscribe(params => {
       this.id = params.id;
      });
+    apiService.api.then(maps => {
+      this.initAutocomplete(maps);
+    });
    }
 
   ngOnInit() {
@@ -67,6 +79,9 @@ export class EditprofileComponent implements OnInit {
       this.signupComponent.getAllCategories(this.langSelected);
     }
 
+  }
+  initAutocomplete(maps: Maps) {
+    let autocomplete =  new maps.places.Autocomplete(this.searchElementRef.nativeElement);
   }
 
   editProfileFormValidations() {
@@ -96,6 +111,7 @@ export class EditprofileComponent implements OnInit {
         category: ['', [Validators.required]],
         experienceInField: ['', [Validators.required  , Validators.maxLength(2) , Validators.pattern('^[0-9]*$')]],
         abt: ['', [Validators.required]],
+        uploadValidPhotoidImgUrl: ['', [Validators.required]],
         hourlyRate: ['', [Validators.required, Validators.maxLength(5),  Validators.pattern('^[0-9]*$')]],
       });
     }  else {
@@ -140,8 +156,8 @@ export class EditprofileComponent implements OnInit {
           this.editprofileForm.patchValue({subCategory: this.edituserobj.freeLanceDetails.subCategory});
           this.editprofileForm.patchValue({abt: this.edituserobj.freeLanceDetails.abt});
           this.editprofileForm.patchValue({hourlyRate: this.edituserobj.freeLanceDetails.hourlyRate});
-          this.nationalIDPDFURL = this.edituserobj.freeLanceDetails.uploadValidPhotoidImgUrl;
-
+          this.nationalIDURL = this.edituserobj.freeLanceDetails.uploadValidPhotoidImgUrl;
+          this.editprofileForm.patchValue({uploadValidPhotoidImgUrl: this.edituserobj.freeLanceDetails.uploadValidPhotoidImgUrl});
             }
          },
        error => {
@@ -152,17 +168,20 @@ export class EditprofileComponent implements OnInit {
   }
 
   saveorupdateeditprofile() {
-    this.issubmit = true;
-    if (this.editprofileForm.invalid) {
+   if (this.roleCode === config.user_rolecode_fu) {
+        this.editprofileForm.patchValue({uploadValidPhotoidImgUrl: this.nationalIDURL});
+    }
+   this.issubmit = true;
+   if (this.editprofileForm.invalid) {
       return;
     }
-    this.edituserobj.username = this.editprofileForm.get('username').value;
-    this.edituserobj.firstname = this.editprofileForm.get('firstname').value;
-    this.edituserobj.lastname = this.editprofileForm.get('lastname').value;
-    this.edituserobj.preferlang = this.editprofileForm.get('preferlang').value;
-    this.edituserobj.avtarurl = this.avatarURL;
-    this.edituserobj.userbizdetails.fulladdress = this.editprofileForm.get('fulladdress').value;
-    if (this.roleCode === config.user_rolecode_cbu) {
+   this.spinnerService.show();
+   this.edituserobj.username = this.editprofileForm.get('username').value;
+   this.edituserobj.firstname = this.editprofileForm.get('firstname').value;
+   this.edituserobj.lastname = this.editprofileForm.get('lastname').value;
+   this.edituserobj.preferlang = this.editprofileForm.get('preferlang').value;
+   this.edituserobj.userbizdetails.fulladdress = this.searchElementRef.nativeElement.value;
+   if (this.roleCode === config.user_rolecode_cbu) {
       this.edituserobj.userbizdetails.bizname = this.editprofileForm.get('bizname').value;
       this.edituserobj.userbizdetails.biztype = this.editprofileForm.get('biztype').value;
       this.edituserobj.userbizdetails.bizwebsite = this.editprofileForm.get('bizwebsite').value;
@@ -170,13 +189,12 @@ export class EditprofileComponent implements OnInit {
       this.edituserobj.userbizdetails.purposeofsignup = this.editprofileForm.get('purposeofsignup').value;
       this.edituserobj.userbizdetails.designation = this.editprofileForm.get('designation').value;
     }
-    if (this.roleCode === config.user_rolecode_fu) {
+   if (this.roleCode === config.user_rolecode_fu) {
       this.edituserobj.freeLanceDetails.category = this.editprofileForm.get('category').value;
       this.edituserobj.freeLanceDetails.experienceInField = this.editprofileForm.get('experienceInField').value;
       this.edituserobj.freeLanceDetails.subCategory = this.editprofileForm.get('subCategory').value;
       this.edituserobj.freeLanceDetails.abt = this.editprofileForm.get('abt').value;
       this.edituserobj.freeLanceDetails.hourlyRate = this.editprofileForm.get('hourlyRate').value;
-      this.edituserobj.freeLanceDetails.uploadValidPhotoidImgUrl = this.nationalIDPDFURL;
       if (this.edituserobj.freeLanceDetails.experienceInField != null &&
         this.edituserobj.freeLanceDetails.hourlyRate != null &&
         this.edituserobj.freeLanceDetails.uploadValidPhotoidImgUrl != null &&
@@ -185,17 +203,74 @@ export class EditprofileComponent implements OnInit {
         this.edituserobj.freelancehistoryentity[0].bgstatus = config.bg_code_completedprofile;
         }
     }
-    this.spinnerService.show();
-    this.userService.saveorupdate(this.edituserobj).subscribe(
-      (userObj: any) => {
+   if (this.typeavt === 'avatar' && this.typenationalid !== 'nationalid') {
+      this.msgflag = true;
+    } else
+    if (this.typeavt !== 'avatar' && this.typenationalid === 'nationalid') {
+      this.msgflag = true;
+    } else
+    if (this.typenationalid !== 'nationalid' && this.typeavt !== 'avatar') {
+      this.msgflag = true;
+    }
+   if (this.typenationalid !== 'nationalid' && this.typeavt !== 'avatar') {
+      this.saveorupdateedituser(this.edituserobj , null );
+      if (this.msgflag) {
+        this.alertService.success( this.edituserobj.firstname + ' your account details is updated');
+        this.msgflag = false;
         this.spinnerService.hide();
+      }
+    } else
+    if (this.typeavt === 'avatar') {
+        this.utilService.uploadAvatarsInS3( this.avatarURL , this.editprofileuserId , this.filename).subscribe(
+           (returnURL: string) => {
+            this.edituserobj.avtarurl = returnURL;
+            this.saveorupdateedituser(this.edituserobj , this.typeavt);
+            if (this.msgflag) {
+             this.alertService.success( this.edituserobj.firstname + ' your account details is updated with profile pic');
+             this.msgflag = false;
+             this.typeavt = null;
+             this.spinnerService.hide();
+            }
+          }
+        );
+    }
+   if (this.typenationalid === 'nationalid') {
+      this.utilService.uploadBgDocsInS3(this.nationalIDURL , this.editprofileuserId , this.filename).subscribe(
+        (returnURL: string) => {
+            if (this.typenationalid === 'nationalid' && this.typeavt === 'avatar') {
+              this.msgflagboth = true;
+            }
+            this.edituserobj.freeLanceDetails.uploadValidPhotoidImgUrl = returnURL;
+            this.saveorupdateedituser(this.edituserobj , this.typenationalid);
+            if (this.msgflag) {
+              this.alertService.success( this.edituserobj.firstname + ' your account details is updated with photo id');
+              this.msgflag = false;
+              this.typenationalid = null;
+              this.spinnerService.hide();
+
+             }
+            if (this.msgflagboth) {
+              this.alertService.success( this.edituserobj.firstname + ' your account details is updated');
+              this.msgflagboth = false;
+              this.typenationalid = null;
+              this.typeavt = null;
+              this.spinnerService.hide();
+            }
+          }
+        );
+    }
+  }
+ 
+  private saveorupdateedituser(edituserobj: User , type: any) {
+     this.userService.saveorupdate(edituserobj).subscribe(
+      (userObj: any) => {
         this.usrObj = this.userAdapter.adapt(userObj);
         if (this.userService.currentUserValue.userId === this.usrObj.userId) {
           this.userService.currentUserValue.avtarurl = this.usrObj.avtarurl;
           this.userService.currentUserValue.firstname = this.usrObj.firstname;
         }
-        this.alertService.success( this.usrObj.firstname + ' account details is updated');
-      },
+        this.edituserobj = userObj;
+       },
       error => {
         this.spinnerService.hide();
         this.alertService.error(error);
@@ -205,41 +280,29 @@ export class EditprofileComponent implements OnInit {
   uploadFile(event , type) {
     let reader = new FileReader(); // HTML5 FileReader API
     let file = event.target.files[0];
+    if ( file.type === 'image/png' || file.type === 'image/jpeg' || file.type === 'image/jpg') {
+      if (event.target.files && event.target.files[0]) {
+        reader.readAsDataURL(file);
 
-    if (event.target.files && event.target.files[0]) {
-      reader.readAsDataURL(file);
-
-      // When file uploads set it to file formcontrol
-      reader.onload = () => {
-        this.spinnerService.show();
-        
-        if (type === 'avatar') {
-        this.utilService.uploadAvatarsInS3(  reader.result , this.editprofileuserId).subscribe(
-            (returnURL: string) => {
-              this.spinnerService.hide();
-              this.avatarURL = returnURL;
-            },
-            error => {
-              this.spinnerService.hide();
-              this.alertService.error(error);
-            }
-          );
-          };
-        if (type === 'nationalid') {
-            this.utilService.uploadBgDocsInS3(reader.result , this.editprofileuserId , 'pdf').subscribe(
-                (returnURL: string) => {
-                  this.spinnerService.hide();
-                  this.nationalIDPDFURL = returnURL;
-                },
-                error => {
-                  this.spinnerService.hide();
-                  this.alertService.error(error);
-                }
-              );
-              }
-      };
-      // ChangeDetectorRef since file is loading outside the zone
-      this.cd.markForCheck();
+        // When file uploads set it to file formcontrol
+        reader.onload = () => {
+          this.filename = file.name;
+          if (type === 'avatar') {
+            this.typeavt = type;
+            this.avatarURL = reader.result;
+          }
+          if (type === 'nationalid') {
+            this.typenationalid = type;
+            this.nationalIDURL = reader.result;
+          }
+          this.spinnerService.show();
+          this.spinnerService.hide();
+        };
+        // ChangeDetectorRef since file is loading outside the zone
+        this.cd.markForCheck();
+      }
+    } else {
+      this.alertService.error('Invalid file format. it should be .png,.jpg,.jpeg');
     }
   }
 }

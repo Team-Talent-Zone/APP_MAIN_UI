@@ -2,7 +2,7 @@ import { config } from 'src/app/appconstants/config';
 import { Util } from 'src/app/appmodels/Util';
 import { User } from 'src/app/appmodels/User';
 import { ReferenceAdapter } from '../adapters/referenceadapter';
-import { map, first, catchError } from 'rxjs/operators';
+import { map, first } from 'rxjs/operators';
 import { Component, OnInit, Inject } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import {

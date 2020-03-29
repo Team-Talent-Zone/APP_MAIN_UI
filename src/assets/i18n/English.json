@@ -1,6 +1,6 @@
 {
     "HOMENAV": {
-      "WHATWEDO": "What we do",
+      "ABOUTUS": "ABOUT US",
       "ONBOARD": "OnBoard",
       "SERVICE": "Service",
       "PRICING": "Pricing",
@@ -13,9 +13,15 @@
       "BETTERSERVICESUBCAPTION":"The global services to fulfil you're business needs. We are here to grow you're business."
     },
     "HOMEWHATWEDO": {
-      "WHATWEDO": "What we do",
-      "SERVICE": "Service",
-      "SERVICE_DETAILS" : "Uber Technologies, Inc., commonly known as Uber, is an American multinational ride-hailing company offering services that include peer-to-peer ridesharing, ride service hailing, food delivery (Uber Eats), and a micromobility system with electric bikes and scooters. The company is based in San Francisco and has operations in over 785 metropolitan areas worldwide."
+      "ABOUTUS": "ABOUT US",
+      "WHOWEARE" : "Who Are We",
+      "WHOWEARE_DETAILS" : "Company name is the best web based software offering organization in the market today.By improving collaboration & interaction we change the way you require or render service. Whether you are a freelancer looking to render service, or an organization looking to recruit an employee, it is the fastest way to discover what the company name can do for you. Providing a scalable and robust platform for your all services, we help organizations and users succeed hand in hand.",
+      "WHATWEDO": "What We Do",
+      "WHATWEDO_DETAILS": "We provide a fully hosted and a cloud based solution for finding the niche skilled talent in the market, an opportunity to recruit the talented candidate without much hassle. Company Name also provides freelancers the opportunity to work with Top-Brands and high quality projects that pay well. Delivering compelling & personalized experience in every interaction with us.",
+      "HOWDOWEGETITDONE" : "How We Get It Done",
+      "HOWDOWEGETITDONE_DETAILS" : "Organize all customers and users with enhanced CRM (Customer Relationship Management). Actively updating the repository of verified users and reliable customers. Matchup users with projects to pitch in ideas, submit work and instantly receive payment – All in one place.",
+      "WHOITHELPS": "Who It Helps",
+      "WHOITHELPS_DETAILS": "We help Organizations, Users & Projects save Time,Effort and Hassle by providing you with verified candidates.Open Opportunities to showcase talents and professional expertise.Up to date follow-up’s and updates via emails & social networking platforms."
     },
     "HOMESIGNUP": {
       "SIGNUP": "Sign Up",
@@ -27,6 +33,82 @@
       "PREFERLANG": "Preferred Language",
       "CATEGORY": "Select Category",
       "SKILL": "Select your skill"
+    },
+    "CLIENTONBOARD": {
+      "OURCUSTOMERS":"Our Customers",
+      "CLIENTONBOARD":"Client On Board",
+      "CLIENT": "At COMPANY NAME our first step is spent creating the best software infrastructure for your project. That is outlining the goals and assembling the best technology team possible to help you accomplish those goals. The solid planning will be the foundation upon which our entire customer onboarding program will depend. For the success of our customer, we also train the client to use our product. This would give customers a sense of confidence in collaborating with us. We guide our customers as frictionless as possible to their success. Our Subject matter experts (SME’s) get involved with the clients from the very early stages of onboarding, which will help in establishing a strong relationship, and pave our way in creating the content & selecting the right framework which would be very fruitful for the client. The team goes under a lot of research in developing the best software.",
+      "CLIENT1": "COMPANY NAME also connects your business to a nationwide community of freelancers who thrive nothing more than to help your business succeed. Discover top rated and reviewed experts for every skill imaginable - this discovery could change your business forever. Explore different payment features, giving you the freedom to test ideas cost effectively. Once you're happy with the results, we carefully verify every freelancer before allowing them onto our platform. This guarantees you'll be working with an expert in their field of work. Above all, every freelancer is highly-rated and reviewed by expert community. Outsource your tasks risk-free with us and collaborate with freelancers around.",
+      "CLIENT2": " If there's ever an issue, we'll help you fix it.",
+      "FREELANCER":"Freelancer",
+      "FREELANCER1":"COMPANY NAME is an exponentially large platform to help onboard a wide variety of skilled and efficient workers who are ready to provide their services to help projects / business thrive. We pick the best talent in the market and also get each and every user verified with top-most scrutiny. Basic fundamentals and the etiquettes of work help groom the user to deliver to high standards. We connect you to a large variety of opportunity providers and help you get wide exposure to nationwide customers. You would be benefited with the variety of payment facilities helping you get paid for your efforts immediately. You would also be earning rewards for all your skilled tasks and this would help in improving your overall rating as well. As you climb up the ladder with us, you would be among the top-rated performers and would be highly rewarded and appreciated for your performance."
+    },
+    "SERVICE": {
+      "OURSERVICE": "Our Services",
+      "APARTMENT" : "Apartment",
+      "APARTMENT1" : "COMPANY NAME is the best service provider for your living spaces be it an Apartment, individual house,  Villa. The unique app for managing your infrastructure, visitors, security, Bill Payments, Facility Booking, Networking,  recommendations, deals and offers from the Neighborhood and much more. Get a software for all your Infrastructure needs, manage flat details, owner specifications, renter details, emergency contacts, payment details etc. Effectively manage all visitors by updating their details in advance, with full permissions under your control.  Get connected with local community for all  requirements, maintanance works, shopping and groceries. Do not miss out on important communications , notices and broadcast messages ensure residents do not miss significant updates about their community. Get connected with your neighbors in the easiest way possible ensuring seamless connect. Book verified services by trusted agents, vendor details and classifieds are updated regularly. Using our services you can be rest assured.",
+      "FREELANCERJOBS": "FreeLancer Jobs",
+      "FREELANCERJOBS1" : "We are here to help you get the best possible opportunities to showcase your skills & talents, CompanyName being the largest medium to onboard skilled & efficient workers, this will help you choose the the best among the top opportunities comming your way. You can render services at your convinient time, your preferred location & your instrested workplace. Every penny you earn would give you the satisfaction and pleasure of collaborating with us. Your profile would be rewarded and rated as per your performance and this could help you put your best foot forward and be counted among the top performers nationwide.",
+      "CLIENTCUSTOMERSERVICE":"Client / Customer Service",
+      "CLIENTCUSTOMERSERVICE1":"We at the Company Name are here for answering all your software requirements for creating your own infrastrcuture space. You could easily manage your Financial institutions, Education Institutions, Residential spaces and many more using our high end software. Get all your manual tasks automated, maintain all the necassary information easily on your fingertips, send out automated emails / replies to one or many by following simple process. We go under a lot of research and repeated communication with the customers to understand their needs and cater to their every special need independently. The software would simplify all the tedious tasks and help you get better results in quite a short span of time with very less manual workload and intervention.",
+      "GRABTHESERVICE":"Grab The Service",
+      "GRABTHESERVICE1": "Pick the service best for your needs & budget. We have customised packages, helping you choose only the services your require and saving you from unecessary spending and junk.",
+      "PAYFORSERVICE" : "Pay For Service",
+      "PAYFORSERVICE1" : "We manage all the payments via secured gateways and ensure all safety measures to be taken care of while handling your hard earned money. We have a wide variety of payment options helping you choose the apt payment option for your need.",
+      "PUBLISHYOUOWNPLATFORM":"Publish You Own Platform",
+      "PUBLISHYOUOWNPLATFORM1":"One answer to all your software requirements, Manage all your tedious tasks, manual workload and managment related tasks all at one place. New features and advacements would be updated automatically based on the plan you choose. The customized widgets and user friendly interface would add personal touch to your software. ",
+      "UPDATEYOURACCOUNT" : "Update Your Account",
+      "UPDATEYOURACCOUNT1" : "Complete all your profile details making sure you fill the category of service and related sub category based on your skill and experience. Every feild would help us get more details about you and help us to direct you to the best channels possible.",
+      "BACKGROUNDCHECK" : "Background Check",
+      "BACKGROUNDCHECK1" : "Every profile is verified by our team of experts. Within a time peroid of 7 days the authentication of your documents and the proofs submitted is recorded and maintained for future needs.",
+      "PAYFOROPPORTUNITY":"Pay For Opportunity",
+      "PAYFOROPPORTUNITY1":"You would receive a notification from us, on sucessful verification of your profile. You can now proceed with our secured payment process to get connected with the nationwide Job opportunities.",
+      "JOBASSIGNMENT":"Job Assignment",
+      "JOBASSIGNMENT1":"Waiting is paining. To avoid, we have designed an automated system which always connect with you by sending job notification based on your skills. Grab IT, Accept IT, Finish IT."
+    },
+    "PRICE": {
+      "TITLE" : "Plans & Pricing",
+      "DESC1" : "We have a plan for every service.",
+      "DESC2" : "Whether you're a business or an individual, no credit card required for signup.",
+      "INDIVIDUAL":"Individual",
+      "PACKAGE":"Package",
+      "APARTMENTSERVICE":"Apartment Service",
+      "INCLUDES":"Includes:",
+      "UNLIMITEDPAYMENTS":"Unlimited Payments",
+      "UNLIMITEDCLASSIFIED":"Unlimited Classified",
+      "UMLIMITEDFREELANCER":"Unlimited Freelancer",
+      "FREECUSTOMERSUPPORT":"Free Customer Support",
+      "SIGNUP":"Sign up",
+      "CURRENTLYNOPACKAGESERVICES":"Currently No Package Services"
+    },
+
+    "QUESTIONS": {
+      "FREQUENTLYASKEDQUESTIONS":"Frequently asked questions",
+      "DOINEEDCREDITCARDTOSIGNUP":"Do I need a credit card to sign up?",
+      "DOINEEDCREDITCARDTOSIGNUP1":"No. You can signup with us for free.",
+      "DOYOUOFFERAFREETRAIL":"Do you offer a free trial?",
+      "DOYOUOFFERAFREETRAIL1":"Yes but the possibilities are limited, thus would suggest you to buy the package to make use of the vast features in it.",
+      "WHATIFIDECIDETOCANCELMYPLAN":"What if I decide to cancel my plan?",
+      "WHATIFIDECIDETOCANCELMYPLAN1":"It would hurt to see you go, you could speak to us anytime for any grievances.",
+      "CANICANCELATANYTIME":"Can I cancel at anytime?",
+      "CANICANCELATANYTIME1":"Yes, we put the control in your hands always, but would request you to speak to us before parting from us. However, we would not be able to process your refund."
+    },
+    "TOUCH": {
+      "GETINTOUCH":"Get in touch",
+      "ADDRESS":"Address:",
+      "DONTSENDANYTHING":"Please don't send anything to this address.",
+      "EMAIL":"Email:",
+      "PHONE":"Phone:",
+      "CHOOSE":"Choose ...",
+      "NEWBUYER":"New Buyer",
+      "AUCTION":"Auction",
+      "COMPLAINT":"Complaint",
+      "FEEDBACK":"Feedback",
+      "SUBMIT":"Submit",
+      "MOBILENO":"Mobile No.",
+      "YOURMESSAGE":"Your Message",
+      "FULLNAME":"Full Name",
+      "EMAIL1":"Email"
     }
   }
   

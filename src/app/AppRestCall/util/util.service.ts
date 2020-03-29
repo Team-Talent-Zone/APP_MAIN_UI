@@ -13,25 +13,27 @@ export class UtilService {
     private http: HttpClient,
   ) { }
 
-  uploadAvatarsInS3(base64image: any , userId: number) {
+  uploadAvatarsInS3(base64image: any , userId: number, filename: string) {
     this.uploadutil = new UploadUtil();
     this.uploadutil.base64image = base64image;
     this.uploadutil.userid = userId;
+    this.uploadutil.filename = filename;
     return this.http.post(`${environment.apiUrl}/uploadavatar/`, this.uploadutil);
   }
 
-  uploadBgDocsInS3(base64image: any , userId: number , fileextension: string ) {
+  uploadBgDocsInS3(base64image: any , userId: number , filename: string) {
     this.uploadutil = new UploadUtil();
     this.uploadutil.base64image = base64image;
     this.uploadutil.userid = userId;
-    this.uploadutil.fileextension = fileextension;
+    this.uploadutil.filename = filename;
     return this.http.post(`${environment.apiUrl}/uploadbgdocs/`, this.uploadutil);
   }
 
-  uploadWidgetPicsInS3(base64image: any , userId: number) {
+  uploadWidgetPicsInS3(base64image: any , userId: number, filename: string) {
     this.uploadutil = new UploadUtil();
     this.uploadutil.base64image = base64image;
     this.uploadutil.userid = userId;
+    this.uploadutil.filename = filename;
     return this.http.post(`${environment.apiUrl}/uploadwidgets/`, this.uploadutil);
   }
 

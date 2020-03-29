@@ -5,12 +5,137 @@
     <button type="button" class="close" (click)="modalRef.hide()">&times;</button>
 </div>
 <div class="modal-body">
-  
-
-   
+    <table style="width:100%">
+        <tr>
+          <th>First Name </th>
+          <td>{{usrdetailsObj.firstname}} </td>
+        </tr>
+        <tr>
+            <th>Last Name </th>
+            <td>{{usrdetailsObj.lastname}}</td>
+          </tr>
+        <tr>
+          <th>User ID </th>
+          <td>{{usrdetailsObj.userId}}</td>
+        </tr>
+        <tr>
+          <th>Email Address </th>
+          <td> {{usrdetailsObj.username}}</td>
+        </tr>
+        <tr>
+            <th>Created On </th>
+            <td> {{usrdetailsObj.createdon}}</td>
+          </tr>
+          <tr>
+            <th>Created By </th>
+            <td> {{usrdetailsObj.createdby}}</td>
+          </tr>
+          <tr>
+            <th>Prefered Language </th>
+            <td> {{usrdetailsObj.preferlang}}</td>
+          </tr>
+          <tr>
+            <th>Biz Name </th>
+            <td> {{usrdetailsObj.userbizdetails.bizname}}</td>
+          </tr>
+          <tr>
+            <th>Biz Type </th>
+            <td> {{usrdetailsObj.userbizdetails.biztype}}</td>
+          </tr>
+          <tr>
+            <th>Biz Website </th>
+            <td> {{usrdetailsObj.userbizdetails.bizwebsite}}</td>
+          </tr>
+          <tr>
+            <th>Purpose of signup </th>
+            <td> {{usrdetailsObj.userbizdetails.purposeofsignup}}</td>
+          </tr>
+          <tr>
+            <th>Designation </th>
+            <td> {{usrdetailsObj.userbizdetails.designation}}</td>
+          </tr>
+          
+          <tr>
+            <th>Full Address </th>
+            <td> {{usrdetailsObj.userbizdetails.fulladdress}}</td>
+          </tr>
+          <tr>
+            <th>User's Role </th>
+            <td> {{usrdetailsObj.userroles.rolecode}}</td>
+          </tr>
+          <tr>
+            <th>Role ID</th>
+            <td> {{usrdetailsObj.userroles.roleId}}</td>
+          </tr> 
+      </table>
 </div>
-<!-- Modal footer -->
-<div class="modal-footer">
-    <button class="btn  btn-primary" type="submit">Submit</button>
-    <button type="button" class="btn btn-danger" (click)="modalRef.hide()">Close</button>
-</div>
+<div class="modal-body" *ngIf="usrdetailsObj.userroles.rolecode == 'FREELANCER_USER'">
+  <h5> In Detail Description on UserRole </h5>
+  <table style="width:100%" >    
+           <tr>
+            <th>Is Profile completed</th>
+            <td> {{usrdetailsObj.freeLanceDetails.isprofilecompleted}}</td>
+          </tr>
+         <tr>
+            <th>Back Ground verification status</th>
+            <td> {{usrdetailsObj.freeLanceDetails.isbgdone}}</td>
+          </tr> 
+          <tr>
+            <th>Job Availablity status</th>
+            <td> {{usrdetailsObj.freeLanceDetails.isJobAvailable}}</td>
+          </tr>
+          <tr>
+            <th>Category</th>
+            <td> {{usrdetailsObj.freeLanceDetails.category}}</td>
+          </tr>
+          <tr>
+            <th>Sub Category</th>
+            <td> {{usrdetailsObj.freeLanceDetails.subCategory}}</td>
+          </tr>   
+          <tr>
+            <th>Experience In Field</th>
+            <td> {{usrdetailsObj.freeLanceDetails.experienceInField}}</td>
+          </tr>
+          <tr>
+            <th>Hourly Rate</th>
+            <td> {{usrdetailsObj.freeLanceDetails.hourlyRate}}</td>
+          </tr>
+          <tr>
+            <th>Decision By</th>
+            <td> {{usrdetailsObj.freelancehistoryentity.decisionby}}</td>
+          </tr>
+          <tr>
+            <th>Decision On</th>
+            <td> {{usrdetailsObj.freelancehistoryentity.decisionon}}</td>
+          </tr>
+          <tr>
+            <th>BG Status</th>
+            <td> {{usrdetailsObj.freelancehistoryentity.bgstatus}}</td>
+          </tr>
+          <tr>
+            <th>BG Comment</th>
+            <td> {{usrdetailsObj.freelancehistoryentity.bgcomment}}</td>
+          </tr>
+          <tr>
+            <th>Is Locked</th>
+            <td> {{usrdetailsObj.freelancehistoryentity.islocked}}</td>
+          </tr>
+          <tr>
+            <th>CSST id</th>
+            <td> {{usrdetailsObj.freelancehistoryentity.csstid}}</td>
+          </tr>
+          <tr>
+            <th>Doc Name</th>
+            <td> {{usrdetailsObj.freelancedocumententity.docname}}</td>
+          </tr>
+          <tr>
+            <th>Doc Url </th>
+            <td> {{usrdetailsObj.freelancedocumententity.docurl}}</td>
+          </tr>
+          <tr>
+            <th>Uploaded Date</th>
+            <td> {{usrdetailsObj.freelancedocumententity.uploaddate}}</td>
+          </tr>
+          
+    </table>
+  </div>

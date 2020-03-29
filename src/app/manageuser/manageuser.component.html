@@ -92,10 +92,10 @@
                                     <td>{{mywork.createdon}}</td>
                                     <td>{{mywork.updatedon}}</td>
                                     <td>
-                                        <a class="btn  btn-sm" (click) = 'processbgverficiationopenmodal(mywork.userId)'>
+                                        <a  *ngIf="mywork.freelancehistoryentity.islocked" class="btn  btn-sm" (click) = 'processbgverficiationopenmodal(mywork.userId)'>
                                             <i title= "You can start working.."  
                                                     class="fa fa-lock" style="color: rgb(37, 165, 37)" 
-                                                    *ngIf="mywork.freelancehistoryentity.islocked;">
+                                                    >
                                             </i>
                                         </a>
                                     </td>
@@ -235,7 +235,8 @@
                                         </a>
                                     </td>
                                     <td *ngIf="userService.currentUserValue.userroles.rolecode == 'CORE_SERVICE_SUPPORT_TEAM'">
-                                        <a *ngIf="fu.freeLanceDetails.isprofilecompleted && !fu.freeLanceDetails.isbgstarted"  class="btn  btn-sm" (click)='executeBGVerificationCheck(fu.userId)'>
+                                        <a *ngIf="fu.freeLanceDetails.isprofilecompleted && !fu.freeLanceDetails.isbgstarted"
+                                             class="btn  btn-sm" (click)='executeBGVerificationCheck(fu.userId)'>
                                             <i title="Initiate Background verification"  class="fa fa-play" style="color: rgb(37, 165, 37)"></i>
                                             </a>
                                     </td>
@@ -250,6 +251,7 @@
                                     <th>Email Address</th>
                                     <th>Created On</th>
                                     <th>Created By</th>
+                                    <th>Language</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -261,6 +263,17 @@
                                     <td>{{platformuser.username}}</td>
                                     <td>{{platformuser.createdon}}</td>
                                     <td>{{platformuser.createdby}}</td>
+                                    <td>
+                                        <div *ngIf="platformuser.preferlang == 'en'">
+                                            English
+                                        </div>
+                                        <div *ngIf="platformuser.preferlang == 'te'">
+                                            తెలుగు
+                                        </div>
+                                        <div *ngIf="platformuser.preferlang == 'hi'">
+                                            हिंदी
+                                        </div>
+                                    </td>
                                     <td>
                                         <a class="btn  btn-sm" (click) = 'openViewAccountDetailsModal(platformuser.userId)' >
                                             <i title="View {{platformuser.firstname}} Account Details" class="fa fa-eye"></i>

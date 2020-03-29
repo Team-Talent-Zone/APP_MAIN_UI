@@ -1,3 +1,6 @@
+import { ManageuserserviceComponent } from './manageuserservice/manageuserservice.component';
+import { NewserviceComponent } from './newservice/newservice.component';
+import { SignupadminComponent } from './signupadmin/signupadmin.component';
 import { DashboardbyuseroleComponent } from './dashboardbyuserole/dashboardbyuserole.component';
 import { EditprofileComponent } from './editprofile/editprofile.component';
 import { ManageuserComponent } from './manageuser/manageuser.component';
@@ -9,6 +12,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthgaurdService } from './AppRestCall/authgaurd/authgaurd.service';
+import { ManageserviceComponent } from './manageservice/manageservice.component';
 
 const routes: Routes = [
   {
@@ -58,6 +62,46 @@ const routes: Routes = [
       {
         path: '',
         component: ManageuserComponent
+      }
+    ]
+  },
+  {
+    path: 'newservice',
+    component: DashboardComponent,
+    children: [
+      {
+        path: '',
+        component: NewserviceComponent
+      }
+    ]
+  },
+  {
+    path: 'signupadmin',
+    component: DashboardComponent,
+    children: [
+      {
+        path: '',
+        component: SignupadminComponent
+      }
+    ]
+  },
+  {
+    path: 'manageservice',
+    component: DashboardComponent,
+    children: [
+      {
+        path: '',
+        component: ManageserviceComponent
+      }
+    ]
+  },
+  {
+    path: 'manageuserservice',
+    component: DashboardComponent,
+    children: [
+      {
+        path: '',
+        component: ManageuserserviceComponent
       }
     ]
   },

@@ -11,9 +11,14 @@ export const config = {
   shortkey_role_csst: 'csst',
   shortkey_role_cssm: 'cssm',
   shortkey_email_verificationemailaddress: 'eventgen28',
+  shortkey_email_welcometocsstorcssm: 'eventgen32',
   shortkey_email_forgotpassword: 'eventgen15',
   shortkey_email_welcometofu: 'eventgen31',
   shortkey_email_welcometocba: 'eventgen30',
+  shortkey_email_senttocsst: 'eventgen14',
+  shortkey_email_senttocssm: 'eventgen13',
+  shortkey_email_rejected: 'eventgen11',
+  shortkey_email_approved: 'eventgen12',
   shortkey_bg_sentocsst: 'csst-bgcheck',
   user_rolecode_cbu: 'CLIENT_BUSINESS_ADMINISTRATOR',
   user_rolecode_fu: 'FREELANCER_USER',
@@ -25,7 +30,9 @@ export const config = {
   bg_code_senttoccst: 'BG_SENTTOCSST',
   bg_code_incompleteprofile: 'BG_INCOMPLETEPROFILE',
   bg_code_completedprofile: 'BG_COMPLETEDPROFILE',
-  default_avatar: 'https://platform-asserts.s3.amazonaws.com/Platform+Imgs/avatar1.png'
+  default_avatar: 'https://platform-asserts.s3.amazonaws.com/Platform+Imgs/avatar1.png',
+  default_prefer_lang: 'en',
+  GOOGLE_MAPS_API_KEY: 'AIzaSyCaKbVhcX_22R_pRKDYuNA7vox-PtGaDkI'
 
 };
 

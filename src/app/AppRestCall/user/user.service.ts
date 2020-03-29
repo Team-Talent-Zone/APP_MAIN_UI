@@ -1,3 +1,5 @@
+import { UserManagerDetails } from './../../appmodels/UserManagerDetails';
+import { FreelanceDocuments } from './../../appmodels/FreelanceDocuments';
 import { FreelanceHistory } from './../../appmodels/FreelanceHistory';
 import { Injectable } from '@angular/core';
 import { User } from 'src/app/appmodels/User';
@@ -65,6 +67,15 @@ export class UserService {
       this.freelanceobj = new FreelanceHistory();
       this.freelanceobj.bgstatus = config.bg_code_incompleteprofile;
       userobj.freelancehistoryentity.push(this.freelanceobj);
+    } else
+    if (shortkey === config.shortkey_role_csst ||
+       shortkey === config.shortkey_role_cssm) {
+        userobj.createdby = this.currentUserValue.firstname + ' ' + this.currentUserValue.lastname;
+        userobj.updateby = this.currentUserValue.firstname + ' ' + this.currentUserValue.lastname;
+        userobj.usermanagerdetailsentity = new UserManagerDetails();
+        userobj.usermanagerdetailsentity.managerid = this.currentUserValue.userId;
+        userobj.password = user.password;
+        userobj.preferlang = user.preferlang;
     }
     return this.http.post(`${environment.apiUrl}/saveUser/`, userobj);
   }
@@ -78,12 +89,15 @@ export class UserService {
    }
 
    saveorupdate(user: User) {
-    console.log('this is save or update' , user);
     return this.http.post(`${environment.apiUrl}/saveorupdateuser/`, user);
    }
 
    saveFreeLanceHistory(freelanceHistory: FreelanceHistory) {
     return this.http.post(`${environment.apiUrl}/saveFreeLanceHistory/`, freelanceHistory);
+   }
+
+   saveFreeLanceDocument(freelanceDocuments: FreelanceDocuments) {
+    return this.http.post(`${environment.apiUrl}/saveFreeLanceDocument/`, freelanceDocuments);
    }
 
    getUserByUserId(userId: number) {
@@ -92,6 +106,10 @@ export class UserService {
 
    forgetPassword(username: string) {
     return this.http.get(`${environment.apiUrl}/forgetPassword/` + username + '/');
+   }
+
+   prepareAdminToSignUp(username: string) {
+    return this.http.get(`${environment.apiUrl}/prepareAdminToSignUp/` + username + '/');
    }
 
    saveUserNotification(usernotification: UserNotification) {

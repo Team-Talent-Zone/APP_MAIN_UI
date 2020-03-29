@@ -17,31 +17,32 @@ export class DashboardbyuseroleComponent implements OnInit {
   stageCompletedImg: string = '//placehold.it/200/dddddd/fff?text=Completed';
   stageBgStatusApprovedImg: string = '//placehold.it/200/dddddd/fff?text=Approved';
   stageBgStatusRejectedImg: string = '//placehold.it/200/dddddd/fff?text=Rejected';
-  usrObj: User;
+  usrObj: any;
 
   constructor(
-    private userService: UserService,
+    public userService: UserService,
   ) { }
 
   ngOnInit() {
     this.usrObj = this.userService.currentUserValue;
     if (this.usrObj.userroles.rolecode === config.user_rolecode_fu) {
-      if (this.userService.currentUserValue.freeLanceDetails.isprofilecompleted) {
+      if (this.usrObj.freeLanceDetails.isprofilecompleted) {
         this.stage1Img = this.stageCompletedImg;
       }
-      if (this.userService.currentUserValue.freeLanceDetails.isbgstarted) {
+      if (this.usrObj.freeLanceDetails.isbgstarted) {
       this.stage2Img = this.stageCompletedImg;
       }
-      if (this.userService.currentUserValue.freeLanceDetails.isbgdone) {
+      if (this.usrObj.freeLanceDetails.isbgdone) {
         this.stage3Img = this.stageCompletedImg;
         }
-      if (this.userService.currentUserValue.freelancehistoryentity[0].bgstatus === config.bg_code_approved) {
+      this.usrObj.freelancehistoryentity.forEach(element => {
+        if (element.bgstatus === config.bg_code_approved) {
           this.stage4Img = this.stageBgStatusApprovedImg;
+          } else
+        if (element.bgstatus === config.bg_code_rejected) {
+                  this.stage4Img = this.stageBgStatusRejectedImg;
           }
-      if (this.userService.currentUserValue.freelancehistoryentity[0].bgstatus === config.bg_code_rejected) {
-            this.stage4Img = this.stageBgStatusRejectedImg;
-          }
-    }
+      });
   }
-
+}
 }
