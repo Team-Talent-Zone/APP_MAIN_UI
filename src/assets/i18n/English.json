@@ -32,7 +32,17 @@
       "LASTNAME": "Last Name",
       "PREFERLANG": "Preferred Language",
       "CATEGORY": "Select Category",
-      "SKILL": "Select your skill"
+      "SKILL": "Select your skill",
+      "GIVEVALIDEMAIL":"Enter your valid Email id.",
+      "SHOULDNOTBE40":"Username cant exceed 40.",
+      "SIGNIN": "Sign in",
+      "FORGOTYOURPASSWORD":"Forgot the password?" ,
+      "SENDPASSWORD":"Reset Password",
+      "BACKTOLOGIN":"Back to Login?",
+      "PASSWORDISREQUIRED":"Password is required.",
+      "PASSWORDMUSTBE8CHAR":"Password must be at least 8 characters."
+      
+      
     },
     "CLIENTONBOARD": {
       "OURCUSTOMERS":"Our Customers",

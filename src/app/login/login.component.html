@@ -16,11 +16,11 @@
               </span>
                 <input type="email" formControlName="username"
                   [ngClass]="{ 'is-invalid': issubmit && f.username.errors }" class="form-control"
-                  placeholder="Email Address" autofocus>
+                  placeholder="{{ 'HOMESIGNUP.EMAILADDRESS' | translate }}" >
                 <div *ngIf="issubmit && f.username.errors" class="invalid-feedback">
-                  <div *ngIf="f.username.errors.required || f.username.errors.email">Email must be a valid email address
+                  <div *ngIf="f.username.errors.required || f.username.errors.email"> {{ 'HOMESIGNUP.GIVEVALIDEMAIL' | translate }}
                   </div>
-                  <div *ngIf="f.username.errors.maxlength">Username cant exceed 40
+                  <div *ngIf="f.username.errors.maxlength">{{ 'HOMESIGNUP.SHOULDNOTBE40' | translate }}
                     char</div>
                 </div>
               </div>
@@ -28,24 +28,24 @@
                 <span>
                   <i class="fa fa-asterisk form-control-icon"></i>
               </span>
-                <input type="password" id="inputPassword" class="form-control" placeholder="Password"
+                <input type="password" id="inputPassword" class="form-control" placeholder="{{ 'HOMESIGNUP.PASSWORD' | translate }}"
                   formControlName="password" [ngClass]="{ 'is-invalid': issubmit && f.password.errors }">
                 <div *ngIf="issubmit && f.password.errors" class="invalid-feedback">
-                  <div *ngIf="f.password.errors.required">Password is required
+                  <div *ngIf="f.password.errors.required">{{ 'HOMESIGNUP.PASSWORDISREQUIRED' | translate }} 
                   </div>
-                  <div *ngIf="f.password.errors.minlength">Password must be at least 8 characters</div>
+                  <div *ngIf="f.password.errors.minlength">{{ 'HOMESIGNUP.PASSWORDMUSTBE8CHAR' | translate }}</div>
                 </div>
               </div>
-              <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Sign in</button>
+              <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">{{ 'HOMESIGNUP.SIGNIN' | translate }}</button>
             </form>
             <a (click)="disFwd(true)" class="btn btn-sm">
-              Forgot the password?
+              {{ 'HOMESIGNUP.FORGOTYOURPASSWORD' | translate }}
             </a>
           </div>
         </div>
         <ng-template #elseFwd>
           <div class="card card-container">
-            <h4 class="card-title">Forgot Password</h4>
+            <h4 class="card-title"> {{ 'HOMESIGNUP.FORGOTYOURPASSWORD' | translate }}</h4>
             <form [formGroup]="fpwdForm" (ngSubmit)="forgotPassword()">
               <span id="reauth-email" class="reauth-email"></span>
               <div class="form-group">
@@ -54,16 +54,15 @@
               </span>
                 <input type="email" id="inputEmail" formControlName="fpwdusername"
                   [ngClass]="{ 'is-invalid': isfpwdsubmit && fpwd.fpwdusername.errors }" class="form-control"
-                  placeholder="Email Address" autofocus>
+                  placeholder="{{ 'HOMESIGNUP.EMAILADDRESS' | translate }}" autofocus>
                   <div *ngIf="isfpwdsubmit && fpwd.fpwdusername.errors" class="invalid-feedback">
-                    <div *ngIf="fpwd.fpwdusername.errors.required || fpwd.fpwdusername.errors.email">Email must be a valid email address
+                    <div *ngIf="fpwd.fpwdusername.errors.required || fpwd.fpwdusername.errors.email">{{ 'HOMESIGNUP.GIVEVALIDEMAIL' | translate }}
                     </div>
-                    <div *ngIf="fpwd.fpwdusername.errors.maxlength">Username cant exceed 40
-                      char</div>
+                    <div *ngIf="fpwd.fpwdusername.errors.maxlength">{{ 'HOMESIGNUP.SHOULDNOTBE40' | translate }}</div>
                   </div>
               </div>
-              <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Send Password</button>
-              <a (click)="disFwd(false)" class="btn  btn-sm">Back to LOGIN?</a>
+              <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">{{ 'HOMESIGNUP.SENDPASSWORD' | translate }}</button>
+              <a (click)="disFwd(false)" class="btn  btn-sm">{{ 'HOMESIGNUP.BACKTOLOGIN' | translate }}</a>
             </form>
           </div>
         </ng-template>
