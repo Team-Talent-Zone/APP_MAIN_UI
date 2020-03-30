@@ -156,7 +156,6 @@ export class NewserviceComponent implements OnInit {
 
   getCategoryByRefId(value: string) {
     this.referencedetailsmap = [];
-    this.newServiceForm.patchValue({category: ''});
     this.signupcomponent.referencedetailsmap.forEach(element => {
       if (element.refId == value) {
         this.referencedetailsmap.push(element);
