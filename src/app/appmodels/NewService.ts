@@ -5,7 +5,7 @@ export class NewService  {
         public name: string,
         public domain: string,
         public category: string,
-        public isActive: boolean,
+        public active: boolean,
         public description: string,
         public fullContent: string,
         public imageUrl: string,

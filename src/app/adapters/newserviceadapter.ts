@@ -8,7 +8,7 @@ export class NewServiceAdapter implements Adapter<NewService> {
             item.name,
             item.domain,
             item.category,
-            item.isActive,
+            item.active,
             item.description,
             item.fullContent,
             item.imageUrl,

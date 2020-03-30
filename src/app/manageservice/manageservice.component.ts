@@ -39,6 +39,6 @@ export class ManageserviceComponent implements OnInit {
         }
     });
   });
-  console.log('this.myNewServiceForReview' ,this.myNewServiceForReview);
+  console.log('this.listOfAllNewServices' ,this.listOfAllNewServices);
   }
 }

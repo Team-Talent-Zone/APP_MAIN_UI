@@ -91,7 +91,16 @@
                                     </td>
                                     <td>{{newserviceobj.domain}}</td>
                                     <td>{{newserviceobj.category}}</td>
-                                    <td>{{newserviceobj.isActive}}</td>
+                                    <td>
+                                     <i class="fa fa-check" title="New Service is active in platform" 
+                                     style="color: rgb(37, 165, 37)" *ngIf="newserviceobj.active ; else elseNotActive">
+                                    </i>
+                                    <ng-template #elseNotActive>
+                                        <i class="fa fa-ban" title="New Service is not active in platform" 
+                                        style="color: rgb(165, 37, 37)" ></i>
+                                    </ng-template>
+                                          
+                                    </td>
                                     <td>{{newserviceobj.createdOn}}</td>
                                     <td>{{newserviceobj.createdBy}}</td>
                                     <td *ngFor="let newservicehisobj of newserviceobj.serviceHistory">
