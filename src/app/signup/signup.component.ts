@@ -44,6 +44,7 @@ export class SignupComponent implements OnInit {
   usernotification: UserNotification;
   today =  new Date();
   user: User;
+  reflookupdetails: any;
 
   constructor(
               private spinnerService: Ng4LoadingSpinnerService,
@@ -88,12 +89,12 @@ export class SignupComponent implements OnInit {
   }
 }
 
-
   getAllCategories(langSelected: string) {
    this.spinnerService.show();
    this.referService.getReferenceLookupByKey(config.key_domain).pipe(map((data: any[]) => data.map(item => this.refAdapter.adapt(item))),
     ).subscribe(
       data => {
+        this.reflookupdetails = data;
         for (const reflookup of data ) {
           for (const reflookupmap of reflookup.referencelookupmapping) {
             if (langSelected === 'हिंदी' || langSelected === 'తెలుగు') {

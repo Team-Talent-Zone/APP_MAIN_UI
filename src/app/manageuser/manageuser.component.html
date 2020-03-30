@@ -86,7 +86,7 @@
                             <tbody *ngIf="usrObjMyWork != ''; else elseNoBGWork">
                                 <tr *ngFor="let mywork of usrObjMyWork">
                                     <td>
-                                            {{mywork.lastname}} {{mywork.firstname}}
+                                            {{mywork.fullname}}
                                     </td>
                                     <td>{{mywork.username}}</td>
                                     <td>{{mywork.createdon}}</td>
@@ -128,7 +128,7 @@
                             <tbody>
                                 <tr *ngFor="let cbu of usrObjCBAs">
                                     <td>
-                                            {{cbu.lastname}} {{cbu.firstname}}
+                                            {{cbu.fullname}}
                                     </td>
                                     <td>{{cbu.username}}</td>
                                     <td>{{cbu.createdon}}</td>
@@ -173,7 +173,7 @@
                             <tbody>
                                 <tr  *ngFor="let fu of usrObjFUs">
                                     <td>
-                                            {{fu.lastname}} {{fu.firstname}}
+                                            {{fu.fullname}}
                                     </td>
                                     <td >{{fu.username}}</td>
                                      <td>
@@ -258,7 +258,7 @@
                             <tbody>
                                 <tr *ngFor="let platformuser of usrObjPlatformAdmins">
                                     <td>
-                                            {{platformuser.lastname}} {{platformuser.firstname}}
+                                            {{platformuser.fullname}}
                                     </td>
                                     <td>{{platformuser.username}}</td>
                                     <td>{{platformuser.createdon}}</td>

@@ -17,7 +17,7 @@ export class NewService  {
         public validPeriod: string,
         public amount: number,
         public userId: number,
-        public serviceHistory: NewServiceHistory
+        public serviceHistory: NewServiceHistory[] = []
         ) {
         }
 }

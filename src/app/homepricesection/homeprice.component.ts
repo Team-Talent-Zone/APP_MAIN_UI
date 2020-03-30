@@ -25,4 +25,7 @@ export class HomepriceComponent implements OnInit {
       console.log('this is list of new services' , this.newsvcobject);
     });
   }
+  preparesignup(servierid : string) {
+    
+  }
 }

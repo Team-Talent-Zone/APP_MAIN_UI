@@ -3,6 +3,7 @@ import { HttpHeaders } from '@angular/common/http';
 export const config = {
 //  httpHeaders : { headers: new HttpHeaders({Authorization: 'Basic cmVzdHNlcnZpY2ViYXNpY2F1dGh1c2VyOlRMIzIwMTdAUkVTVCo4MzI0NjMkIw=='})},
   key_domain: 'domain',
+  key_service_term: 'Service_Period',
   key_bgstatus: 'BG_Status',
   confirmation_fullpathname: 'home/_confirm',
   confirmation_shortpathname: '_confirm',
@@ -32,8 +33,8 @@ export const config = {
   bg_code_completedprofile: 'BG_COMPLETEDPROFILE',
   default_avatar: 'https://platform-asserts.s3.amazonaws.com/Platform+Imgs/avatar1.png',
   default_prefer_lang: 'en',
-  GOOGLE_MAPS_API_KEY: 'AIzaSyCaKbVhcX_22R_pRKDYuNA7vox-PtGaDkI'
-
+  GOOGLE_MAPS_API_KEY: 'AIzaSyCaKbVhcX_22R_pRKDYuNA7vox-PtGaDkI',
+  newservice_code_senttocssm: 'SENT_TO_CSSM'
 };
 
 

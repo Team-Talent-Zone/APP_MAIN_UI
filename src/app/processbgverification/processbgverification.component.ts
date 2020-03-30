@@ -105,7 +105,7 @@ preparebgverfiDetailstoSave() {
               bgstatus: ConfigMsg.bg_status_txt_cssm_msg,
               firstname: this.usrObjMyWork.firstname,
               name: respuser.firstname,
-              decisionby: this.userService.currentUserValue.firstname + ' ' + this.userService.currentUserValue.lastname,
+              decisionby: this.userService.currentUserValue.fullname,
             });
             this.sendemailService.sendEmail(this.util).subscribe(
               (util: any) => {
@@ -113,7 +113,7 @@ preparebgverfiDetailstoSave() {
             this.userService.saveorupdate(this.usrObjMyWork).subscribe(
             (userObj: any) => {
             this.freehistObj = new FreelanceHistory();
-            this.freehistObj.decisionby = respuser.username;
+            this.freehistObj.decisionby = respuser.fullname;
             this.freehistObj.islocked = true;
             this.freehistObj.bgstatus = config.bg_code_senttoccsm;
             this.freehistObj.managerid = respuser.userId;
@@ -139,7 +139,7 @@ preparebgverfiDetailstoSave() {
                   } else {
                     this.modalRef.hide();
                     this.spinnerService.hide();
-                    this.alertService.success(' Sent BG verification to ' + freehisObj.decisionby);
+                    this.alertService.success(' Sent BG verification to your manager ' + freehisObj.decisionby);
                   }
               },
               error => {
@@ -199,7 +199,7 @@ preparebgverfiDetailstoSave() {
                 firstname: this.usrObjMyWork.firstname,
                 bgcomment: this.bgverificationForm.get('bgcomment').value,
                 name: respuser.firstname,
-                decisionby: this.userService.currentUserValue.firstname + ' ' + this.userService.currentUserValue.lastname,
+                decisionby: this.userService.currentUserValue.fullname,
               });
               this.sendemailService.sendEmail(this.util).subscribe(
                 (util: any) => {
@@ -252,7 +252,7 @@ preparebgverfiDetailstoSave() {
               bgstatus: ConfigMsg.bg_status_txt_csst_msg,
               firstname: this.usrObjMyWork.firstname,
               name: respuser.firstname,
-              decisionby: this.userService.currentUserValue.firstname + ' ' + this.userService.currentUserValue.lastname,
+              decisionby: this.userService.currentUserValue.fullname,
             });
             this.sendemailService.sendEmail(this.util).subscribe(
               (util: any) => {
@@ -260,7 +260,7 @@ preparebgverfiDetailstoSave() {
                   this.userService.saveorupdate(this.usrObjMyWork).subscribe(
                     (userObj: any) => {
                       this.freehistObj = new FreelanceHistory();
-                      this.freehistObj.decisionby = respuser.username;
+                      this.freehistObj.decisionby = respuser.fullname;
                       this.freehistObj.islocked = true;
                       this.freehistObj.bgstatus = config.bg_code_senttoccst;
                       this.freehistObj.userid = userObj.userId;
@@ -268,7 +268,7 @@ preparebgverfiDetailstoSave() {
                       this.freehistObj.csstid = respuser.userId;
                       this.userService.saveFreeLanceHistory(this.freehistObj).subscribe(
                         (freehisObj: any) => {
-                          this.alertService.success('Background verification sent back to ' + respuser.username);
+                          this.alertService.success('Background verification sent back to ' + respuser.fullname);
                           this.spinnerService.hide();
                           this.modalRef.hide();
                         },

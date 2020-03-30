@@ -14,7 +14,6 @@ import {
   FormGroup,
   Validators} from '@angular/forms';
 import { ApiService , Maps } from '../adapters/api.service';
- 
 @Component({
   selector: 'app-editprofile',
   templateUrl: './editprofile.component.html',
