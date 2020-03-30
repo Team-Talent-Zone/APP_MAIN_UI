@@ -74,8 +74,8 @@ export class ManageuserComponent implements OnInit {
         }
         if (this.usrObj.freelancehistoryentity != null) {
             this.usrObj.freelancehistoryentity.forEach((elementFhistory: any) => {
-            if (elementFhistory.islocked && elementFhistory.decisionby ===
-                this.userService.currentUserValue.fullname) {
+            if (elementFhistory.islocked && elementFhistory.decisionbyemailid ===
+                this.userService.currentUserValue.username) {
                 this.usrObj.freelancehistoryentity = elementFhistory ;
                 this.usrObjMyWork.push(this.usrObj);
               }
@@ -114,6 +114,7 @@ executeBGVerificationCheck(userId: number) {
       (refCode: any) => {
         this.usrobjById.freelancehistoryentity[0].bgstatus = refCode.toString();
         this.usrobjById.freelancehistoryentity[0].decisionby = this.userService.currentUserValue.fullname;
+        this.usrobjById.freelancehistoryentity[0].decisionbyemailid = this.userService.currentUserValue.username;
         this.usrobjById.freelancehistoryentity[0].islocked = true;
         this.usrobjById.freelancehistoryentity[0].managerid = this.userService.currentUserValue.usermanagerdetailsentity.managerid;
         this.usrobjById.freelancehistoryentity[0].csstid = this.userService.currentUserValue.userId;

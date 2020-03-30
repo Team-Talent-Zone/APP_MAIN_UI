@@ -114,6 +114,7 @@ preparebgverfiDetailstoSave() {
             (userObj: any) => {
             this.freehistObj = new FreelanceHistory();
             this.freehistObj.decisionby = respuser.fullname;
+            this.freehistObj.decisionbyemailid = respuser.username;
             this.freehistObj.islocked = true;
             this.freehistObj.bgstatus = config.bg_code_senttoccsm;
             this.freehistObj.managerid = respuser.userId;
@@ -261,6 +262,7 @@ preparebgverfiDetailstoSave() {
                     (userObj: any) => {
                       this.freehistObj = new FreelanceHistory();
                       this.freehistObj.decisionby = respuser.fullname;
+                      this.freehistObj.decisionbyemailid = respuser.username;
                       this.freehistObj.islocked = true;
                       this.freehistObj.bgstatus = config.bg_code_senttoccst;
                       this.freehistObj.userid = userObj.userId;

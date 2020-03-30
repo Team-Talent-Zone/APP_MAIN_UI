@@ -121,6 +121,10 @@
                             <div class="col-md-4">
                                 <div class="text-center">
                                     <div class="mt-2">
+                                        <div *ngIf="serviceImgURL == null">
+                                            <span style="font-size:13px;color:rgb(255, 30, 0)">Service Image is required
+                                            </span>
+                                        </div>
                                         <div class="avatar-upload">
                                             <div class="avatar-edit">
                                                 <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg"

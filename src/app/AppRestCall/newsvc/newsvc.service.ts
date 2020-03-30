@@ -19,4 +19,8 @@ export class NewsvcService {
   saveNewService(newservice: NewService) {
       return this.http.post(`${environment.apiUrl}/saveNewService/`, newservice);
   }
+
+  getNewServiceDetailsByServiceName(name: string) {
+    return this.http.get(`${environment.apiUrl}/getNewServiceDetailsByServiceName/` + name + '/');
+  }
 }

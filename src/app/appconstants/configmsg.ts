@@ -15,4 +15,5 @@ bg_status_txt_csst_msg: 'Pending with CSST',
 bg_status_txt_approve_msg: 'Approved',
 bg_status_txt_rejected_msg: 'Rejected',
 bg_status_txt_cssm_msg: 'Pending with CSSM',
+newservice_alreadyexist_msg: 'The entered service name is already exist'
 };

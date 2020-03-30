@@ -1,3 +1,4 @@
+import { ConfigMsg } from './../appconstants/configmsg';
 import { UtilService } from './../AppRestCall/util/util.service';
 import { NewServiceAdapter } from './../adapters/newserviceadapter';
 import { UserService } from './../AppRestCall/user/user.service';
@@ -75,7 +76,7 @@ export class NewserviceComponent implements OnInit {
       category: ['', [Validators.required]],
       domain: ['', [Validators.required]],
       price: ['', [Validators.maxLength(10),  Validators.pattern('^[0-9]*$')]],
-
+      imageUrl: ['', [Validators.required]],
     });
   }
 
@@ -84,6 +85,7 @@ export class NewserviceComponent implements OnInit {
   }
 
   saveorsubmitNewService() {
+    this.newServiceForm.patchValue({imageUrl: this.serviceImgURL});
     this.issubmit = true;
     if (this.newServiceForm.invalid) {
        return;
@@ -105,36 +107,51 @@ export class NewserviceComponent implements OnInit {
     this.serviceHistory.userId = this.userService.currentUserValue.userId;
     this.serviceHistory.managerId = this.userService.currentUserValue.usermanagerdetailsentity.managerid;
     this.serviceHistory.status = config.newservice_code_senttocssm;
-    this.userService.getUserByUserId(this.serviceHistory.managerId).pipe(first()).subscribe(
-      (respuser: any) => {
-    this.serviceHistory.decisionBy = respuser.fullname;
-    this.newservice.serviceHistory.push(this.serviceHistory);
-    this.utilService.uploadAvatarsInS3( this.serviceImgURL , this.userService.currentUserValue.userId
-       , this.filename).subscribe(
-      (returnURL: string) => {
-       this.newservice.imageUrl = returnURL;
-       this.newsvcservice.saveNewService(
-        this.newservice
-        ).pipe(first()).subscribe(
-         (newserviceObj) => {
-           this.newservice = this.newserviceAdapter.adapt(newserviceObj);
-           this.spinnerService.hide();
-           this.alertService.success(' Sent for review to your manager ' + this.serviceHistory.decisionBy);
-         },
-       error => {
-         this.spinnerService.hide();
-         this.alertService.error(error);
-       });
-    },
-    error => {
-      this.spinnerService.hide();
-      this.alertService.error(error);
-    });
-  },
-  error => {
-    this.spinnerService.hide();
-    this.alertService.error(error);
-  });
+    this.newsvcservice.getNewServiceDetailsByServiceName(this.newServiceForm.get('name').value).pipe(first()).subscribe(
+      (checkNewserviceObj: any) => {
+        console.log('checkNewserviceObj' , checkNewserviceObj.name);
+        if (this.newservice.name !== checkNewserviceObj.name) {
+          this.spinnerService.hide();
+          this.userService.getUserByUserId(this.serviceHistory.managerId).pipe(first()).subscribe(
+            (respuser: any) => {
+          this.serviceHistory.decisionBy = respuser.fullname;
+          this.serviceHistory.decisionbyemailid = respuser.username;
+          this.newservice.serviceHistory.push(this.serviceHistory);
+          this.utilService.uploadAvatarsInS3( this.serviceImgURL , this.userService.currentUserValue.userId
+             , this.filename).subscribe(
+            (returnURL: string) => {
+             this.newservice.imageUrl = returnURL;
+             this.newsvcservice.saveNewService(
+              this.newservice
+              ).pipe(first()).subscribe(
+               (newserviceObj) => {
+                 this.newservice = this.newserviceAdapter.adapt(newserviceObj);
+                 this.spinnerService.hide();
+                 this.alertService.success(' Sent for review to your manager ' + this.serviceHistory.decisionBy);
+               },
+             error => {
+               this.spinnerService.hide();
+               this.alertService.error(error);
+             });
+          },
+          error => {
+            this.spinnerService.hide();
+            this.alertService.error(error);
+          });
+        },
+        error => {
+          this.spinnerService.hide();
+          this.alertService.error(error);
+        });
+        } else {
+          this.spinnerService.hide();
+          this.alertService.error(ConfigMsg.newservice_alreadyexist_msg);
+        }
+      },
+      error => {
+        this.spinnerService.hide();
+        this.alertService.error(error);
+      });
   }
 
   getCategoryByRefId(value: string) {
