@@ -252,6 +252,7 @@
                                     <th>Created On</th>
                                     <th>Created By</th>
                                     <th>Language</th>
+                                    <th>Designation</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -274,6 +275,14 @@
                                             हिंदी
                                         </div>
                                     </td>
+                                    <td>
+                                         <div *ngIf="platformuser.userroles.rolecode == 'CORE_SERVICE_SUPPORT_TEAM'; else elseCBA" >
+                                             Core Service Analyst
+                                        </div>
+                                        <ng-template #elseCBA>
+                                            Core Service Manager
+                                        </ng-template>
+                                         </td>
                                     <td>
                                         <a class="btn  btn-sm" (click) = 'openViewAccountDetailsModal(platformuser.userId)' >
                                             <i title="View {{platformuser.firstname}} Account Details" class="fa fa-eye"></i>

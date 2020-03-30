@@ -266,7 +266,7 @@ export class EditprofileComponent implements OnInit {
         this.usrObj = this.userAdapter.adapt(userObj);
         if (this.userService.currentUserValue.userId === this.usrObj.userId) {
           this.userService.currentUserValue.avtarurl = this.usrObj.avtarurl;
-          this.userService.currentUserValue.firstname = this.usrObj.firstname;
+          this.userService.currentUserValue.fullname = this.usrObj.fullname;
         }
         this.edituserobj = userObj;
        },
