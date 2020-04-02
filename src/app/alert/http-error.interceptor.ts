@@ -22,7 +22,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
               errorMessage = `Error: ${error.error.message}`;
             } else {
               // server-side error
-              if (error.status === 0 || error.status === 503) {
+              if (error.status === 0 || error.status === 503 || error.status === 504) {
                errorMessage = ConfigMsg.server_down;
               } else
               if (error.status === 404) {
