@@ -80,13 +80,14 @@
                                     <th>Created On</th>
                                     <th>Last Updated On</th>
                                     <th></th>
-                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody *ngIf="usrObjMyWork != ''; else elseNoBGWork">
                                 <tr *ngFor="let mywork of usrObjMyWork">
                                     <td>
-                                            {{mywork.fullname}}
+                                        <a href="javascript: return false;" (click) = 'openViewAccountDetailsModal(mywork.userId)'>
+                                        {{mywork.fullname}}
+                                        </a>
                                     </td>
                                     <td>{{mywork.username}}</td>
                                     <td>{{mywork.createdon}}</td>
@@ -97,11 +98,6 @@
                                                     class="fa fa-lock" style="color: rgb(37, 165, 37)" 
                                                     >
                                             </i>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <a class="btn  btn-sm" (click) = 'openViewAccountDetailsModal(mywork.userId)' >
-                                            <i title="View {{mywork.firstname}} Account Details" class="fa fa-eye"></i>
                                         </a>
                                     </td>
                                 </tr>
@@ -122,13 +118,14 @@
                                     <th>Created On</th>
                                     <th>Language</th>
                                     <th></th>
-                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr *ngFor="let cbu of usrObjCBAs">
                                     <td>
+                                        <a href="javascript: return false;" (click) = 'openViewAccountDetailsModal(cbu.userId)'>
                                             {{cbu.fullname}}
+                                        </a>
                                     </td>
                                     <td>{{cbu.username}}</td>
                                     <td>{{cbu.createdon}}</td>
@@ -142,11 +139,6 @@
                                         <div *ngIf="cbu.preferlang == 'hi'">
                                             हिंदी
                                         </div>
-                                    </td>
-                                    <td>
-                                        <a class="btn  btn-sm" (click) = 'openViewAccountDetailsModal(cbu.userId)' >
-                                        <i title="View {{cbu.firstname}} Account Details" class="fa fa-eye"></i>
-                                        </a>
                                     </td>
                                     <td>
                                         <i title="View {{cbu.firstname}} Service Details" class="fa fa-briefcase"></i>
@@ -172,8 +164,10 @@
                             </thead>
                             <tbody>
                                 <tr  *ngFor="let fu of usrObjFUs">
-                                    <td>
+                                    <td >
+                                        <a href="javascript: return false;" (click) = 'openViewAccountDetailsModal(fu.userId)'>
                                             {{fu.fullname}}
+                                        </a>
                                     </td>
                                     <td >{{fu.username}}</td>
                                      <td>
@@ -217,7 +211,7 @@
                                         <div *ngFor="let refdata of refDataObj">
                                             <div *ngIf="refdata.code === fu.freelancehistoryentity.bgstatus">
                                                 {{refdata.label}}
-                                                <label title="{{fu.freelancehistoryentity.decisionby}}" >
+                                                <label title="Decision by {{fu.freelancehistoryentity.decisionby}}" >
                                                 <i class="fa fa-question-circle" *ngIf="fu.freelancehistoryentity.decisionby != null"
                                                 style="font-size:10px;color:rgb(35, 124, 226)"></i>
                                                 </label>
@@ -225,14 +219,17 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <a class="btn  btn-sm" (click) = 'openViewAccountDetailsModal(fu.userId)' >
-                                            <i title="{{fu.firstname}} BG is rejected . View Account Details" class="fa fa-eye" style="color:rgb(241, 18, 18)" 
-                                                *ngIf="fu.freelancehistoryentity.bgstatus == 'BG_REJECTED'; else elseNotRejected ">
+                                             <i title="{{fu.firstname}} background verification is Rejected" class="fa fa-thumbs-down " style="color:rgb(241, 18, 18)" 
+                                                *ngIf="fu.freelancehistoryentity.bgstatus == 'BG_REJECTED'; else elseRejected ">
                                              </i>
-                                             <ng-template #elseNotRejected>
-                                                <i title="View {{fu.firstname}} Account Details" class="fa fa-eye" ></i>
+                                             <ng-template #elseRejected>
+                                                <i *ngIf="fu.freelancehistoryentity.bgstatus == 'BG_APPROVED'; else elseInProgress"
+                                                 title="{{fu.firstname}}  background verification is Approved" class="fa fa-thumbs-up" style="color:green"></i>
                                              </ng-template>
-                                        </a>
+                                            <ng-template #elseInProgress>
+                                                <i title="{{fu.firstname}} background verification in progress" class="fa fa-spinner" style="color:blue"></i>
+                                                </ng-template>
+                                                  
                                     </td>
                                     <td *ngIf="userService.currentUserValue.userroles.rolecode == 'CORE_SERVICE_SUPPORT_TEAM'">
                                         <a *ngIf="fu.freeLanceDetails.isprofilecompleted && !fu.freeLanceDetails.isbgstarted"
@@ -253,13 +250,14 @@
                                     <th>Created By</th>
                                     <th>Language</th>
                                     <th>Designation</th>
-                                    <th></th>
-                                </tr>
+                                 </tr>
                             </thead>
                             <tbody>
                                 <tr *ngFor="let platformuser of usrObjPlatformAdmins">
                                     <td>
+                                        <a href="javascript: return false;" (click) = 'openViewAccountDetailsModal(platformuser.userId)'>
                                             {{platformuser.fullname}}
+                                        </a>
                                     </td>
                                     <td>{{platformuser.username}}</td>
                                     <td>{{platformuser.createdon}}</td>
@@ -283,11 +281,6 @@
                                             Core Service Manager
                                         </ng-template>
                                          </td>
-                                    <td>
-                                        <a class="btn  btn-sm" (click) = 'openViewAccountDetailsModal(platformuser.userId)' >
-                                            <i title="View {{platformuser.firstname}} Account Details" class="fa fa-eye"></i>
-                                        </a>
-                                    </td>
                                 </tr>
                         </table>
                     </div>

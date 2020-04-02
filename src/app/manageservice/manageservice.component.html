@@ -76,12 +76,10 @@
                                     <th>Name</th>
                                     <th>Domain</th>
                                     <th>Category</th>
-                                    <th>Active</th>
                                     <th>Created On</th>
                                     <th>Created By</th>
+                                    <th>Accept & Declaration</th>
                                     <th>Status</th>
-                                    <th></th>
-                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -91,28 +89,23 @@
                                     </td>
                                     <td>{{newserviceobj.domain}}</td>
                                     <td>{{newserviceobj.category}}</td>
-                                    <td>
-                                     <i class="fa fa-check" title="New Service is active in platform" 
-                                     style="color: rgb(37, 165, 37)" *ngIf="newserviceobj.active ; else elseNotActive">
-                                    </i>
-                                    <ng-template #elseNotActive>
-                                        <i class="fa fa-ban" title="New Service is not active in platform" 
-                                        style="color: rgb(165, 37, 37)" ></i>
-                                    </ng-template>
-                                          
-                                    </td>
                                     <td>{{newserviceobj.createdOn}}</td>
                                     <td>{{newserviceobj.createdBy}}</td>
                                     <td *ngFor="let newservicehisobj of newserviceobj.serviceHistory">
-                                        {{newservicehisobj.status}}
+                                        {{newservicehisobj.decisionBy}}
                                     </td>
-
+                                    <td>
+                                        <i class="fa fa-check" title="Active on platform" 
+                                        style="color: rgb(37, 165, 37)" *ngIf="newserviceobj.active ; else elseNotActive">
+                                       </i>
+                                       <ng-template #elseNotActive>
+                                           <i class="fa fa-ban" title="Not active on platform" 
+                                           style="color: rgb(165, 37, 37)" ></i>
+                                       </ng-template>
+                                       </td>
                                 </tr>
                         </table>
-
                     </div>
-                     
-                   
                 </div>
             </div>
         </div>
