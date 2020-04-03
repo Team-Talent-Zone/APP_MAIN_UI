@@ -33,8 +33,12 @@ export class NewserviceComponent implements OnInit {
   referencedetailsmap: any =  [];
   serviceterms: any;
   newservice: NewService;
+  newservicecurrentObj: NewService;
   serviceHistory: NewServiceHistory;
   filename: string;
+  byrole: boolean = false;
+  name: string;
+
   constructor(
     private spinnerService: Ng4LoadingSpinnerService,
     private alertService: AlertsService,
@@ -45,12 +49,13 @@ export class NewserviceComponent implements OnInit {
     private refAdapter: ReferenceAdapter,
     public signupcomponent: SignupComponent,
     public newsvcservice: NewsvcService,
-    private userService: UserService,
+    public userService: UserService,
     private newserviceAdapter: NewServiceAdapter,
     private utilService: UtilService,
   ) {
     route.params.subscribe(params => {
       this.id = params.id;
+      this.name = params.name;
      });
    }
 
@@ -58,6 +63,35 @@ export class NewserviceComponent implements OnInit {
     this.signupcomponent.getAllCategories('en');
     this.getServiceTerms();
     this.newServiceValidationForm();
+    if (this.id > 0) {
+     this.populatenewservice(this.id);
+    }
+  }
+
+  populatenewservice(ourserviceId: number) {
+    this.spinnerService.show();
+    this.newsvcservice.getNewServiceDetailsByServiceId(ourserviceId).pipe(first()).subscribe(
+      (newserviceobj: any) => {
+        this.newservicecurrentObj = this.newserviceAdapter.adapt(newserviceobj);
+        if (this.name === 'readonly'
+          ) {
+             this.byrole = true;
+         }
+        this.getCategoryByRefId(this.newservicecurrentObj.domain);
+        this.newServiceForm.patchValue({name: this.newservicecurrentObj.name});
+        this.newServiceForm.patchValue({description: this.newservicecurrentObj.description});
+        this.newServiceForm.patchValue({fullContent: this.newservicecurrentObj.fullContent});
+        this.newServiceForm.patchValue({validPeriod: this.newservicecurrentObj.validPeriod});
+        this.newServiceForm.patchValue({category: this.newservicecurrentObj.category});
+        this.newServiceForm.patchValue({domain: this.newservicecurrentObj.domain});
+        this.newServiceForm.patchValue({price: this.newservicecurrentObj.amount});
+        this.newServiceForm.patchValue({imageUrl: this.newservicecurrentObj.imageUrl});
+        this.serviceImgURL = this.newservicecurrentObj.imageUrl;
+    },
+    error => {
+      this.spinnerService.hide();
+      this.alertService.error(error);
+    });
   }
 
   newServiceValidationForm() {
@@ -77,7 +111,7 @@ export class NewserviceComponent implements OnInit {
     return this.newServiceForm.controls;
   }
 
-  saveorsubmitNewService() {
+  saveorupdateNewService(id: number) {
     this.newServiceForm.patchValue({imageUrl: this.serviceImgURL});
     this.issubmit = true;
     if (this.newServiceForm.invalid) {
@@ -85,6 +119,9 @@ export class NewserviceComponent implements OnInit {
      }
     this.spinnerService.show();
     this.newservice = this.newserviceAdapter.adapt(this.newServiceForm);
+    if (id > 0) {
+      this.preparetoupdatenewservice(this.newservicecurrentObj ,this.newservice);
+    } else {
     this.newservice.name = this.newServiceForm.get('name').value;
     this.newservice.category = this.newServiceForm.get('category').value;
     this.newservice.domain = this.newServiceForm.get('domain').value;
@@ -143,6 +180,20 @@ export class NewserviceComponent implements OnInit {
         this.spinnerService.hide();
         this.alertService.error(error);
       });
+    }
+  }
+
+  preparetoupdatenewservice(newservicecurrentObj: NewService , newserviceForm: NewService ) {
+    newservicecurrentObj.amount = newserviceForm.amount;
+    newservicecurrentObj.category = newserviceForm.category;
+    newservicecurrentObj.domain = newserviceForm.domain;
+    newservicecurrentObj.fullContent = newserviceForm.fullContent;
+    newservicecurrentObj.description = newserviceForm.description;
+    newservicecurrentObj.name = newserviceForm.name;
+    newservicecurrentObj.validPeriod = newserviceForm.validPeriod;
+    newservicecurrentObj.amount = newserviceForm.amount;
+    newservicecurrentObj.imageUrl = newserviceForm.imageUrl;
+    console.log('newservicecurrentObj' , newservicecurrentObj);
   }
 
   getCategoryByRefId(value: string) {

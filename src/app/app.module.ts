@@ -113,7 +113,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
   ],
   entryComponents: [
     ViewaccountdetailsComponent,
-    ProcessbgverificationComponent
+    ProcessbgverificationComponent,
+    ProcessnewserviceComponent
   ],
   bootstrap: [AppComponent]
 })

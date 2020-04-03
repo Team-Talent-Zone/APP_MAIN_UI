@@ -52,7 +52,6 @@ export class HomeComponent implements OnInit {
       route.params.subscribe(params => {
          this.id = params.id;
          this.name = params.name;
-         console.log('this.usrObj' , this.name);
         });
      }
 

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NewService } from '../appmodels/NewService';
 
 @Component({
   selector: 'app-processnewservice',
@@ -7,9 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProcessnewserviceComponent implements OnInit {
 
+  newserviceobj: NewService;
   constructor() { }
 
   ngOnInit() {
+    console.log('newserviceobj' , this.newserviceobj);
   }
 
 }

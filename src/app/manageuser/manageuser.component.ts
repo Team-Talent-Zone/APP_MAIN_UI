@@ -1,4 +1,3 @@
-import { ConfigMsg } from './../appconstants/configmsg';
 import { ProcessbgverificationComponent } from './../processbgverification/processbgverification.component';
 import { ViewaccountdetailsComponent } from './../viewaccountdetails/viewaccountdetails.component';
 import { Component, OnInit } from '@angular/core';

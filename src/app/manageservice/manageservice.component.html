@@ -39,9 +39,9 @@
                             <thead *ngIf="myNewServiceForReview.length > 0">
                                 <tr >
                                     <th>Name</th>
-                                    <th>Created On</th>
                                     <th>Domain</th>
                                     <th>Category</th>
+                                    <th>Created On</th>
                                     <th>Valid Period</th>
                                     <th>Price</th>
                                     <th></th>
@@ -50,9 +50,13 @@
                             <tbody *ngIf="myNewServiceForReview.length > 0; else elseNoNewService">
                                 <tr *ngFor="let mywork of myNewServiceForReview">
                                     <td>
+                                        <a *ngIf="!mywork.active ; else elseviewnewservice" routerLink='/editnewservice/{{mywork.ourserviceId}}'>
                                             {{mywork.name}}
+                                        </a>
+                                        <ng-template #elseviewnewservice> 
+                                            {{mywork.name}}
+                                        </ng-template>
                                     </td>
-                                    <td>{{mywork.createdOn}}</td>
                                     <td>
                                         <div *ngFor="let refdata of  signupComponent.reflookupdetails">
                                             <div *ngIf="mywork.domain == refdata.refId">
@@ -61,13 +65,13 @@
                                         </div>
                                     </td>
                                     <td>
-                                        
                                         <div *ngFor="let referencelookupmap of  signupComponent.referencedetailsmap">
                                             <div *ngIf="mywork.category == referencelookupmap.code">
                                                 {{referencelookupmap.label}}
                                             </div>
                                         </div>
                                     </td>
+                                    <td>{{mywork.createdOn}}</td>
                                     <td>
                                         <div *ngFor="let terms of  serviceterms">
                                             <div *ngIf="mywork.validPeriod == terms.code">
@@ -84,7 +88,7 @@
                                         </ng-template>
                                     </td>
                                     <td *ngFor="let newserviceobj of mywork.serviceHistory">
-                                        <a  *ngIf="newserviceobj.locked" class="btn  btn-sm">
+                                        <a  *ngIf="newserviceobj.locked" class="btn  btn-sm" (click) = 'processnewserviceopenmodal(newserviceobj.ourserviceId)'>
                                             <i title= "You can start working.."  
                                                     class="fa fa-lock" style="color: rgb(37, 165, 37)" 
                                                     >
@@ -115,7 +119,9 @@
                             <tbody>
                                 <tr *ngFor="let newserviceobj of listOfAllNewServices">
                                     <td>
+                                        <a routerLink='/viewnewservice/readonly/{{newserviceobj.ourserviceId}}/'>
                                             {{newserviceobj.name}}
+                                        </a>
                                     </td>
                                     <td>
                                         <div *ngFor="let refdata of  signupComponent.reflookupdetails">

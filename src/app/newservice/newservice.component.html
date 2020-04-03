@@ -3,10 +3,21 @@
         <div class="col-md-5 col-xl-2">
         </div>
         <div class="col-md-7 col-xl-9">
-            <form [formGroup]="newServiceForm" (ngSubmit)="saveorsubmitNewService()">
+            <form [formGroup]="newServiceForm" (ngSubmit)="saveorupdateNewService(id)">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title mb-0">New Service Request Form</h4>
+                        <div *ngIf="userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM' 
+                        && !this.byrole ;  else elseCSSM">
+                        <h4 class="card-title mb-0" *ngIf="id > 0 ; else elseNewServiceLabel">
+                            Update Service Request Form</h4>
+                            <ng-template #elseNewServiceLabel>
+                                <h4 class="card-title mb-0">
+                                    New Service Request Form</h4>
+                            </ng-template>
+                    </div>
+                    <ng-template #elseCSSM>
+                        <h4 class="card-title mb-0">View Service Details Form</h4>
+                    </ng-template>
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -33,7 +44,7 @@
                                         <span>
                                             <i class="fa fa-crosshairs form-control-icon"></i>
                                         </span>
-                                        <select #sel (change)="getCategoryByRefId(sel.value);" class="form-control" formControlName="domain"
+                                        <select  #sel (change)="getCategoryByRefId(sel.value);" class="form-control" formControlName="domain"
                                             [ngClass]="{ 'is-invalid': issubmit && f.domain.errors }">
                                             <option value="">Select Domain</option>
                                             <option *ngFor="let referencelookup of this.signupcomponent.reflookupdetails" value="{{referencelookup.refId}}">
@@ -48,7 +59,7 @@
                                         <span>
                                             <i class="fa fa-industry form-control-icon"></i>
                                         </span>
-                                        <select class="form-control" formControlName="category"
+                                        <select  class="form-control" formControlName="category"
                                             [ngClass]="{ 'is-invalid': issubmit && f.category.errors }">
                                             <option value="">Select Category</option>
                                             <option *ngFor="let referencelookupmap of this.referencedetailsmap" value="{{referencelookupmap.code}}">
@@ -106,7 +117,7 @@
                                         <span>
                                             <i class="fa fa-rupee form-control-icon"></i>
                                         </span>
-                                        <input type="text" placeholder="Price" class="form-control"
+                                        <input type="text"  placeholder="Price" class="form-control"
                                             formControlName="price"
                                             [ngClass]="{ 'is-invalid': issubmit && f.price.errors }">
                                         <div *ngIf="issubmit && f.price.errors" class="invalid-feedback">
@@ -137,19 +148,27 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <button type="button" class="btn btn-info btn-md btn-block"
+                                        <button type="button" *ngIf="userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM'  && !this.byrole" class="btn btn-info btn-md btn-block"
                                             (click)="fileInput.click()">Upload Service Image</button>
                                     </div>
-                                    <small>For best results, use an image at least 128px by 128px in .png, .jpg, .jpeg
+                                    <small *ngIf="userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM'  && !this.byrole">
+                                        For best results, use an image at least 128px by 128px in .png, .jpg, .jpeg
                                         format</small>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                    <div class="modal-footer" >
+                        <a class="btn btn-warning" *ngIf="id > 0" [routerLink]="['/manageservice']">Manage New Services</a>
+                        <div *ngIf="userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM' && !this.byrole">
+                        <button type="submit"  class="btn btn-primary" >
+                            <span *ngIf="id > 0 ; else elseNewServiceButton" >Update</span>
+                            <ng-template #elseNewServiceButton>
+                                    Submit
+                            </ng-template>
+                        </button>
                     </div>
-
+                       </div>
                 </div>
             </form>
         </div>

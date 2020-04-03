@@ -76,6 +76,26 @@ const routes: Routes = [
     ]
   },
   {
+    path: 'editnewservice/:id',
+    component: DashboardComponent,
+    children: [
+      {
+        path: '',
+        component: NewserviceComponent
+      }
+    ]
+  },
+  {
+    path: 'viewnewservice/:name/:id',
+    component: DashboardComponent,
+    children: [
+      {
+        path: '',
+        component: NewserviceComponent
+      }
+    ]
+  },
+  {
     path: 'signupadmin',
     component: DashboardComponent,
     children: [
