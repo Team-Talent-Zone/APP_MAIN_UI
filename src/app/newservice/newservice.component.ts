@@ -57,6 +57,7 @@ export class NewserviceComponent implements OnInit {
     route.params.subscribe(params => {
       this.id = params.id;
      });
+    this.signupcomponent.referencedetailsmap = [];
    }
 
   ngOnInit() {
@@ -197,10 +198,20 @@ export class NewserviceComponent implements OnInit {
     newservicecurrentObj.validPeriod = newserviceForm.validPeriod;
     newservicecurrentObj.amount = newserviceForm.amount;
     newservicecurrentObj.imageUrl = newserviceForm.imageUrl;
+    newservicecurrentObj.isUpgrade = true;
     console.log('newservicecurrentObj' , newservicecurrentObj);
   }
-  preparetoupgradenewservice(newservicecurrentObj: NewService , newserviceForm: NewService ) {
 
+  preparetoupgradenewservice(newservicecurrentObj: NewService , newserviceForm: NewService ) {
+    newservicecurrentObj.amount = newserviceForm.amount;
+    newservicecurrentObj.category = newserviceForm.category;
+    newservicecurrentObj.domain = newserviceForm.domain;
+    newservicecurrentObj.fullContent = newserviceForm.fullContent;
+    newservicecurrentObj.description = newserviceForm.description;
+    newservicecurrentObj.name = newserviceForm.name;
+    newservicecurrentObj.validPeriod = newserviceForm.validPeriod;
+    newservicecurrentObj.amount = newserviceForm.amount;
+    newservicecurrentObj.imageUrl = newserviceForm.imageUrl;
   }
 
   getCategoryByRefId(value: string) {

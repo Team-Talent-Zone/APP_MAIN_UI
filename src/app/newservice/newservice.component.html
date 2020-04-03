@@ -144,10 +144,10 @@
                                                     </div>
                                             </div>
                                         </div>
-                                        <button type="button" *ngIf="userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM'  && !isvisiblity" class="btn btn-info btn-md btn-block"
+                                        <button type="button" *ngIf="userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM'" class="btn btn-info btn-md btn-block"
                                             (click)="fileInput.click()">Upload Service Image</button>
                                     </div>
-                                    <small *ngIf="userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM'  && !isvisiblity">
+                                    <small *ngIf="userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM'">
                                         For best results, use an image at least 128px by 128px in .png, .jpg, .jpeg
                                         format</small>
                                 </div>

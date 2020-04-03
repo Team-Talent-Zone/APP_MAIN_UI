@@ -79,6 +79,7 @@
                                     <th>Email Address</th>
                                     <th>Created On</th>
                                     <th>Last Updated On</th>
+                                    <th>Language</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -93,6 +94,17 @@
                                     <td>{{mywork.createdon}}</td>
                                     <td>{{mywork.updatedon}}</td>
                                     <td>
+                                        <div *ngIf="mywork.preferlang == 'en'">
+                                            English
+                                        </div>
+                                        <div *ngIf="mywork.preferlang == 'te'">
+                                            తెలుగు
+                                        </div>
+                                        <div *ngIf="mywork.preferlang == 'hi'">
+                                            हिंदी
+                                        </div>
+                                    </td>
+                                    <td>
                                         <a  *ngIf="mywork.freelancehistoryentity.islocked" class="btn  btn-sm" (click) = 'processbgverficiationopenmodal(mywork.userId)'>
                                             <i title= "You can start working.."  
                                                     class="fa fa-lock" style="color: rgb(37, 165, 37)" 
@@ -100,6 +112,7 @@
                                             </i>
                                         </a>
                                     </td>
+                                    
                                 </tr>
                                 </tbody>
                                 <ng-template #elseNoBGWork>
@@ -215,15 +228,15 @@
                                         </div>
                                     </td>
                                     <td>
-                                             <i title="{{fu.firstname}} background verification is Rejected" class="fa fa-thumbs-down " style="color:rgb(241, 18, 18)" 
+                                             <i title="{{fu.fullname}} background verification is rejected" class="fa fa-thumbs-down " style="color:rgb(241, 18, 18)" 
                                                 *ngIf="fu.freelancehistoryentity.bgstatus == 'BG_REJECTED'; else elseRejected ">
                                              </i>
                                              <ng-template #elseRejected>
                                                 <i *ngIf="fu.freelancehistoryentity.bgstatus == 'BG_APPROVED'; else elseInProgress"
-                                                 title="{{fu.firstname}}  background verification is Approved" class="fa fa-thumbs-up" style="color:green"></i>
+                                                 title="{{fu.fullname}} background verification is approved" class="fa fa-thumbs-up" style="color:green"></i>
                                              </ng-template>
                                             <ng-template #elseInProgress>
-                                                <i title="{{fu.firstname}} background verification in progress" class="fa fa-spinner" style="color:blue"></i>
+                                                <i title="{{fu.fullname}} background verification is in-progress" class="fa fa-spinner" style="color:blue"></i>
                                                 </ng-template>
                                                   
                                     </td>
