@@ -58,15 +58,8 @@ export class NewserviceComponent implements OnInit {
     this.signupcomponent.getAllCategories('en');
     this.getServiceTerms();
     this.newServiceValidationForm();
-    if (this.id > 0) {
-      this.openExistingNewService();
-    }
-
   }
 
-  openExistingNewService() {
-
-  }
   newServiceValidationForm() {
     this.newServiceForm = this.formBuilder.group({
       name: ['', [Validators.required, Validators.maxLength(40)]],
@@ -107,11 +100,9 @@ export class NewserviceComponent implements OnInit {
     this.serviceHistory.userId = this.userService.currentUserValue.userId;
     this.serviceHistory.managerId = this.userService.currentUserValue.usermanagerdetailsentity.managerid;
     this.serviceHistory.status = config.newservice_code_senttocssm;
-    this.newsvcservice.getNewServiceDetailsByServiceName(this.newServiceForm.get('name').value).pipe(first()).subscribe(
-      (checkNewserviceObj: any) => {
-        console.log('checkNewserviceObj' , checkNewserviceObj.name);
-        if (this.newservice.name !== checkNewserviceObj.name) {
-          this.spinnerService.hide();
+    this.newsvcservice.checkNewServiceIsExist(this.newServiceForm.get('name').value).pipe(first()).subscribe(
+      (isnewserviceexisit: boolean) => {
+        if (!isnewserviceexisit) {
           this.userService.getUserByUserId(this.serviceHistory.managerId).pipe(first()).subscribe(
             (respuser: any) => {
           this.serviceHistory.decisionBy = respuser.fullname;

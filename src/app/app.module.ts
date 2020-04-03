@@ -41,6 +41,7 @@ import { NewserviceComponent } from './newservice/newservice.component';
 import { ManageserviceComponent } from './manageservice/manageservice.component';
 import { ManageuserserviceComponent } from './manageuserservice/manageuserservice.component';
 import { ApiService } from './adapters/api.service';
+import { ProcessnewserviceComponent } from './processnewservice/processnewservice.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -69,7 +70,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     SignupadminComponent,
     NewserviceComponent,
     ManageserviceComponent,
-    ManageuserserviceComponent
+    ManageuserserviceComponent,
+    ProcessnewserviceComponent
     ],
   imports: [
     BrowserModule,

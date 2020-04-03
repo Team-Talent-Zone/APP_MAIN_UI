@@ -40,6 +40,8 @@
                                 <tr >
                                     <th>Name</th>
                                     <th>Created On</th>
+                                    <th>Domain</th>
+                                    <th>Category</th>
                                     <th>Valid Period</th>
                                     <th>Price</th>
                                     <th></th>
@@ -51,8 +53,36 @@
                                             {{mywork.name}}
                                     </td>
                                     <td>{{mywork.createdOn}}</td>
-                                    <td>{{mywork.validPeriod}}</td>
-                                    <td>{{mywork.amount}}</td>
+                                    <td>
+                                        <div *ngFor="let refdata of  signupComponent.reflookupdetails">
+                                            <div *ngIf="mywork.domain == refdata.refId">
+                                                {{refdata.label}}
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        
+                                        <div *ngFor="let referencelookupmap of  signupComponent.referencedetailsmap">
+                                            <div *ngIf="mywork.category == referencelookupmap.code">
+                                                {{referencelookupmap.label}}
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div *ngFor="let terms of  serviceterms">
+                                            <div *ngIf="mywork.validPeriod == terms.code">
+                                                {{terms.label}}
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div *ngIf="mywork.amount > 0; else elseZeroRup">
+                                            {{mywork.amount}}&nbsp;₹
+                                        </div>
+                                        <ng-template #elseZeroRup>
+                                           0 &nbsp;₹
+                                        </ng-template>
+                                    </td>
                                     <td *ngFor="let newserviceobj of mywork.serviceHistory">
                                         <a  *ngIf="newserviceobj.locked" class="btn  btn-sm">
                                             <i title= "You can start working.."  
@@ -78,8 +108,8 @@
                                     <th>Category</th>
                                     <th>Created On</th>
                                     <th>Created By</th>
-                                    <th>Accept & Declaration</th>
-                                    <th>Status</th>
+                                    <th>Accepted & Declared</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -87,22 +117,34 @@
                                     <td>
                                             {{newserviceobj.name}}
                                     </td>
-                                    <td>{{newserviceobj.domain}}</td>
-                                    <td>{{newserviceobj.category}}</td>
+                                    <td>
+                                        <div *ngFor="let refdata of  signupComponent.reflookupdetails">
+                                            <div *ngIf="newserviceobj.domain == refdata.refId">
+                                                {{refdata.label}}
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div *ngFor="let referencelookupmap of  signupComponent.referencedetailsmap">
+                                            <div *ngIf="newserviceobj.category == referencelookupmap.code">
+                                                {{referencelookupmap.label}}
+                                            </div>
+                                        </div>
+                                    </td>
                                     <td>{{newserviceobj.createdOn}}</td>
                                     <td>{{newserviceobj.createdBy}}</td>
                                     <td *ngFor="let newservicehisobj of newserviceobj.serviceHistory">
                                         {{newservicehisobj.decisionBy}}
                                     </td>
-                                    <td>
-                                        <i class="fa fa-check" title="Active on platform" 
-                                        style="color: rgb(37, 165, 37)" *ngIf="newserviceobj.active ; else elseNotActive">
-                                       </i>
-                                       <ng-template #elseNotActive>
-                                           <i class="fa fa-ban" title="Not active on platform" 
-                                           style="color: rgb(165, 37, 37)" ></i>
-                                       </ng-template>
-                                       </td>
+                                    <td *ngFor="let newservicehisobj of newserviceobj.serviceHistory">
+                                        <i class="fa fa-check" title="Approved by {{newservicehisobj.decisionBy}} " *ngIf="newservicehisobj.status == 'APPROVED'; else elseRejected" style="color: rgb(37, 165, 37)"></i>
+                                        <ng-template #elseRejected>
+                                            <i class="fa fa-ban" title="Rejected by {{newservicehisobj.decisionBy}} " *ngIf="newservicehisobj.status == 'REJECTED'; else elseOther" style="color: rgb(165, 37, 37)"></i>
+                                        </ng-template>
+                                        <ng-template #elseOther>
+                                            <i class="fa fa-spinner" title="In-Progress with {{newservicehisobj.decisionBy}} " style="color: rgb(26, 9, 255)"></i>
+                                        </ng-template>
+                                    </td>
                                 </tr>
                         </table>
                     </div>

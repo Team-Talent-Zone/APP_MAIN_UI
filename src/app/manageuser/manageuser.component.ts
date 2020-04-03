@@ -51,8 +51,8 @@ export class ManageuserComponent implements OnInit {
       });*/
     });
   }
- getReferenceDataByKey() {
-  this.referService.getReferenceLookupByKey(config.key_bgstatus).subscribe(
+ getReferenceDataByKey(key: string) {
+  this.referService.getReferenceLookupByKey(key).subscribe(
     (refdata: any) => {
       this.refDataObj = refdata;
     },
@@ -62,7 +62,7 @@ export class ManageuserComponent implements OnInit {
     });
  }
  getAllUser() {
-  this.getReferenceDataByKey();
+  this.getReferenceDataByKey(config.key_bgstatus);
   this.spinnerService.show();
   this.userService.getAllUsers().subscribe(
     (usrObjRsp: User[]) => {
