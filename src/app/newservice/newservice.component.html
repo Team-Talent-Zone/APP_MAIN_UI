@@ -6,8 +6,7 @@
             <form [formGroup]="newServiceForm" (ngSubmit)="saveorupdateNewService(id)">
                 <div class="card">
                     <div class="card-header">
-                        <div *ngIf="userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM' 
-                        && !this.byrole ;  else elseCSSM">
+                        <div *ngIf="userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM'">
                         <h4 class="card-title mb-0" *ngIf="id > 0 ; else elseNewServiceLabel">
                             Update Service Request Form</h4>
                             <ng-template #elseNewServiceLabel>
@@ -15,9 +14,6 @@
                                     New Service Request Form</h4>
                             </ng-template>
                     </div>
-                    <ng-template #elseCSSM>
-                        <h4 class="card-title mb-0">View Service Details Form</h4>
-                    </ng-template>
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -143,15 +139,15 @@
                                                 (change)="uploadFile($event)" />
                                             </div>
                                             <div class="avatar-preview">
-                                                <div id="imagePreview"
-                                                    [style.backgroundImage]="'url('+ serviceImgURL +')'">
-                                                </div>
+                                                     <div id="imagePreview"
+                                                        [style.backgroundImage]="'url('+ serviceImgURL +')'">
+                                                    </div>
                                             </div>
                                         </div>
-                                        <button type="button" *ngIf="userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM'  && !this.byrole" class="btn btn-info btn-md btn-block"
+                                        <button type="button" *ngIf="userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM'  && !isvisiblity" class="btn btn-info btn-md btn-block"
                                             (click)="fileInput.click()">Upload Service Image</button>
                                     </div>
-                                    <small *ngIf="userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM'  && !this.byrole">
+                                    <small *ngIf="userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM'  && !isvisiblity">
                                         For best results, use an image at least 128px by 128px in .png, .jpg, .jpeg
                                         format</small>
                                 </div>
@@ -160,15 +156,14 @@
                     </div>
                     <div class="modal-footer" >
                         <a class="btn btn-warning" *ngIf="id > 0" [routerLink]="['/manageservice']">Manage New Services</a>
-                        <div *ngIf="userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM' && !this.byrole">
+                        <div *ngIf="userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM'">
                         <button type="submit"  class="btn btn-primary" >
-                            <span *ngIf="id > 0 ; else elseNewServiceButton" >Update</span>
-                            <ng-template #elseNewServiceButton>
-                                    Submit
-                            </ng-template>
+                            <span *ngIf="id > 0 && !isupgrade" >Update</span>
+                            <span *ngIf="id > 0 && isupgrade" >Upgrade Now</span>
+                            <span *ngIf="id == 0" >Submit</span>
                         </button>
-                    </div>
                        </div>
+                    </div>
                 </div>
             </form>
         </div>

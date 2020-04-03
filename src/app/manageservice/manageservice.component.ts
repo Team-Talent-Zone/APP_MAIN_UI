@@ -1,3 +1,4 @@
+import { ViewnewsevicedetailsComponent } from './../viewnewsevicedetails/viewnewsevicedetails.component';
 import { ProcessnewserviceComponent } from './../processnewservice/processnewservice.component';
 import { ReferenceService } from './../AppRestCall/reference/reference.service';
 import { ReferenceAdapter } from './../adapters/referenceadapter';
@@ -29,7 +30,7 @@ export class ManageserviceComponent implements OnInit {
     private modalService: BsModalService,
     public newsvcservice: NewsvcService,
     private newserviceAdapter: NewServiceAdapter,
-    private userService: UserService,
+    public userService: UserService,
     public signupComponent: SignupComponent,
     private spinnerService: Ng4LoadingSpinnerService,
     private refAdapter: ReferenceAdapter,
@@ -70,6 +71,22 @@ export class ManageserviceComponent implements OnInit {
           }
         });
       });
+  }
+
+  viewnewservicedetails(ourserviceId: number) {
+    this.listOfAllNewServices.forEach((element: any) => {
+      if (element.ourserviceId === ourserviceId) {
+        const initialState = { newserviceobj: element };
+        this.modalRef = this.modalService.show(ViewnewsevicedetailsComponent, Object.assign(
+          {},
+          this.config,
+          {
+            initialState
+          }
+        )
+        );
+      }
+    });
   }
 
   processnewserviceopenmodal(ourserviceId: number) {

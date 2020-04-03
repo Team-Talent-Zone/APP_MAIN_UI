@@ -42,6 +42,7 @@ import { ManageserviceComponent } from './manageservice/manageservice.component'
 import { ManageuserserviceComponent } from './manageuserservice/manageuserservice.component';
 import { ApiService } from './adapters/api.service';
 import { ProcessnewserviceComponent } from './processnewservice/processnewservice.component';
+import { ViewnewsevicedetailsComponent } from './viewnewsevicedetails/viewnewsevicedetails.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -71,7 +72,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     NewserviceComponent,
     ManageserviceComponent,
     ManageuserserviceComponent,
-    ProcessnewserviceComponent
+    ProcessnewserviceComponent,
+    ViewnewsevicedetailsComponent
     ],
   imports: [
     BrowserModule,
@@ -114,7 +116,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
   entryComponents: [
     ViewaccountdetailsComponent,
     ProcessbgverificationComponent,
-    ProcessnewserviceComponent
+    ProcessnewserviceComponent,
+    ViewnewsevicedetailsComponent
   ],
   bootstrap: [AppComponent]
 })

@@ -36,7 +36,8 @@ export class NewserviceComponent implements OnInit {
   newservicecurrentObj: NewService;
   serviceHistory: NewServiceHistory;
   filename: string;
-  byrole: boolean = false;
+  isvisiblity: boolean = false;
+  isupgrade: boolean = false;
   name: string;
 
   constructor(
@@ -55,7 +56,6 @@ export class NewserviceComponent implements OnInit {
   ) {
     route.params.subscribe(params => {
       this.id = params.id;
-      this.name = params.name;
      });
    }
 
@@ -65,6 +65,7 @@ export class NewserviceComponent implements OnInit {
     this.newServiceValidationForm();
     if (this.id > 0) {
      this.populatenewservice(this.id);
+     this.isvisiblity = true;
     }
   }
 
@@ -73,10 +74,9 @@ export class NewserviceComponent implements OnInit {
     this.newsvcservice.getNewServiceDetailsByServiceId(ourserviceId).pipe(first()).subscribe(
       (newserviceobj: any) => {
         this.newservicecurrentObj = this.newserviceAdapter.adapt(newserviceobj);
-        if (this.name === 'readonly'
-          ) {
-             this.byrole = true;
-         }
+        if (this.newservicecurrentObj.active) {
+              this.isupgrade = true;
+        }  
         this.getCategoryByRefId(this.newservicecurrentObj.domain);
         this.newServiceForm.patchValue({name: this.newservicecurrentObj.name});
         this.newServiceForm.patchValue({description: this.newservicecurrentObj.description});
@@ -87,6 +87,7 @@ export class NewserviceComponent implements OnInit {
         this.newServiceForm.patchValue({price: this.newservicecurrentObj.amount});
         this.newServiceForm.patchValue({imageUrl: this.newservicecurrentObj.imageUrl});
         this.serviceImgURL = this.newservicecurrentObj.imageUrl;
+        console.log('this.populatenewservice' ,this.id);
     },
     error => {
       this.spinnerService.hide();
@@ -119,8 +120,11 @@ export class NewserviceComponent implements OnInit {
      }
     this.spinnerService.show();
     this.newservice = this.newserviceAdapter.adapt(this.newServiceForm);
-    if (id > 0) {
-      this.preparetoupdatenewservice(this.newservicecurrentObj ,this.newservice);
+    if (id > 0 && !this.newservicecurrentObj.active) {
+      this.preparetoupdatenewservice(this.newservicecurrentObj , this.newservice);
+    } else
+    if (id > 0 && this.newservicecurrentObj.active) {
+      this.preparetoupgradenewservice(this.newservicecurrentObj , this.newservice);
     } else {
     this.newservice.name = this.newServiceForm.get('name').value;
     this.newservice.category = this.newServiceForm.get('category').value;
@@ -194,6 +198,9 @@ export class NewserviceComponent implements OnInit {
     newservicecurrentObj.amount = newserviceForm.amount;
     newservicecurrentObj.imageUrl = newserviceForm.imageUrl;
     console.log('newservicecurrentObj' , newservicecurrentObj);
+  }
+  preparetoupgradenewservice(newservicecurrentObj: NewService , newserviceForm: NewService ) {
+
   }
 
   getCategoryByRefId(value: string) {
