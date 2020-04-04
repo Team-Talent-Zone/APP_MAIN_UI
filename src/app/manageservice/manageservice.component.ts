@@ -1,3 +1,4 @@
+import { NewServiceHistory } from './../appmodels/NewServiceHistory';
 import { ViewnewsevicedetailsComponent } from './../viewnewsevicedetails/viewnewsevicedetails.component';
 import { ProcessnewserviceComponent } from './../processnewservice/processnewservice.component';
 import { ReferenceService } from './../AppRestCall/reference/reference.service';
@@ -12,6 +13,7 @@ import { config } from 'src/app/appconstants/config';
 import { map } from 'rxjs/operators';
 import { BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+import { NewService } from '../appmodels/NewService';
 
 @Component({
   selector: 'app-manageservice',
@@ -22,10 +24,11 @@ export class ManageserviceComponent implements OnInit {
 
   listOfAllNewServices: any = [];
   myNewServiceForReview: any = [];
+  myNewServiceForReviewAllCommentHistory: any = [];
   serviceterms: any;
   modalRef: BsModalRef;
   config: ModalOptions = { class: 'modal-lg' };
-
+  historyarray: any = [];
   constructor(
     private modalService: BsModalService,
     public newsvcservice: NewsvcService,
@@ -60,6 +63,7 @@ export class ManageserviceComponent implements OnInit {
     this.newsvcservice.getAllNewServiceDetails().subscribe(
       (allNewServiceObjs: any) => {
         allNewServiceObjs.forEach((element: any) => {
+          this.myNewServiceForReviewAllCommentHistory.push(this.newserviceAdapter.adapt(element));
           if (element.serviceHistory != null) {
             element.serviceHistory.forEach((elementHis: any) => {
               if (elementHis.decisionbyemailid === this.userService.currentUserValue.username &&
@@ -69,9 +73,9 @@ export class ManageserviceComponent implements OnInit {
                 this.myNewServiceForReview.push(this.newserviceAdapter.adapt(element));
               }
               if (element.currentstatus === elementHis.status) {
-               element.serviceHistory = [];
-               element.serviceHistory.push(elementHis);
-               this.listOfAllNewServices.push(this.newserviceAdapter.adapt(element));
+                element.serviceHistory = [];
+                element.serviceHistory.push(elementHis);
+                this.listOfAllNewServices.push(this.newserviceAdapter.adapt(element));
               }
             });
           }
@@ -96,19 +100,31 @@ export class ManageserviceComponent implements OnInit {
   }
 
   processnewserviceopenmodal(ourserviceId: number) {
-    this.myNewServiceForReview.forEach((element: any) => {
+    this.historyarray = [];
+    this.spinnerService.show();
+    this.myNewServiceForReviewAllCommentHistory.forEach((element: NewService) => {
       if (element.ourserviceId === ourserviceId) {
-        const initialState = { newserviceobj: element };
-        this.modalRef = this.modalService.show(ProcessnewserviceComponent, Object.assign(
-          {},
-          this.config,
-          {
-            initialState
-          }
-        )
-        );
+        this.historyarray.push(element);
       }
     });
+    if (this.historyarray.length > 0 ) {
+      this.myNewServiceForReview.forEach((elementObj: NewService) => {
+        if (elementObj.ourserviceId === ourserviceId) {
+          const initialState = {
+            newserviceobj: elementObj,
+            newservicedetailswithallCommentHistory: this.historyarray
+          };
+          this.modalRef = this.modalService.show(ProcessnewserviceComponent, Object.assign(
+            {},
+            this.config,
+            {
+              initialState
+            }
+          )
+          );
+        }
+      });
+      this.spinnerService.hide();
+    }
   }
-
 }

@@ -11,9 +11,12 @@ email_verficationemailaddress_successmsg: 'Welcome Back Again Please Login',
 email_verficationemailaddress_alreadydone: 'Your email verfiication is already completed. \n Please login with your username.',
 login_invalid_password: 'You entered invalid password',
 email_bgverification_subj: 'Background verification of ',
+email_newserviceverification_subj: 'NewService verification of ',
 bg_status_txt_csst_msg: 'Pending with CSST',
 bg_status_txt_approve_msg: 'Approved',
 bg_status_txt_rejected_msg: 'Rejected',
 bg_status_txt_cssm_msg: 'Pending with CSSM',
+newservice_txt_cssm_msg: 'Pending Review with CSSM',
+newservice_txt_csst_msg: 'Pending Review with CSST',
 newservice_alreadyexist_msg: 'The entered service name is already exist'
 };

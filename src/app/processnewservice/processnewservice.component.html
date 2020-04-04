@@ -43,6 +43,31 @@
                     </form>
                 </div>
             </div>
+            <div class="card" *ngIf="newservicedetailswithallCommentHistory[0].serviceHistory != null">
+                <div class="card-header">
+                    Bg Verification - Workflow History
+                </div>
+                <div class="card-body">
+                    <div class="panel-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr >
+                                <th>Date</th>
+                                <th>Assigned To</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let newservicehist of newservicedetailswithallCommentHistory[0].serviceHistory">
+                                <td style ="word-break:break-all;" *ngIf="newservicehist.comment !=null">{{newservicehist.decisionOn}}</td>
+                                <td *ngIf="newservicehist.comment !=null">{{newservicehist.decisionBy}}</td>
+                                <td *ngIf="newservicehist.comment !=null">{{newservicehist.comment}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
