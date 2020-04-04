@@ -7,7 +7,7 @@ export class NewServiceHistory  {
     public decisionOn: string;
     public status: string;
     public comment: string;
-    public isLocked: boolean;
+    public islocked: boolean;
     public managerId: number;
     constructor(
     ) {

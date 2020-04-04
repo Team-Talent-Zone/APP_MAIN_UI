@@ -86,15 +86,16 @@
                                         </ng-template>
                                     </td>
                                     <td *ngFor="let newserviceobj of mywork.serviceHistory">
-                                        <a *ngIf="newserviceobj.locked" class="btn  btn-sm"
-                                            (click)='processnewserviceopenmodal(newserviceobj.ourserviceId)'>
+                                        <a *ngIf="newserviceobj.islocked" class="btn  btn-sm"
+                                            (click)='processnewserviceopenmodal(newserviceobj.ourserviceId)'
+                                            >
                                             <i title="You can start working.." class="fa fa-lock"
                                                 style="color: rgb(37, 165, 37)">
                                             </i>
                                         </a>
                                     </td>
                                     <td *ngFor="let newserviceobj of mywork.serviceHistory">
-                                        <a *ngIf="newserviceobj.locked && 
+                                        <a *ngIf="newserviceobj.islocked && 
                                         userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM'; "
                                             routerLink='/editorviewnewservice/{{mywork.ourserviceId}}'>
                                             <i class="fa fa-edit" title="Edit Service Now "></i>
@@ -118,7 +119,7 @@
                                     <th>Category</th>
                                     <th>Created On</th>
                                     <th>Created By</th>
-                                    <th>Acknowledgement</th>
+                                    <th>Current Task</th>
                                     <th>Status</th>
                                     <th></th>
                                 </tr>

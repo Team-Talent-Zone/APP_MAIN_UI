@@ -20,6 +20,14 @@ export class NewsvcService {
       return this.http.post(`${environment.apiUrl}/saveNewService/`, newservice);
   }
 
+  saveOrUpdateNewService(newservice: NewService) {
+    return this.http.post(`${environment.apiUrl}/saveOrUpdateNewService/`, newservice);
+  }
+
+  saveNewServiceHistory(newservicehistory: NewServiceHistory) {
+    return this.http.post(`${environment.apiUrl}/saveNewServiceHistory/`, newservicehistory);
+  }
+
   getNewServiceDetailsByServiceId(ourserviceId: number) {
     return this.http.get(`${environment.apiUrl}/getNewServiceDetailsByServiceId/` + ourserviceId + '/');
   }

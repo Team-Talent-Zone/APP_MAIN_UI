@@ -34,7 +34,11 @@ export const config = {
   default_avatar: 'https://platform-asserts.s3.amazonaws.com/Platform+Imgs/avatar1.png',
   default_prefer_lang: 'en',
   GOOGLE_MAPS_API_KEY: 'AIzaSyCaKbVhcX_22R_pRKDYuNA7vox-PtGaDkI',
-  newservice_code_senttocssm: 'SENT_TO_CSSM'
+  newservice_code_senttocssm: 'SENT_TO_CSSM',
+  newservice_code_approved: 'APPROVED',
+  newservice_code_rejected: 'REJECTED',
+
+
 };
 
 

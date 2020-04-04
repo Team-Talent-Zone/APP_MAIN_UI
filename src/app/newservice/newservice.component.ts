@@ -1,5 +1,5 @@
-import { ConfigMsg } from './../appconstants/configmsg';
 import { UtilService } from './../AppRestCall/util/util.service';
+import { ConfigMsg } from './../appconstants/configmsg';
 import { NewServiceAdapter } from './../adapters/newserviceadapter';
 import { UserService } from './../AppRestCall/user/user.service';
 import { NewServiceHistory } from './../appmodels/NewServiceHistory';
@@ -9,7 +9,7 @@ import { SignupComponent } from './../signup/signup.component';
 import { Component, OnInit , ChangeDetectorRef} from '@angular/core';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { AlertsService } from '../AppRestCall/alerts/alerts.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { map, first } from 'rxjs/operators';
 import {
   FormBuilder,
@@ -36,8 +36,6 @@ export class NewserviceComponent implements OnInit {
   newservicecurrentObj: NewService;
   serviceHistory: NewServiceHistory;
   filename: string;
-  isvisiblity: boolean = false;
-  isupgrade: boolean = false;
   name: string;
 
   constructor(
@@ -52,6 +50,7 @@ export class NewserviceComponent implements OnInit {
     public newsvcservice: NewsvcService,
     public userService: UserService,
     private newserviceAdapter: NewServiceAdapter,
+    private router: Router,
     private utilService: UtilService,
   ) {
     route.params.subscribe(params => {
@@ -66,29 +65,30 @@ export class NewserviceComponent implements OnInit {
     this.newServiceValidationForm();
     if (this.id > 0) {
      this.populatenewservice(this.id);
-     this.isvisiblity = true;
     }
   }
 
   populatenewservice(ourserviceId: number) {
     this.spinnerService.show();
     this.newsvcservice.getNewServiceDetailsByServiceId(ourserviceId).pipe(first()).subscribe(
-      (newserviceobj: any) => {
-        this.newservicecurrentObj = this.newserviceAdapter.adapt(newserviceobj);
-        if (this.newservicecurrentObj.active) {
-              this.isupgrade = true;
-        }  
-        this.getCategoryByRefId(this.newservicecurrentObj.domain);
-        this.newServiceForm.patchValue({name: this.newservicecurrentObj.name});
-        this.newServiceForm.patchValue({description: this.newservicecurrentObj.description});
-        this.newServiceForm.patchValue({fullContent: this.newservicecurrentObj.fullContent});
-        this.newServiceForm.patchValue({validPeriod: this.newservicecurrentObj.validPeriod});
-        this.newServiceForm.patchValue({category: this.newservicecurrentObj.category});
-        this.newServiceForm.patchValue({domain: this.newservicecurrentObj.domain});
-        this.newServiceForm.patchValue({price: this.newservicecurrentObj.amount});
-        this.newServiceForm.patchValue({imageUrl: this.newservicecurrentObj.imageUrl});
-        this.serviceImgURL = this.newservicecurrentObj.imageUrl;
-        console.log('this.populatenewservice' ,this.id);
+      (newserviceobj: NewService) => {
+        newserviceobj.serviceHistory.forEach(element => {
+          if (element.status === newserviceobj.currentstatus) {
+            newserviceobj.serviceHistory = [];
+            this.newservicecurrentObj = this.newserviceAdapter.adapt(newserviceobj);
+            this.getCategoryByRefId(this.newservicecurrentObj.domain);
+            this.newServiceForm.patchValue({name: this.newservicecurrentObj.name});
+            this.newServiceForm.patchValue({description: this.newservicecurrentObj.description});
+            this.newServiceForm.patchValue({fullContent: this.newservicecurrentObj.fullContent});
+            this.newServiceForm.patchValue({validPeriod: this.newservicecurrentObj.validPeriod});
+            this.newServiceForm.patchValue({category: this.newservicecurrentObj.category});
+            this.newServiceForm.patchValue({domain: this.newservicecurrentObj.domain});
+            this.newServiceForm.patchValue({amount: this.newservicecurrentObj.amount});
+            this.newServiceForm.patchValue({imageUrl: this.newservicecurrentObj.imageUrl});
+            this.serviceImgURL = this.newservicecurrentObj.imageUrl;
+            this.newservicecurrentObj.serviceHistory.push(element);
+          }
+        });
     },
     error => {
       this.spinnerService.hide();
@@ -104,7 +104,7 @@ export class NewserviceComponent implements OnInit {
       validPeriod: ['', [Validators.required]],
       category: ['', [Validators.required]],
       domain: ['', [Validators.required]],
-      price: ['', [Validators.maxLength(10),  Validators.pattern('^[0-9]*$')]],
+      amount: ['', [Validators.maxLength(10),  Validators.pattern('^[0-9]*$')]],
       imageUrl: ['', [Validators.required]],
     });
   }
@@ -120,7 +120,7 @@ export class NewserviceComponent implements OnInit {
        return;
      }
     this.spinnerService.show();
-    this.newservice = this.newserviceAdapter.adapt(this.newServiceForm);
+    this.newservice = this.newserviceAdapter.adapt(this.newServiceForm.value);
     if (id > 0 && !this.newservicecurrentObj.active) {
       this.preparetoupdatenewservice(this.newservicecurrentObj , this.newservice);
     } else
@@ -134,9 +134,10 @@ export class NewserviceComponent implements OnInit {
     this.newservice.description = this.newServiceForm.get('description').value;
     this.newservice.userId = this.userService.currentUserValue.userId;
     this.newservice.validPeriod = this.newServiceForm.get('validPeriod').value;
-    this.newservice.amount = this.newServiceForm.get('price').value;
+    this.newservice.amount = this.newServiceForm.get('amount').value;
     this.newservice.createdBy = this.userService.currentUserValue.fullname;
     this.newservice.updatedBy = this.userService.currentUserValue.fullname;
+    this.newservice.currentstatus = config.newservice_code_senttocssm;
     this.newservice.serviceHistory = new Array<NewServiceHistory>();
     this.serviceHistory = new NewServiceHistory();
     this.serviceHistory.userId = this.userService.currentUserValue.userId;
@@ -150,22 +151,21 @@ export class NewserviceComponent implements OnInit {
           this.serviceHistory.decisionBy = respuser.fullname;
           this.serviceHistory.decisionbyemailid = respuser.username;
           this.newservice.serviceHistory.push(this.serviceHistory);
-          this.utilService.uploadAvatarsInS3( this.serviceImgURL , this.userService.currentUserValue.userId
-             , this.filename).subscribe(
+          this.utilService.uploadAvatarsInS3( this.serviceImgURL , this.userService.currentUserValue.userId , this.filename).subscribe(
             (returnURL: string) => {
-             this.newservice.imageUrl = returnURL;
-             this.newsvcservice.saveNewService(
-              this.newservice
-              ).pipe(first()).subscribe(
-               (newserviceObj) => {
-                 this.newservice = this.newserviceAdapter.adapt(newserviceObj);
+              this.newservice.imageUrl = returnURL;
+              this.newsvcservice.saveNewService(
+                this.newservice
+                ).pipe(first()).subscribe(
+                 (newserviceObj) => {
+                   this.newservice = this.newserviceAdapter.adapt(newserviceObj);
+                   this.spinnerService.hide();
+                   this.alertService.success(' Sent for review to your manager ' + this.serviceHistory.decisionBy);
+                 },
+               error => {
                  this.spinnerService.hide();
-                 this.alertService.success(' Sent for review to your manager ' + this.serviceHistory.decisionBy);
-               },
-             error => {
-               this.spinnerService.hide();
-               this.alertService.error(error);
-             });
+                 this.alertService.error(error);
+               });
           },
           error => {
             this.spinnerService.hide();
@@ -196,10 +196,37 @@ export class NewserviceComponent implements OnInit {
     newservicecurrentObj.description = newserviceForm.description;
     newservicecurrentObj.name = newserviceForm.name;
     newservicecurrentObj.validPeriod = newserviceForm.validPeriod;
-    newservicecurrentObj.amount = newserviceForm.amount;
     newservicecurrentObj.imageUrl = newserviceForm.imageUrl;
-    newservicecurrentObj.isUpgrade = true;
-    console.log('newservicecurrentObj' , newservicecurrentObj);
+    newservicecurrentObj.createdBy = this.userService.currentUserValue.fullname;
+    newservicecurrentObj.updatedBy = this.userService.currentUserValue.fullname;
+    if (this.filename != null) {
+      this.utilService.uploadAvatarsInS3( this.serviceImgURL , this.userService.currentUserValue.userId , this.filename).subscribe(
+        (returnURL: string) => {
+          newservicecurrentObj.imageUrl = returnURL;
+          this.saveorupdatenewservice(newservicecurrentObj);
+        },
+        error => {
+          this.spinnerService.hide();
+          this.alertService.error(error);
+        }
+      );
+    } else {
+      this.saveorupdatenewservice(newservicecurrentObj);
+    }
+  }
+
+  private saveorupdatenewservice(newservicecurrentObj: NewService) {
+    this.newsvcservice.saveOrUpdateNewService(
+      newservicecurrentObj
+      ).pipe(first()).subscribe(
+       (newserviceObj) => {
+        this.spinnerService.hide();
+        this.alertService.success(' Changes updated successfully ');
+       },
+       error => {
+        this.spinnerService.hide();
+        this.alertService.error(error);
+      });
   }
 
   preparetoupgradenewservice(newservicecurrentObj: NewService , newserviceForm: NewService ) {
@@ -211,7 +238,62 @@ export class NewserviceComponent implements OnInit {
     newservicecurrentObj.name = newserviceForm.name;
     newservicecurrentObj.validPeriod = newserviceForm.validPeriod;
     newservicecurrentObj.amount = newserviceForm.amount;
-    newservicecurrentObj.imageUrl = newserviceForm.imageUrl;
+    newservicecurrentObj.isupgrade = true;
+    newservicecurrentObj.active = false;
+    newservicecurrentObj.createdBy = this.userService.currentUserValue.fullname;
+    newservicecurrentObj.updatedBy = this.userService.currentUserValue.fullname;
+    newservicecurrentObj.currentstatus = config.newservice_code_senttocssm;
+    newservicecurrentObj.serviceHistory[0].status = null;
+    if (this.filename != null) {
+      this.utilService.uploadAvatarsInS3( this.serviceImgURL , this.userService.currentUserValue.userId , this.filename).subscribe(
+        (returnURL: string) => {
+          newservicecurrentObj.imageUrl = returnURL;
+          this.saveupgardenewservice(newservicecurrentObj);
+        },
+        error => {
+          this.spinnerService.hide();
+          this.alertService.error(error);
+        }
+      );
+    } else {
+      this.saveupgardenewservice(newservicecurrentObj);
+    }
+  }
+
+  private saveupgardenewservice(newservicecurrentObj: NewService) {
+    this.newsvcservice.saveOrUpdateNewService(
+      newservicecurrentObj
+      ).pipe(first()).subscribe(
+       (newserviceObj: NewService) => {
+        this.serviceHistory = new NewServiceHistory();
+        this.serviceHistory.ourserviceId = newserviceObj.ourserviceId;
+        this.serviceHistory.userId = this.userService.currentUserValue.userId;
+        this.serviceHistory.managerId = this.userService.currentUserValue.usermanagerdetailsentity.managerid;
+        this.serviceHistory.status = config.newservice_code_senttocssm;
+        this.userService.getUserByUserId(this.serviceHistory.managerId).pipe(first()).subscribe(
+          (respuser: any) => {
+          this.serviceHistory.decisionBy = respuser.fullname;
+          this.serviceHistory.decisionbyemailid = respuser.username;
+          this.newsvcservice.saveNewServiceHistory(
+            this.serviceHistory
+            ).pipe(first()).subscribe(
+              (newservicehis: any) => {
+              this.router.navigate(['/dashboard']);
+              this.spinnerService.hide();
+              this.alertService.success(' Sent for review to your manager ' + this.serviceHistory.decisionBy);
+              },
+              );
+             },
+          error => {
+            this.spinnerService.hide();
+            this.alertService.error(error);
+          }
+          );
+       },
+       error => {
+        this.spinnerService.hide();
+        this.alertService.error(error);
+      });
   }
 
   getCategoryByRefId(value: string) {

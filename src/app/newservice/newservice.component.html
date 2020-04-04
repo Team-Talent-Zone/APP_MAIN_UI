@@ -7,12 +7,9 @@
                 <div class="card">
                     <div class="card-header">
                         <div *ngIf="userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM'">
-                        <h4 class="card-title mb-0" *ngIf="id > 0 ; else elseNewServiceLabel">
-                            Update Service Request Form</h4>
-                            <ng-template #elseNewServiceLabel>
-                                <h4 class="card-title mb-0">
-                                    New Service Request Form</h4>
-                            </ng-template>
+                        <h4 class="card-title mb-0" *ngIf="id > 0 && newservicecurrentObj.currentstatus != 'APPROVED' ">Update Service Request Form</h4>
+                        <h4 class="card-title mb-0" *ngIf="id > 0 && newservicecurrentObj.currentstatus == 'APPROVED'">Upgrade Service Request Form</h4>
+                        <h4 class="card-title mb-0" *ngIf="id == null">New Service Request Form</h4>
                     </div>
                     </div>
                     <div class="card-body">
@@ -114,13 +111,13 @@
                                             <i class="fa fa-rupee form-control-icon"></i>
                                         </span>
                                         <input type="text"  placeholder="Price" class="form-control"
-                                            formControlName="price"
-                                            [ngClass]="{ 'is-invalid': issubmit && f.price.errors }">
-                                        <div *ngIf="issubmit && f.price.errors" class="invalid-feedback">
-                                            <div *ngIf="f.price.errors.maxlength">Pricing cant exceed
+                                            formControlName="amount"
+                                            [ngClass]="{ 'is-invalid': issubmit && f.amount.errors }">
+                                        <div *ngIf="issubmit && f.amount.errors" class="invalid-feedback">
+                                            <div *ngIf="f.amount.errors.maxlength">Pricing cant exceed
                                                 10
                                                 digits</div>
-                                            <div *ngIf="f.price.errors.pattern">Must be digit only</div>
+                                            <div *ngIf="f.amount.errors.pattern">Must be digit only</div>
                                         </div>
                                     </div>
                                 </div>
@@ -147,7 +144,7 @@
                                         <button type="button" *ngIf="userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM'" class="btn btn-info btn-md btn-block"
                                             (click)="fileInput.click()">Upload Service Image</button>
                                     </div>
-                                    <small *ngIf="userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM'">
+                                    <small *ngIf="userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM' ">
                                         For best results, use an image at least 128px by 128px in .png, .jpg, .jpeg
                                         format</small>
                                 </div>
@@ -157,11 +154,9 @@
                     <div class="modal-footer" >
                         <a class="btn btn-warning" *ngIf="id > 0" [routerLink]="['/manageservice']">Manage New Services</a>
                         <div *ngIf="userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM'">
-                        <button type="submit"  class="btn btn-primary" >
-                            <span *ngIf="id > 0 && !isupgrade" >Update</span>
-                            <span *ngIf="id > 0 && isupgrade" >Upgrade Now</span>
-                            <span *ngIf="id == 0" >Submit</span>
-                        </button>
+                        <button type="submit"  class="btn btn-primary" *ngIf="id > 0 && newservicecurrentObj.currentstatus != 'APPROVED' "> Update </button>
+                        <button type="submit"  class="btn btn-primary" *ngIf="id > 0 && newservicecurrentObj.currentstatus == 'APPROVED'" > Upgrade Now </button>
+                        <button type="submit"  class="btn btn-primary" *ngIf="id == null"> Submit </button>
                        </div>
                     </div>
                 </div>

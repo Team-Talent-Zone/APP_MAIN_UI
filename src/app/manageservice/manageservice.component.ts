@@ -59,13 +59,19 @@ export class ManageserviceComponent implements OnInit {
   getAllNewServiceDetails() {
     this.newsvcservice.getAllNewServiceDetails().subscribe(
       (allNewServiceObjs: any) => {
-        allNewServiceObjs.forEach(element => {
-          this.listOfAllNewServices.push(this.newserviceAdapter.adapt(element));
+        allNewServiceObjs.forEach((element: any) => {
           if (element.serviceHistory != null) {
-            element.serviceHistory.forEach(elementHis => {
+            element.serviceHistory.forEach((elementHis: any) => {
               if (elementHis.decisionbyemailid === this.userService.currentUserValue.username &&
-                elementHis.locked) {
+                elementHis.islocked && element.currentstatus === elementHis.status) {
+                element.serviceHistory = [];
+                element.serviceHistory.push(elementHis);
                 this.myNewServiceForReview.push(this.newserviceAdapter.adapt(element));
+              }
+              if (element.currentstatus === elementHis.status) {
+               element.serviceHistory = [];
+               element.serviceHistory.push(elementHis);
+               this.listOfAllNewServices.push(this.newserviceAdapter.adapt(element));
               }
             });
           }
