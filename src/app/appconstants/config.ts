@@ -22,6 +22,7 @@ export const config = {
   shortkey_email_newservice_senttocsst: 'eventgen24',
   shortkey_email_newservice_senttocssmapproved: 'eventgen21',
   shortkey_email_newservice_senttocssmreject: 'eventgen22',
+  shortkey_email_newservice_upgrade_senttocssm: 'eventgen33',
   shortkey_email_rejected: 'eventgen11',
   shortkey_email_approved: 'eventgen12',
   shortkey_bg_sentocsst: 'csst-bgcheck',

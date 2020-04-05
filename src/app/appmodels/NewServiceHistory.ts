@@ -9,6 +9,7 @@ export class NewServiceHistory  {
     public comment: string;
     public islocked: boolean;
     public managerId: number;
+    public previousdecisionby: string;
     constructor(
     ) {
 

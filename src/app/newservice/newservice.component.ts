@@ -44,6 +44,18 @@ export class NewserviceComponent implements OnInit {
   name: string;
   util: Util;
   templateObj: ReferenceLookUpTemplate;
+  oldvalsvrfeatures: string;
+  newvalsvrfeatures: string;
+  oldvalsvrdesc: string;
+  newvalsvrdesc: string;
+  oldvalsvrterm: string;
+  newvalsvrterm: string;
+  oldvalsvrprice: string;
+  newvalsvrprice: string;
+  oldvalsvrimgurl: string;
+  newvalsvrimgurl: string;
+
+
 
   constructor(
     private spinnerService: Ng4LoadingSpinnerService,
@@ -74,7 +86,7 @@ export class NewserviceComponent implements OnInit {
     this.newServiceValidationForm();
     if (this.id > 0) {
       this.populatenewservice(this.id);
-    }
+    } 
   }
 
   populatenewservice(ourserviceId: number) {
@@ -152,6 +164,9 @@ export class NewserviceComponent implements OnInit {
         this.serviceHistory.userId = this.userService.currentUserValue.userId;
         this.serviceHistory.managerId = this.userService.currentUserValue.usermanagerdetailsentity.managerid;
         this.serviceHistory.status = config.newservice_code_senttocssm;
+        this.serviceHistory.comment = ConfigMsg.newservice_txt_cssm_comment;
+        this.serviceHistory.islocked = true;
+        this.serviceHistory.previousdecisionby = this.userService.currentUserValue.fullname;
         this.newsvcservice.checkNewServiceIsExist(this.newServiceForm.get('name').value).pipe(first()).subscribe(
           (isnewserviceexisit: boolean) => {
             if (!isnewserviceexisit) {
@@ -268,6 +283,7 @@ export class NewserviceComponent implements OnInit {
   }
 
   preparetoupgradenewservice(newservicecurrentObj: NewService, newserviceForm: NewService) {
+    this.upgradedwithnewvalues(newservicecurrentObj , newserviceForm);
     newservicecurrentObj.amount = newserviceForm.amount;
     newservicecurrentObj.category = newserviceForm.category;
     newservicecurrentObj.domain = newserviceForm.domain;
@@ -298,6 +314,47 @@ export class NewserviceComponent implements OnInit {
     }
   }
 
+  private  upgradedwithnewvalues(newservicecurrentObj: NewService, newserviceForm: NewService) {
+    if ( newserviceForm.amount !== newservicecurrentObj.amount ) {
+      this.oldvalsvrprice = newservicecurrentObj.amount.toString();
+      this.newvalsvrprice = newserviceForm.amount.toString();
+     } else {
+      this.oldvalsvrprice = newservicecurrentObj.amount.toString();
+      this.newvalsvrprice = 'No New Changes Made';
+     }
+    if ( newserviceForm.description !== newservicecurrentObj.description ) {
+      this.oldvalsvrdesc = newservicecurrentObj.description;
+      this.newvalsvrdesc = newserviceForm.description;
+     } else {
+      this.oldvalsvrdesc = 'Due to huge old existing context.( We avoid display) .';
+      this.newvalsvrdesc = 'No New Changes Made';
+     }
+
+    if ( newserviceForm.fullContent !== newservicecurrentObj.fullContent ) {
+      this.oldvalsvrfeatures = newservicecurrentObj.fullContent;
+      this.newvalsvrfeatures = newserviceForm.fullContent;
+     } else {
+      this.oldvalsvrfeatures = 'Due to huge old existing context.( We avoid display) .';
+      this.newvalsvrfeatures = 'No New Changes Made';
+    }
+
+    if ( newserviceForm.validPeriod !== newservicecurrentObj.validPeriod ) {
+      this.oldvalsvrterm = newservicecurrentObj.validPeriod;
+      this.newvalsvrterm = newserviceForm.validPeriod;
+     } else {
+      this.oldvalsvrterm = newservicecurrentObj.validPeriod;
+      this.newvalsvrterm = 'No New Changes Made';
+     }
+
+    if ( this.serviceImgURL !== newservicecurrentObj.imageUrl ) {
+      this.oldvalsvrimgurl = newservicecurrentObj.imageUrl;
+      this.newvalsvrimgurl = 'New Image Uploaded . Please go to platform to check';
+     } else {
+      this.oldvalsvrimgurl = newservicecurrentObj.imageUrl;
+      this.newvalsvrimgurl = 'No New Changes Made';
+     }
+  }
+
   private saveupgardenewservice(newservicecurrentObj: NewService) {
     this.newsvcservice.saveOrUpdateNewService(
       newservicecurrentObj
@@ -308,6 +365,9 @@ export class NewserviceComponent implements OnInit {
         this.serviceHistory.userId = this.userService.currentUserValue.userId;
         this.serviceHistory.managerId = this.userService.currentUserValue.usermanagerdetailsentity.managerid;
         this.serviceHistory.status = config.newservice_code_senttocssm;
+        this.serviceHistory.comment = ConfigMsg.upgradeservice_txt_cssm_comment;
+        this.serviceHistory.islocked = true;
+        this.serviceHistory.previousdecisionby = this.userService.currentUserValue.fullname;
         this.userService.getUserByUserId(this.serviceHistory.managerId).pipe(first()).subscribe(
           (respuser: any) => {
             this.serviceHistory.decisionBy = respuser.fullname;
@@ -316,9 +376,44 @@ export class NewserviceComponent implements OnInit {
               this.serviceHistory
             ).pipe(first()).subscribe(
               (newservicehis: any) => {
-                this.router.navigate(['/dashboard']);
-                this.spinnerService.hide();
-                this.alertService.success(' Sent for review to your manager ' + this.serviceHistory.decisionBy);
+                this.referService.getLookupTemplateEntityByShortkey(config.shortkey_email_newservice_upgrade_senttocssm).subscribe(
+                  referencetemplate => {
+                    this.templateObj = this.reflookuptemplateAdapter.adapt(referencetemplate);
+                    this.util = new Util();
+                    this.util.preferlang = respuser.preferlang;
+                    this.util.fromuser = this.userService.currentUserValue.username;
+                    this.util.subject = ConfigMsg.email_existingserviceverification_subj + newserviceObj.name +
+                      ' - ' + ConfigMsg.newservice_txt_cssm_msg;
+                    this.util.touser = respuser.username;
+                    this.util.templateurl = this.templateObj.url;
+                    this.util.templatedynamicdata = JSON.stringify({
+                      servicepackname: newserviceObj.name,
+                      firstname: respuser.firstname,
+                      createdby: newserviceObj.createdBy,
+                      oldvalsvrfeatures: this.oldvalsvrfeatures,
+                      newvalsvrfeatures: this.newvalsvrfeatures,
+                      oldvalsvrdesc: this.oldvalsvrdesc,
+                      newvalsvrdesc: this.newvalsvrdesc,
+                      oldvalsvrterm: this.oldvalsvrterm,
+                      newvalsvrterm: this.newvalsvrterm,
+                      oldvalsvrprice: this.oldvalsvrprice,
+                      newvalsvrprice: this.newvalsvrprice,
+                      oldvalsvrimgurl: this.oldvalsvrimgurl,
+                      newvalsvrimgurl: this.newvalsvrimgurl,
+                    });
+                    this.sendemailService.sendEmail(this.util).subscribe(
+                      (util: any) => {
+                        if (util.lastreturncode === 250) {
+                          this.router.navigate(['/dashboard']);
+                          this.spinnerService.hide();
+                          this.alertService.success(' Sent for review to your manager ' + this.serviceHistory.decisionBy);
+               
+                        }
+                },
+                error => {
+                  this.spinnerService.hide();
+                  this.alertService.error(error);
+                });
               },
             );
           },
@@ -332,7 +427,12 @@ export class NewserviceComponent implements OnInit {
         this.spinnerService.hide();
         this.alertService.error(error);
       });
-  }
+  },
+  error => {
+    this.spinnerService.hide();
+    this.alertService.error(error);
+  });
+}
 
   getCategoryByRefId(value: string) {
     this.referencedetailsmap = [];

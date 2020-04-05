@@ -79,10 +79,10 @@ export class ProcessnewserviceComponent implements OnInit {
     }
     this.spinnerService.show();
     this.newserviceobj.currentstatus = this.newserviceverificationForm.get('status').value;
-    this.newserviceobj.serviceHistory[0].comment = this.newserviceverificationForm.get('comment').value;
     this.newserviceobj.serviceHistory[0].islocked = false;
     if (this.newserviceobj.currentstatus === 'APPROVED' ||
       this.newserviceobj.currentstatus === 'REJECTED') {
+      console.log('this.newserviceobj.currentstatus ', this.newserviceobj.currentstatus);
       if (this.newserviceobj.currentstatus === 'APPROVED') {
         this.newserviceobj.active = true;
         this.message = 'Approved';
@@ -93,61 +93,6 @@ export class ProcessnewserviceComponent implements OnInit {
         this.shortkey = config.shortkey_email_newservice_senttocssmreject;
       }
       this.newserviceobj.isupgrade = false;
-      this.newserviceobj.serviceHistory[0].status = this.newserviceobj.currentstatus;
-      this.newsvcservice.saveOrUpdateNewService(
-        this.newserviceobj
-      ).pipe(first()).subscribe(
-        (newserviceObj: NewService) => {
-          this.userService.getUserByUserId(this.newserviceobj.serviceHistory[0].userId).pipe(first()).subscribe(
-            (respuser: any) => {
-          this.referService.getLookupTemplateEntityByShortkey(this.shortkey ).subscribe(
-            referencetemplate => {
-              this.templateObj = this.reflookuptemplateAdapter.adapt(referencetemplate);
-              this.util = new Util();
-              this.util.preferlang = respuser.preferlang;
-              this.util.fromuser = this.userService.currentUserValue.username;
-              this.util.subject = ConfigMsg.email_newserviceverification_subj + newserviceObj.name +
-                ' is ' +  this.message;
-              this.util.touser = respuser.username;
-              this.util.templateurl = this.templateObj.url;
-              this.util.templatedynamicdata = JSON.stringify({
-                servicepackname: newserviceObj.name,
-                firstname: respuser.firstname,
-                decisionby: this.userService.currentUserValue.fullname,
-              });
-              this.sendemailService.sendEmail(this.util).subscribe(
-                (util: any) => {
-                  if (util.lastreturncode === 250) {
-                    this.router.navigate(['/dashboard']);
-                    this.modalRef.hide();
-                    this.alertService.success('Changes done succcesfully with status ' + this.message);
-                    this.spinnerService.hide();
-                  }
-          },
-          error => {
-            this.spinnerService.hide();
-            this.alertService.error(error);
-            this.modalRef.hide();
-          });
-            },
-        error => {
-          this.spinnerService.hide();
-          this.alertService.error(error);
-          this.modalRef.hide();
-        });
-      },
-       error => {
-        this.spinnerService.hide();
-        this.alertService.error(error);
-        this.modalRef.hide();
-      });
-    },
-    error => {
-      this.spinnerService.hide();
-      this.alertService.error(error);
-      this.modalRef.hide();
-    });
-   } else {
       this.newserviceobj.serviceHistory[0].status = null;
       this.newsvcservice.saveOrUpdateNewService(
         this.newserviceobj
@@ -158,15 +103,93 @@ export class ProcessnewserviceComponent implements OnInit {
           this.serviceHistory.userId = this.userService.currentUserValue.userId;
           this.serviceHistory.managerId = this.userService.currentUserValue.usermanagerdetailsentity.managerid;
           this.serviceHistory.status = this.newserviceverificationForm.get('status').value;
+          this.serviceHistory.comment = this.newserviceverificationForm.get('comment').value;
+          this.serviceHistory.islocked = false;
+          this.userService.getUserByUserId(this.newserviceobj.serviceHistory[0].userId).pipe(first()).subscribe(
+                (respuser: any) => {
+                  this.serviceHistory.decisionBy =   this.userService.currentUserValue.fullname;
+                  this.serviceHistory.decisionbyemailid =  this.userService.currentUserValue.username;
+                  this.serviceHistory.previousdecisionby = respuser.fullname;
+                  this.newsvcservice.saveNewServiceHistory(
+                    this.serviceHistory
+                  ).pipe(first()).subscribe(
+                    (hist: any) => {
+                  console.log('After inserting' , hist);
+                  this.referService.getLookupTemplateEntityByShortkey(this.shortkey).subscribe(
+                    referencetemplate => {
+                      this.templateObj = this.reflookuptemplateAdapter.adapt(referencetemplate);
+                      this.util = new Util();
+                      this.util.preferlang = respuser.preferlang;
+                      this.util.fromuser = this.userService.currentUserValue.username;
+                      this.util.subject = ConfigMsg.email_newserviceverification_subj + newserviceObj.name +
+                        ' is ' + this.message;
+                      this.util.touser = respuser.username;
+                      this.util.templateurl = this.templateObj.url;
+                      this.util.templatedynamicdata = JSON.stringify({
+                        servicepackname: newserviceObj.name,
+                        firstname: respuser.firstname,
+                        decisionby: this.userService.currentUserValue.fullname,
+                      });
+                      this.sendemailService.sendEmail(this.util).subscribe(
+                        (util: any) => {
+                          if (util.lastreturncode === 250) {
+                            this.router.navigate(['/dashboard']);
+                            this.modalRef.hide();
+                            this.alertService.success('Changes done succcesfully with status ' + this.message);
+                            this.spinnerService.hide();
+                          }
+                        },
+                        error => {
+                          this.spinnerService.hide();
+                          this.alertService.error(error);
+                          this.modalRef.hide();
+                        });
+                    },
+                    error => {
+                      this.spinnerService.hide();
+                      this.alertService.error(error);
+                      this.modalRef.hide();
+                    });
+                },
+                error => {
+                  this.spinnerService.hide();
+                  this.alertService.error(error);
+                  this.modalRef.hide();
+                });
+            },
+            error => {
+              this.spinnerService.hide();
+              this.alertService.error(error);
+              this.modalRef.hide();
+            });
+        },
+        error => {
+          this.spinnerService.hide();
+          this.alertService.error(error);
+          this.modalRef.hide();
+        });
+    } else {
+      this.newserviceobj.serviceHistory[0].status = null;
+      this.newsvcservice.saveOrUpdateNewService(
+        this.newserviceobj
+      ).pipe(first()).subscribe(
+        (newserviceObj: NewService) => {
+          this.serviceHistory = new NewServiceHistory();
+          this.serviceHistory.ourserviceId = newserviceObj.ourserviceId;
+          this.serviceHistory.userId = this.userService.currentUserValue.userId;
+          this.serviceHistory.managerId = this.userService.currentUserValue.usermanagerdetailsentity.managerid;
+          this.serviceHistory.status = this.newserviceverificationForm.get('status').value;
+          this.serviceHistory.comment = this.newserviceverificationForm.get('comment').value;
           this.userService.getUserByUserId(this.newserviceobj.serviceHistory[0].userId).pipe(first()).subscribe(
             (respuser: any) => {
               this.serviceHistory.decisionBy = respuser.fullname;
               this.serviceHistory.decisionbyemailid = respuser.username;
               this.serviceHistory.islocked = true;
+              this.serviceHistory.previousdecisionby = this.userService.currentUserValue.fullname;
               this.newsvcservice.saveNewServiceHistory(
                 this.serviceHistory
               ).pipe(first()).subscribe(
-                (newservicehis: any) => {
+                () => {
                   if (this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_cscm) {
                     this.referService.getLookupTemplateEntityByShortkey(config.shortkey_email_newservice_senttocsst).subscribe(
                       referencetemplate => {
