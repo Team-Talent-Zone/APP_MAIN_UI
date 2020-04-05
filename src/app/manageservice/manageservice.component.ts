@@ -1,3 +1,4 @@
+import { AlertsService } from './../AppRestCall/alerts/alerts.service';
 import { NewServiceHistory } from './../appmodels/NewServiceHistory';
 import { ViewnewsevicedetailsComponent } from './../viewnewsevicedetails/viewnewsevicedetails.component';
 import { ProcessnewserviceComponent } from './../processnewservice/processnewservice.component';
@@ -34,6 +35,7 @@ export class ManageserviceComponent implements OnInit {
   constructor(
     private modalService: BsModalService,
     public newsvcservice: NewsvcService,
+    private alertService: AlertsService,
     private newserviceAdapter: NewServiceAdapter,
     public userService: UserService,
     public signupComponent: SignupComponent,
@@ -62,6 +64,7 @@ export class ManageserviceComponent implements OnInit {
   }
 
   getAllNewServiceDetails() {
+    this.spinnerService.show();
     this.newsvcservice.getAllNewServiceDetails().subscribe(
       (allNewServiceObjs: any) => {
         allNewServiceObjs.forEach((element: any) => {
@@ -96,6 +99,11 @@ export class ManageserviceComponent implements OnInit {
             });
           }
         });
+        this.spinnerService.hide();
+      },
+      error => {
+        this.spinnerService.hide();
+        this.alertService.error(error);
       });
   }
 

@@ -71,7 +71,7 @@
                                     <th>Valid Period</th>
                                     <th>Price</th>
                                     <th></th>
-                                    <th></th>
+                                    <th *ngIf="userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM'; "></th>
                                 </tr>
                             </thead>
                             <tbody *ngIf="myNewServiceForReview.length > 0; else elseNoNewService">
@@ -120,13 +120,13 @@
                                             </i>
                                         </a>
                                     </td>
-                                    <td *ngFor="let newserviceobj of mywork.serviceHistory">
-                                        <a *ngIf="newserviceobj.islocked && 
-                                        userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM'; "
-                                            routerLink='/editorviewnewservice/{{mywork.ourserviceId}}'>
-                                            <i class="fa fa-edit" title="Edit Service Now "></i>
-                                        </a>
-
+                                    <td *ngIf=" userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM'; ">
+                                    <div  *ngFor="let newserviceobj of mywork.serviceHistory"  >
+                                            <a *ngIf="newserviceobj.islocked"
+                                                routerLink='/editorviewnewservice/{{mywork.ourserviceId}}'>
+                                                <i class="fa fa-edit" title="Edit Service Now "></i>
+                                            </a>
+                                    </div>
                                     </td>
                             </tbody>
                             <ng-template #elseNoNewService>
@@ -205,7 +205,7 @@
                                     <th>Created By</th>
                                     <th>Decision Taken</th>
                                     <th>Status</th>
-                                    <th></th>
+                                    <th *ngIf="userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM'"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -250,8 +250,8 @@
                                                 style="color: rgb(26, 9, 255)"></i>
                                         </ng-template>
                                     </td>
-                                    <td>
-                                        <a *ngIf="newserviceobj.active && userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM'"
+                                    <td *ngIf="newserviceobj.active && userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM'">
+                                        <a 
                                             routerLink='/editorviewnewservice/{{newserviceobj.ourserviceId}}'>
                                             <i class="fa fa-edit" title="Upgrade Service Now "> </i>
                                         </a>

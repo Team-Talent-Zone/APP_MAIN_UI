@@ -1,14 +1,13 @@
+import { UserService } from './../AppRestCall/user/user.service';
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../AppRestCall/user/user.service';
 import { config } from '../appconstants/config';
-import { User } from '../appmodels/User';
 
 @Component({
-  selector: 'app-dashboardbyuserole',
-  templateUrl: './dashboardbyuserole.component.html',
-  styleUrls: ['./dashboardbyuserole.component.css']
+  selector: 'app-dashboardoffu',
+  templateUrl: './dashboardoffu.component.html',
+  styleUrls: ['./dashboardoffu.component.css']
 })
-export class DashboardbyuseroleComponent implements OnInit {
+export class DashboardoffuComponent implements OnInit {
 
   stage1Img: string = '//placehold.it/200/dddddd/fff?text=1';
   stage2Img: string = '//placehold.it/200/dddddd/fff?text=2';
@@ -20,7 +19,7 @@ export class DashboardbyuseroleComponent implements OnInit {
   usrObj: any;
 
   constructor(
-    public userService: UserService,
+    public userService: UserService
   ) { }
 
   ngOnInit() {
@@ -44,5 +43,6 @@ export class DashboardbyuseroleComponent implements OnInit {
           }
       });
   }
-}
+  }
+
 }

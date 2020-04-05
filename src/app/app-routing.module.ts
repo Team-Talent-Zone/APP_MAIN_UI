@@ -1,7 +1,7 @@
 import { ManageuserserviceComponent } from './manageuserservice/manageuserservice.component';
 import { NewserviceComponent } from './newservice/newservice.component';
 import { SignupadminComponent } from './signupadmin/signupadmin.component';
-import { DashboardbyuseroleComponent } from './dashboardbyuserole/dashboardbyuserole.component';
+import { DashboardmapbyuseroleComponent } from './dashboardmapbyuserole/dashboardmapbyuserole.component';
 import { EditprofileComponent } from './editprofile/editprofile.component';
 import { ManageuserComponent } from './manageuser/manageuser.component';
 import { AppComponent } from './app.component';
@@ -40,7 +40,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        component: DashboardbyuseroleComponent
+        component: DashboardmapbyuseroleComponent
       }
     ]
   },
@@ -51,7 +51,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        component: DashboardbyuseroleComponent
+        component: DashboardmapbyuseroleComponent
       }
     ]
   },

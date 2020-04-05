@@ -34,7 +34,7 @@ import { BasicAuthHtppInterceptorService } from './AppRestCall/authgaurd/basicau
 import { ManageuserComponent } from './manageuser/manageuser.component';
 import { EditprofileComponent } from './editprofile/editprofile.component';
 import { ViewaccountdetailsComponent } from './viewaccountdetails/viewaccountdetails.component';
-import { DashboardbyuseroleComponent } from './dashboardbyuserole/dashboardbyuserole.component';
+import { DashboardmapbyuseroleComponent } from './dashboardmapbyuserole/dashboardmapbyuserole.component';
 import { ProcessbgverificationComponent } from './processbgverification/processbgverification.component';
 import { SignupadminComponent } from './signupadmin/signupadmin.component';
 import { NewserviceComponent } from './newservice/newservice.component';
@@ -43,6 +43,9 @@ import { ManageuserserviceComponent } from './manageuserservice/manageuserservic
 import { ApiService } from './adapters/api.service';
 import { ProcessnewserviceComponent } from './processnewservice/processnewservice.component';
 import { ViewnewsevicedetailsComponent } from './viewnewsevicedetails/viewnewsevicedetails.component';
+import { DashboardofcbaComponent } from './dashboardofcba/dashboardofcba.component';
+import { DashboardoffuComponent } from './dashboardoffu/dashboardoffu.component';
+import { DashboardofadminComponent } from './dashboardofadmin/dashboardofadmin.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -66,14 +69,17 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ManageuserComponent,
     EditprofileComponent,
     ViewaccountdetailsComponent,
-    DashboardbyuseroleComponent,
+    DashboardmapbyuseroleComponent,
     ProcessbgverificationComponent,
     SignupadminComponent,
     NewserviceComponent,
     ManageserviceComponent,
     ManageuserserviceComponent,
     ProcessnewserviceComponent,
-    ViewnewsevicedetailsComponent
+    ViewnewsevicedetailsComponent,
+    DashboardofcbaComponent,
+    DashboardoffuComponent,
+    DashboardofadminComponent
     ],
   imports: [
     BrowserModule,

@@ -13,12 +13,6 @@
                     <a class="list-group-item list-group-item-action" data-toggle="list" href="#password" role="tab">
                         Change Password
                     </a>
-                    <a *ngIf="roleCode =='CORE_SERVICE_SUPPORT_TEAM' || roleCode =='CORE_SERVICE_SUPPORT_MANAGER'"
-                        class="list-group-item list-group-item-action" routerLink='/manageuser' role="tab">
-                        <i class="fa fa-users">
-                            &nbsp; Manage Users
-                        </i>
-                    </a>
                 </div>
             </div>
         </div>
@@ -88,9 +82,9 @@
                                             <span>
                                                 <i class="fa fa-address-book form-control-icon"></i>
                                             </span>
-                                            <input placeholder="Enter your address" autocorrect="off"
-                                                autocomplete="off" autocapitalize="off" spellcheck="off" type="text"
-                                                class="form-control" formControlName="fulladdress" #search
+                                            <input placeholder="Enter your address" autocorrect="off" autocomplete="off"
+                                                autocapitalize="off" spellcheck="off" type="text" class="form-control"
+                                                formControlName="fulladdress" #search
                                                 [ngClass]="{ 'is-invalid': issubmit && f.fulladdress.errors }">
                                             <div *ngIf="issubmit && f.fulladdress.errors" class="invalid-feedback">
                                                 <div *ngIf="f.fulladdress.errors.required">Address is required
@@ -115,7 +109,8 @@
                                                 <button type="button" class="btn btn-danger btn-sm btn-block"
                                                     (click)="fileInput.click()">Upload Profile Pic</button>
                                             </div>
-                                            <small>For best results, use an image at least 128px by 128px in .png,.jpg,.jpeg
+                                            <small>For best results, use an image at least 128px by 128px in
+                                                .png,.jpg,.jpeg
                                                 format</small>
                                         </div>
                                     </div>
@@ -226,111 +221,119 @@
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                <div class="col-md-8">
-                                    <div class="form-row">
-                                        <div class="form-group col-md-6">
-                                            <span>
-                                                <i class="fa fa-industry form-control-icon"></i>
-                                            </span>
-                                            <select disabled formControlName="category" class="form-control">
-                                                <option
-                                                    *ngFor="let referencelookupmap of signupComponent.referencedetailsmap"
-                                                    value="{{referencelookupmap.mapId}}">
-                                                    {{referencelookupmap.label}}</option>
-                                            </select>
+                                    <div class="col-md-8">
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <span>
+                                                    <i class="fa fa-industry form-control-icon"></i>
+                                                </span>
+                                                <select disabled formControlName="category" class="form-control">
+                                                    <option
+                                                        *ngFor="let referencelookupmap of signupComponent.referencedetailsmap"
+                                                        value="{{referencelookupmap.mapId}}">
+                                                        {{referencelookupmap.label}}</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <span>
+                                                    <i class="fa fa fa-certificate form-control-icon"></i>
+                                                </span>
+                                                <select class="form-control" formControlName="subCategory">
+                                                    <option
+                                                        *ngFor="let referencelookupmapcat of signupComponent.referencedetailsmapsubcat"
+                                                        value="{{referencelookupmapcat.code}}">
+                                                        {{referencelookupmapcat.label}}
+                                                    </option>
+                                                </select>
+                                            </div>
                                         </div>
-                                        <div class="form-group col-md-6">
+                                        <div class="form-group">
                                             <span>
-                                                <i class="fa fa fa-certificate form-control-icon"></i>
+                                                <i class="fa fa-bullhorn form-control-icon"></i>
                                             </span>
-                                            <select class="form-control" formControlName="subCategory">
-                                                <option
-                                                    *ngFor="let referencelookupmapcat of signupComponent.referencedetailsmapsubcat"
-                                                    value="{{referencelookupmapcat.code}}">
-                                                    {{referencelookupmapcat.label}}
-                                                </option>
-                                            </select>
+                                            <textarea class="form-control" placeholder="About You" formControlName="abt"
+                                                [ngClass]="{ 'is-invalid': issubmit && f.abt.errors }"></textarea>
+                                            <div *ngIf="issubmit && f.abt.errors" class="invalid-feedback">
+                                                <div *ngIf="f.abt.errors.required">About-You is required
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <span>
+                                                    <i class="fa fa-graduation-cap form-control-icon"></i>
+                                                </span>
+                                                <input type="text" placeholder="Total Experience*" class="form-control"
+                                                    formControlName="experienceInField"
+                                                    [ngClass]="{ 'is-invalid': issubmit && f.experienceInField.errors }">
+                                                <div *ngIf="issubmit && f.experienceInField.errors"
+                                                    class="invalid-feedback">
+                                                    <div *ngIf="f.experienceInField.errors.required">Experience is
+                                                        required
+                                                    </div>
+                                                    <div *ngIf="f.experienceInField.errors.maxlength">Experience cant
+                                                        exceed
+                                                        2
+                                                        digits</div>
+                                                    <div *ngIf="f.experienceInField.errors.pattern">Must be digit only
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <span>
+                                                    <i class="fa fa-inr form-control-icon"></i>
+                                                </span>
+                                                <input type="text" placeholder="Hourly Rate*" class="form-control"
+                                                    formControlName="hourlyRate"
+                                                    [ngClass]="{ 'is-invalid': issubmit && f.hourlyRate.errors }">
+                                                <div *ngIf="issubmit && f.hourlyRate.errors" class="invalid-feedback">
+                                                    <div *ngIf="f.hourlyRate.errors.required">Hourly Rate is required
+                                                    </div>
+                                                    <div *ngIf="f.hourlyRate.errors.maxlength">Hourly Rate cant exceed 5
+                                                        digits</div>
+                                                    <div *ngIf="f.hourlyRate.errors.pattern">Must be digit only</div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <span>
-                                            <i class="fa fa-bullhorn form-control-icon"></i>
-                                        </span>
-                                        <textarea class="form-control" placeholder="About You" formControlName="abt"
-                                            [ngClass]="{ 'is-invalid': issubmit && f.abt.errors }"></textarea>
-                                        <div *ngIf="issubmit && f.abt.errors" class="invalid-feedback">
-                                            <div *ngIf="f.abt.errors.required">About-You is required
+                                    <div class="col-md-4">
+                                        <div *ngIf="roleCode =='FREELANCER_USER'">
+
+                                            <div *ngIf="nationalIDURL == null">
+                                                <span style="font-size:13px;color:rgb(255, 30, 0)">Photo Id is required
+                                                </span>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-group col-md-6">
-                                            <span>
-                                                <i class="fa fa-graduation-cap form-control-icon"></i>
-                                            </span>
-                                            <input type="text" placeholder="Total Experience*" class="form-control"
-                                                formControlName="experienceInField"
-                                                [ngClass]="{ 'is-invalid': issubmit && f.experienceInField.errors }">
-                                            <div *ngIf="issubmit && f.experienceInField.errors"
-                                                class="invalid-feedback">
-                                                <div *ngIf="f.experienceInField.errors.required">Experience is required
+                                            <div class="avatar-upload">
+                                                <div class="avatar-edit">
+                                                    <input type='file' accept=".png,.jpg,.jpeg" #fileInput
+                                                        (change)="uploadFile($event , 'nationalid')" />
                                                 </div>
-                                                <div *ngIf="f.experienceInField.errors.maxlength">Experience cant exceed
-                                                    2
-                                                    digits</div>
-                                                <div *ngIf="f.experienceInField.errors.pattern">Must be digit only</div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <span>
-                                                <i class="fa fa-inr form-control-icon"></i>
-                                            </span>
-                                            <input type="text" placeholder="Hourly Rate*" class="form-control"
-                                                formControlName="hourlyRate"
-                                                [ngClass]="{ 'is-invalid': issubmit && f.hourlyRate.errors }">
-                                            <div *ngIf="issubmit && f.hourlyRate.errors" class="invalid-feedback">
-                                                <div *ngIf="f.hourlyRate.errors.required">Hourly Rate is required
+                                                <div class="avatar-square-preview" *ngIf="nationalIDURL != null">
+                                                    <div id="imagePreview"
+                                                        [style.backgroundImage]="'url('+ nationalIDURL +')'">
+                                                    </div>
                                                 </div>
-                                                <div *ngIf="f.hourlyRate.errors.maxlength">Hourly Rate cant exceed 5
-                                                    digits</div>
-                                                <div *ngIf="f.hourlyRate.errors.pattern">Must be digit only</div>
                                             </div>
+                                            <button type="button" class="btn btn-info btn-md"
+                                                (click)="fileInput.click()">
+                                                <span *ngIf="nationalIDURL != null ; else elseNoNationalID">Re-Upload
+                                                    Photo Id</span>
+                                                <ng-template #elseNoNationalID>
+                                                    Upload Photo Id
+                                                </ng-template>
+                                            </button>
                                         </div>
+                                        <small>For best results, use an image at least 128px by 128px in .png,.jpg,.jpeg
+                                            format</small>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <div *ngIf="roleCode =='FREELANCER_USER'">
-                                       
-                                        <div *ngIf="nationalIDURL == null">
-                                            <span style="font-size:13px;color:rgb(255, 30, 0)">Photo Id is required
-                                            </span>
-                                        </div>
-                                        <div class="avatar-upload">
-                                            <div class="avatar-edit">
-                                                <input type='file' accept=".png,.jpg,.jpeg" #fileInput
-                                                    (change)="uploadFile($event , 'nationalid')" />
-                                            </div>
-                                            <div class="avatar-square-preview" *ngIf="nationalIDURL != null">
-                                                <div id="imagePreview"
-                                                    [style.backgroundImage]="'url('+ nationalIDURL +')'">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <button type="button" class="btn btn-info btn-md" (click)="fileInput.click()">
-                                            <span *ngIf="nationalIDURL != null ; else elseNoNationalID">Re-Upload
-                                                 Photo Id</span>
-                                            <ng-template #elseNoNationalID>
-                                                Upload Photo Id
-                                            </ng-template>
-                                        </button>
-                                    </div>
-                                    <small>For best results, use an image at least 128px by 128px in .png,.jpg,.jpeg
-                                        format</small>
-                                </div>
-                                    </div>
                             </div>
                         </div>
                         <div class="modal-footer">
+                            <a class="btn btn-warning"
+                                *ngIf="roleCode =='CORE_SERVICE_SUPPORT_TEAM' || roleCode =='CORE_SERVICE_SUPPORT_MANAGER'"
+                                [routerLink]="['/manageuser']">Manage Users
+                            </a>
                             <button type="submit" class="btn btn-primary">Save Changes</button>
                         </div>
                     </form>

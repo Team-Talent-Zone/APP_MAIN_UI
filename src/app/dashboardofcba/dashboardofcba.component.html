@@ -1,0 +1,17 @@
+<div class="container">
+  <div class="card-deck">
+    <!--bootstrap card with 3 horizontal images-->
+    <div class="row" *ngFor="let svc of listOfAllApprovedNewServices">
+      <div class="card" style="width:200px">
+        <img class="card-img-top img-fluid"
+          src={{svc.imageUrl}}
+          alt="Card image" style="width:100%">
+        <div class="card-body">
+          <h4 class="card-title">{{svc.name}}</h4>
+          <p class="card-text">{{svc.fullContent}}</p>
+          <a href="#" class="btn btn-primary">Add</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
