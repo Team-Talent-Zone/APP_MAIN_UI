@@ -86,11 +86,10 @@ export class NewserviceComponent implements OnInit {
     this.newServiceValidationForm();
     if (this.id > 0) {
       this.populatenewservice(this.id);
-    } 
+    }
   }
 
   populatenewservice(ourserviceId: number) {
-    this.spinnerService.show();
     this.newsvcservice.getNewServiceDetailsByServiceId(ourserviceId).pipe(first()).subscribe(
       (newserviceobj: NewService) => {
         newserviceobj.serviceHistory.forEach(element => {

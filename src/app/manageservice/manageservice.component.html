@@ -1,23 +1,45 @@
-<div class="row mb-4">
+<div class="row mb-4  justify-content-between" >
     <div class="col-xl-2 col-sm-6 py-2">
         <div class="card bg-success text-white h-100">
             <div class="card-body bg-warning">
                 <div class="rotate">
                     <i class="fa fa-reorder fa-4x"></i>
                 </div>
-                <h6 class="text-uppercase">My Work</h6>
+                <h6 class="text-uppercase">My Task</h6>
                 <h1 class="display-4">{{myNewServiceForReview.length}}</h1>
             </div>
         </div>
     </div>
     <div class="col-xl-2 col-sm-6 py-2">
-        <div class="card text-white bg-info h-100">
+        <div class="card bg-info text-white  h-100">
             <div class="card-body bg-info">
                 <div class="rotate">
                     <i class="fa fa-briefcase  fa-4x"></i>
                 </div>
-                <h6 class="text-uppercase">New Services</h6>
+                <h6 class="text-uppercase">Under Progress</h6>
                 <h1 class="display-4">{{listOfAllNewServices.length}}</h1>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-2 col-sm-6 py-2">
+        <div class="card text-white bg-success h-100">
+            <div class="card-body bg-success">
+                <div class="rotate">
+                    <i class="fa fa-briefcase  fa-4x"></i>
+                </div>
+                <h6 class="text-uppercase">Active On Platform</h6>
+                <h1 class="display-4">{{listOfAllApprovedNewServices.length}}</h1>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-2 col-sm-6 py-2">
+        <div class="card text-white bg-danger h-100">
+            <div class="card-body bg-danger">
+                <div class="rotate">
+                    <i class="fa fa-briefcase  fa-4x"></i>
+                </div>
+                <h6 class="text-uppercase">InActive On Platform</h6>
+                <h1 class="display-4">{{listOfAllRejectedNewServices.length}}</h1>
             </div>
         </div>
     </div>
@@ -28,9 +50,13 @@
             <div class="col-md-12">
                 <ul id="tabs" class="nav nav-tabs">
                     <li class="nav-item"><a href="" data-target="#myworktab" data-toggle="tab"
-                            class="nav-link medium text-uppercase active">My New Service Work</a></li>
-                    <li class="nav-item"><a href="" data-target="#cbatab" data-toggle="tab"
-                            class="nav-link medium text-uppercase">All New Sevice Details</a></li>
+                            class="nav-link medium text-uppercase active">My Task</a></li>
+                    <li class="nav-item"><a href="" data-target="#underprogresstab" data-toggle="tab"
+                            class="nav-link medium text-uppercase">Under Progress </a></li>
+                    <li class="nav-item"><a href="" data-target="#approvedtab" data-toggle="tab"
+                            class="nav-link medium text-uppercase">Active On Platform</a></li>
+                    <li class="nav-item"><a href="" data-target="#rejectedtab" data-toggle="tab"
+                            class="nav-link medium text-uppercase">InActive On Platform</a></li>
                 </ul>
                 <br>
                 <div id="tabsContent" class="tab-content">
@@ -51,8 +77,9 @@
                             <tbody *ngIf="myNewServiceForReview.length > 0; else elseNoNewService">
                                 <tr *ngFor="let mywork of myNewServiceForReview">
                                     <td>
-                                        <a href="javascript: return false;" (click) = 'viewnewservicedetails(mywork.ourserviceId)'>
-                                         {{mywork.name}}
+                                        <a href="javascript: return false;"
+                                            (click)='viewnewservicedetails(mywork.ourserviceId)'>
+                                            {{mywork.name}}
                                         </a>
                                     </td>
                                     <td>
@@ -87,8 +114,7 @@
                                     </td>
                                     <td *ngFor="let newserviceobj of mywork.serviceHistory">
                                         <a *ngIf="newserviceobj.islocked" class="btn  btn-sm"
-                                            (click)='processnewserviceopenmodal(newserviceobj.ourserviceId)'
-                                            >
+                                            (click)='processnewserviceopenmodal(newserviceobj.ourserviceId)'>
                                             <i title="You can start working.." class="fa fa-lock"
                                                 style="color: rgb(37, 165, 37)">
                                             </i>
@@ -110,7 +136,7 @@
                             </ng-template>
                         </table>
                     </div>
-                    <div id="cbatab" class="tab-pane fade ">
+                    <div id="underprogresstab" class="tab-pane fade ">
                         <table id="example" class="table table-sm table-bordered">
                             <thead>
                                 <tr>
@@ -119,16 +145,75 @@
                                     <th>Category</th>
                                     <th>Created On</th>
                                     <th>Created By</th>
-                                    <th>Current Task</th>
+                                    <th>Decision Taken</th>
+                                    <th>Status</th>
+                                 </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let newserviceobj of listOfAllNewServices">
+                                    <td>
+                                        <a href="javascript: return false;"
+                                            (click)='viewnewservicedetails(newserviceobj.ourserviceId)'>
+                                            {{newserviceobj.name}}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <div *ngFor="let refdata of  signupComponent.reflookupdetails">
+                                            <div *ngIf="newserviceobj.domain == refdata.refId">
+                                                {{refdata.label}}
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div *ngFor="let referencelookupmap of  signupComponent.referencedetailsmap">
+                                            <div *ngIf="newserviceobj.category == referencelookupmap.code">
+                                                {{referencelookupmap.label}}
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>{{newserviceobj.createdOn}}</td>
+                                    <td>{{newserviceobj.createdBy}}</td>
+                                    <td *ngFor="let newservicehisobj of newserviceobj.serviceHistory">
+                                        {{newservicehisobj.decisionBy}}
+                                    </td>
+                                    <td *ngFor="let newservicehisobj of newserviceobj.serviceHistory">
+                                        <i class="fa fa-check" title="Approved by {{newservicehisobj.decisionBy}} "
+                                            *ngIf="newservicehisobj.status == 'APPROVED'; else elseRejected"
+                                            style="color: rgb(37, 165, 37)"></i>
+                                        <ng-template #elseRejected>
+                                            <i class="fa fa-ban" title="Rejected by {{newservicehisobj.decisionBy}} "
+                                                *ngIf="newservicehisobj.status == 'REJECTED'; else elseOther"
+                                                style="color: rgb(165, 37, 37)"></i>
+                                        </ng-template>
+                                        <ng-template #elseOther>
+                                            <i class="fa fa-spinner"
+                                                title="In-Progress with {{newservicehisobj.decisionBy}} "
+                                                style="color: rgb(26, 9, 255)"></i>
+                                        </ng-template>
+                                    </td>
+                                </tr>
+                        </table>
+                    </div>
+                    <div id="approvedtab" class="tab-pane fade ">
+                        <table id="example" class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Domain</th>
+                                    <th>Category</th>
+                                    <th>Created On</th>
+                                    <th>Created By</th>
+                                    <th>Decision Taken</th>
                                     <th>Status</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let newserviceobj of listOfAllNewServices">
+                                <tr *ngFor="let newserviceobj of listOfAllApprovedNewServices">
                                     <td>
-                                        <a href="javascript: return false;" (click) = 'viewnewservicedetails(newserviceobj.ourserviceId)'>
-                                        {{newserviceobj.name}}
+                                        <a href="javascript: return false;"
+                                            (click)='viewnewservicedetails(newserviceobj.ourserviceId)'>
+                                            {{newserviceobj.name}}
                                         </a>
                                     </td>
                                     <td>
@@ -171,6 +256,64 @@
                                             <i class="fa fa-edit" title="Upgrade Service Now "> </i>
                                         </a>
 
+                                    </td>
+                                </tr>
+                        </table>
+                    </div>
+                    <div id="rejectedtab" class="tab-pane fade ">
+                        <table id="example" class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Domain</th>
+                                    <th>Category</th>
+                                    <th>Created On</th>
+                                    <th>Created By</th>
+                                    <th>Decision Taken</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let newserviceobj of listOfAllRejectedNewServices">
+                                    <td>
+                                        <a href="javascript: return false;"
+                                            (click)='viewnewservicedetails(newserviceobj.ourserviceId)'>
+                                            {{newserviceobj.name}}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <div *ngFor="let refdata of  signupComponent.reflookupdetails">
+                                            <div *ngIf="newserviceobj.domain == refdata.refId">
+                                                {{refdata.label}}
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div *ngFor="let referencelookupmap of  signupComponent.referencedetailsmap">
+                                            <div *ngIf="newserviceobj.category == referencelookupmap.code">
+                                                {{referencelookupmap.label}}
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>{{newserviceobj.createdOn}}</td>
+                                    <td>{{newserviceobj.createdBy}}</td>
+                                    <td *ngFor="let newservicehisobj of newserviceobj.serviceHistory">
+                                        {{newservicehisobj.decisionBy}}
+                                    </td>
+                                    <td *ngFor="let newservicehisobj of newserviceobj.serviceHistory">
+                                        <i class="fa fa-check" title="Approved by {{newservicehisobj.decisionBy}} "
+                                            *ngIf="newservicehisobj.status == 'APPROVED'; else elseRejected"
+                                            style="color: rgb(37, 165, 37)"></i>
+                                        <ng-template #elseRejected>
+                                            <i class="fa fa-ban" title="Rejected by {{newservicehisobj.decisionBy}} "
+                                                *ngIf="newservicehisobj.status == 'REJECTED'; else elseOther"
+                                                style="color: rgb(165, 37, 37)"></i>
+                                        </ng-template>
+                                        <ng-template #elseOther>
+                                            <i class="fa fa-spinner"
+                                                title="In-Progress with {{newservicehisobj.decisionBy}} "
+                                                style="color: rgb(26, 9, 255)"></i>
+                                        </ng-template>
                                     </td>
                                 </tr>
                         </table>

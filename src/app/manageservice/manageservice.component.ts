@@ -23,6 +23,8 @@ import { NewService } from '../appmodels/NewService';
 export class ManageserviceComponent implements OnInit {
 
   listOfAllNewServices: any = [];
+  listOfAllApprovedNewServices: any = [];
+  listOfAllRejectedNewServices: any = [];
   myNewServiceForReview: any = [];
   myNewServiceForReviewAllCommentHistory: any = [];
   serviceterms: any;
@@ -72,10 +74,24 @@ export class ManageserviceComponent implements OnInit {
                 element.serviceHistory.push(elementHis);
                 this.myNewServiceForReview.push(this.newserviceAdapter.adapt(element));
               }
-              if (element.currentstatus === elementHis.status) {
+              if (element.currentstatus === elementHis.status &&
+                (element.currentstatus === 'SENT_TO_CSSM' || element.currentstatus === 'SENT_TO_CSST')
+                ) {
                 element.serviceHistory = [];
                 element.serviceHistory.push(elementHis);
                 this.listOfAllNewServices.push(this.newserviceAdapter.adapt(element));
+              }
+
+              if (element.currentstatus === elementHis.status && element.currentstatus === 'APPROVED') {
+                element.serviceHistory = [];
+                element.serviceHistory.push(elementHis);
+                this.listOfAllApprovedNewServices.push(this.newserviceAdapter.adapt(element));
+              }
+
+              if (element.currentstatus === elementHis.status && element.currentstatus === 'REJECTED') {
+                element.serviceHistory = [];
+                element.serviceHistory.push(elementHis);
+                this.listOfAllRejectedNewServices.push(this.newserviceAdapter.adapt(element));
               }
             });
           }
