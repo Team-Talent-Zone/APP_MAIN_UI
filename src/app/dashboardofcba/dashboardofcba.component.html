@@ -11,7 +11,7 @@
     data-parent="#accordion">
     <div class="card-body">
       <div class="card-deck">
-          <div class="col-sm-4 mb-3 mb-md-0" style="margin-bottom:5px !important" *ngFor="let svc of domainServiceProviderObj">
+          <div class="col-sm-4 mb-3 mb-md-0" style="margin-bottom:8px !important" *ngFor="let svc of domainServiceProviderObj">
             <div class="card text-center h-100">
               <div class="card-header">
                 <h4>{{svc.name}}</h4>
@@ -28,9 +28,9 @@
                 </div>
                 <div class="card-text">
                   <ul class="list-unstyled">
-                    <li class="mb-1">
-                      {{svc.fullContent}}
-                    </li>
+                       <li class="mb-1" *ngFor="let features of svc.fullContent" >
+                        {{features}} 
+                       </li>
                   </ul>
                 </div>
               </div>
@@ -56,7 +56,7 @@
     data-parent="#accordion">
     <div class="card-body">
       <div class="card-deck">
-          <div class="col-sm-4 mb-3 mb-md-0" style="margin-bottom:5px !important" *ngFor="let svc of domainRealEstateIndustry">
+          <div class="col-sm-4 mb-3 mb-md-0" style="margin-bottom:8px !important" *ngFor="let svc of domainRealEstateIndustry">
             <div class="card text-center h-100" >
               <div class="card-header"> 
                 <h4>{{svc.name}}</h4>
@@ -73,8 +73,8 @@
                 </div>
                 <div class="card-text">
                   <ul class="list-unstyled">
-                    <li class="mb-1">
-                      {{svc.fullContent}}
+                    <li class="mb-1" *ngFor="let features of svc.fullContent">
+                      {{features}}
                     </li>
                   </ul>
                 </div>

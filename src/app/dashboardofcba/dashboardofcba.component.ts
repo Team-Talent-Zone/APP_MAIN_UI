@@ -54,9 +54,11 @@ export class DashboardofcbaComponent implements OnInit {
         if (this.userService.currentUserValue.userId > 0) {
           this.listOfAllApprovedNewServices.forEach(element => {
             if (element.category === config.category_code_A_S.toString()) {
+              element.fullContent = element.fullContent.split(',');
               this.domainRealEstateIndustry.push(element);
             }
             if (element.category === config.category_code_FS_S.toString()) {
+              element.fullContent = element.fullContent.split(',');
               this.domainServiceProviderObj.push(element);
             }
           });
