@@ -19,7 +19,7 @@ export class DashboardofcbaComponent implements OnInit {
   listOfAllApprovedNewServices: any = [];
   domainRealEstateIndustry: any = [];
   domainServiceProviderObj: any = [];
-
+  show: string ='show';
   constructor(
     public userService: UserService,
     public newsvcservice: NewsvcService,
