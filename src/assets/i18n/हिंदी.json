@@ -32,7 +32,15 @@
     "LASTNAME": "उपनाम",
     "PREFERLANG": "पसंदीदा भाषा",
     "CATEGORY": "श्रेणी का चयन करें",
-    "SKILL": "अपने कौशल का चयन करें"
+    "SKILL": "अपने कौशल का चयन करें",
+    "GIVEVALIDEMAIL":"अपना मान्य ईमेल आईडी दर्ज करें।",
+    "SHOULDNOTBE40":"उपयोगकर्ता नाम कैंट 40 से अधिक है।",
+    "SIGNIN": "साइन इन करें",
+    "FORGOTYOURPASSWORD":"पासवर्ड भूल गए?" ,
+    "SENDPASSWORD":"पासवर्ड रीसेट",
+    "BACKTOLOGIN":"लॉगिन पर वापस जाएं?",
+    "PASSWORDISREQUIRED":"पासवर्ड की आवश्यकता है।",
+    "PASSWORDMUSTBE8CHAR":"पासवर्ड कम से कम 8 वर्णों का होना चाहिए।"
   },
   "CLIENTONBOARD": {
     "OURCUSTOMERS":"हमारे ग्राहक",

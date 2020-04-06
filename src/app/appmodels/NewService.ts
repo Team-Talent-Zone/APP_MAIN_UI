@@ -5,7 +5,8 @@ export class NewService  {
         public name: string,
         public domain: string,
         public category: string,
-        public isActive: boolean,
+        public active: boolean,
+        public currentstatus: string,
         public description: string,
         public fullContent: string,
         public imageUrl: string,
@@ -13,11 +14,11 @@ export class NewService  {
         public createdOn: string,
         public updatedOn: string,
         public updatedBy: string,
-        public isUpgrade: boolean,
+        public isupgrade: boolean,
         public validPeriod: string,
         public amount: number,
         public userId: number,
-        public serviceHistory: NewServiceHistory
+        public serviceHistory: NewServiceHistory[] = []
         ) {
         }
 }

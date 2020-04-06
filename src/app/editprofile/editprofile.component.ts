@@ -12,9 +12,9 @@ import { config } from 'src/app/appconstants/config';
 import {
   FormBuilder,
   FormGroup,
-  Validators} from '@angular/forms';
-import { ApiService , Maps } from '../adapters/api.service';
- 
+  Validators
+} from '@angular/forms';
+import { ApiService, Maps } from '../adapters/api.service';
 @Component({
   selector: 'app-editprofile',
   templateUrl: './editprofile.component.html',
@@ -30,14 +30,14 @@ export class EditprofileComponent implements OnInit {
   issubmit = false;
   /*########################## File Upload ########################*/
   el: ElementRef;
-  avatarURL: any ;
+  avatarURL: any;
   avatarReturnURL: any;
   nationalIDURL: any;
   nationalIDReturnURL: any;
   editprofileuserId: number;
   editprofileForm: FormGroup;
   usrObj: User;
-  langSelected = 'en';
+  langSelected = config.default_prefer_lang.toString();
   filename: string;
   typeavt: string;
   typenationalid: string;
@@ -59,34 +59,34 @@ export class EditprofileComponent implements OnInit {
   ) {
     route.params.subscribe(params => {
       this.id = params.id;
-     });
+    });
     apiService.api.then(maps => {
       this.initAutocomplete(maps);
     });
-   }
+  }
 
   ngOnInit() {
     this.roleCode = this.userService.currentUserValue.userroles.rolecode;
     this.openEditUser();
     this.editProfileFormValidations();
-    if (this.roleCode === config.user_rolecode_fu) {
-      if (this.userService.currentUserValue.preferlang === 'hi') {
-        this.langSelected = 'हिंदी';
+    if (this.roleCode === config.user_rolecode_fu.toString()) {
+      if (this.userService.currentUserValue.preferlang === config.lang_code_hi.toString()) {
+        this.langSelected = config.lang_hindi_word.toString();
       } else
-      if (this.userService.currentUserValue.preferlang === 'te') {
-        this.langSelected = 'తెలుగు';
-      }
+        if (this.userService.currentUserValue.preferlang === config.lang_code_te.toString()) {
+          this.langSelected = config.lang_telugu_word.toString();
+        }
       this.signupComponent.getAllCategories(this.langSelected);
     }
 
   }
   initAutocomplete(maps: Maps) {
-    let autocomplete =  new maps.places.Autocomplete(this.searchElementRef.nativeElement);
+    let autocomplete = new maps.places.Autocomplete(this.searchElementRef.nativeElement);
   }
 
   editProfileFormValidations() {
-        if (this.roleCode === config.user_rolecode_cbu) {
-        this.editprofileForm = this.formBuilder.group({
+    if (this.roleCode === config.user_rolecode_cba.toString()) {
+      this.editprofileForm = this.formBuilder.group({
         username: ['', [Validators.required]],
         firstname: ['', [Validators.required, Validators.maxLength(40)]],
         lastname: ['', [Validators.required, Validators.maxLength(40)]],
@@ -100,88 +100,88 @@ export class EditprofileComponent implements OnInit {
         designation: ['', [Validators.required, Validators.maxLength(40)]],
       });
     } else
-      if (this.roleCode === config.user_rolecode_fu) {
+      if (this.roleCode === config.user_rolecode_fu.toString()) {
         this.editprofileForm = this.formBuilder.group({
-        username: ['', [Validators.required]],
-        firstname: ['', [Validators.required, Validators.maxLength(40)]],
-        lastname: ['', [Validators.required, Validators.maxLength(40)]],
-        preferlang: ['', [Validators.required]],
-        fulladdress: ['', [Validators.required]],
-        subCategory: ['', [Validators.required]],
-        category: ['', [Validators.required]],
-        experienceInField: ['', [Validators.required  , Validators.maxLength(2) , Validators.pattern('^[0-9]*$')]],
-        abt: ['', [Validators.required]],
-        uploadValidPhotoidImgUrl: ['', [Validators.required]],
-        hourlyRate: ['', [Validators.required, Validators.maxLength(5),  Validators.pattern('^[0-9]*$')]],
-      });
-    }  else {
+          username: ['', [Validators.required]],
+          firstname: ['', [Validators.required, Validators.maxLength(40)]],
+          lastname: ['', [Validators.required, Validators.maxLength(40)]],
+          preferlang: ['', [Validators.required]],
+          fulladdress: ['', [Validators.required]],
+          subCategory: ['', [Validators.required]],
+          category: ['', [Validators.required]],
+          experienceInField: ['', [Validators.required, Validators.maxLength(2), Validators.pattern('^[0-9]*$')]],
+          abt: ['', [Validators.required]],
+          uploadValidPhotoidImgUrl: ['', [Validators.required]],
+          hourlyRate: ['', [Validators.required, Validators.maxLength(5), Validators.pattern('^[0-9]*$')]],
+        });
+      } else {
         this.editprofileForm = this.formBuilder.group({
-        username: ['', [Validators.required]],
-        firstname: ['', [Validators.required, Validators.maxLength(40)]],
-        lastname: ['', [Validators.required, Validators.maxLength(40)]],
-        preferlang: ['', [Validators.required]],
-        fulladdress: ['', [Validators.required]],
-             });
-    }
+          username: ['', [Validators.required]],
+          firstname: ['', [Validators.required, Validators.maxLength(40)]],
+          lastname: ['', [Validators.required, Validators.maxLength(40)]],
+          preferlang: ['', [Validators.required]],
+          fulladdress: ['', [Validators.required]],
+        });
+      }
   }
   get f() {
     return this.editprofileForm.controls;
   }
   openEditUser() {
     if (this.id > 0) {
-     this.spinnerService.show();
-     this.userService.getUserByUserId(this.id).pipe(first()).subscribe(
-       (respuser: any) => {
-        this.edituserobj = respuser;
-        this.userService.currentUserValue.avtarurl = this.edituserobj.avtarurl;
-        this.avatarURL = this.edituserobj.avtarurl;
-        this.editprofileuserId = this.edituserobj.userId;
-        this.spinnerService.hide();
-        this.editprofileForm.patchValue({username: this.edituserobj.username});
-        this.editprofileForm.patchValue({firstname: this.edituserobj.firstname});
-        this.editprofileForm.patchValue({lastname: this.edituserobj.lastname});
-        this.editprofileForm.patchValue({preferlang: this.edituserobj.preferlang});
-        this.editprofileForm.patchValue({fulladdress: this.edituserobj.userbizdetails.fulladdress});
-        if (this.roleCode === config.user_rolecode_cbu) {
-          this.editprofileForm.patchValue({bizname: this.edituserobj.userbizdetails.bizname});
-          this.editprofileForm.patchValue({biztype: this.edituserobj.userbizdetails.biztype});
-          this.editprofileForm.patchValue({bizwebsite: this.edituserobj.userbizdetails.bizwebsite});
-          this.editprofileForm.patchValue({abtbiz: this.edituserobj.userbizdetails.abtbiz});
-          this.editprofileForm.patchValue({purposeofsignup: this.edituserobj.userbizdetails.purposeofsignup});
-          this.editprofileForm.patchValue({designation: this.edituserobj.userbizdetails.designation});
-        }
-        if (this.roleCode === config.user_rolecode_fu) {
-          this.editprofileForm.patchValue({category: this.edituserobj.freeLanceDetails.category});
-          this.editprofileForm.patchValue({experienceInField: this.edituserobj.freeLanceDetails.experienceInField});
-          this.editprofileForm.patchValue({subCategory: this.edituserobj.freeLanceDetails.subCategory});
-          this.editprofileForm.patchValue({abt: this.edituserobj.freeLanceDetails.abt});
-          this.editprofileForm.patchValue({hourlyRate: this.edituserobj.freeLanceDetails.hourlyRate});
-          this.nationalIDURL = this.edituserobj.freeLanceDetails.uploadValidPhotoidImgUrl;
-          this.editprofileForm.patchValue({uploadValidPhotoidImgUrl: this.edituserobj.freeLanceDetails.uploadValidPhotoidImgUrl});
-            }
-         },
-       error => {
-        this.alertService.error(error);
-        this.spinnerService.hide();
-      });
-      }
+      this.spinnerService.show();
+      this.userService.getUserByUserId(this.id).pipe(first()).subscribe(
+        (respuser: any) => {
+          this.edituserobj = respuser;
+          this.userService.currentUserValue.avtarurl = this.edituserobj.avtarurl;
+          this.avatarURL = this.edituserobj.avtarurl;
+          this.editprofileuserId = this.edituserobj.userId;
+          this.spinnerService.hide();
+          this.editprofileForm.patchValue({ username: this.edituserobj.username });
+          this.editprofileForm.patchValue({ firstname: this.edituserobj.firstname });
+          this.editprofileForm.patchValue({ lastname: this.edituserobj.lastname });
+          this.editprofileForm.patchValue({ preferlang: this.edituserobj.preferlang });
+          this.editprofileForm.patchValue({ fulladdress: this.edituserobj.userbizdetails.fulladdress });
+          if (this.roleCode === config.user_rolecode_cba.toString()) {
+            this.editprofileForm.patchValue({ bizname: this.edituserobj.userbizdetails.bizname });
+            this.editprofileForm.patchValue({ biztype: this.edituserobj.userbizdetails.biztype });
+            this.editprofileForm.patchValue({ bizwebsite: this.edituserobj.userbizdetails.bizwebsite });
+            this.editprofileForm.patchValue({ abtbiz: this.edituserobj.userbizdetails.abtbiz });
+            this.editprofileForm.patchValue({ purposeofsignup: this.edituserobj.userbizdetails.purposeofsignup });
+            this.editprofileForm.patchValue({ designation: this.edituserobj.userbizdetails.designation });
+          }
+          if (this.roleCode === config.user_rolecode_fu.toString()) {
+            this.editprofileForm.patchValue({ category: this.edituserobj.freeLanceDetails.category });
+            this.editprofileForm.patchValue({ experienceInField: this.edituserobj.freeLanceDetails.experienceInField });
+            this.editprofileForm.patchValue({ subCategory: this.edituserobj.freeLanceDetails.subCategory });
+            this.editprofileForm.patchValue({ abt: this.edituserobj.freeLanceDetails.abt });
+            this.editprofileForm.patchValue({ hourlyRate: this.edituserobj.freeLanceDetails.hourlyRate });
+            this.nationalIDURL = this.edituserobj.freeLanceDetails.uploadValidPhotoidImgUrl;
+            this.editprofileForm.patchValue({ uploadValidPhotoidImgUrl: this.edituserobj.freeLanceDetails.uploadValidPhotoidImgUrl });
+          }
+        },
+        error => {
+          this.alertService.error(error);
+          this.spinnerService.hide();
+        });
+    }
   }
 
   saveorupdateeditprofile() {
-   if (this.roleCode === config.user_rolecode_fu) {
-        this.editprofileForm.patchValue({uploadValidPhotoidImgUrl: this.nationalIDURL});
+    if (this.roleCode === config.user_rolecode_fu.toString()) {
+      this.editprofileForm.patchValue({ uploadValidPhotoidImgUrl: this.nationalIDURL });
     }
-   this.issubmit = true;
-   if (this.editprofileForm.invalid) {
+    this.issubmit = true;
+    if (this.editprofileForm.invalid) {
       return;
     }
-   this.spinnerService.show();
-   this.edituserobj.username = this.editprofileForm.get('username').value;
-   this.edituserobj.firstname = this.editprofileForm.get('firstname').value;
-   this.edituserobj.lastname = this.editprofileForm.get('lastname').value;
-   this.edituserobj.preferlang = this.editprofileForm.get('preferlang').value;
-   this.edituserobj.userbizdetails.fulladdress = this.searchElementRef.nativeElement.value;
-   if (this.roleCode === config.user_rolecode_cbu) {
+    this.spinnerService.show();
+    this.edituserobj.username = this.editprofileForm.get('username').value;
+    this.edituserobj.firstname = this.editprofileForm.get('firstname').value;
+    this.edituserobj.lastname = this.editprofileForm.get('lastname').value;
+    this.edituserobj.preferlang = this.editprofileForm.get('preferlang').value;
+    this.edituserobj.userbizdetails.fulladdress = this.searchElementRef.nativeElement.value;
+    if (this.roleCode === config.user_rolecode_cba.toString()) {
       this.edituserobj.userbizdetails.bizname = this.editprofileForm.get('bizname').value;
       this.edituserobj.userbizdetails.biztype = this.editprofileForm.get('biztype').value;
       this.edituserobj.userbizdetails.bizwebsite = this.editprofileForm.get('bizwebsite').value;
@@ -189,7 +189,7 @@ export class EditprofileComponent implements OnInit {
       this.edituserobj.userbizdetails.purposeofsignup = this.editprofileForm.get('purposeofsignup').value;
       this.edituserobj.userbizdetails.designation = this.editprofileForm.get('designation').value;
     }
-   if (this.roleCode === config.user_rolecode_fu) {
+    if (this.roleCode === config.user_rolecode_fu.toString()) {
       this.edituserobj.freeLanceDetails.category = this.editprofileForm.get('category').value;
       this.edituserobj.freeLanceDetails.experienceInField = this.editprofileForm.get('experienceInField').value;
       this.edituserobj.freeLanceDetails.subCategory = this.editprofileForm.get('subCategory').value;
@@ -201,97 +201,102 @@ export class EditprofileComponent implements OnInit {
         this.edituserobj.userbizdetails.fulladdress != null) {
         this.edituserobj.freeLanceDetails.isprofilecompleted = true;
         this.edituserobj.freelancehistoryentity[0].bgstatus = config.bg_code_completedprofile;
+      }
+    }
+    if (this.typeavt === config.profiletype_avatar.toString() &&
+      this.typenationalid !== config.profiletype_nationalid.toString()) {
+      this.msgflag = true;
+    } else
+      if (this.typeavt !== config.profiletype_avatar.toString() &&
+        this.typenationalid === config.profiletype_nationalid.toString()) {
+        this.msgflag = true;
+      } else
+        if (this.typenationalid !== config.profiletype_nationalid.toString() && this.typeavt !== config.profiletype_avatar.toString()) {
+          this.msgflag = true;
         }
-    }
-   if (this.typeavt === 'avatar' && this.typenationalid !== 'nationalid') {
-      this.msgflag = true;
-    } else
-    if (this.typeavt !== 'avatar' && this.typenationalid === 'nationalid') {
-      this.msgflag = true;
-    } else
-    if (this.typenationalid !== 'nationalid' && this.typeavt !== 'avatar') {
-      this.msgflag = true;
-    }
-   if (this.typenationalid !== 'nationalid' && this.typeavt !== 'avatar') {
-      this.saveorupdateedituser(this.edituserobj , null );
+    if (this.typenationalid !== config.profiletype_nationalid.toString() && this.typeavt !== config.profiletype_avatar.toString()) {
+      this.saveorupdateedituser(this.edituserobj, null);
       if (this.msgflag) {
-        this.alertService.success( this.edituserobj.firstname + ' your account details is updated');
+        this.alertService.success(this.edituserobj.firstname + ' your account details is updated');
         this.msgflag = false;
         this.spinnerService.hide();
       }
     } else
-    if (this.typeavt === 'avatar') {
-        this.utilService.uploadAvatarsInS3( this.avatarURL , this.editprofileuserId , this.filename).subscribe(
-           (returnURL: string) => {
+      if (this.typeavt === config.profiletype_avatar.toString()) {
+        this.utilService.uploadAvatarsInS3(this.avatarURL, this.editprofileuserId, this.filename).subscribe(
+          (returnURL: string) => {
             this.edituserobj.avtarurl = returnURL;
-            this.saveorupdateedituser(this.edituserobj , this.typeavt);
+            this.saveorupdateedituser(this.edituserobj, this.typeavt);
             if (this.msgflag) {
-             this.alertService.success( this.edituserobj.firstname + ' your account details is updated with profile pic');
-             this.msgflag = false;
-             this.typeavt = null;
-             this.spinnerService.hide();
-            }
-          }
-        );
-    }
-   if (this.typenationalid === 'nationalid') {
-      this.utilService.uploadBgDocsInS3(this.nationalIDURL , this.editprofileuserId , this.filename).subscribe(
-        (returnURL: string) => {
-            if (this.typenationalid === 'nationalid' && this.typeavt === 'avatar') {
-              this.msgflagboth = true;
-            }
-            this.edituserobj.freeLanceDetails.uploadValidPhotoidImgUrl = returnURL;
-            this.saveorupdateedituser(this.edituserobj , this.typenationalid);
-            if (this.msgflag) {
-              this.alertService.success( this.edituserobj.firstname + ' your account details is updated with photo id');
+              this.alertService.success(this.edituserobj.firstname + ' your account details is updated with profile pic');
               this.msgflag = false;
-              this.typenationalid = null;
-              this.spinnerService.hide();
-
-             }
-            if (this.msgflagboth) {
-              this.alertService.success( this.edituserobj.firstname + ' your account details is updated');
-              this.msgflagboth = false;
-              this.typenationalid = null;
               this.typeavt = null;
               this.spinnerService.hide();
             }
           }
         );
+      }
+    if (this.typenationalid === config.profiletype_nationalid.toString()) {
+      this.utilService.uploadBgDocsInS3(this.nationalIDURL, this.editprofileuserId, this.filename).subscribe(
+        (returnURL: string) => {
+          if (this.typenationalid === config.profiletype_nationalid.toString()
+            && this.typeavt === config.profiletype_avatar.toString()) {
+            this.msgflagboth = true;
+          }
+          this.edituserobj.freeLanceDetails.uploadValidPhotoidImgUrl = returnURL;
+          this.saveorupdateedituser(this.edituserobj, this.typenationalid);
+          if (this.msgflag) {
+            this.alertService.success(this.edituserobj.firstname + ' your account details is updated with photo id');
+            this.msgflag = false;
+            this.typenationalid = null;
+            this.spinnerService.hide();
+
+          }
+          if (this.msgflagboth) {
+            this.alertService.success(this.edituserobj.firstname + ' your account details is updated');
+            this.msgflagboth = false;
+            this.typenationalid = null;
+            this.typeavt = null;
+            this.spinnerService.hide();
+          }
+        }
+      );
     }
   }
- 
-  private saveorupdateedituser(edituserobj: User , type: any) {
-     this.userService.saveorupdate(edituserobj).subscribe(
+
+  private saveorupdateedituser(edituserobj: User, type: any) {
+    this.userService.saveorupdate(edituserobj).subscribe(
       (userObj: any) => {
         this.usrObj = this.userAdapter.adapt(userObj);
         if (this.userService.currentUserValue.userId === this.usrObj.userId) {
           this.userService.currentUserValue.avtarurl = this.usrObj.avtarurl;
-          this.userService.currentUserValue.firstname = this.usrObj.firstname;
+          this.userService.currentUserValue.fullname = this.usrObj.fullname;
         }
         this.edituserobj = userObj;
-       },
+      },
       error => {
         this.spinnerService.hide();
         this.alertService.error(error);
       });
   }
 
-  uploadFile(event , type) {
+  uploadFile(event, type) {
     let reader = new FileReader(); // HTML5 FileReader API
     let file = event.target.files[0];
-    if ( file.type === 'image/png' || file.type === 'image/jpeg' || file.type === 'image/jpg') {
+    if (file.type === config.imgtype_png.toString() ||
+      file.type === config.imgtype_jpeg.toString() ||
+      file.type === config.imgtype_jpg.toString()) {
       if (event.target.files && event.target.files[0]) {
         reader.readAsDataURL(file);
 
         // When file uploads set it to file formcontrol
         reader.onload = () => {
           this.filename = file.name;
-          if (type === 'avatar') {
+          if (type === config.profiletype_avatar.toString()) {
             this.typeavt = type;
             this.avatarURL = reader.result;
           }
-          if (type === 'nationalid') {
+          if (type === config.profiletype_nationalid.toString()) {
             this.typenationalid = type;
             this.nationalIDURL = reader.result;
           }

@@ -1,14 +1,13 @@
+import { UserService } from './../AppRestCall/user/user.service';
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../AppRestCall/user/user.service';
 import { config } from '../appconstants/config';
-import { User } from '../appmodels/User';
 
 @Component({
-  selector: 'app-dashboardbyuserole',
-  templateUrl: './dashboardbyuserole.component.html',
-  styleUrls: ['./dashboardbyuserole.component.css']
+  selector: 'app-dashboardoffu',
+  templateUrl: './dashboardoffu.component.html',
+  styleUrls: ['./dashboardoffu.component.css']
 })
-export class DashboardbyuseroleComponent implements OnInit {
+export class DashboardoffuComponent implements OnInit {
 
   stage1Img: string = '//placehold.it/200/dddddd/fff?text=1';
   stage2Img: string = '//placehold.it/200/dddddd/fff?text=2';
@@ -20,12 +19,12 @@ export class DashboardbyuseroleComponent implements OnInit {
   usrObj: any;
 
   constructor(
-    public userService: UserService,
+    public userService: UserService
   ) { }
 
   ngOnInit() {
     this.usrObj = this.userService.currentUserValue;
-    if (this.usrObj.userroles.rolecode === config.user_rolecode_fu) {
+    if (this.usrObj.userroles.rolecode === config.user_rolecode_fu.toString()) {
       if (this.usrObj.freeLanceDetails.isprofilecompleted) {
         this.stage1Img = this.stageCompletedImg;
       }
@@ -36,13 +35,14 @@ export class DashboardbyuseroleComponent implements OnInit {
         this.stage3Img = this.stageCompletedImg;
         }
       this.usrObj.freelancehistoryentity.forEach(element => {
-        if (element.bgstatus === config.bg_code_approved) {
+        if (element.bgstatus === config.bg_code_approved.toString()) {
           this.stage4Img = this.stageBgStatusApprovedImg;
           } else
-        if (element.bgstatus === config.bg_code_rejected) {
+        if (element.bgstatus === config.bg_code_rejected.toString()) {
                   this.stage4Img = this.stageBgStatusRejectedImg;
           }
       });
   }
-}
+  }
+
 }

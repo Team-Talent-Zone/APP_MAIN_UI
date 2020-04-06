@@ -1,0 +1,73 @@
+<div class="modal-header">
+    <h3 class="modal-title">
+        New Service Verification Form of {{newserviceobj.name}}&nbsp;-&nbsp;{{newserviceobj.ourserviceId}}
+    </h3>
+    <button type="button" class="close" (click)="modalRef.hide()">&times;</button>
+</div>
+<div class="modal-body">
+    <div class="container">
+        <div class="row">
+            <div class="card">
+                <div class="card-header">
+                    Workflow Decision
+                </div>
+                <div class="card-body py-md-4">
+                    <form [formGroup]="newserviceverificationForm" (ngSubmit)="preparenewServiceverfiDetailstoSave()" >
+                        <div class="form-group"
+                            *ngIf="userService.currentUserValue.userroles.rolecode == 'CORE_SERVICE_SUPPORT_MANAGER'">
+                            <select #sel class="form-control" formControlName="status"
+                                [ngClass]="{ 'is-invalid': issubmit && f.status.errors }">
+                                <option value="">--Select Decision --</option>
+                                <option value="APPROVED"> Approved</option>
+                                <option value="REJECTED" *ngIf="!newserviceobj.isupgrade"> Rejected</option>
+                                <option value="SENT_TO_CSST">Sent Back to CSST</option>
+                            </select>
+                            <div *ngIf="issubmit && f.status.errors" class="invalid-feedback">
+                                <div *ngIf="f.status.errors.required">Decision is required
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Comment*</label>
+                            <textarea class="form-control" formControlName="comment"
+                                [ngClass]="{ 'is-invalid': issubmit && f.comment.errors }"></textarea>
+                            <div *ngIf="issubmit && f.comment.errors" class="invalid-feedback">
+                                <div *ngIf="f.comment.errors.required">Comment is required
+                                </div>
+                            </div>
+                        </div>
+                         <!-- Modal footer -->
+                         <div class="modal-footer">
+                            <button class="btn  btn-primary" type="submit">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="card" *ngIf="newservicedetailswithallCommentHistory[0].serviceHistory != null">
+                <div class="card-header">
+                    New Serivice Verification - Workflow Comment History
+                </div>
+                <div class="card-body">
+                    <div class="panel-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr >
+                                <th>Comment On</th>
+                                <th>Comment By </th>
+                                <th>Remarks</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let newservicehist of newservicedetailswithallCommentHistory[0].serviceHistory">
+                                <td style ="word-break:break-all;" *ngIf="newservicehist.comment !=null">{{newservicehist.decisionOn}}</td>
+                                <td *ngIf="newservicehist.comment !=null">{{newservicehist.previousdecisionby}}</td>
+                                <td *ngIf="newservicehist.comment !=null">{{newservicehist.comment}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

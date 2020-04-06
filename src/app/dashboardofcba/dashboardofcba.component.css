@@ -1,0 +1,25 @@
+.display-4 {
+  font-size: 2rem;
+  font-weight:500;
+  line-height:0
+}
+.card-img{
+  height: 170px;
+}
+
+[data-toggle="collapse"]:after {
+  display: inline-block;
+      display: inline-block;
+      font: normal normal normal 14px/1 FontAwesome;
+      font-size: inherit;
+      text-rendering: auto;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    content: "\f054";
+    transform: rotate(90deg) ;
+    transition: all linear 0.25s;
+    float: right;
+    }   
+  [data-toggle="collapse"].collapsed:after {
+    transform: rotate(0deg) ;
+  }

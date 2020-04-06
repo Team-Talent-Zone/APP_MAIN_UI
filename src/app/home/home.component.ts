@@ -35,7 +35,7 @@ export class HomeComponent implements OnInit {
   util: Util;
   shortkeybyrolecode: string;
   usernotification: UserNotification;
-  today =  new Date();
+  today = new Date();
 
   constructor(
     private userService: UserService,
@@ -48,35 +48,34 @@ export class HomeComponent implements OnInit {
     private router: Router,
     private sendemailService: SendemailService,
     private reflookuptemplateAdapter: ReferenceLookUpTemplateAdapter,
-    ) {
-      route.params.subscribe(params => {
-         this.id = params.id;
-         this.name = params.name;
-         console.log('this.usrObj' , this.name);
-        });
-     }
+  ) {
+    route.params.subscribe(params => {
+      this.id = params.id;
+      this.name = params.name;
+    });
+  }
 
   ngOnInit() {
     this.checkConfirmation();
   }
 
   checkConfirmation() {
-     if (this.id > 0  && this.name === config.confirmation_shortpathname) {
+    if (this.id > 0 && this.name === config.confirmation_shortpathname.toString()) {
       this.spinnerService.show();
       this.userService.getUserByUserId(this.id).pipe(first()).subscribe(
         (resp) => {
           this.usrObj = this.userAdapter.adapt(resp);
-          if ( this.usrObj.userId > 0 && this.usrObj.isactive === false ) {
+          if (this.usrObj.userId > 0 && this.usrObj.isactive === false) {
             this.usrObj.updateby = this.usrObj.firstname;
             this.usrObj.isactive = true;
             this.userService.saveorupdate(this.usrObj).pipe(first()).subscribe(
               (userObj) => {
                 this.usrObj = this.userAdapter.adapt(userObj);
-                if ( this.usrObj.userId > 0 ) {
-                  if (this.usrObj.userroles.rolecode === config.user_rolecode_cbu) {
-                    this.shortkeybyrolecode = config.shortkey_email_welcometocba;
+                if (this.usrObj.userId > 0) {
+                  if (this.usrObj.userroles.rolecode === config.user_rolecode_cba.toString()) {
+                    this.shortkeybyrolecode = config.shortkey_email_welcometocba.toString();
                   } else {
-                    this.shortkeybyrolecode = config.shortkey_email_welcometofu;
+                    this.shortkeybyrolecode = config.shortkey_email_welcometofu.toString();
                   }
                   this.referService.getLookupTemplateEntityByShortkey(this.shortkeybyrolecode).subscribe(
                     referencetemplate => {
@@ -87,38 +86,41 @@ export class HomeComponent implements OnInit {
                       this.util.subject = ConfigMsg.email_welcomeemailaddress_subj;
                       this.util.touser = this.usrObj.username;
                       this.util.templateurl = this.templateObj.url;
-                      this.util.templatedynamicdata = JSON.stringify({ firstName: this.usrObj.firstname ,
-                                              platformURL: `${environment.uiUrl}`});
+                      this.util.templatedynamicdata = JSON.stringify({
+                        firstName: this.usrObj.firstname,
+                        platformURL: `${environment.uiUrl}`
+                      });
                       this.sendemailService.sendEmail(this.util).subscribe(
-                            (util: any) => {
-                              if (util.lastreturncode === 250) {
-                                this.usernotification = new UserNotification();
-                                this.usernotification.templateid = this.templateObj.templateid;
-                                this.usernotification.sentby = this.usrObj.firstname;
-                                this.usernotification.userid = this.usrObj.userId;
-                                this.usernotification.senton = this.today.toString();
-                                this.userService.saveUserNotification(this.usernotification).subscribe(
-                                  (notificationobj: any) => {
-                                    this.spinnerService.hide();
-                                    this.router.navigate(['/']);
-                                    this.alertService.success(ConfigMsg.email_verficationemailaddress_successmsg);
-                             },
-                                 error => {
-                                  this.spinnerService.hide();
-                                  this.alertService.error(error);
-                                });
-                                }
-                                   },
-              error => {
-                this.alertService.error(error);
-                this.spinnerService.hide();
-              });
+                        (util: any) => {
+                          if (util.lastreturncode === 250) {
+                            this.usernotification = new UserNotification();
+                            this.usernotification.templateid = this.templateObj.templateid;
+                            this.usernotification.sentby = this.usrObj.firstname;
+                            this.usernotification.userid = this.usrObj.userId;
+                            this.usernotification.senton = this.today.toString();
+                            this.userService.saveUserNotification(this.usernotification).subscribe(
+                              (notificationobj: any) => {
+                                this.spinnerService.hide();
+                                this.router.navigate(['/']);
+                                this.alertService.success(ConfigMsg.email_verficationemailaddress_successmsg);
+                              },
+                              error => {
+                                this.spinnerService.hide();
+                                this.alertService.error(error);
+                              });
+                          }
+                        },
+                        error => {
+                          this.alertService.error(error);
+                          this.spinnerService.hide();
+                        });
+                    },
+                    error => {
+                      this.spinnerService.hide();
+                      this.alertService.error(error);
+                    });
+                }
               },
-              error => {
-                this.spinnerService.hide();
-                this.alertService.error(error);
-              });
-              }},
               error => {
                 this.alertService.error(error);
                 this.spinnerService.hide();
@@ -132,7 +134,7 @@ export class HomeComponent implements OnInit {
           this.alertService.error(error);
           this.spinnerService.hide();
         });
-  }
+    }
   }
 
 }

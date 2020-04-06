@@ -1,12 +1,12 @@
-<div class="row placeholders mb-5 justify-content-between"
-    *ngIf="userService.currentUserValue.userroles.rolecode =='FREELANCER_USER'">
+<div class="row placeholders mb-5 justify-content-between">
     <div class="col-6 col-sm-2 placeholder text-center">
         <img src="{{stage1Img}}" class="mx-auto img-fluid rounded-circle">
-        <a class="btn bt" routerLink='/vieworeditprofile/{{userService.currentUserValue.userId}}' *ngIf="!userService.currentUserValue.freeLanceDetails.isprofilecompleted; else elseFU">
+        <a class="btn bt" routerLink='/vieworeditprofile/{{userService.currentUserValue.userId}}'
+            *ngIf="!userService.currentUserValue.freeLanceDetails.isprofilecompleted; else elseFU">
             <h6>Fill out In-Complete Profile</h6>
         </a>
         <ng-template #elseFU>
-            <h6>Profile is Completed</h6>
+            <h6>Profile Updated</h6>
         </ng-template>
     </div>
     <div class="stepConectorPiece"
@@ -30,5 +30,3 @@
         <h6>BG Verification Final Result</h6>
     </div>
 </div>
-This is Dashboard of {{userService.currentUserValue.username}} having role :
-{{userService.currentUserValue.userroles.rolecode}}

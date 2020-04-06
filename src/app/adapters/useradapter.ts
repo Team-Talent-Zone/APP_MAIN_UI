@@ -10,6 +10,7 @@ export class UserAdapter implements Adapter<User> {
             item.isactive,
             item.firstname,
             item.lastname,
+            item.fullname,
             item.isrecoverypwd,
             item.reasonofdeactivation,
             item.createdon,

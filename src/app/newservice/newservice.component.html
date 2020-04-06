@@ -3,97 +3,213 @@
         <div class="col-md-5 col-xl-2">
         </div>
         <div class="col-md-7 col-xl-9">
-            <form>
+            <form [formGroup]="newServiceForm" (ngSubmit)="saveorupdateNewService(id)">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title mb-0">New Service Request Form</h4>
+                        <div *ngIf="userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM'">
+                            <h4 class="card-title mb-0"
+                                *ngIf="id > 0 && newservicecurrentObj.currentstatus != 'APPROVED' ">Update Service
+                                Request Form</h4>
+                            <h4 class="card-title mb-0"
+                                *ngIf="id > 0 && newservicecurrentObj.currentstatus == 'APPROVED'">Upgrade Service
+                                Request Form</h4>
+                            <h4 class="card-title mb-0" *ngIf="id == null">New Service Request Form</h4>
+                        </div>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-8">
                                 <div class="form-row">
-                                    <div class="form-group col-md-12">
+                                    <div class="form-group col-md-12" *ngIf="id == null || newservicecurrentObj.currentstatus != 'APPROVED'  ; else elsereadonlyservicename">
+                                        <span>
+                                            <i class="fa fa-suitcase   form-control-icon"></i>
+                                        </span>
+                                        <input type="text" placeholder="Service Name*" formControlName="name"
+                                            class="form-control"
+                                            [ngClass]="{ 'is-invalid': issubmit && f.name.errors }">
+                                        <div *ngIf="issubmit && f.name.errors" class="invalid-feedback">
+                                            <div *ngIf="f.name.errors.required">Service Name is required
+                                            </div>
+                                            <div *ngIf="f.name.errors.maxlength">Service Name cant exceed 40
+                                                char</div>
+                                        </div>
+                                    </div>
+                                    <ng-template #elsereadonlyservicename>
+                                        <div class="form-group col-md-12">
+                                            <span>
+                                                <i class="fa fa-suitcase   form-control-icon"></i>
+                                            </span>
+                                            <input type="text" placeholder="Service Name*" class="form-control" readonly
+                                                formControlName="name">
+                                        </div>
+                                    </ng-template>
+
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6" *ngIf=" id == null || newservicecurrentObj.currentstatus != 'APPROVED' ; else elsereadonlydomain">
+                                        <span>
+                                            <i class="fa fa-crosshairs form-control-icon"></i>
+                                        </span>
+                                        <select #sel (change)="getCategoryByRefId(sel.value);" class="form-control"
+                                            formControlName="domain"
+                                            [ngClass]="{ 'is-invalid': issubmit && f.domain.errors }">
+                                            <option value="">Select Domain</option>
+                                            <option
+                                                *ngFor="let referencelookup of this.signupcomponent.reflookupdetails"
+                                                value="{{referencelookup.refId}}">
+                                                {{referencelookup.label}}</option>
+                                        </select>
+                                        <div *ngIf="issubmit && f.domain.errors" class="invalid-feedback">
+                                            <div *ngIf="f.domain.errors.required">Domain is required
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <ng-template #elsereadonlydomain>
+                                        <div class="form-group col-md-6">
+                                            <span>
+                                                <i class="fa fa-crosshairs form-control-icon"></i>
+                                            </span>
+                                            <select disabled class="form-control" formControlName="domain">
+                                                <option
+                                                    *ngFor="let referencelookup of this.signupcomponent.reflookupdetails"
+                                                    value="{{referencelookup.refId}}">
+                                                    {{referencelookup.label}}</option>
+                                            </select>
+                                        </div>
+                                    </ng-template>
+                                    <div class="form-group col-md-6" *ngIf="id == null || newservicecurrentObj.currentstatus != 'APPROVED' ; else elsereadonlycategory">
                                         <span>
                                             <i class="fa fa-industry form-control-icon"></i>
                                         </span>
-                                        <input type="text" placeholder="Service Name*" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group col-md-6">
-                                        <span>
-                                            <i class="fa fa-user form-control-icon"></i>
-                                        </span>
-                                        <select id="inputPreferedLang" class="form-control">
-                                            <option value="">Select Domain</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <span>
-                                            <i class="fa fa-user form-control-icon"></i>
-                                        </span>
-                                        <select id="inputPreferedLang" class="form-control">
+                                        <select class="form-control" formControlName="category"
+                                            [ngClass]="{ 'is-invalid': issubmit && f.category.errors }">
                                             <option value="">Select Category</option>
+                                            <option *ngFor="let referencelookupmap of this.referencedetailsmap"
+                                                value="{{referencelookupmap.code}}">
+                                                {{referencelookupmap.label}}</option>
                                         </select>
+                                        <div *ngIf="issubmit && f.category.errors" class="invalid-feedback">
+                                            <div *ngIf="f.category.errors.required">Category is required
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <ng-template #elsereadonlycategory>
+                                        <div class="form-group col-md-6" >
+                                            <span>
+                                                <i class="fa fa-industry form-control-icon"></i>
+                                            </span>
+                                            <select disabled class="form-control" formControlName="category">
+                                                <option *ngFor="let referencelookupmap of this.referencedetailsmap"
+                                                    value="{{referencelookupmap.code}}">
+                                                    {{referencelookupmap.label}}</option>
+                                            </select>
+                                        </div>
+                                    </ng-template>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <span>
+                                            <i class="fa fa-bullhorn   form-control-icon"></i>
+                                        </span>
+                                        <textarea placeholder="Service Features*" rows="4" cols="50"
+                                            class="form-control"
+                                            [ngClass]="{ 'is-invalid': issubmit && f.fullContent.errors }"
+                                            formControlName="fullContent"></textarea>
+                                        <div *ngIf="issubmit && f.fullContent.errors" class="invalid-feedback">
+                                            <div *ngIf="f.fullContent.errors.required">Features is required
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <span>
+                                            <i class="fa fa-bullhorn   form-control-icon"></i>
+                                        </span>
+                                        <textarea placeholder="Service Description*" rows="4" cols="50"
+                                            class="form-control"
+                                            [ngClass]="{ 'is-invalid': issubmit && f.description.errors }"
+                                            formControlName="description"></textarea>
+                                        <div *ngIf="issubmit && f.description.errors" class="invalid-feedback">
+                                            <div *ngIf="f.description.errors.required">Description is required
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <span>
-                                            <i class="fa fa-user form-control-icon"></i>
+                                            <i class="fa fa-calendar form-control-icon"></i>
                                         </span>
-                                        <textarea placeholder="Full Content*" rows="4" cols="50" class="form-control"></textarea>
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <span>
-                                            <i class="fa fa-user form-control-icon"></i>
-                                        </span>
-                                        <textarea placeholder="Description*" rows="4" cols="50" class="form-control"></textarea>
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group col-md-6">
-                                        <span>
-                                            <i class="fa fa-user form-control-icon"></i>
-                                        </span>
-                                        <select  class="form-control">
+                                        <select class="form-control" formControlName="validPeriod"
+                                            [ngClass]="{ 'is-invalid': issubmit && f.validPeriod.errors }">
                                             <option value="">Select Term</option>
+                                            <option *ngFor="let term of serviceterms" value="{{term.code}}">
+                                                {{term.label}}</option>
                                         </select>
+                                        <div *ngIf="issubmit && f.validPeriod.errors" class="invalid-feedback">
+                                            <div *ngIf="f.validPeriod.errors.required">Term is required
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="form-group col-md-6">
                                         <span>
                                             <i class="fa fa-rupee form-control-icon"></i>
                                         </span>
-                                        <input type="text" placeholder="Price*" class="form-control">
+                                        <input type="text" placeholder="Price" class="form-control"
+                                            formControlName="amount"
+                                            [ngClass]="{ 'is-invalid': issubmit && f.amount.errors }">
+                                        <div *ngIf="issubmit && f.amount.errors" class="invalid-feedback">
+                                            <div *ngIf="f.amount.errors.maxlength">Pricing cant exceed
+                                                10
+                                                digits</div>
+                                            <div *ngIf="f.amount.errors.pattern">Must be digit only</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="text-center">
                                     <div class="mt-2">
+                                        <div *ngIf="serviceImgURL == null">
+                                            <span style="font-size:13px;color:rgb(255, 30, 0)">Service Image is required
+                                            </span>
+                                        </div>
                                         <div class="avatar-upload">
                                             <div class="avatar-edit">
                                                 <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg"
-                                                    #fileInput  />
+                                                    #fileInput (change)="uploadFile($event)" />
                                             </div>
                                             <div class="avatar-preview">
-                                                <div id="imagePreview">
+                                                <div id="imagePreview"
+                                                    [style.backgroundImage]="'url('+ serviceImgURL +')'">
                                                 </div>
                                             </div>
                                         </div>
-                                        <button type="button" class="btn btn-info btn-md btn-block"
-                                            (click)="fileInput.click()">Upload Service Image</button>
+                                        <button type="button"
+                                            *ngIf="userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM'"
+                                            class="btn btn-info btn-md btn-block" (click)="fileInput.click()">Upload
+                                            Service Image</button>
                                     </div>
-                                    <small>For best results, use an image at least 128px by 128px in .png, .jpg, .jpeg
+                                    <small
+                                        *ngIf="userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM' ">
+                                        For best results, use an image at least 128px by 128px in .png, .jpg, .jpeg
                                         format</small>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <a class="btn btn-warning" *ngIf="id > 0" [routerLink]="['/manageservice']">Manage New
+                            Services</a>
+                        <div *ngIf="userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM'">
+                            <button type="submit" class="btn btn-primary"
+                                *ngIf="id > 0 && !newservicecurrentObj.isupgrade && 
+                                newservicecurrentObj.currentstatus != 'APPROVED' "> Update </button>
+                            <button type="submit" class="btn btn-primary"
+                                *ngIf="id > 0 && newservicecurrentObj.currentstatus == 'APPROVED'"> Upgrade Now
+                            </button>
+                            <button type="submit" class="btn btn-primary" *ngIf="id == null"> Submit </button>
+                        </div>
                     </div>
-
                 </div>
             </form>
         </div>

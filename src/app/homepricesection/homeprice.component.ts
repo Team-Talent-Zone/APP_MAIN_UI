@@ -10,19 +10,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomepriceComponent implements OnInit {
 
-  newsvcobject: NewService;
-
-  constructor(
-    private newsvcservice: NewsvcService,
-    private newsvcadapter: NewServiceAdapter) { }
+  constructor() { }
 
   ngOnInit() {
-  }
-
-  getAllNewServiceDetails() {
-    this.newsvcservice.getAllNewServiceDetails().subscribe((newsvcserviceRsp) => {
-      this.newsvcobject = this.newsvcadapter.adapt(newsvcserviceRsp);
-      console.log('this is list of new services' , this.newsvcobject);
-    });
   }
 }

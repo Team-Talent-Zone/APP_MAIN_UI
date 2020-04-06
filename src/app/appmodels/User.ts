@@ -12,6 +12,7 @@ export class User  {
         public isactive: boolean,
         public firstname: string,
         public lastname: string,
+        public fullname: string,
         public isrecoverypwd: string,
         public reasonofdeactivation: string,
         public createdon: string,
