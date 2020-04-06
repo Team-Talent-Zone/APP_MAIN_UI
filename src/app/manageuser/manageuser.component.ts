@@ -147,7 +147,27 @@ export class ManageuserComponent implements OnInit {
         this.spinnerService.hide();
         this.alertService.error(error);
       });
-  }
+}
+
+openViewAccountDetailsModalByUserId(userId: number) {
+  this.spinnerService.show();
+  this.userService.getUserByUserId(userId).pipe(first()).subscribe(
+    (respuser: any) => {
+      console.log('respuser' , respuser);
+      const initialState = {usrdetailsObj: respuser};
+      this.modalRef = this.modalService.show(ViewaccountdetailsComponent, Object.assign(
+        {},
+        this.config,
+        {
+          initialState
+        }
+        ));
+    },
+    error => {
+      this.spinnerService.hide();
+      this.alertService.error(error);
+    });
+}
   openViewAccountDetailsModal(userId: number) {
     this.usrObjTotalUsers.forEach((element: any) => {
       const initialState = { usrdetailsObj: element };

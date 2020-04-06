@@ -10,51 +10,52 @@
           <div class="row justify-content-center mt-3 mb-2">
             <div class="col-auto">
               <nav class="nav btn-group">
-                <a href="#monthly" class="btn btn-outline-primary  active " data-toggle="tab">{{ 'PRICE.INDIVIDUAL' | translate }}</a>
-                <a href="#annual" class="btn btn-outline-primary " data-toggle="tab">{{ 'PRICE.PACKAGE' | translate }}</a>
+                <a href="#monthly" class="btn btn-outline-primary  active "
+                  data-toggle="tab">{{ 'PRICE.INDIVIDUAL' | translate }}</a>
+                <a href="#annual" class="btn btn-outline-primary "
+                  data-toggle="tab">{{ 'PRICE.PACKAGE' | translate }}</a>
               </nav>
             </div>
           </div>
 
-          <div class="tab-content">
-            <div class="tab-pane fade show active" id="monthly">
-              <div class="row py-4">
-                <div class="col-sm-4 mb-3 mb-md-0">
 
-                </div>
-                <div class="col-sm-5 mb-3 mb-md-0">
-                  <div class="card text-center h-100">
-                    <div class="card-body d-flex flex-column">
-                      <div class="mb-4">
-                        <h4>{{ 'PRICE.APARTMENTSERVICE' | translate }}</h4>
-                        <span class="display-4">₹2999</span>
-                        <span>/mo</span>
-                      </div>
-                      <h6>{{ 'PRICE.INCLUDES' | translate }}</h6>
-                      <ul class="list-unstyled">
-                        <li class="mb-1">
-                          {{ 'PRICE.UNLIMITEDPAYMENTS' | translate }}
-                        </li>
-                        <li class="mb-2">
-                          {{ 'PRICE.UNLIMITEDCLASSIFIED' | translate }}
-                        </li>
-                        <li class="mb-2">
-                          {{ 'PRICE.UMLIMITEDFREELANCER' | translate }}
-                        </li>
-                        <li class="mb-2">
-                          {{ 'PRICE.FREECUSTOMERSUPPORT' | translate }}
-                        </li>
-                      </ul>
-                      <div class="mt-auto">
-                        <a href="#"  class="btn btn-lg btn-primary">{{ 'PRICE.SIGNUP' | translate }}</a>
-                      </div>
+          <div class="tab-content" >
+            <div class="tab-pane fade show active" id="monthly">
+              <div *ngFor="let filterserv of filternewservice">
+                <div *ngIf='filterserv.active'>
+                  <div class="row py-4">
+                    <div class="col-sm-4 mb-3 mb-md-0">
+
                     </div>
+                    <div class="col-sm-5 mb-3 mb-md-0">
+                      <div class="card text-center h-100">
+                        <div class="card-body d-flex flex-column">
+                          <div class="mb-4">
+                            <h4>{{ filterserv.name }}</h4>
+                            <span class="display-4">{{ filterserv.amount}}</span>
+                            <span>/monthly</span>
+                          </div>
+                          <h5>Includes</h5>
+                          <div class=" col-md-offset-2 col-md-9 ">{{ filterserv.fullContent}}</div>
+
+
+                        </div>
+                        <div class="mt-auto" class="btn btn-md btn-primary" >
+                          {{ 'PRICE.SIGNUP' | translate }}
+                        </div>
+                      </div>
+
+                    </div>
+
+                    <div class="col-sm-4 mb-3 mb-md-0">
+
+                    </div>
+
+
                   </div>
                 </div>
-                <div class="col-sm-4 mb-3 mb-md-0">
-
-                </div>
               </div>
+
             </div>
             <div class="tab-pane fade" id="annual">
               <div class="row py-4">
@@ -91,8 +92,6 @@
               </div>
             </div>
           </div>
-
-          <hr>
 
           <div class="text-center text-white my-4">
             <h2>{{ 'QUESTIONS.FREQUENTLYASKEDQUESTIONS' | translate }}</h2>

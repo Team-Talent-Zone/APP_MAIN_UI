@@ -110,6 +110,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     AuthgaurdService,
     SignupComponent,
     ApiService,
+    ManageuserComponent,
     ManageserviceComponent,
     {
       provide: HTTP_INTERCEPTORS,
