@@ -2,6 +2,8 @@ import { NewServiceAdapter } from './../adapters/newserviceadapter';
 import { NewsvcService } from './../AppRestCall/newsvc/newsvc.service';
 import { NewService } from './../appmodels/NewService';
 import { Component, OnInit } from '@angular/core';
+import { DashboardofcbaComponent } from '../dashboardofcba/dashboardofcba.component';
+
 
 @Component({
   selector: 'app-homeprice',
@@ -10,28 +12,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomepriceComponent implements OnInit {
 
-  filternewservice:any = [];
-  newsvcobject: NewService;
+  
   constructor(
     private newsvcservice: NewsvcService,
-    private newsvcadapter: NewServiceAdapter) { }
+    private newsvcadapter: NewServiceAdapter,
+    public  dashboardofcbaobj:DashboardofcbaComponent) { }
 
   ngOnInit() {
-    this.getAllNewServiceDetails();
-  }
-
-  getAllNewServiceDetails() {
-    this.newsvcservice.getAllNewServiceDetails().subscribe((newsvcserviceRsp: any) => {
-      newsvcserviceRsp.forEach((element: any) => {
-        if(element.active)
-        {
-          this.filternewservice.push(this.newsvcadapter.adapt(element));
-        }
-        
-      });
-      console.log('this is list of new filternewservice.....   ' , this.filternewservice);
-    });
-  }
+    this.dashboardofcbaobj.getListOfAllActivePlatformServices();
+}
 
   preparesignup(servierid: string) {
 
