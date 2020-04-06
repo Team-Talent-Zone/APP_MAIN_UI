@@ -14,12 +14,12 @@ import { ManageserviceComponent } from '../manageservice/manageservice.component
 })
 export class HomepriceComponent implements OnInit {
 
-  
   constructor(
     private newsvcservice: NewsvcService,
     private newsvcadapter: NewServiceAdapter,
-    public  dashboardofcbaobj:DashboardofcbaComponent,
-    public manageserviceComponent: ManageserviceComponent, ) { }
+    public  dashboardofcbaobj: DashboardofcbaComponent,
+    public  manageserviceComponent: ManageserviceComponent,
+    ) { }
 
   ngOnInit() {
     this.dashboardofcbaobj.getListOfAllActivePlatformServices();

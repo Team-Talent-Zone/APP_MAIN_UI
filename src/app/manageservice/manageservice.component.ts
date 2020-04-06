@@ -63,6 +63,7 @@ export class ManageserviceComponent implements OnInit {
         data => {
           this.serviceterms = data;
         });
+    this.spinnerService.hide();
   }
 
   getAllNewServiceDetails() {

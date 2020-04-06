@@ -1,3 +1,4 @@
+import { ReferenceService } from './../AppRestCall/reference/reference.service';
 import { ManageserviceComponent } from './../manageservice/manageservice.component';
 import { NewserviceComponent } from './../newservice/newservice.component';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
@@ -19,8 +20,9 @@ export class DashboardofcbaComponent implements OnInit {
   listOfAllApprovedNewServices: any = [];
   domainRealEstateIndustry: any = [];
   domainServiceProviderObj: any = [];
-  show: string ='show';
+  show: string = 'show';
   constructor(
+    private referService: ReferenceService,
     public userService: UserService,
     public newsvcservice: NewsvcService,
     private newserviceAdapter: NewServiceAdapter,
@@ -46,22 +48,25 @@ export class DashboardofcbaComponent implements OnInit {
               if (element.currentstatus === elementHis.status && element.currentstatus === config.newservice_code_approved.toString()) {
                 element.serviceHistory = [];
                 element.serviceHistory.push(elementHis);
+                element.fullContent = element.fullContent.split(',');
                 this.listOfAllApprovedNewServices.push(this.newserviceAdapter.adapt(element));
               }
             });
           }
         });
-        if (this.userService.currentUserValue.userId > 0) {
-          this.listOfAllApprovedNewServices.forEach(element => {
-            if (element.category === config.category_code_A_S.toString()) {
-              element.fullContent = element.fullContent.split(',');
-              this.domainRealEstateIndustry.push(element);
-            }
-            if (element.category === config.category_code_FS_S.toString()) {
-              element.fullContent = element.fullContent.split(',');
-              this.domainServiceProviderObj.push(element);
-            }
-          });
+        if (this.userService.currentUserValue != null) {
+          if (this.userService.currentUserValue.userId > 0) {
+            this.listOfAllApprovedNewServices.forEach(element => {
+              if (element.category === config.category_code_A_S.toString()) {
+                element.fullContent = element.fullContent.split(',');
+                this.domainRealEstateIndustry.push(element);
+              }
+              if (element.category === config.category_code_FS_S.toString()) {
+                element.fullContent = element.fullContent.split(',');
+                this.domainServiceProviderObj.push(element);
+              }
+            });
+          }
         }
         this.spinnerService.hide();
       },

@@ -46,6 +46,7 @@ export class SignupComponent implements OnInit {
   today = new Date();
   user: User;
   reflookupdetails: any;
+  langcode: string;
 
   constructor(
     private spinnerService: Ng4LoadingSpinnerService,
@@ -99,22 +100,27 @@ export class SignupComponent implements OnInit {
         this.reflookupdetails = data;
         for (const reflookup of data) {
           for (const reflookupmap of reflookup.referencelookupmapping) {
-            if (langSelected === config.lang_hindi_word.toString() || langSelected === config.lang_telugu_word.toString()) {
-              this.referService.translatetext(reflookupmap.label, langSelected).subscribe(
-                (resptranslatetxt: any) => {
-                  if (resptranslatetxt.translateresp != null) {
-                    reflookupmap.label = resptranslatetxt.translateresp;
-                  }
-                },
-                error => {
-                  this.alertService.error(error);
-                  this.spinnerService.hide();
-                });
+            if (langSelected === config.lang_hindi_word.toString()) {
+              this.langcode = config.lang_code_hi;
+            } else
+            if (langSelected === config.lang_telugu_word.toString()) {
+              this.langcode = config.lang_code_te;
+            } else {
+              this.langcode = config.default_prefer_lang;
             }
-            this.referencedetailsmap.push(reflookupmap);
+            this.referService.translatetext(reflookupmap.label, this.langcode).subscribe(
+              (resptranslatetxt: any) => {
+                if (resptranslatetxt.translateresp != null) {
+                  reflookupmap.label = resptranslatetxt.translateresp;
+                  this.referencedetailsmap.push(reflookupmap);
+                }
+              },
+              error => {
+                this.alertService.error(error);
+                this.spinnerService.hide();
+              });
             for (const reflookupmapsubcat of reflookupmap.referencelookupmappingsubcategories) {
-              if (langSelected === config.lang_hindi_word.toString() || langSelected === config.lang_telugu_word.toString()) {
-                this.referService.translatetext(reflookupmapsubcat.label, langSelected).subscribe(
+                this.referService.translatetext(reflookupmapsubcat.label, this.langcode).subscribe(
                   (resptranslatetxt: any) => {
                     if (resptranslatetxt.translateresp != null) {
                       reflookupmapsubcat.label = resptranslatetxt.translateresp;
@@ -124,8 +130,7 @@ export class SignupComponent implements OnInit {
                     this.alertService.error(error);
                     this.spinnerService.hide();
                   });
-              }
-              this.referencedetailsmapsubcat.push(reflookupmapsubcat);
+                this.referencedetailsmapsubcat.push(reflookupmapsubcat);
             }
           }
         }
