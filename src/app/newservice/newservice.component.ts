@@ -55,8 +55,6 @@ export class NewserviceComponent implements OnInit {
   oldvalsvrimgurl: string;
   newvalsvrimgurl: string;
 
-
-
   constructor(
     private spinnerService: Ng4LoadingSpinnerService,
     private alertService: AlertsService,
@@ -81,7 +79,7 @@ export class NewserviceComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.signupcomponent.getAllCategories('en');
+    this.signupcomponent.getAllCategories(config.default_prefer_lang);
     this.getServiceTerms();
     this.newServiceValidationForm();
     if (this.id > 0) {
@@ -157,12 +155,12 @@ export class NewserviceComponent implements OnInit {
         this.newservice.amount = this.newServiceForm.get('amount').value;
         this.newservice.createdBy = this.userService.currentUserValue.fullname;
         this.newservice.updatedBy = this.userService.currentUserValue.fullname;
-        this.newservice.currentstatus = config.newservice_code_senttocssm;
+        this.newservice.currentstatus = config.newservice_code_senttocssm.toString();
         this.newservice.serviceHistory = new Array<NewServiceHistory>();
         this.serviceHistory = new NewServiceHistory();
         this.serviceHistory.userId = this.userService.currentUserValue.userId;
         this.serviceHistory.managerId = this.userService.currentUserValue.usermanagerdetailsentity.managerid;
-        this.serviceHistory.status = config.newservice_code_senttocssm;
+        this.serviceHistory.status = config.newservice_code_senttocssm.toString();
         this.serviceHistory.comment = ConfigMsg.newservice_txt_cssm_comment;
         this.serviceHistory.islocked = true;
         this.serviceHistory.previousdecisionby = this.userService.currentUserValue.fullname;
@@ -181,38 +179,39 @@ export class NewserviceComponent implements OnInit {
                         this.newservice
                       ).pipe(first()).subscribe(
                         (newserviceObj: NewService) => {
-                          this.referService.getLookupTemplateEntityByShortkey(config.shortkey_email_newservice_senttocssm).subscribe(
-                            referencetemplate => {
-                              this.templateObj = this.reflookuptemplateAdapter.adapt(referencetemplate);
-                              this.util = new Util();
-                              this.util.preferlang = respuser.preferlang;
-                              this.util.fromuser = this.userService.currentUserValue.username;
-                              this.util.subject = ConfigMsg.email_newserviceverification_subj + newserviceObj.name +
-                                ' - ' + ConfigMsg.newservice_txt_cssm_msg;
-                              this.util.touser = respuser.username;
-                              this.util.templateurl = this.templateObj.url;
-                              this.util.templatedynamicdata = JSON.stringify({
-                                servicepackname: newserviceObj.name,
-                                firstname: respuser.firstname,
-                                createdby: newserviceObj.createdBy,
-                              });
-                              this.sendemailService.sendEmail(this.util).subscribe(
-                                (util: any) => {
-                                  if (util.lastreturncode === 250) {
-                                    this.newservice = this.newserviceAdapter.adapt(newserviceObj);
-                                    this.spinnerService.hide();
-                                    this.alertService.success(' Sent for review to your manager ' + this.serviceHistory.decisionBy);
-                                  }
-                                },
-                                error => {
-                                  this.spinnerService.hide();
-                                  this.alertService.error(error);
+                          this.referService.getLookupTemplateEntityByShortkey(config.shortkey_email_newservice_senttocssm.toString()).
+                            subscribe(
+                              referencetemplate => {
+                                this.templateObj = this.reflookuptemplateAdapter.adapt(referencetemplate);
+                                this.util = new Util();
+                                this.util.preferlang = respuser.preferlang;
+                                this.util.fromuser = this.userService.currentUserValue.username;
+                                this.util.subject = ConfigMsg.email_newserviceverification_subj + newserviceObj.name +
+                                  ' - ' + ConfigMsg.newservice_txt_cssm_msg;
+                                this.util.touser = respuser.username;
+                                this.util.templateurl = this.templateObj.url;
+                                this.util.templatedynamicdata = JSON.stringify({
+                                  servicepackname: newserviceObj.name,
+                                  firstname: respuser.firstname,
+                                  createdby: newserviceObj.createdBy,
                                 });
-                            },
-                            error => {
-                              this.spinnerService.hide();
-                              this.alertService.error(error);
-                            });
+                                this.sendemailService.sendEmail(this.util).subscribe(
+                                  (util: any) => {
+                                    if (util.lastreturncode === 250) {
+                                      this.newservice = this.newserviceAdapter.adapt(newserviceObj);
+                                      this.spinnerService.hide();
+                                      this.alertService.success(' Sent for review to your manager ' + this.serviceHistory.decisionBy);
+                                    }
+                                  },
+                                  error => {
+                                    this.spinnerService.hide();
+                                    this.alertService.error(error);
+                                  });
+                              },
+                              error => {
+                                this.spinnerService.hide();
+                                this.alertService.error(error);
+                              });
                         },
                         error => {
                           this.spinnerService.hide();
@@ -282,7 +281,7 @@ export class NewserviceComponent implements OnInit {
   }
 
   preparetoupgradenewservice(newservicecurrentObj: NewService, newserviceForm: NewService) {
-    this.upgradedwithnewvalues(newservicecurrentObj , newserviceForm);
+    this.upgradedwithnewvalues(newservicecurrentObj, newserviceForm);
     newservicecurrentObj.amount = newserviceForm.amount;
     newservicecurrentObj.category = newserviceForm.category;
     newservicecurrentObj.domain = newserviceForm.domain;
@@ -295,7 +294,7 @@ export class NewserviceComponent implements OnInit {
     newservicecurrentObj.active = false;
     newservicecurrentObj.createdBy = this.userService.currentUserValue.fullname;
     newservicecurrentObj.updatedBy = this.userService.currentUserValue.fullname;
-    newservicecurrentObj.currentstatus = config.newservice_code_senttocssm;
+    newservicecurrentObj.currentstatus = config.newservice_code_senttocssm.toString();
     newservicecurrentObj.serviceHistory[0].status = null;
     if (this.filename != null) {
       this.utilService.uploadAvatarsInS3(this.serviceImgURL, this.userService.currentUserValue.userId, this.filename).subscribe(
@@ -313,45 +312,45 @@ export class NewserviceComponent implements OnInit {
     }
   }
 
-  private  upgradedwithnewvalues(newservicecurrentObj: NewService, newserviceForm: NewService) {
-    if ( newserviceForm.amount !== newservicecurrentObj.amount ) {
+  private upgradedwithnewvalues(newservicecurrentObj: NewService, newserviceForm: NewService) {
+    if (newserviceForm.amount !== newservicecurrentObj.amount) {
       this.oldvalsvrprice = newservicecurrentObj.amount.toString();
       this.newvalsvrprice = newserviceForm.amount.toString();
-     } else {
+    } else {
       this.oldvalsvrprice = newservicecurrentObj.amount.toString();
       this.newvalsvrprice = 'No New Changes Made';
-     }
-    if ( newserviceForm.description !== newservicecurrentObj.description ) {
+    }
+    if (newserviceForm.description !== newservicecurrentObj.description) {
       this.oldvalsvrdesc = newservicecurrentObj.description;
       this.newvalsvrdesc = newserviceForm.description;
-     } else {
+    } else {
       this.oldvalsvrdesc = 'Due to huge old existing context.( We avoid display) .';
       this.newvalsvrdesc = 'No New Changes Made';
-     }
+    }
 
-    if ( newserviceForm.fullContent !== newservicecurrentObj.fullContent ) {
+    if (newserviceForm.fullContent !== newservicecurrentObj.fullContent) {
       this.oldvalsvrfeatures = newservicecurrentObj.fullContent;
       this.newvalsvrfeatures = newserviceForm.fullContent;
-     } else {
+    } else {
       this.oldvalsvrfeatures = 'Due to huge old existing context.( We avoid display) .';
       this.newvalsvrfeatures = 'No New Changes Made';
     }
 
-    if ( newserviceForm.validPeriod !== newservicecurrentObj.validPeriod ) {
+    if (newserviceForm.validPeriod !== newservicecurrentObj.validPeriod) {
       this.oldvalsvrterm = newservicecurrentObj.validPeriod;
       this.newvalsvrterm = newserviceForm.validPeriod;
-     } else {
+    } else {
       this.oldvalsvrterm = newservicecurrentObj.validPeriod;
       this.newvalsvrterm = 'No New Changes Made';
-     }
+    }
 
-    if ( this.serviceImgURL !== newservicecurrentObj.imageUrl ) {
+    if (this.serviceImgURL !== newservicecurrentObj.imageUrl) {
       this.oldvalsvrimgurl = newservicecurrentObj.imageUrl;
       this.newvalsvrimgurl = 'New Image Uploaded . Please go to platform to check';
-     } else {
+    } else {
       this.oldvalsvrimgurl = newservicecurrentObj.imageUrl;
       this.newvalsvrimgurl = 'No New Changes Made';
-     }
+    }
   }
 
   private saveupgardenewservice(newservicecurrentObj: NewService) {
@@ -363,7 +362,7 @@ export class NewserviceComponent implements OnInit {
         this.serviceHistory.ourserviceId = newserviceObj.ourserviceId;
         this.serviceHistory.userId = this.userService.currentUserValue.userId;
         this.serviceHistory.managerId = this.userService.currentUserValue.usermanagerdetailsentity.managerid;
-        this.serviceHistory.status = config.newservice_code_senttocssm;
+        this.serviceHistory.status = config.newservice_code_senttocssm.toString();
         this.serviceHistory.comment = ConfigMsg.upgradeservice_txt_cssm_comment;
         this.serviceHistory.islocked = true;
         this.serviceHistory.previousdecisionby = this.userService.currentUserValue.fullname;
@@ -375,63 +374,64 @@ export class NewserviceComponent implements OnInit {
               this.serviceHistory
             ).pipe(first()).subscribe(
               (newservicehis: any) => {
-                this.referService.getLookupTemplateEntityByShortkey(config.shortkey_email_newservice_upgrade_senttocssm).subscribe(
-                  referencetemplate => {
-                    this.templateObj = this.reflookuptemplateAdapter.adapt(referencetemplate);
-                    this.util = new Util();
-                    this.util.preferlang = respuser.preferlang;
-                    this.util.fromuser = this.userService.currentUserValue.username;
-                    this.util.subject = ConfigMsg.email_existingserviceverification_subj + newserviceObj.name +
-                      ' - ' + ConfigMsg.newservice_txt_cssm_msg;
-                    this.util.touser = respuser.username;
-                    this.util.templateurl = this.templateObj.url;
-                    this.util.templatedynamicdata = JSON.stringify({
-                      servicepackname: newserviceObj.name,
-                      firstname: respuser.firstname,
-                      createdby: newserviceObj.createdBy,
-                      oldvalsvrfeatures: this.oldvalsvrfeatures,
-                      newvalsvrfeatures: this.newvalsvrfeatures,
-                      oldvalsvrdesc: this.oldvalsvrdesc,
-                      newvalsvrdesc: this.newvalsvrdesc,
-                      oldvalsvrterm: this.oldvalsvrterm,
-                      newvalsvrterm: this.newvalsvrterm,
-                      oldvalsvrprice: this.oldvalsvrprice,
-                      newvalsvrprice: this.newvalsvrprice,
-                      oldvalsvrimgurl: this.oldvalsvrimgurl,
-                      newvalsvrimgurl: this.newvalsvrimgurl,
-                    });
-                    this.sendemailService.sendEmail(this.util).subscribe(
-                      (util: any) => {
-                        if (util.lastreturncode === 250) {
-                          this.router.navigate(['/dashboard']);
+                this.referService.getLookupTemplateEntityByShortkey(config.shortkey_email_newservice_upgrade_senttocssm.toString()).
+                  subscribe(
+                    referencetemplate => {
+                      this.templateObj = this.reflookuptemplateAdapter.adapt(referencetemplate);
+                      this.util = new Util();
+                      this.util.preferlang = respuser.preferlang;
+                      this.util.fromuser = this.userService.currentUserValue.username;
+                      this.util.subject = ConfigMsg.email_existingserviceverification_subj + newserviceObj.name +
+                        ' - ' + ConfigMsg.newservice_txt_cssm_msg;
+                      this.util.touser = respuser.username;
+                      this.util.templateurl = this.templateObj.url;
+                      this.util.templatedynamicdata = JSON.stringify({
+                        servicepackname: newserviceObj.name,
+                        firstname: respuser.firstname,
+                        createdby: newserviceObj.createdBy,
+                        oldvalsvrfeatures: this.oldvalsvrfeatures,
+                        newvalsvrfeatures: this.newvalsvrfeatures,
+                        oldvalsvrdesc: this.oldvalsvrdesc,
+                        newvalsvrdesc: this.newvalsvrdesc,
+                        oldvalsvrterm: this.oldvalsvrterm,
+                        newvalsvrterm: this.newvalsvrterm,
+                        oldvalsvrprice: this.oldvalsvrprice,
+                        newvalsvrprice: this.newvalsvrprice,
+                        oldvalsvrimgurl: this.oldvalsvrimgurl,
+                        newvalsvrimgurl: this.newvalsvrimgurl,
+                      });
+                      this.sendemailService.sendEmail(this.util).subscribe(
+                        (util: any) => {
+                          if (util.lastreturncode === 250) {
+                            this.router.navigate(['/dashboard']);
+                            this.spinnerService.hide();
+                            this.alertService.success(' Sent for review to your manager ' + this.serviceHistory.decisionBy);
+
+                          }
+                        },
+                        error => {
                           this.spinnerService.hide();
-                          this.alertService.success(' Sent for review to your manager ' + this.serviceHistory.decisionBy);
-               
-                        }
-                },
-                error => {
-                  this.spinnerService.hide();
-                  this.alertService.error(error);
-                });
+                          this.alertService.error(error);
+                        });
+                    },
+                  );
               },
+              error => {
+                this.spinnerService.hide();
+                this.alertService.error(error);
+              }
             );
           },
           error => {
             this.spinnerService.hide();
             this.alertService.error(error);
-          }
-        );
+          });
       },
       error => {
         this.spinnerService.hide();
         this.alertService.error(error);
       });
-  },
-  error => {
-    this.spinnerService.hide();
-    this.alertService.error(error);
-  });
-}
+  }
 
   getCategoryByRefId(value: string) {
     this.referencedetailsmap = [];
@@ -443,7 +443,7 @@ export class NewserviceComponent implements OnInit {
   }
   getServiceTerms() {
     this.spinnerService.show();
-    this.referService.getReferenceLookupByKey(config.key_service_term).
+    this.referService.getReferenceLookupByKey(config.key_service_term.toString()).
       pipe(map((data: any[]) => data.map(item => this.refAdapter.adapt(item))),
       ).subscribe(
         data => {
@@ -454,7 +454,8 @@ export class NewserviceComponent implements OnInit {
   uploadFile(event) {
     let reader = new FileReader(); // HTML5 FileReader API
     let file = event.target.files[0];
-    if (file.type === 'image/png' || file.type === 'image/jpeg' || file.type === 'image/jpg') {
+    if (file.type === config.imgtype_png.toString() || file.type === config.imgtype_jpeg.toString()
+      || file.type === config.imgtype_jpg.toString()) {
       if (event.target.files && event.target.files[0]) {
         reader.readAsDataURL(file);
         // When file uploads set it to file formcontrol

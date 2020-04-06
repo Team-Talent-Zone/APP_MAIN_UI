@@ -1,3 +1,17 @@
-img {
-  max-height: 30%;
-}
+
+[data-toggle="collapse"]:after {
+  display: inline-block;
+      display: inline-block;
+      font: normal normal normal 14px/1 FontAwesome;
+      font-size: inherit;
+      text-rendering: auto;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    content: "\f054";
+    transform: rotate(90deg) ;
+    transition: all linear 0.25s;
+    float: right;
+    }   
+  [data-toggle="collapse"].collapsed:after {
+    transform: rotate(0deg) ;
+  }

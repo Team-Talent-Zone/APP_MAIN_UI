@@ -1,4 +1,4 @@
-<div class="row mb-4  justify-content-between" >
+<div class="row mb-4  justify-content-between">
     <div class="col-xl-2 col-sm-6 py-2">
         <div class="card bg-success text-white h-100">
             <div class="card-body bg-warning">
@@ -17,7 +17,7 @@
                     <i class="fa fa-briefcase  fa-4x"></i>
                 </div>
                 <h6 class="text-uppercase">Under Progress</h6>
-                <h1 class="display-4">{{listOfAllNewServices.length}}</h1>
+                <h1 class="display-4">{{listOfAllPendingNewServices.length}}</h1>
             </div>
         </div>
     </div>
@@ -71,7 +71,9 @@
                                     <th>Valid Period</th>
                                     <th>Price</th>
                                     <th></th>
-                                    <th *ngIf="userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM'; "></th>
+                                    <th
+                                        *ngIf="userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM'; ">
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody *ngIf="myNewServiceForReview.length > 0; else elseNoNewService">
@@ -120,25 +122,26 @@
                                             </i>
                                         </a>
                                     </td>
-                                    <td *ngIf=" userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM'; ">
-                                    <div  *ngFor="let newserviceobj of mywork.serviceHistory"  >
+                                    <td
+                                        *ngIf=" userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM'; ">
+                                        <div *ngFor="let newserviceobj of mywork.serviceHistory">
                                             <a *ngIf="newserviceobj.islocked"
                                                 routerLink='/editorviewnewservice/{{mywork.ourserviceId}}'>
                                                 <i class="fa fa-edit" title="Edit Service Now "></i>
                                             </a>
-                                    </div>
+                                        </div>
                                     </td>
                             </tbody>
                             <ng-template #elseNoNewService>
                                 <tbody align="center">
-                                    No New Services to Verifiy
+                                    No New-Services Task for Review
                                 </tbody>
                             </ng-template>
                         </table>
                     </div>
                     <div id="underprogresstab" class="tab-pane fade ">
                         <table id="example" class="table table-sm table-bordered">
-                            <thead>
+                            <thead *ngIf="listOfAllPendingNewServices.length > 0;">
                                 <tr>
                                     <th>Name</th>
                                     <th>Domain</th>
@@ -147,10 +150,10 @@
                                     <th>Created By</th>
                                     <th>Decision Taken</th>
                                     <th>Status</th>
-                                 </tr>
+                                </tr>
                             </thead>
-                            <tbody>
-                                <tr *ngFor="let newserviceobj of listOfAllNewServices">
+                            <tbody *ngIf="listOfAllPendingNewServices.length > 0; else elseNoPendingNewService">
+                                <tr *ngFor="let newserviceobj of listOfAllPendingNewServices">
                                     <td>
                                         <a href="javascript: return false;"
                                             (click)='viewnewservicedetails(newserviceobj.ourserviceId)'>
@@ -192,11 +195,17 @@
                                         </ng-template>
                                     </td>
                                 </tr>
+                            </tbody>
+                            <ng-template #elseNoPendingNewService>
+                                <tbody align="center">
+                                    No New-Services Pending For Review
+                                </tbody>
+                            </ng-template>
                         </table>
                     </div>
                     <div id="approvedtab" class="tab-pane fade ">
                         <table id="example" class="table table-sm table-bordered">
-                            <thead>
+                            <thead *ngIf="listOfAllApprovedNewServices.length > 0">
                                 <tr>
                                     <th>Name</th>
                                     <th>Domain</th>
@@ -205,10 +214,12 @@
                                     <th>Created By</th>
                                     <th>Decision Taken</th>
                                     <th>Status</th>
-                                    <th *ngIf="userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM'"></th>
+                                    <th
+                                        *ngIf="userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM'">
+                                    </th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody *ngIf="listOfAllApprovedNewServices.length > 0; else elseNoApprovedNewService">
                                 <tr *ngFor="let newserviceobj of listOfAllApprovedNewServices">
                                     <td>
                                         <a href="javascript: return false;"
@@ -250,19 +261,25 @@
                                                 style="color: rgb(26, 9, 255)"></i>
                                         </ng-template>
                                     </td>
-                                    <td *ngIf="newserviceobj.active && userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM'">
-                                        <a 
-                                            routerLink='/editorviewnewservice/{{newserviceobj.ourserviceId}}'>
+                                    <td
+                                        *ngIf="newserviceobj.active && userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM'">
+                                        <a routerLink='/editorviewnewservice/{{newserviceobj.ourserviceId}}'>
                                             <i class="fa fa-edit" title="Upgrade Service Now "> </i>
                                         </a>
 
                                     </td>
                                 </tr>
+                            </tbody>
+                            <ng-template #elseNoApprovedNewService>
+                                <tbody align="center">
+                                    No New-Services got Approved
+                                </tbody>
+                            </ng-template>
                         </table>
                     </div>
                     <div id="rejectedtab" class="tab-pane fade ">
                         <table id="example" class="table table-sm table-bordered">
-                            <thead>
+                            <thead *ngIf="listOfAllRejectedNewServices.length > 0">
                                 <tr>
                                     <th>Name</th>
                                     <th>Domain</th>
@@ -273,7 +290,7 @@
                                     <th>Status</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody *ngIf="listOfAllRejectedNewServices.length > 0; else elseNoRejectedNewService">
                                 <tr *ngFor="let newserviceobj of listOfAllRejectedNewServices">
                                     <td>
                                         <a href="javascript: return false;"
@@ -316,6 +333,12 @@
                                         </ng-template>
                                     </td>
                                 </tr>
+                            </tbody>
+                            <ng-template #elseNoRejectedNewService>
+                                <tbody align="center">
+                                    No New Services got Rejected
+                                </tbody>
+                            </ng-template>
                         </table>
                     </div>
                 </div>

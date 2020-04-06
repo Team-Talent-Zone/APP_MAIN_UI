@@ -4,6 +4,7 @@ import { NewsvcService } from './../AppRestCall/newsvc/newsvc.service';
 import { NewServiceAdapter } from './../adapters/newserviceadapter';
 import { UserService } from './../AppRestCall/user/user.service';
 import { Component, OnInit } from '@angular/core';
+import { config } from 'src/app/appconstants/config';
 
 @Component({
   selector: 'app-dashboardofcba',
@@ -14,6 +15,9 @@ export class DashboardofcbaComponent implements OnInit {
 
   newServiceCommentHistory: any = [];
   listOfAllApprovedNewServices: any = [];
+  domainRealEstateIndustry: any = [];
+  domainServiceProviderObj: any = [];
+
   constructor(
     public userService: UserService,
     public newsvcservice: NewsvcService,
@@ -35,7 +39,7 @@ export class DashboardofcbaComponent implements OnInit {
           this.newServiceCommentHistory.push(this.newserviceAdapter.adapt(element));
           if (element.serviceHistory != null) {
             element.serviceHistory.forEach((elementHis: any) => {
-              if (element.currentstatus === elementHis.status && element.currentstatus === 'APPROVED') {
+              if (element.currentstatus === elementHis.status && element.currentstatus === config.newservice_code_approved.toString()) {
                 element.serviceHistory = [];
                 element.serviceHistory.push(elementHis);
                 this.listOfAllApprovedNewServices.push(this.newserviceAdapter.adapt(element));
@@ -43,8 +47,17 @@ export class DashboardofcbaComponent implements OnInit {
             });
           }
         });
+        if (this.userService.currentUserValue.userId > 0) {
+          this.listOfAllApprovedNewServices.forEach(element => {
+            if (element.category === config.category_code_A_S.toString()) {
+              this.domainRealEstateIndustry.push(element);
+            }
+            if (element.category === config.category_code_FS_S.toString()) {
+              this.domainServiceProviderObj.push(element);
+            }
+          });
+        }
         this.spinnerService.hide();
-        console.log('this.listOfAllApprovedNewServices' ,this.listOfAllApprovedNewServices);
       },
       error => {
         this.spinnerService.hide();

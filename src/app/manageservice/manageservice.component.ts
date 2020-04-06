@@ -26,6 +26,8 @@ export class ManageserviceComponent implements OnInit {
   listOfAllNewServices: any = [];
   listOfAllApprovedNewServices: any = [];
   listOfAllRejectedNewServices: any = [];
+  listOfAllPendingNewServices: any = [];
+
   myNewServiceForReview: any = [];
   myNewServiceForReviewAllCommentHistory: any = [];
   serviceterms: any;
@@ -49,13 +51,13 @@ export class ManageserviceComponent implements OnInit {
 
   ngOnInit() {
     this.getAllNewServiceDetails();
-    this.signupComponent.getAllCategories('en');
+    this.signupComponent.getAllCategories(config.default_prefer_lang.toString());
     this.getServiceTerms();
   }
 
   getServiceTerms() {
     this.spinnerService.show();
-    this.referService.getReferenceLookupByKey(config.key_service_term).
+    this.referService.getReferenceLookupByKey(config.key_service_term.toString()).
       pipe(map((data: any[]) => data.map(item => this.refAdapter.adapt(item))),
       ).subscribe(
         data => {
@@ -71,6 +73,12 @@ export class ManageserviceComponent implements OnInit {
           this.myNewServiceForReviewAllCommentHistory.push(this.newserviceAdapter.adapt(element));
           if (element.serviceHistory != null) {
             element.serviceHistory.forEach((elementHis: any) => {
+              if (element.currentstatus === elementHis.status) {
+                element.serviceHistory = [];
+                element.serviceHistory.push(elementHis);
+                this.listOfAllNewServices.push(this.newserviceAdapter.adapt(element));
+              }
+
               if (elementHis.decisionbyemailid === this.userService.currentUserValue.username &&
                 elementHis.islocked && element.currentstatus === elementHis.status) {
                 element.serviceHistory = [];
@@ -78,20 +86,20 @@ export class ManageserviceComponent implements OnInit {
                 this.myNewServiceForReview.push(this.newserviceAdapter.adapt(element));
               }
               if (element.currentstatus === elementHis.status &&
-                (element.currentstatus === 'SENT_TO_CSSM' || element.currentstatus === 'SENT_TO_CSST')
-                ) {
+                (element.currentstatus === config.newservice_code_senttocssm ||
+                  element.currentstatus === config.newservice_code_senttocsst)) {
                 element.serviceHistory = [];
                 element.serviceHistory.push(elementHis);
-                this.listOfAllNewServices.push(this.newserviceAdapter.adapt(element));
+                this.listOfAllPendingNewServices.push(this.newserviceAdapter.adapt(element));
               }
 
-              if (element.currentstatus === elementHis.status && element.currentstatus === 'APPROVED') {
+              if (element.currentstatus === elementHis.status && element.currentstatus === config.newservice_code_approved.toString()) {
                 element.serviceHistory = [];
                 element.serviceHistory.push(elementHis);
                 this.listOfAllApprovedNewServices.push(this.newserviceAdapter.adapt(element));
               }
 
-              if (element.currentstatus === elementHis.status && element.currentstatus === 'REJECTED') {
+              if (element.currentstatus === elementHis.status && element.currentstatus === config.newservice_code_rejected.toString()) {
                 element.serviceHistory = [];
                 element.serviceHistory.push(elementHis);
                 this.listOfAllRejectedNewServices.push(this.newserviceAdapter.adapt(element));
@@ -131,7 +139,7 @@ export class ManageserviceComponent implements OnInit {
         this.historyarray.push(element);
       }
     });
-    if (this.historyarray.length > 0 ) {
+    if (this.historyarray.length > 0) {
       this.myNewServiceForReview.forEach((elementObj: NewService) => {
         if (elementObj.ourserviceId === ourserviceId) {
           const initialState = {

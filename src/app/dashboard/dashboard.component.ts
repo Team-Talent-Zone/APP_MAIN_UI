@@ -14,9 +14,9 @@ import { AlertsService } from '../AppRestCall/alerts/alerts.service';
 })
 export class DashboardComponent implements OnInit {
 
-  usrObj: User;
   showmenufu: boolean;
   name: string;
+
   constructor(
     public userService: UserService,
     private router: Router,
@@ -34,19 +34,15 @@ export class DashboardComponent implements OnInit {
       this.userService.getUserByUserId(this.userService.currentUserValue.userId).subscribe(
       (userresp: any) => {
         this.userService.setCurrentUserValue(userresp);
-        this.usrObj = this.userService.currentUserValue;
         this.spinnerService.hide();
-        console.log('this.usrObj' , this.usrObj);
       },
       error => {
         this.alertService.error(error);
         this.spinnerService.hide();
       });
-    } else {
-       this.usrObj = this.userService.currentUserValue;
     }
 
-    if (this.usrObj.userroles.rolecode === config.user_rolecode_fu) {
+    if (this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_fu) {
       if (this.userService.currentUserValue.freelancehistoryentity[0].bgstatus ===
         config.bg_code_approved) {
       this.showmenufu = true;

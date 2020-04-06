@@ -70,8 +70,8 @@ export class ProcessnewserviceComponent implements OnInit {
   }
 
   preparenewServiceverfiDetailstoSave() {
-    if (this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_csct) {
-      this.newserviceverificationForm.patchValue({ status: config.newservice_code_senttocssm });
+    if (this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_csct.toString()) {
+      this.newserviceverificationForm.patchValue({ status: config.newservice_code_senttocssm.toString() });
     }
     this.issubmit = true;
     if (this.newserviceverificationForm.invalid) {
@@ -80,17 +80,16 @@ export class ProcessnewserviceComponent implements OnInit {
     this.spinnerService.show();
     this.newserviceobj.currentstatus = this.newserviceverificationForm.get('status').value;
     this.newserviceobj.serviceHistory[0].islocked = false;
-    if (this.newserviceobj.currentstatus === 'APPROVED' ||
-      this.newserviceobj.currentstatus === 'REJECTED') {
-      console.log('this.newserviceobj.currentstatus ', this.newserviceobj.currentstatus);
-      if (this.newserviceobj.currentstatus === 'APPROVED') {
+    if (this.newserviceobj.currentstatus === config.newservice_code_approved.toString() ||
+      this.newserviceobj.currentstatus === config.newservice_code_rejected.toString()) {
+      if (this.newserviceobj.currentstatus === config.newservice_code_approved.toString()) {
         this.newserviceobj.active = true;
         this.message = 'Approved';
-        this.shortkey = config.shortkey_email_newservice_senttocssmapproved;
+        this.shortkey = config.shortkey_email_newservice_senttocssmapproved.toString();
       } else {
         this.newserviceobj.active = false;
         this.message = 'Rejected';
-        this.shortkey = config.shortkey_email_newservice_senttocssmreject;
+        this.shortkey = config.shortkey_email_newservice_senttocssmreject.toString();
       }
       this.newserviceobj.isupgrade = false;
       this.newserviceobj.serviceHistory[0].status = null;
@@ -106,15 +105,14 @@ export class ProcessnewserviceComponent implements OnInit {
           this.serviceHistory.comment = this.newserviceverificationForm.get('comment').value;
           this.serviceHistory.islocked = false;
           this.userService.getUserByUserId(this.newserviceobj.serviceHistory[0].userId).pipe(first()).subscribe(
-                (respuser: any) => {
-                  this.serviceHistory.decisionBy =   this.userService.currentUserValue.fullname;
-                  this.serviceHistory.decisionbyemailid =  this.userService.currentUserValue.username;
-                  this.serviceHistory.previousdecisionby = respuser.fullname;
-                  this.newsvcservice.saveNewServiceHistory(
-                    this.serviceHistory
-                  ).pipe(first()).subscribe(
-                    (hist: any) => {
-                  console.log('After inserting' , hist);
+            (respuser: any) => {
+              this.serviceHistory.decisionBy = this.userService.currentUserValue.fullname;
+              this.serviceHistory.decisionbyemailid = this.userService.currentUserValue.username;
+              this.serviceHistory.previousdecisionby = respuser.fullname;
+              this.newsvcservice.saveNewServiceHistory(
+                this.serviceHistory
+              ).pipe(first()).subscribe(
+                (hist: any) => {
                   this.referService.getLookupTemplateEntityByShortkey(this.shortkey).subscribe(
                     referencetemplate => {
                       this.templateObj = this.reflookuptemplateAdapter.adapt(referencetemplate);
@@ -190,8 +188,8 @@ export class ProcessnewserviceComponent implements OnInit {
                 this.serviceHistory
               ).pipe(first()).subscribe(
                 () => {
-                  if (this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_cscm) {
-                    this.referService.getLookupTemplateEntityByShortkey(config.shortkey_email_newservice_senttocsst).subscribe(
+                  if (this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_cscm.toString()) {
+                    this.referService.getLookupTemplateEntityByShortkey(config.shortkey_email_newservice_senttocsst.toString()).subscribe(
                       referencetemplate => {
                         this.templateObj = this.reflookuptemplateAdapter.adapt(referencetemplate);
                         this.util = new Util();
@@ -224,7 +222,7 @@ export class ProcessnewserviceComponent implements OnInit {
                         this.modalRef.hide();
                       });
                   } else {
-                    this.referService.getLookupTemplateEntityByShortkey(config.shortkey_email_newservice_senttocssm).subscribe(
+                    this.referService.getLookupTemplateEntityByShortkey(config.shortkey_email_newservice_senttocssm.toString()).subscribe(
                       referencetemplate => {
                         this.templateObj = this.reflookuptemplateAdapter.adapt(referencetemplate);
                         this.util = new Util();

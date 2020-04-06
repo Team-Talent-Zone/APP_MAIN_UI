@@ -24,7 +24,7 @@ export class DashboardoffuComponent implements OnInit {
 
   ngOnInit() {
     this.usrObj = this.userService.currentUserValue;
-    if (this.usrObj.userroles.rolecode === config.user_rolecode_fu) {
+    if (this.usrObj.userroles.rolecode === config.user_rolecode_fu.toString()) {
       if (this.usrObj.freeLanceDetails.isprofilecompleted) {
         this.stage1Img = this.stageCompletedImg;
       }
@@ -35,10 +35,10 @@ export class DashboardoffuComponent implements OnInit {
         this.stage3Img = this.stageCompletedImg;
         }
       this.usrObj.freelancehistoryentity.forEach(element => {
-        if (element.bgstatus === config.bg_code_approved) {
+        if (element.bgstatus === config.bg_code_approved.toString()) {
           this.stage4Img = this.stageBgStatusApprovedImg;
           } else
-        if (element.bgstatus === config.bg_code_rejected) {
+        if (element.bgstatus === config.bg_code_rejected.toString()) {
                   this.stage4Img = this.stageBgStatusRejectedImg;
           }
       });
