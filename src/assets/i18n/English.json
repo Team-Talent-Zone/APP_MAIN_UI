@@ -119,6 +119,14 @@
       "YOURMESSAGE":"Your Message",
       "FULLNAME":"Full Name",
       "EMAIL1":"Email"
+    },
+    "DASHOARD_HEADER": {
+      "LOGOUT":"Logout",
+      "WELCOMEBACK":"Welcome Back"
+    },
+    "DASHOARD_CBA_MAIN_BODY": {
+      "SERVICEPROVIDER":"Service Provider",
+      "REALESTATEINDUSTRY":"Real Estate Industry"
     }
   }
   

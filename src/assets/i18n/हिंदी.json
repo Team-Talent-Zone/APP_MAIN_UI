@@ -117,5 +117,13 @@
     "YOURMESSAGE":"आपका सन्देश",
     "FULLNAME":"पूरा नाम",
     "EMAIL1":"ईमेल"
+  },
+  "DASHOARD_HEADER": {
+    "LOGOUT":"लॉग आउट",
+    "WELCOMEBACK":"वापसी पर स्वागत है"
+  },
+  "DASHOARD_CBA_MAIN_BODY": {
+    "SERVICEPROVIDER":"सेवा प्रदाता",
+    "REALESTATEINDUSTRY":"अचल संपत्ति उद्योग"
   }
 }
