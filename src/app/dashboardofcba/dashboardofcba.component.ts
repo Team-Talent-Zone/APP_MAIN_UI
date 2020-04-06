@@ -1,3 +1,5 @@
+import { ManageserviceComponent } from './../manageservice/manageservice.component';
+import { NewserviceComponent } from './../newservice/newservice.component';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { AlertsService } from './../AppRestCall/alerts/alerts.service';
 import { NewsvcService } from './../AppRestCall/newsvc/newsvc.service';
@@ -24,11 +26,13 @@ export class DashboardofcbaComponent implements OnInit {
     private newserviceAdapter: NewServiceAdapter,
     private spinnerService: Ng4LoadingSpinnerService,
     private alertService: AlertsService,
+    public manageserviceComponent: ManageserviceComponent,
   ) { }
 
   ngOnInit() {
     this.getListOfAllActiveServicesByCBAUserId(this.userService.currentUserValue.userId);
     this.getListOfAllActivePlatformServices();
+    this.manageserviceComponent.getServiceTerms();
   }
 
   getListOfAllActivePlatformServices() {
