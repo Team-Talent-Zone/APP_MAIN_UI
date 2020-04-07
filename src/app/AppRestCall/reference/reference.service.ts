@@ -1,3 +1,5 @@
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
@@ -23,4 +25,6 @@ export class ReferenceService {
   translatetext(targetText: string, langcode: string) {
     return this.http.get(`${environment.apiUrl}/translatetext/` + targetText + '/' + langcode + '/');
   }
+
+   
 }

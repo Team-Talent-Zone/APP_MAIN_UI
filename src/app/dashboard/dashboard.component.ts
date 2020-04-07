@@ -38,18 +38,17 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.name != null) {
-      this.spinnerService.show();
-      this.userService.getUserByUserId(this.userService.currentUserValue.userId).subscribe(
-        (userresp: any) => {
-          this.userService.setCurrentUserValue(userresp);
-          this.spinnerService.hide();
-        },
-        error => {
-          this.alertService.error(error);
-          this.spinnerService.hide();
-        });
-    }
+    this.spinnerService.show();
+    this.userService.getUserByUserId(this.userService.currentUserValue.userId).subscribe(
+      (userresp: any) => {
+        this.userService.setCurrentUserValue(userresp);
+        this.translateToLanguage(this.userService.currentUserValue.preferlang.toString());
+        this.spinnerService.hide();
+      },
+      error => {
+        this.alertService.error(error);
+        this.spinnerService.hide();
+      });
 
     if (this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_fu) {
       if (this.userService.currentUserValue.freelancehistoryentity[0].bgstatus ===
@@ -61,7 +60,6 @@ export class DashboardComponent implements OnInit {
         this.showmenufu = false;
       }
     }
-    this.translateToLanguage(this.userService.currentUserValue.preferlang);
   }
 
   translateToLanguage(preferedLang: string) {

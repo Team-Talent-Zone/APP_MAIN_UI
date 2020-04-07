@@ -1,6 +1,7 @@
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { ReferenceService } from './../AppRestCall/reference/reference.service';
 import { ManageserviceComponent } from './../manageservice/manageservice.component';
-import { NewserviceComponent } from './../newservice/newservice.component';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { AlertsService } from './../AppRestCall/alerts/alerts.service';
 import { NewsvcService } from './../AppRestCall/newsvc/newsvc.service';
@@ -21,6 +22,8 @@ export class DashboardofcbaComponent implements OnInit {
   domainRealEstateIndustry: any = [];
   domainServiceProviderObj: any = [];
   show: string = 'show';
+  fullContentArray: any = [];
+
   constructor(
     private referService: ReferenceService,
     public userService: UserService,
@@ -56,13 +59,31 @@ export class DashboardofcbaComponent implements OnInit {
         });
         if (this.userService.currentUserValue != null) {
           if (this.userService.currentUserValue.userId > 0) {
-            this.listOfAllApprovedNewServices.forEach(element => {
+            this.listOfAllApprovedNewServices.forEach((element: any) => {
               if (element.category === config.category_code_A_S.toString()) {
-                element.fullContent = element.fullContent.split(',');
+                console.log('this.userService.currentUserValue.preferlang.toString()' , 
+                this.userService.currentUserValue.preferlang.toString());
+                if (this.userService.currentUserValue.preferlang.toString() !== config.default_prefer_lang.toString()) {
+                  element.fullContent.forEach((elementFullContent: any, index: number) => {
+                    this.referService.translatetext(elementFullContent, this.userService.currentUserValue.preferlang.toString()).subscribe(
+                      (resp: any) => {
+                        element.fullContent.splice(index, 1);
+                        element.fullContent.splice(index, 0, resp.translateresp);
+                      });
+                  });
+                }
                 this.domainRealEstateIndustry.push(element);
               }
               if (element.category === config.category_code_FS_S.toString()) {
-                element.fullContent = element.fullContent.split(',');
+                if (this.userService.currentUserValue.preferlang.toString() !== config.default_prefer_lang.toString()) {
+                  element.fullContent.forEach((elementFullContent: any, index: number) => {
+                    this.referService.translatetext(elementFullContent, this.userService.currentUserValue.preferlang.toString()).subscribe(
+                      (resp: any) => {
+                        element.fullContent.splice(index, 1);
+                        element.fullContent.splice(index, 0, resp.translateresp);
+                      });
+                  });
+                }
                 this.domainServiceProviderObj.push(element);
               }
             });
@@ -79,5 +100,4 @@ export class DashboardofcbaComponent implements OnInit {
   getListOfAllActiveServicesByCBAUserId(userId: number) {
 
   }
-
 }
