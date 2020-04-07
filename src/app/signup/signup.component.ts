@@ -100,37 +100,47 @@ export class SignupComponent implements OnInit {
         this.reflookupdetails = data;
         for (const reflookup of data) {
           for (const reflookupmap of reflookup.referencelookupmapping) {
-            if (langSelected === config.lang_hindi_word.toString()) {
-              this.langcode = config.lang_code_hi;
-            } else
-            if (langSelected === config.lang_telugu_word.toString()) {
-              this.langcode = config.lang_code_te;
+            if (langSelected !== config.lang_english_word.toString()) {
+              if (langSelected === config.lang_hindi_word.toString()) {
+                this.langcode = config.lang_code_hi;
+              } else {
+                this.langcode = config.lang_code_te;
+              }
+              this.referService.translatetext(reflookupmap.label, this.langcode).subscribe(
+                (resptranslatetxt: any) => {
+                  if (resptranslatetxt.translateresp != null) {
+                    reflookupmap.label = resptranslatetxt.translateresp;
+                    this.referencedetailsmap.push(reflookupmap);
+                  }
+                },
+                error => {
+                  this.alertService.error(error);
+                  this.spinnerService.hide();
+                });
             } else {
-              this.langcode = config.default_prefer_lang;
+              this.referencedetailsmap.push(reflookupmap);
             }
-            this.referService.translatetext(reflookupmap.label, this.langcode).subscribe(
-              (resptranslatetxt: any) => {
-                if (resptranslatetxt.translateresp != null) {
-                  reflookupmap.label = resptranslatetxt.translateresp;
-                  this.referencedetailsmap.push(reflookupmap);
-                }
-              },
-              error => {
-                this.alertService.error(error);
-                this.spinnerService.hide();
-              });
             for (const reflookupmapsubcat of reflookupmap.referencelookupmappingsubcategories) {
+              if (langSelected !== config.lang_english_word.toString()) {
+                if (langSelected === config.lang_hindi_word.toString()) {
+                  this.langcode = config.lang_code_hi;
+                } else {
+                  this.langcode = config.lang_code_te;
+                }
                 this.referService.translatetext(reflookupmapsubcat.label, this.langcode).subscribe(
                   (resptranslatetxt: any) => {
                     if (resptranslatetxt.translateresp != null) {
                       reflookupmapsubcat.label = resptranslatetxt.translateresp;
+                      this.referencedetailsmapsubcat.push(reflookupmapsubcat);
                     }
                   },
                   error => {
                     this.alertService.error(error);
                     this.spinnerService.hide();
                   });
+              } else {
                 this.referencedetailsmapsubcat.push(reflookupmapsubcat);
+              }
             }
           }
         }
