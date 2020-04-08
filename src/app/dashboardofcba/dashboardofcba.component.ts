@@ -66,18 +66,22 @@ export class DashboardofcbaComponent implements OnInit {
                 this.referService.translatetext(element.name, lang).subscribe(
                   (servicename: any) => {
                     element.name = servicename.translateresp;
-                  });
-                this.manageserviceComponent.serviceterms.forEach(elementterms => {
-                  if (elementterms.code === element.validPeriod) {
-                    this.referService.translatetext(elementterms.label, lang).subscribe(
-                      (validPeriod: any) => {
-                        element.validPeriod = validPeriod.translateresp;
-                        this.listOfAllApprovedNewServices.push(this.newserviceAdapter.adapt(element));
-                        this.mapByDomain(element);
-                        this.spinnerService.hide();
+                    this.referService.translatetext(element.description, lang).subscribe(
+                      (description: any) => {
+                        element.description = description.translateresp;
+                        this.manageserviceComponent.serviceterms.forEach(elementterms => {
+                          if (elementterms.code === element.validPeriod) {
+                            this.referService.translatetext(elementterms.label, lang).subscribe(
+                              (validPeriod: any) => {
+                                element.validPeriod = validPeriod.translateresp;
+                                this.listOfAllApprovedNewServices.push(this.newserviceAdapter.adapt(element));
+                                this.mapByDomain(element);
+                                this.spinnerService.hide();
+                              });
+                          }
+                        });
                       });
-                  }
-                });
+                  });
               }
             });
           }
