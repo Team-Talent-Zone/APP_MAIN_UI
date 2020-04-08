@@ -66,11 +66,11 @@
                                                     char</div>
                                             </div>
                                         </div>
-                                        <div class="form-group">
+                                        <div class="form-group" *ngIf="this.userService.currentUserValue.userroles.rolecode =='FREELANCER_USER' ||
+                                        this.userService.currentUserValue.userroles.rolecode =='CLIENT_BUSINESS_ADMINISTRATOR'">
                                             <span>
                                                 <i class="fa fa fa-language	form-control-icon"></i>
                                             </span>
-
                                             <select id="inputPreferedLang" class="form-control"
                                                 formControlName="preferlang">
                                                 <option value="en">English</option>
@@ -118,7 +118,7 @@
                             </div>
                         </div>
 
-                        <div class="card" *ngIf="edituserobj.userroles.rolecode =='CLIENT_BUSINESS_ADMINISTRATOR'">
+                        <div class="card" *ngIf="this.userService.currentUserValue.userroles.rolecode =='CLIENT_BUSINESS_ADMINISTRATOR'">
                             <div class="card-header">
                                 <div class="card-actions float-right">
                                 </div>
@@ -213,7 +213,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card" *ngIf="edituserobj.userroles.rolecode =='FREELANCER_USER'">
+                        <div class="card" *ngIf="this.userService.currentUserValue.userroles.rolecode =='FREELANCER_USER'">
                             <div class="card-header">
                                 <div class="card-actions float-right">
                                 </div>
@@ -330,7 +330,6 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                           
                             <button type="submit" class="btn btn-primary">Save Changes</button>
                         </div>
                     </form>

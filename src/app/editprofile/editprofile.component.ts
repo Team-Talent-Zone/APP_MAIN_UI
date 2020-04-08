@@ -47,7 +47,7 @@ export class EditprofileComponent implements OnInit {
   constructor(
     public fb: FormBuilder,
     private cd: ChangeDetectorRef,
-    private userService: UserService,
+    public userService: UserService,
     private route: ActivatedRoute,
     private spinnerService: Ng4LoadingSpinnerService,
     private alertService: AlertsService,
@@ -271,6 +271,7 @@ export class EditprofileComponent implements OnInit {
         if (this.userService.currentUserValue.userId === this.usrObj.userId) {
           this.userService.currentUserValue.avtarurl = this.usrObj.avtarurl;
           this.userService.currentUserValue.fullname = this.usrObj.fullname;
+          this.userService.currentUserValue.preferlang = this.usrObj.preferlang;
         }
         this.edituserobj = userObj;
       },

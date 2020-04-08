@@ -12,7 +12,6 @@ import { HomecbasectionComponent } from './homecbasection/homecbasection.compone
 import { HomefusectionComponent } from './homefusection/homefusection.component';
 import { HeaderComponent } from './header/header.component';
 import { HomewhatwedoComponent } from './homewhatwedosection/homewhatwedo.component';
-import { HomeservicesectionComponent } from './homeservicesection/homeservicesection.component';
 import { HomeComponent } from './home/home.component';
 import { SignupComponent } from './signup/signup.component';
 import { ModalModule, BsModalRef } from 'ngx-bootstrap/modal';
@@ -62,12 +61,11 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     HomefusectionComponent,
     HeaderComponent,
     HomewhatwedoComponent,
-    HomeservicesectionComponent,
     SignupComponent,
     AlertComponent,
     DashboardComponent,
     ManageuserComponent,
-    EditprofileComponent,
+    EditprofileComponent, 
     ViewaccountdetailsComponent,
     DashboardmapbyuseroleComponent,
     ProcessbgverificationComponent,
@@ -110,6 +108,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     AuthgaurdService,
     SignupComponent,
     ApiService,
+    DashboardofcbaComponent,
     ManageserviceComponent,
     {
       provide: HTTP_INTERCEPTORS,

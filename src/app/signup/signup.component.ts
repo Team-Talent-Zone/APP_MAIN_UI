@@ -46,6 +46,7 @@ export class SignupComponent implements OnInit {
   today = new Date();
   user: User;
   reflookupdetails: any;
+  langcode: string;
 
   constructor(
     private spinnerService: Ng4LoadingSpinnerService,
@@ -99,33 +100,47 @@ export class SignupComponent implements OnInit {
         this.reflookupdetails = data;
         for (const reflookup of data) {
           for (const reflookupmap of reflookup.referencelookupmapping) {
-            if (langSelected === config.lang_hindi_word.toString() || langSelected === config.lang_telugu_word.toString()) {
-              this.referService.translatetext(reflookupmap.label, langSelected).subscribe(
+            if (langSelected !== config.lang_english_word.toString()) {
+              if (langSelected === config.lang_hindi_word.toString()) {
+                this.langcode = config.lang_code_hi;
+              } else {
+                this.langcode = config.lang_code_te;
+              }
+              this.referService.translatetext(reflookupmap.label, this.langcode).subscribe(
                 (resptranslatetxt: any) => {
                   if (resptranslatetxt.translateresp != null) {
                     reflookupmap.label = resptranslatetxt.translateresp;
+                    this.referencedetailsmap.push(reflookupmap);
                   }
                 },
                 error => {
                   this.alertService.error(error);
                   this.spinnerService.hide();
                 });
+            } else {
+              this.referencedetailsmap.push(reflookupmap);
             }
-            this.referencedetailsmap.push(reflookupmap);
             for (const reflookupmapsubcat of reflookupmap.referencelookupmappingsubcategories) {
-              if (langSelected === config.lang_hindi_word.toString() || langSelected === config.lang_telugu_word.toString()) {
-                this.referService.translatetext(reflookupmapsubcat.label, langSelected).subscribe(
+              if (langSelected !== config.lang_english_word.toString()) {
+                if (langSelected === config.lang_hindi_word.toString()) {
+                  this.langcode = config.lang_code_hi;
+                } else {
+                  this.langcode = config.lang_code_te;
+                }
+                this.referService.translatetext(reflookupmapsubcat.label, this.langcode).subscribe(
                   (resptranslatetxt: any) => {
                     if (resptranslatetxt.translateresp != null) {
                       reflookupmapsubcat.label = resptranslatetxt.translateresp;
+                      this.referencedetailsmapsubcat.push(reflookupmapsubcat);
                     }
                   },
                   error => {
                     this.alertService.error(error);
                     this.spinnerService.hide();
                   });
+              } else {
+                this.referencedetailsmapsubcat.push(reflookupmapsubcat);
               }
-              this.referencedetailsmapsubcat.push(reflookupmapsubcat);
             }
           }
         }

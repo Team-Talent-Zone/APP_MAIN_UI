@@ -117,5 +117,13 @@
     "YOURMESSAGE":"మీ సందేశం",
     "FULLNAME":"పూర్తి పేరు",
     "EMAIL1":"ఇమెయిల్"
+  },
+  "DASHOARD_HEADER": {
+    "LOGOUT":"లాగౌట్",
+    "WELCOMEBACK":"పునఃస్వాగతం"
+  },
+  "DASHOARD_CBA_MAIN_BODY": {
+    "SERVICEPROVIDER":"సేవా ప్రదాత",
+    "REALESTATEINDUSTRY":"రియల్ ఎస్టేట్ పరిశ్రమ"
   }
 }
