@@ -36,11 +36,12 @@ export class DashboardofcbaComponent implements OnInit {
 
   ngOnInit() {
     this.getListOfAllActiveServicesByCBAUserId(this.userService.currentUserValue.userId);
-    this.getListOfAllActivePlatformServices();
+    this.getListOfAllActivePlatformServices(this.userService.currentUserValue.preferlang.toString());
     this.manageserviceComponent.getServiceTerms();
   }
 
-  getListOfAllActivePlatformServices() {
+  getListOfAllActivePlatformServices(lang: string) {
+    this.listOfAllApprovedNewServices = [];
     this.spinnerService.show();
     this.newsvcservice.getAllNewServiceDetails().subscribe(
       (allNewServiceObjs: any) => {
@@ -52,6 +53,13 @@ export class DashboardofcbaComponent implements OnInit {
                 element.serviceHistory = [];
                 element.serviceHistory.push(elementHis);
                 element.fullContent = element.fullContent.split(',');
+                element.fullContent.forEach((elementFullContent: any, index: number) => {
+                  this.referService.translatetext(elementFullContent, lang).subscribe(
+                    (resp: any) => {
+                      element.fullContent.splice(index, 1);
+                      element.fullContent.splice(index, 0, resp.translateresp);
+                    });
+                });
                 this.listOfAllApprovedNewServices.push(this.newserviceAdapter.adapt(element));
               }
             });
@@ -61,29 +69,9 @@ export class DashboardofcbaComponent implements OnInit {
           if (this.userService.currentUserValue.userId > 0) {
             this.listOfAllApprovedNewServices.forEach((element: any) => {
               if (element.category === config.category_code_A_S.toString()) {
-                console.log('this.userService.currentUserValue.preferlang.toString()' , 
-                this.userService.currentUserValue.preferlang.toString());
-                if (this.userService.currentUserValue.preferlang.toString() !== config.default_prefer_lang.toString()) {
-                  element.fullContent.forEach((elementFullContent: any, index: number) => {
-                    this.referService.translatetext(elementFullContent, this.userService.currentUserValue.preferlang.toString()).subscribe(
-                      (resp: any) => {
-                        element.fullContent.splice(index, 1);
-                        element.fullContent.splice(index, 0, resp.translateresp);
-                      });
-                  });
-                }
                 this.domainRealEstateIndustry.push(element);
               }
               if (element.category === config.category_code_FS_S.toString()) {
-                if (this.userService.currentUserValue.preferlang.toString() !== config.default_prefer_lang.toString()) {
-                  element.fullContent.forEach((elementFullContent: any, index: number) => {
-                    this.referService.translatetext(elementFullContent, this.userService.currentUserValue.preferlang.toString()).subscribe(
-                      (resp: any) => {
-                        element.fullContent.splice(index, 1);
-                        element.fullContent.splice(index, 0, resp.translateresp);
-                      });
-                  });
-                }
                 this.domainServiceProviderObj.push(element);
               }
             });

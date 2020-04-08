@@ -1,3 +1,4 @@
+import { HomepriceComponent } from './homepricesection/homeprice.component';
 import { ManageuserserviceComponent } from './manageuserservice/manageuserservice.component';
 import { NewserviceComponent } from './newservice/newservice.component';
 import { SignupadminComponent } from './signupadmin/signupadmin.component';
@@ -21,7 +22,17 @@ const routes: Routes = [
   },
   {
     path: 'home/:name/:id',
+    component: HomeComponent
+  },
+  {
+    path: 'region/:name',
     component: HomeComponent,
+    children: [
+      {
+        path: '',
+        component: HomepriceComponent
+      }
+    ],
   },
   {
     path: 'signup/:id',
@@ -138,7 +149,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes , {onSameUrlNavigation: 'reload'})],
   exports: [RouterModule],
 })
 export class AppRoutingModule { }

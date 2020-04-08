@@ -24,7 +24,7 @@ export class DashboardComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private spinnerService: Ng4LoadingSpinnerService,
-    private alertService: AlertsService,
+    private alertService: AlertsService, 
     public translate: TranslateService
   ) {
     route.params.subscribe(params => {
