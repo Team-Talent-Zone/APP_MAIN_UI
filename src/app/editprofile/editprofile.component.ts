@@ -47,7 +47,7 @@ export class EditprofileComponent implements OnInit {
   constructor(
     public fb: FormBuilder,
     private cd: ChangeDetectorRef,
-    private userService: UserService,
+    public userService: UserService,
     private route: ActivatedRoute,
     private spinnerService: Ng4LoadingSpinnerService,
     private alertService: AlertsService,

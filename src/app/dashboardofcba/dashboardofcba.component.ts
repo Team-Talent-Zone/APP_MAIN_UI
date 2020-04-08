@@ -1,3 +1,4 @@
+import { async } from '@angular/core/testing';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { ReferenceService } from './../AppRestCall/reference/reference.service';
@@ -35,13 +36,13 @@ export class DashboardofcbaComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.manageserviceComponent.getServiceTerms();
     this.getListOfAllActiveServicesByCBAUserId(this.userService.currentUserValue.userId);
     this.getListOfAllActivePlatformServices(this.userService.currentUserValue.preferlang.toString());
-    this.manageserviceComponent.getServiceTerms();
   }
 
   getListOfAllActivePlatformServices(lang: string) {
-
+    this.spinnerService.show();
     this.listOfAllApprovedNewServices = [];
     this.newsvcservice.getAllNewServiceDetails().subscribe(
       (allNewServiceObjs: any) => {
@@ -50,7 +51,8 @@ export class DashboardofcbaComponent implements OnInit {
           this.newServiceCommentHistory.push(this.newserviceAdapter.adapt(element));
           if (element.serviceHistory != null) {
             element.serviceHistory.forEach((elementHis: any) => {
-              if (element.currentstatus === elementHis.status && element.currentstatus === config.newservice_code_approved.toString()) {
+              if (element.currentstatus === elementHis.status &&
+                element.currentstatus === config.newservice_code_approved.toString()) {
                 element.serviceHistory = [];
                 element.serviceHistory.push(elementHis);
                 element.fullContent = element.fullContent.split(',');
@@ -71,6 +73,7 @@ export class DashboardofcbaComponent implements OnInit {
                       (validPeriod: any) => {
                         element.validPeriod = validPeriod.translateresp;
                         this.listOfAllApprovedNewServices.push(this.newserviceAdapter.adapt(element));
+                        this.mapByDomain(element);
                         this.spinnerService.hide();
                       });
                   }
@@ -79,23 +82,24 @@ export class DashboardofcbaComponent implements OnInit {
             });
           }
         });
-        if (this.userService.currentUserValue != null) {
-          if (this.userService.currentUserValue.userId > 0) {
-            this.listOfAllApprovedNewServices.forEach((element: any) => {
-              if (element.category === config.category_code_A_S.toString()) {
-                this.domainRealEstateIndustry.push(element);
-              }
-              if (element.category === config.category_code_FS_S.toString()) {
-                this.domainServiceProviderObj.push(element);
-              }
-            });
-          }
-        }
       },
       error => {
         this.spinnerService.hide();
         this.alertService.error(error);
       });
+  }
+
+  mapByDomain(newserviceObj: any) {
+    if (this.userService.currentUserValue != null) {
+      if (this.userService.currentUserValue.userId > 0) {
+        if (newserviceObj.category === config.category_code_A_S.toString()) {
+          this.domainRealEstateIndustry.push(newserviceObj);
+        }
+        if (newserviceObj.category === config.category_code_FS_S.toString()) {
+          this.domainServiceProviderObj.push(newserviceObj);
+        }
+      }
+    }
   }
 
   getListOfAllActiveServicesByCBAUserId(userId: number) {

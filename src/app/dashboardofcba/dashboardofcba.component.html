@@ -11,38 +11,36 @@
     data-parent="#accordion">
     <div class="card-body">
       <div class="card-deck">
-          <div class="col-sm-4 mb-3 mb-md-0" style="margin-bottom:8px !important" *ngFor="let svc of domainServiceProviderObj">
-            <div class="card text-center h-100">
-              <div class="card-header">
-                <h4>{{svc.name}}</h4>
+        <div class="col-sm-4 mb-3 mb-md-0" style="margin-bottom:8px !important"
+          *ngFor="let svc of domainServiceProviderObj">
+          <div class="card text-center h-100">
+            <div class="card-header">
+              <h4>{{svc.name}}</h4>
+            </div>
+            <img class="card-img" src={{svc.imageUrl}}>
+            <div class="card-body d-flex flex-column">
+              <div class="card-title">
+                <span class="display-4" *ngIf="svc.amount > 0">₹{{svc.amount}}</span>
+                <span class="display-4" *ngIf="svc.amount == null">₹0</span>
+                <span class="mb-4">/{{svc.validPeriod}}
+                </span>
               </div>
-              <img class="card-img" src={{svc.imageUrl}}>
-              <div class="card-body d-flex flex-column">
-                <div class="card-title">
-                  <span class="display-4" *ngIf="svc.amount > 0">₹{{svc.amount}}</span>
-                  <span class="display-4" *ngIf="svc.amount == null">₹0</span>
-                  <span class="mb-4" *ngFor="let svcterm of manageserviceComponent.serviceterms">
-                    <span *ngIf="svcterm.code == svc.validPeriod">/
-                      {{svcterm.label}}
-                    </span>
-                  </span>
-                </div>
-                <div class="card-text">
-                  <ul class="list-unstyled">
-                       <li class="mb-1" *ngFor="let features of svc.fullContent" >
-                        {{features}} 
-                       </li>
-                  </ul>
-                </div>
+              <div class="card-text">
+                <ul class="list-unstyled">
+                  <li class="mb-1" *ngFor="let features of svc.fullContent">
+                    {{features}}
+                  </li>
+                </ul>
               </div>
-              <div class="card-footer">
-                <a href="javascript: return false;" class="btn btn-primary">Add to Cart</a>
-              </div>
+            </div>
+            <div class="card-footer">
+              <a href="javascript: return false;" class="btn btn-primary">Add to Cart</a>
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
 </div>
 <div class="card" style="margin-top:8px !important">
   <div class="card-header" role="tab" id="headingOne">
@@ -57,36 +55,34 @@
     data-parent="#accordion">
     <div class="card-body">
       <div class="card-deck">
-          <div class="col-sm-4 mb-3 mb-md-0" style="margin-bottom:8px !important" *ngFor="let svc of domainRealEstateIndustry">
-            <div class="card text-center h-100" >
-              <div class="card-header"> 
-                <h4>{{svc.name}}</h4>
+        <div class="col-sm-4 mb-3 mb-md-0" style="margin-bottom:8px !important"
+          *ngFor="let svc of domainRealEstateIndustry">
+          <div class="card text-center h-100">
+            <div class="card-header">
+              <h4>{{svc.name}}</h4>
+            </div>
+            <img class="card-img" src={{svc.imageUrl}}>
+            <div class="card-body d-flex flex-column">
+              <div class="card-title">
+                <span class="display-4" *ngIf="svc.amount > 0">₹{{svc.amount}}</span>
+                <span class="display-4" *ngIf="svc.amount == null">₹0</span>
+                <span class="mb-4">/{{svc.validPeriod}}
+                </span>
               </div>
-              <img class="card-img" src={{svc.imageUrl}}>
-              <div class="card-body d-flex flex-column">
-                <div class="card-title">
-                  <span class="display-4" *ngIf="svc.amount > 0">₹{{svc.amount}}</span>
-                  <span class="display-4" *ngIf="svc.amount == null">₹0</span>
-                  <span class="mb-4" *ngFor="let svcterm of manageserviceComponent.serviceterms">
-                    <span *ngIf="svcterm.code == svc.validPeriod">/
-                      {{svcterm.label}}
-                    </span>
-                  </span>
-                </div>
-                <div class="card-text">
-                  <ul class="list-unstyled">
-                    <li class="mb-1" *ngFor="let features of svc.fullContent">
-                      {{features}}
-                    </li>
-                  </ul>
-                </div>
+              <div class="card-text">
+                <ul class="list-unstyled">
+                  <li class="mb-1" *ngFor="let features of svc.fullContent">
+                    {{features}}
+                  </li>
+                </ul>
               </div>
-              <div class="card-footer">
-                <a href="javascript: return false;" class="btn btn-primary">Add To Cart</a>
-              </div>
+            </div>
+            <div class="card-footer">
+              <a href="javascript: return false;" class="btn btn-primary">Add To Cart</a>
             </div>
           </div>
         </div>
+      </div>
     </div>
   </div>
 </div>
