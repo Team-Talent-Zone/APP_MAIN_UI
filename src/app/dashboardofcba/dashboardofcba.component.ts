@@ -41,10 +41,11 @@ export class DashboardofcbaComponent implements OnInit {
   }
 
   getListOfAllActivePlatformServices(lang: string) {
+
     this.listOfAllApprovedNewServices = [];
-    this.spinnerService.show();
     this.newsvcservice.getAllNewServiceDetails().subscribe(
       (allNewServiceObjs: any) => {
+        this.spinnerService.show();
         allNewServiceObjs.forEach((element: any) => {
           this.newServiceCommentHistory.push(this.newserviceAdapter.adapt(element));
           if (element.serviceHistory != null) {
@@ -60,7 +61,20 @@ export class DashboardofcbaComponent implements OnInit {
                       element.fullContent.splice(index, 0, resp.translateresp);
                     });
                 });
-                this.listOfAllApprovedNewServices.push(this.newserviceAdapter.adapt(element));
+                this.referService.translatetext(element.name, lang).subscribe(
+                  (servicename: any) => {
+                    element.name = servicename.translateresp;
+                  });
+                this.manageserviceComponent.serviceterms.forEach(elementterms => {
+                  if (elementterms.code === element.validPeriod) {
+                    this.referService.translatetext(elementterms.label, lang).subscribe(
+                      (validPeriod: any) => {
+                        element.validPeriod = validPeriod.translateresp;
+                        this.listOfAllApprovedNewServices.push(this.newserviceAdapter.adapt(element));
+                        this.spinnerService.hide();
+                      });
+                  }
+                });
               }
             });
           }
@@ -77,7 +91,6 @@ export class DashboardofcbaComponent implements OnInit {
             });
           }
         }
-        this.spinnerService.hide();
       },
       error => {
         this.spinnerService.hide();

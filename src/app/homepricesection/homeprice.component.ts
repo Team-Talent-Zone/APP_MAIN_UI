@@ -31,7 +31,6 @@ export class HomepriceComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('HomepriceComponent', this.name);
     this.langcode = null;
     if (this.name === config.lang_english_word.toString()) {
       this.langcode = config.default_prefer_lang;
@@ -44,7 +43,6 @@ export class HomepriceComponent implements OnInit {
     } else {
       this.langcode = config.default_prefer_lang;
     }
-    console.log('this HomepriceComponent' , this.langcode);
     this.dashboardofcbaobj.getListOfAllActivePlatformServices(this.langcode);
     this.manageserviceComponent.getServiceTerms();
   }

@@ -30,11 +30,9 @@
                         <div class="card-title">
                           <span class="display-4" *ngIf="svc.amount > 0">₹{{svc.amount}}</span>
                           <span class="display-4" *ngIf="svc.amount == null">₹0</span>
-                           <span class="mb-4" *ngFor="let svcterm of manageserviceComponent.serviceterms">
-                            <span *ngIf="svcterm.code == svc.validPeriod">
-                              /{{svcterm.label}}
+                           <span class="mb-4">
+                              /{{svc.validPeriod}}
                             </span>
-                          </span> 
                         </div>
                         <div class="card-text">
                           <ul class="list-unstyled">
