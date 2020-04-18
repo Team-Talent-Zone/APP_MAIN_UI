@@ -21,6 +21,7 @@ import { ReferenceLookUpTemplate } from '../appmodels/ReferenceLookUpTemplate';
 import { environment } from 'src/environments/environment';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { UserNotification } from 'src/app/appmodels/UserNotification';
+import { ConditionalExpr } from '@angular/compiler';
 
 @Component({
   selector: 'app-signup',
@@ -31,12 +32,11 @@ import { UserNotification } from 'src/app/appmodels/UserNotification';
 export class SignupComponent implements OnInit {
 
   key: string;
-  langSelected: string;
   signupForm: FormGroup;
   issubmit = false;
   issubcatdisplay = false;
-  referencedetailsmap: any = [];
-  referencedetailsmapsubcat: any = [];
+  referencedetailsmap = [];
+  referencedetailsmapsubcat = [];
   referencedetailsmapsubcatselectedmapId: any = [];
   usrObj: User;
   templateObj: ReferenceLookUpTemplate;
@@ -65,7 +65,7 @@ export class SignupComponent implements OnInit {
   ngOnInit() {
     this.formValidations();
     if (this.key === config.shortkey_role_fu.toString()) {
-      this.getAllCategories(this.langSelected);
+      this.getAllCategories(this.langcode);
     }
   }
 
@@ -91,7 +91,7 @@ export class SignupComponent implements OnInit {
     }
   }
 
-  getAllCategories(langSelected: string) {
+  getAllCategories(langcode: string) {
     this.spinnerService.show();
     this.referService.getReferenceLookupByKey(config.key_domain.toString()).pipe(map((data: any[]) =>
       data.map(item => this.refAdapter.adapt(item))),
@@ -100,13 +100,8 @@ export class SignupComponent implements OnInit {
         this.reflookupdetails = data;
         for (const reflookup of data) {
           for (const reflookupmap of reflookup.referencelookupmapping) {
-            if (langSelected !== config.lang_english_word.toString()) {
-              if (langSelected === config.lang_hindi_word.toString()) {
-                this.langcode = config.lang_code_hi;
-              } else {
-                this.langcode = config.lang_code_te;
-              }
-              this.referService.translatetext(reflookupmap.label, this.langcode).subscribe(
+            if (langcode !== config.default_prefer_lang.toString()) {
+              this.referService.translatetext(reflookupmap.label, langcode).subscribe(
                 (resptranslatetxt: any) => {
                   if (resptranslatetxt.translateresp != null) {
                     reflookupmap.label = resptranslatetxt.translateresp;
@@ -121,13 +116,8 @@ export class SignupComponent implements OnInit {
               this.referencedetailsmap.push(reflookupmap);
             }
             for (const reflookupmapsubcat of reflookupmap.referencelookupmappingsubcategories) {
-              if (langSelected !== config.lang_english_word.toString()) {
-                if (langSelected === config.lang_hindi_word.toString()) {
-                  this.langcode = config.lang_code_hi;
-                } else {
-                  this.langcode = config.lang_code_te;
-                }
-                this.referService.translatetext(reflookupmapsubcat.label, this.langcode).subscribe(
+              if (langcode !== config.default_prefer_lang.toString()) {
+                this.referService.translatetext(reflookupmapsubcat.label, langcode).subscribe(
                   (resptranslatetxt: any) => {
                     if (resptranslatetxt.translateresp != null) {
                       reflookupmapsubcat.label = resptranslatetxt.translateresp;

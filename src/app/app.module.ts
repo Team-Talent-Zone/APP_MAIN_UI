@@ -45,6 +45,8 @@ import { ViewnewsevicedetailsComponent } from './viewnewsevicedetails/viewnewsev
 import { DashboardofcbaComponent } from './dashboardofcba/dashboardofcba.component';
 import { DashboardoffuComponent } from './dashboardoffu/dashboardoffu.component';
 import { DashboardofadminComponent } from './dashboardofadmin/dashboardofadmin.component';
+import { DashboardsearchfuComponent } from './dashboardsearchfu/dashboardsearchfu.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -77,7 +79,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ViewnewsevicedetailsComponent,
     DashboardofcbaComponent,
     DashboardoffuComponent,
-    DashboardofadminComponent
+    DashboardofadminComponent,
+    DashboardsearchfuComponent
     ],
   imports: [
     BrowserModule,
@@ -96,6 +99,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     }),
     Ng4LoadingSpinnerModule.forRoot()
   ],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   providers: [
     BsModalRef,
     ReferenceAdapter,

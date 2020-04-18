@@ -17,6 +17,8 @@ export class HeaderComponent implements OnInit {
   shortkey: string;
   langSelected = config.lang_english_word;
   name: string;
+  langcode: string;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -34,6 +36,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     if (this.name != null) {
       this.translate.use(this.name);
+      this.langSelected = this.name;
     }
   }
 
@@ -47,10 +50,19 @@ export class HeaderComponent implements OnInit {
   }
 
   openSignupModal(shortkey: string) {
+    if (this.langSelected === config.lang_code_hi.toString()) {
+      this.langcode = config.lang_hindi_word.toString();
+    }
+    if (this.langSelected === config.lang_code_te.toString()) {
+      this.langcode = config.lang_telugu_word.toString();
+    }
+    if (this.langSelected === config.default_prefer_lang.toString()) {
+      this.langcode = config.lang_english_word.toString();
+    }
     this.modalRef = this.modalService.show(SignupComponent, {
       initialState: {
         key: shortkey,
-        langSelected: this.langSelected
+        langcode: this.langcode
       }
     });
   }

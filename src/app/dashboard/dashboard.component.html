@@ -9,6 +9,17 @@
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
         <span class="navbar-toggler-icon"></span>
     </button>
+    <div class="combobox">
+        <input type="text" [(ngModel)]="inputItem" (ngModelChange)="getFilteredList()" class="combobox-input"
+            (keyup)="onKeyPress($event)" (blur)="toggleListDisplay(0)" (focus)="toggleListDisplay(1)"
+            placeholder="Select one..." [ngClass]="{'error': showError}">
+        <span *ngIf="showError" class="error-text"><i>Invalid Selection.</i></span>
+        <div class="combobox-options" *ngIf="!listHidden">
+            <list-item *ngFor="let item of filteredList;let i = index" (click)="selectItem(i)"
+                [ngClass]="{'selected': i===selectedIndex}">{{item}}</list-item>
+        </div>
+        <button (click)="searchFU(inputItem)"> Search </button>
+    </div>
     <div class="navbar-collapse collapse" id="collapsingNavbar">
         <ul class="navbar-nav ml-auto">
             <li class="nav-item  btn btn-sm">
@@ -17,7 +28,7 @@
                 </h6>
             </li>
             <li class="nav-item  btn btn-sm">
-                
+
                 <a class="nav-link" (click)="logout()">
                     <i class="fa fa-undo "><label>&nbsp;{{ 'DASHOARD_HEADER.LOGOUT' | translate }}</label></i>
                 </a>
@@ -49,18 +60,22 @@
                     *ngIf="this.userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM' || this.userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_MANAGER'">
                     <a class="nav-link" [routerLink]="['/manageuserservice']">Manage User Services</a>
                 </li>
-                <li class="nav-item" *ngIf="this.userService.currentUserValue.userroles.rolecode =='CLIENT_BUSINESS_ADMINISTRATOR'">
+                <li class="nav-item"
+                    *ngIf="this.userService.currentUserValue.userroles.rolecode =='CLIENT_BUSINESS_ADMINISTRATOR'">
                     <a class="nav-link">My Services</a>
                 </li>
-                <li class="nav-item" *ngIf="this.userService.currentUserValue.userroles.rolecode =='FREELANCER_USER' && showmenufu">
+                <li class="nav-item"
+                    *ngIf="this.userService.currentUserValue.userroles.rolecode =='FREELANCER_USER' && showmenufu">
                     <a class="nav-link" href="#">My Job</a>
                 </li>
-                <li class="nav-item" *ngIf="this.userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_MANAGER'">
+                <li class="nav-item"
+                    *ngIf="this.userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_MANAGER'">
                     <a class="nav-link" [routerLink]="['/signupadmin']">
                         <i class="fa fa-user-plus"><label>&nbsp;Create New User</label></i>
                     </a>
                 </li>
-                <li class="nav-item" *ngIf="this.userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM'">
+                <li class="nav-item"
+                    *ngIf="this.userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM'">
                     <a class="nav-link" [routerLink]="['/newservice']">
                         <i class="fa fa-plus"> <label>&nbsp;Create New Service</label></i>
                     </a>

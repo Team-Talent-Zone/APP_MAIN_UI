@@ -20,6 +20,7 @@ export class NewServiceAdapter implements Adapter<NewService> {
             item.isupgrade,
             item.validPeriod,
             item.amount,
+            item.packwithotherourserviceid,
             item.userId,
             item.serviceHistory
           );

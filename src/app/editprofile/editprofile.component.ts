@@ -70,16 +70,10 @@ export class EditprofileComponent implements OnInit {
     this.openEditUser();
     this.editProfileFormValidations();
     if (this.roleCode === config.user_rolecode_fu.toString()) {
-      if (this.userService.currentUserValue.preferlang === config.lang_code_hi.toString()) {
-        this.langSelected = config.lang_hindi_word.toString();
-      } else
-        if (this.userService.currentUserValue.preferlang === config.lang_code_te.toString()) {
-          this.langSelected = config.lang_telugu_word.toString();
-        }
-      this.signupComponent.getAllCategories(this.langSelected);
+      this.signupComponent.getAllCategories(this.userService.currentUserValue.preferlang);
     }
-
   }
+  
   initAutocomplete(maps: Maps) {
     let autocomplete = new maps.places.Autocomplete(this.searchElementRef.nativeElement);
   }

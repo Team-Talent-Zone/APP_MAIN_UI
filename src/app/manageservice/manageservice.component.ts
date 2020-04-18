@@ -24,7 +24,7 @@ import { NewService } from '../appmodels/NewService';
 export class ManageserviceComponent implements OnInit {
 
   listOfAllNewServices: any = [];
-  listOfAllApprovedNewServices: any = [];
+  listOfAllApprovedNewServices = [];
   listOfAllRejectedNewServices: any = [];
   listOfAllPendingNewServices: any = [];
 
@@ -69,8 +69,8 @@ export class ManageserviceComponent implements OnInit {
   getAllNewServiceDetails() {
     this.spinnerService.show();
     this.newsvcservice.getAllNewServiceDetails().subscribe(
-      (allNewServiceObjs: any) => {
-        allNewServiceObjs.forEach((element: any) => {
+      (allNewServiceObjs: NewService[]) => {
+        for (const element of allNewServiceObjs) {
           this.myNewServiceForReviewAllCommentHistory.push(this.newserviceAdapter.adapt(element));
           if (element.serviceHistory != null) {
             element.serviceHistory.forEach((elementHis: any) => {
@@ -107,7 +107,7 @@ export class ManageserviceComponent implements OnInit {
               }
             });
           }
-        });
+        }
         this.spinnerService.hide();
       },
       error => {

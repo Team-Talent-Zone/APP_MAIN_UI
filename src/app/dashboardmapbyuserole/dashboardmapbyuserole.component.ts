@@ -9,12 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardmapbyuseroleComponent implements OnInit {
 
-
-
+ 
   constructor(
-    public userService: UserService
-  ) { }
+    public userService: UserService,
+
+  ) {
+  }
 
   ngOnInit() {
-}
+  }
+
+
 }

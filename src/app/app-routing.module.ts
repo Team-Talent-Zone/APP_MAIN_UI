@@ -1,3 +1,4 @@
+import { DashboardsearchfuComponent } from './dashboardsearchfu/dashboardsearchfu.component';
 import { HomepriceComponent } from './homepricesection/homeprice.component';
 import { ManageuserserviceComponent } from './manageuserservice/manageuserservice.component';
 import { NewserviceComponent } from './newservice/newservice.component';
@@ -18,7 +19,7 @@ import { ManageserviceComponent } from './manageservice/manageservice.component'
 const routes: Routes = [
   {
     path: 'home',
-    component: HomeComponent
+    component: HomeComponent,
   },
   {
     path: 'home/:name/:id',
@@ -52,18 +53,7 @@ const routes: Routes = [
       {
         path: '',
         component: DashboardmapbyuseroleComponent
-      }
-    ]
-  },
-  {
-    path: 'dashboard/:name',
-    component: DashboardComponent,
-    canActivate: [AuthgaurdService],
-    children: [
-      {
-        path: '',
-        component: DashboardmapbyuseroleComponent
-      }
+      },
     ]
   },
   {
@@ -93,6 +83,16 @@ const routes: Routes = [
       {
         path: '',
         component: NewserviceComponent
+      }
+    ]
+  },
+  {
+    path: 'dashboard/:name',
+    component: DashboardComponent,
+    children: [
+      {
+        path: '',
+        component: DashboardsearchfuComponent
       }
     ]
   },

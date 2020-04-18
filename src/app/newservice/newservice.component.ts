@@ -1,3 +1,5 @@
+import { ManageserviceComponent } from './../manageservice/manageservice.component';
+import { DashboardofcbaComponent } from './../dashboardofcba/dashboardofcba.component';
 import { ReferenceLookUpTemplate } from './../appmodels/ReferenceLookUpTemplate';
 import { ReferenceLookUpTemplateAdapter } from './../adapters/referencelookuptemplateadapter';
 import { SendemailService } from './../AppRestCall/sendemail/sendemail.service';
@@ -39,6 +41,7 @@ export class NewserviceComponent implements OnInit {
   serviceterms: any;
   newservice: NewService;
   newservicecurrentObj: NewService;
+  newservicesaveobj: NewService;
   serviceHistory: NewServiceHistory;
   filename: string;
   name: string;
@@ -54,6 +57,8 @@ export class NewserviceComponent implements OnInit {
   newvalsvrprice: string;
   oldvalsvrimgurl: string;
   newvalsvrimgurl: string;
+  listofnewservicebymapid: any = [];
+  listofallapprovednewservice: any = [];
 
   constructor(
     private spinnerService: Ng4LoadingSpinnerService,
@@ -71,30 +76,35 @@ export class NewserviceComponent implements OnInit {
     private utilService: UtilService,
     private sendemailService: SendemailService,
     private reflookuptemplateAdapter: ReferenceLookUpTemplateAdapter,
+    private manageserviceComponent: ManageserviceComponent,
   ) {
     route.params.subscribe(params => {
       this.id = params.id;
     });
     this.signupcomponent.referencedetailsmap = [];
+    this.manageserviceComponent.listOfAllApprovedNewServices = [];
   }
 
-  ngOnInit() {
-    this.signupcomponent.getAllCategories(config.default_prefer_lang);
+  async ngOnInit() {
+    this.signupcomponent.getAllCategories(config.default_prefer_lang.toString());
     this.getServiceTerms();
     this.newServiceValidationForm();
+    this.manageserviceComponent.getAllNewServiceDetails();
     if (this.id > 0) {
-      this.populatenewservice(this.id);
+       this.populatenewservice(this.id);
     }
   }
 
   populatenewservice(ourserviceId: number) {
     this.newsvcservice.getNewServiceDetailsByServiceId(ourserviceId).pipe(first()).subscribe(
       (newserviceobj: NewService) => {
+        this.spinnerService.show();
+        this.newservicecurrentObj = this.newserviceAdapter.adapt(newserviceobj);
+        this.getCategoryByRefId(this.newservicecurrentObj.domain);
+        this.getListOfNewServicesByMapId('FS_S');
         newserviceobj.serviceHistory.forEach(element => {
           if (element.status === newserviceobj.currentstatus) {
             newserviceobj.serviceHistory = [];
-            this.newservicecurrentObj = this.newserviceAdapter.adapt(newserviceobj);
-            this.getCategoryByRefId(this.newservicecurrentObj.domain);
             this.newServiceForm.patchValue({ name: this.newservicecurrentObj.name });
             this.newServiceForm.patchValue({ description: this.newservicecurrentObj.description });
             this.newServiceForm.patchValue({ fullContent: this.newservicecurrentObj.fullContent });
@@ -104,8 +114,14 @@ export class NewserviceComponent implements OnInit {
             this.newServiceForm.patchValue({ amount: this.newservicecurrentObj.amount });
             this.newServiceForm.patchValue({ imageUrl: this.newservicecurrentObj.imageUrl });
             this.serviceImgURL = this.newservicecurrentObj.imageUrl;
+            if (this.newservicecurrentObj.packwithotherourserviceid === null) {
+              this.newServiceForm.patchValue({ packwithotherourserviceid: '' });
+            } else {
+              this.newServiceForm.patchValue({ packwithotherourserviceid: this.newservicecurrentObj.packwithotherourserviceid });
+            }
             this.newservicecurrentObj.serviceHistory.push(element);
           }
+          this.spinnerService.hide();
         });
       },
       error => {
@@ -124,6 +140,7 @@ export class NewserviceComponent implements OnInit {
       domain: ['', [Validators.required]],
       amount: ['', [Validators.maxLength(10), Validators.pattern('^[0-9]*$')]],
       imageUrl: ['', [Validators.required]],
+      packwithotherourserviceid: ['']
     });
   }
 
@@ -250,6 +267,7 @@ export class NewserviceComponent implements OnInit {
     newservicecurrentObj.imageUrl = newserviceForm.imageUrl;
     newservicecurrentObj.createdBy = this.userService.currentUserValue.fullname;
     newservicecurrentObj.updatedBy = this.userService.currentUserValue.fullname;
+    newservicecurrentObj.packwithotherourserviceid = newserviceForm.packwithotherourserviceid;
     if (this.filename != null) {
       this.utilService.uploadAvatarsInS3(this.serviceImgURL, this.userService.currentUserValue.userId, this.filename).subscribe(
         (returnURL: string) => {
@@ -434,12 +452,12 @@ export class NewserviceComponent implements OnInit {
   }
 
   getCategoryByRefId(value: string) {
-    this.referencedetailsmap = [];
-    this.signupcomponent.referencedetailsmap.forEach(element => {
-      if (element.refId == value) {
-        this.referencedetailsmap.push(element);
-      }
-    });
+    this.referencedetailsmap = this.signupcomponent.referencedetailsmap.filter(x => x.refId == value);
+  }
+
+  getListOfNewServicesByMapId(category: string) {
+    this.listofnewservicebymapid = this.manageserviceComponent.listOfAllApprovedNewServices.
+    filter(x => (x.category === category || x.category === 'FS_S'));
   }
   getServiceTerms() {
     this.spinnerService.show();
@@ -451,7 +469,7 @@ export class NewserviceComponent implements OnInit {
         });
   }
 
-  uploadFile(event) {
+  uploadFile(event: { target: { files: any[]; }; }) {
     let reader = new FileReader(); // HTML5 FileReader API
     let file = event.target.files[0];
     if (file.type === config.imgtype_png.toString() || file.type === config.imgtype_jpeg.toString()

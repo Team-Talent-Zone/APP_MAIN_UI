@@ -1,93 +1,138 @@
-body, html {
-    height:100%;
-  }
+body,
+html {
+  height: 100%;
+}
 
- 
-
-  /*
+/*
    * Off Canvas sidebar at medium breakpoint
    * --------------------------------------------------
    */
-  @media screen and (max-width: 992px) {
-  
-    .row-offcanvas {
-      position: relative;
-      -webkit-transition: all 0.25s ease-out;
-      -moz-transition: all 0.25s ease-out;
-      transition: all 0.25s ease-out;
-    }
-  
-    .row-offcanvas-left
-    .sidebar-offcanvas {
-      left: -33%;
-    }
-  
-    .row-offcanvas-left.active {
-      left: 33%;
-      margin-left: -6px;
-    }
-  
-    .sidebar-offcanvas {
-      position: absolute;
-      top: 0;
-      width: 33%;
-      height: 100%;
-    }
+@media screen and (max-width: 992px) {
+  .row-offcanvas {
+    position: relative;
+    -webkit-transition: all 0.25s ease-out;
+    -moz-transition: all 0.25s ease-out;
+    transition: all 0.25s ease-out;
   }
-  
-  /*
+
+  .row-offcanvas-left .sidebar-offcanvas {
+    left: -33%;
+  }
+
+  .row-offcanvas-left.active {
+    left: 33%;
+    margin-left: -6px;
+  }
+
+  .sidebar-offcanvas {
+    position: absolute;
+    top: 0;
+    width: 33%;
+    height: 100%;
+  }
+}
+
+/*
    * Off Canvas wider at sm breakpoint
    * --------------------------------------------------
    */
-  @media screen and (max-width: 34em) {
-    .row-offcanvas-left
-    .sidebar-offcanvas {
-      left: -45%;
-    }
-  
-    .row-offcanvas-left.active {
-      left: 45%;
-      margin-left: -6px;
-    }
-    
-    .sidebar-offcanvas {
-      width: 45%;
-    }
-  }
-  
-  .card {
-      overflow:hidden;
-  }
-  
-  .card-body .rotate {
-      z-index: 8;
-      float: right;
-      height: 100%;
-  }
-  
-  .card-body .rotate i {
-      color: rgba(20, 20, 20, 0.15);
-      position: absolute;
-      left: 0;
-      left: auto;
-      right: -10px;
-      bottom: 0;
-      display: block;
-      -webkit-transform: rotate(-44deg);
-      -moz-transform: rotate(-44deg);
-      -o-transform: rotate(-44deg);
-      -ms-transform: rotate(-44deg);
-      transform: rotate(-44deg);
+@media screen and (max-width: 34em) {
+  .row-offcanvas-left .sidebar-offcanvas {
+    left: -45%;
   }
 
-  
-.profile-img-card {
-    width: 46px;
-    height: 46px;
-    margin: 0 auto 10px;
-    display: block;
-    -moz-border-radius: 50%;
-    -webkit-border-radius: 50%;
-    border-radius: 50%;
+  .row-offcanvas-left.active {
+    left: 45%;
+    margin-left: -6px;
   }
-  
+
+  .sidebar-offcanvas {
+    width: 45%;
+  }
+}
+
+.card {
+  overflow: hidden;
+}
+
+.card-body .rotate {
+  z-index: 8;
+  float: right;
+  height: 100%;
+}
+
+.card-body .rotate i {
+  color: rgba(20, 20, 20, 0.15);
+  position: absolute;
+  left: 0;
+  left: auto;
+  right: -10px;
+  bottom: 0;
+  display: block;
+  -webkit-transform: rotate(-44deg);
+  -moz-transform: rotate(-44deg);
+  -o-transform: rotate(-44deg);
+  -ms-transform: rotate(-44deg);
+  transform: rotate(-44deg);
+}
+
+.profile-img-card {
+  width: 46px;
+  height: 46px;
+  margin: 0 auto 10px;
+  display: block;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+}
+
+.combobox {
+  margin: auto;
+}
+
+.combobox-input {
+  width: 330px;
+  border: none;
+  padding: 10px;
+  font-size: 18px;
+  border-bottom: 2px solid rgb(165, 112, 112);
+}
+
+.combobox-input:focus {
+  outline-style: none;
+}
+
+.combobox-options {
+  position: absolute;
+  text-align: center;
+  background-color: white;
+  width: 350px;
+  max-height: 200px;
+  overflow-y: auto;
+  box-shadow: 2px 2px 2px 2px #ccc;
+  z-index: 1;
+}
+
+.selected {
+  color: cornsilk;
+  background-color: rgb(165, 112, 112);
+}
+
+list-item {
+  display: block;
+  font-size: 18px;
+  padding: 10px;
+}
+
+list-item:hover {
+  background-color: grey;
+  color: white;
+}
+
+.error-text {
+  color: rgb(165, 112, 112);
+}
+
+.error {
+  border: 1px solid red;
+}
