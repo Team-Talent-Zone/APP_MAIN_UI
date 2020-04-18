@@ -114,6 +114,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ApiService,
     DashboardofcbaComponent,
     ManageserviceComponent,
+    ManageuserComponent,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpErrorInterceptor,
