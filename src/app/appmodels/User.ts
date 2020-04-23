@@ -28,6 +28,6 @@ export class User  {
         public freelancedocumententity: FreelanceDocuments[] = [],
         public usermanagerdetailsentity: UserManagerDetails,
     ) {
-
+        
     }
 }

@@ -47,6 +47,8 @@ import { DashboardoffuComponent } from './dashboardoffu/dashboardoffu.component'
 import { DashboardofadminComponent } from './dashboardofadmin/dashboardofadmin.component';
 import { DashboardsearchfuComponent } from './dashboardsearchfu/dashboardsearchfu.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { UserServiceDetails } from './appmodels/UserServiceDetails';
+import { UsersrvdetailsService } from './AppRestCall/userservice/usersrvdetails.service';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -115,6 +117,9 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     DashboardofcbaComponent,
     ManageserviceComponent,
     ManageuserComponent,
+    HeaderComponent,
+    UsersrvdetailsService,
+    UserServiceDetails,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpErrorInterceptor,
