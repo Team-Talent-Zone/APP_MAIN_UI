@@ -16,8 +16,9 @@
         <span *ngIf="showError" class="error-text"><i>Invalid Selection.</i></span>
         <div class="combobox-options" *ngIf="!listHidden">
             <list-item *ngFor="let item of filteredList;let i = index" (click)="selectItem(i)"
-                [ngClass]="{'selected': i===selectedIndex}">{{item}}</list-item>
+                [ngClass]="{'selected': i===selectedIndex}">{{item.label}}</list-item>
         </div>
+    {{inputItem}}
         <button (click)="searchFU(inputItem)"> Search </button>
     </div>
     <div class="navbar-collapse collapse" id="collapsingNavbar">

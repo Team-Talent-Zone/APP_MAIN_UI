@@ -44,10 +44,14 @@ export class DashboardComponent implements OnInit {
     translate.setDefaultLang(config.lang_english_word.toString());
     const browserLang = translate.getBrowserLang();
     translate.use(browserLang.match(/English|తెలుగు|हिंदी/) ? browserLang : config.lang_english_word.toString());
+    this.signupComponent.getAllCategories(this.userService.currentUserValue.preferlang.toString());
   }
 
   ngOnInit() {
-    this.list = ['carrot', 'banana', 'apple', 'potato', 'tomato', 'cabbage', 'turnip', 'okra', 'onion', 'cherries', 'plum', 'mango'];
+    this.list = [];
+    this.signupComponent.referencedetailsmapsubcat.forEach(element => {
+      this.list.push(element);
+    });
     this.filteredList = this.list;
     this.userService.getUserByUserId(this.userService.currentUserValue.userId).subscribe(
       (userresp: any) => {
@@ -112,15 +116,14 @@ export class DashboardComponent implements OnInit {
     this.listHidden = false;
     // this.selectedIndex = 0;
     if (!this.listHidden && this.inputItem !== undefined) {
-      this.filteredList = this.list.filter((item) => item.toLowerCase().startsWith(this.inputItem.toLowerCase()));
-      //  this.filteredList = this.list.filter((item) => item.toLowerCase().startsWith(this.inputItem.toLowerCase()));
+          this.filteredList = this.list.filter((item) => item.label.toLowerCase().startsWith(this.inputItem.toLowerCase()));
     }
   }
 
   // select highlighted item when enter is pressed or any item that is clicked
   selectItem(ind) {
-    // const obj = this.refAdapter.adapt(this.filteredList[ind]);
-    this.inputItem = this.filteredList[ind];
+    const obj = this.refAdapter.adapt(this.filteredList[ind]);
+    this.inputItem = obj.label;
     this.listHidden = true;
     this.selectedIndex = ind;
   }
@@ -173,9 +176,9 @@ export class DashboardComponent implements OnInit {
       setTimeout(() => {
         this.selectItem(this.selectedIndex);
         this.listHidden = true;
-        if (!this.list.includes(this.inputItem)) {
+        if (!this.list.filter(items => items.label.toLowerCase().includes(this.inputItem.toLowerCase()))) {
           this.showError = true;
-          this.filteredList = this.list;
+          this.filteredList = this.list; 
         } else {
           this.showError = false;
         }

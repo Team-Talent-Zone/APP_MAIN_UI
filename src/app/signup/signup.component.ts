@@ -189,7 +189,7 @@ export class SignupComponent implements OnInit {
                 this.usrObj = this.userAdapter.adapt(resp);
                 if (this.usrObj.userId > 0) {
                   //call userservice table
-                  if(this.ourserviceid > 0) {
+                /*  if(this.ourserviceid > 0) {
                     this.usersrvobj.ourserviceId = this.ourserviceid;
                     this.usersrvobj.userId = this.usrObj.userId;
                     this.usersrvobj.createdon = this.usrObj.fullname;
@@ -204,7 +204,7 @@ export class SignupComponent implements OnInit {
                           this.alertService.error(error);
                         }
                       );
-                  }
+                  }*/
                   this.referService.getLookupTemplateEntityByShortkey(config.shortkey_email_verificationemailaddress.toString()).subscribe(
                     referencetemplate => {
                       this.templateObj = this.reflookuptemplateAdapter.adapt(referencetemplate);
