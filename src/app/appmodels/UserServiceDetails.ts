@@ -4,7 +4,7 @@ export class UserServiceDetails  {
     constructor(
         public serviceId: number,
         public ourserviceId: number,
-        public userId: number,
+        public userid: number,
         public createdby: string,
         public createdon: string,
         public isactive: boolean,

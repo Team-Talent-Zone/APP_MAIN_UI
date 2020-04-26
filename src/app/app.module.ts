@@ -48,6 +48,7 @@ import { DashboardofadminComponent } from './dashboardofadmin/dashboardofadmin.c
 import { DashboardsearchbyfilterComponent } from './dashboardsearchbyfilter/dashboardsearchbyfilter.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { UsersrvdetailsService } from './AppRestCall/userservice/usersrvdetails.service';
+import { UserServicedetailsAdapter } from './adapters/userserviceadapter';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -118,6 +119,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ManageuserComponent,
     HeaderComponent,
     UsersrvdetailsService,
+    UserServicedetailsAdapter,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpErrorInterceptor,
