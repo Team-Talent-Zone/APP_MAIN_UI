@@ -14,26 +14,32 @@
 
         <div class="row">
             <div class="col-xs-12 col-sm-6 col-md-4" *ngFor="let fuuser of userFUObjList">
-                <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
-                    <div class="mainflip">
-                        <div class="frontside">
-                            <div class="card">
-                                <div class="card-body text-center">
-                                    <p><img class=" img-fluid" src="{{fuuser.avtarurl}}" alt="card image"></p>
-                                    <h4 class="card-title">{{fuuser.fullname}}</h4>
-                                    <p class="card-text">{{fuuser.userbizdetails.shortaddress}}</p>
-                                    <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
+                <div class="card">
+                    <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
+                        <div class="mainflip">
+                            <div class="frontside">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <p><img class=" img-fluid" src="{{fuuser.avtarurl}}" alt="card image"></p>
+                                        <h4 class="card-title">{{fuuser.fullname}}</h4>
+                                        <p class="card-text">{{fuuser.userbizdetails.shortaddress}}</p>
+                                        <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-exchange "></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="backside">
+                                <div class="card">
+                                    <div class="card-body text-center ">
+                                        <h4 class="card-title">About {{fuuser.fullname}}</h4>
+                                        <p class="card-text">{{fuuser.freeLanceDetails.abt}}</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="backside">
-                            <div class="card">
-                                <div class="card-body text-center mt-4">
-                                    <h4 class="card-title">About {{fuuser.fullname}}</h4>
-                                    <p class="card-text">{{fuuser.freeLanceDetails.abt}}</p>
-                                </div>
-                            </div>
-                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i>
+                        Create a Job for {{fuuser.fullname}}</a>
                     </div>
                 </div>
             </div>
