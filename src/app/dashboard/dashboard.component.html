@@ -9,20 +9,28 @@
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="combobox">
+
+    <select #sel [(ngModel)]="filterOn" (change)="onSearchByFilterSelected(sel.value)"
+        *ngIf="this.userService.currentUserValue.userroles.rolecode != 'FREELANCER_USER'">
+        <option value="0">Search By Filter</option>
+        <option value='FU' *ngIf="this.userService.currentUserValue.userroles.rolecode != 'FREELANCER_USER'">Freelancer
+            By Skill</option>
+        <option value='NS' *ngIf="this.userService.currentUserValue.userroles.rolecode != 'FREELANCER_USER'">Services
+        </option>
+
+    </select>
+
+    <div class="combobox" *ngIf="this.userService.currentUserValue.userroles.rolecode != 'FREELANCER_USER'">
         <input type="text" [(ngModel)]="inputItem" (ngModelChange)="getFilteredList()" class="combobox-input"
             (keyup)="onKeyPress($event)" (blur)="toggleListDisplay(0)" (focus)="toggleListDisplay(1)"
-            placeholder="Select one..." [ngClass]="{'error': showError}">
+            placeholder="Search by keyword or select one..." [ngClass]="{'error': showError}">
         <span *ngIf="showError" class="error-text"><i>Invalid Selection.</i></span>
         <div class="combobox-options" *ngIf="!listHidden">
             <list-item *ngFor="let item of filteredList;let i = index" (click)="selectItem(i)"
                 [ngClass]="{'selected': i===selectedIndex}">{{item.label}}
             </list-item>
         </div>
-        <select [(ngModel)]="filterOn">
-            <option value="0">Select Filter</option>
-            <option value='FU'>Freelancers</option>
-        </select>
+
         <button (click)="search( inputItemCode , inputItem , filterOn)"> Search </button>
     </div>
     <div class="navbar-collapse collapse" id="collapsingNavbar">

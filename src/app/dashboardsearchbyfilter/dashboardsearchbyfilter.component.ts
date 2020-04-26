@@ -1,5 +1,5 @@
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
-import { UserService } from './../AppRestCall/user/user.service';
+import { UserService } from '../AppRestCall/user/user.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { config } from '../appconstants/config';
@@ -7,16 +7,17 @@ import { AlertsService } from '../AppRestCall/alerts/alerts.service';
 import { UserAdapter } from '../adapters/useradapter';
 
 @Component({
-  selector: 'app-dashboardsearchfu',
-  templateUrl: './dashboardsearchfu.component.html',
-  styleUrls: ['./dashboardsearchfu.component.css']
+  selector: 'app-dashboardsearchbyfilter',
+  templateUrl: './dashboardsearchbyfilter.component.html',
+  styleUrls: ['./dashboardsearchbyfilter.component.css']
 })
-export class DashboardsearchfuComponent implements OnInit {
+export class DashboardsearchbyfilterComponent implements OnInit {
 
   code: string;
   name: string;
-  filtername: string;
+  searchbyfiltername: string;
   userFUObjList: any = [];
+  isNotFound = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -29,25 +30,31 @@ export class DashboardsearchfuComponent implements OnInit {
     route.params.subscribe(params => {
       this.code = params.code;
       this.name = params.name;
-      this.filtername = params.filtername;
+      this.searchbyfiltername = params.filtername;
     });
   }
 
   ngOnInit() {
-    console.log(' search item', this.name);
-    console.log(' search filtername', this.userService.currentUserValue.userroles.rolecode);
-    if (this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_cba.toString() ||
+    this.searchByFilterFreelancer();
+  }
+
+  searchByFilterFreelancer() {
+    this.userFUObjList = [];
+    if (this.searchbyfiltername === config.search_byfilter_fu.toString() &&
+      this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_cba.toString() ||
       this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_csct.toString() ||
       this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_cscm.toString()) {
       this.userService.getUserDetailsByJobAvailable().subscribe(
         (userObjList: any) => {
           userObjList.forEach(element => {
-            console.log('.freeLanceDetails.subCategory', element.freeLanceDetails.subCategory);
-            if (element.freeLanceDetails.subCategory === this.code) {
+            if (element.freeLanceDetails.subCategory === this.code &&
+              element.userbizdetails.city === this.userService.currentUserValue.userbizdetails.city) {
               this.userFUObjList.push(this.userAdapter.adapt(element));
             }
           });
-          console.log("this.userFUObjList", this.userFUObjList);
+          if (this.userFUObjList.length === 0) {
+            this.isNotFound = true;
+          }
         },
         error => {
           this.spinnerService.hide();

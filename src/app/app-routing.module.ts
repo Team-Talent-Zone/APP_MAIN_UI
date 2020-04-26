@@ -1,4 +1,4 @@
-import { DashboardsearchfuComponent } from './dashboardsearchfu/dashboardsearchfu.component';
+import { DashboardsearchbyfilterComponent } from './dashboardsearchbyfilter/dashboardsearchbyfilter.component';
 import { HomepriceComponent } from './homepricesection/homeprice.component';
 import { ManageuserserviceComponent } from './manageuserservice/manageuserservice.component';
 import { NewserviceComponent } from './newservice/newservice.component';
@@ -92,7 +92,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        component: DashboardsearchfuComponent
+        component: DashboardsearchbyfilterComponent
       }
     ]
   },

@@ -1,15 +1,18 @@
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
- 
-<!------ Include the above in your HEAD tag ---------->
 
-<!-- Team -->
-<section id="team" class="pb-5">
-    <div class="container" *ngIf="userFUObjList.length > 0; else noRecordsFound;">
-        <h5 class="section-title h1" *ngIf="userFUObjList.length > 0">
-            Available {{name}}'s
+<!-- Freelance Search Section -->
+<section id="team" class="pb-5" *ngIf="userFUObjList.length > 0; ">
+    <div class="container">
+        <h5 class="section-title h1" *ngIf="userFUObjList.length == 1; else morethanone">
+            Available {{name}} at your city
         </h5>
+        <ng-template #morethanone>
+            <h5 class="section-title h1" *ngIf="userFUObjList.length > 1">
+                Available {{name}}'s at your city
+            </h5>
+        </ng-template>
+
         <div class="row">
-            <!-- Freelance member -->
             <div class="col-xs-12 col-sm-6 col-md-4" *ngFor="let fuuser of userFUObjList">
                 <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
                     <div class="mainflip">
@@ -18,7 +21,7 @@
                                 <div class="card-body text-center">
                                     <p><img class=" img-fluid" src="{{fuuser.avtarurl}}" alt="card image"></p>
                                     <h4 class="card-title">{{fuuser.fullname}}</h4>
-                                    <p class="card-text">{{fuuser.userbizdetails.fulladdress}}</p>
+                                    <p class="card-text">{{fuuser.userbizdetails.shortaddress}}</p>
                                     <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
                                 </div>
                             </div>
@@ -35,9 +38,9 @@
                 </div>
             </div>
         </div>
-        <ng-template #noRecordsFound>
-            <h3> No {{name}} Found </h3>
-         </ng-template>
     </div>
 </section>
-<!-- Freelancers -->
+<!-- Freelancer Search Section Ended -->
+<div *ngIf="isNotFound">
+    <h3> No {{name}} Found </h3>
+</div>

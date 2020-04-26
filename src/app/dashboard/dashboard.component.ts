@@ -47,15 +47,10 @@ export class DashboardComponent implements OnInit {
     translate.setDefaultLang(config.lang_english_word.toString());
     const browserLang = translate.getBrowserLang();
     translate.use(browserLang.match(/English|తెలుగు|हिंदी/) ? browserLang : config.lang_english_word.toString());
-    this.signupComponent.getAllCategories(this.userService.currentUserValue.preferlang.toString());
   }
 
   ngOnInit() {
-    this.list = [];
-    this.signupComponent.referencedetailsmapsubcat.forEach(element => {
-      this.list.push(element);
-    });
-    this.filteredList = this.list;
+    this.signupComponent.getAllCategories(this.userService.currentUserValue.preferlang.toString());
     this.userService.getUserByUserId(this.userService.currentUserValue.userId).subscribe(
       (userresp: any) => {
         this.userService.setCurrentUserValue(userresp);
@@ -69,20 +64,6 @@ export class DashboardComponent implements OnInit {
             config.bg_code_rejected) {
             this.showmenufu = false;
           }
-        }
-        if (this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_cba) {
-          console.log('this.list length', this.list.length);
-          if (this.list.length === 0) {
-            this.signupComponent.getAllCategories(this.userService.currentUserValue.preferlang.toString());
-            this.filteredList = [];
-            setTimeout(() => {
-              this.signupComponent.referencedetailsmapsubcat.forEach((element: any) => {
-                this.list.push(element);
-                this.filteredList.push(element);
-              });
-            }, 500);
-          }
-          console.log(' this.filteredList', this.filteredList);
         }
         this.spinnerService.hide();
       },
@@ -110,21 +91,41 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['/app']);
   }
 
-  search(inputItemCode: string, inputItem: string, filterOn: string) {
+  search(inputItemCode: string, inputItem: string, searchByFilterName: string) {
     const obj = this.list.filter((item) => item.code.startsWith(inputItemCode));
-    if (obj.length === 0) {
-      this.alertService.error(' Please search for the text');
+    if (searchByFilterName.length === 1) {
+      this.alertService.error(' Please select the filter');
     } else
-      if (filterOn.length === 1) {
-        this.alertService.error(' Please select the filter');
+      if (obj.length === 0) {
+        this.alertService.error(' Please search or select ');
       } else {
         this.router.navigateByUrl('fusearch/', { skipLocationChange: true }).
           then(() => {
-            this.router.navigate(['dashboard/' + inputItemCode + '/' + inputItem + '/' + filterOn]);
+            this.router.navigate(['dashboard/' + inputItemCode + '/' + inputItem + '/' + searchByFilterName]);
           });
       }
   }
 
+  onSearchByFilterSelected(searchByFilterName: string) {
+    if (searchByFilterName === config.search_byfilter_fu) {
+      this.list = [];
+      this.filteredList = [];
+      this.signupComponent.referencedetailsmapsubcat.forEach(element => {
+        this.list.push(element);
+      });
+      this.filteredList = this.list;
+      if (this.list.length === 0) {
+        this.signupComponent.getAllCategories(this.userService.currentUserValue.preferlang.toString());
+        this.filteredList = [];
+        setTimeout(() => {
+          this.signupComponent.referencedetailsmapsubcat.forEach((element: any) => {
+            this.list.push(element);
+            this.filteredList.push(element);
+          });
+        }, 500);
+      }
+    }
+  }
   // modifies the filtered list as per input
   getFilteredList() {
     this.listHidden = false;

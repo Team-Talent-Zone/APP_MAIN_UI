@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DashboardsearchfuComponent } from './dashboardsearchfu.component';
+import { DashboardsearchbyfilterComponent } from './dashboardsearchbyfilter.component';
 
 describe('DashboardsearchfuComponent', () => {
-  let component: DashboardsearchfuComponent;
-  let fixture: ComponentFixture<DashboardsearchfuComponent>;
+  let component: DashboardsearchbyfilterComponent;
+  let fixture: ComponentFixture<DashboardsearchbyfilterComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DashboardsearchfuComponent ]
+      declarations: [ DashboardsearchbyfilterComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DashboardsearchfuComponent);
+    fixture = TestBed.createComponent(DashboardsearchbyfilterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

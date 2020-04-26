@@ -56,8 +56,8 @@ export const config = {
   newservice_code_approved: 'APPROVED',
   newservice_code_rejected: 'REJECTED',
   category_code_A_S: 'A_S',
-  category_code_FS_S: 'FS_S'
-
+  category_code_FS_S: 'FS_S',
+  search_byfilter_fu: 'FU'
 };
 
 

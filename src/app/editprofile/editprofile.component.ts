@@ -5,10 +5,11 @@ import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { first } from 'rxjs/operators';
 import { AlertsService } from '../AppRestCall/alerts/alerts.service';
 import { User } from '../appmodels/User';
-import { Component, OnInit, ChangeDetectorRef, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ElementRef, ViewChild, NgZone } from '@angular/core';
 import { UtilService } from '../AppRestCall/util/util.service';
 import { UserAdapter } from '../adapters/useradapter';
 import { config } from 'src/app/appconstants/config';
+
 import {
   FormBuilder,
   FormGroup,
@@ -20,6 +21,7 @@ import { ApiService, Maps } from '../adapters/api.service';
   templateUrl: './editprofile.component.html',
   styleUrls: ['./editprofile.component.css']
 })
+
 export class EditprofileComponent implements OnInit {
 
   @ViewChild('search', null)
@@ -43,19 +45,25 @@ export class EditprofileComponent implements OnInit {
   typenationalid: string;
   msgflag = false;
   msgflagboth = false;
+  route: string;
+  city: string;
+  state: string;
+  country: string;
+  shortAddress: string;
 
   constructor(
     public fb: FormBuilder,
     private cd: ChangeDetectorRef,
     public userService: UserService,
-    private route: ActivatedRoute,
+    route: ActivatedRoute,
     private spinnerService: Ng4LoadingSpinnerService,
     private alertService: AlertsService,
     private utilService: UtilService,
     private formBuilder: FormBuilder,
     private userAdapter: UserAdapter,
     public signupComponent: SignupComponent,
-    apiService: ApiService
+    apiService: ApiService,
+    private ngZone: NgZone
   ) {
     route.params.subscribe(params => {
       this.id = params.id;
@@ -73,10 +81,31 @@ export class EditprofileComponent implements OnInit {
       this.signupComponent.getAllCategories(this.userService.currentUserValue.preferlang);
     }
   }
-  
+
   initAutocomplete(maps: Maps) {
     let autocomplete = new maps.places.Autocomplete(this.searchElementRef.nativeElement);
+    autocomplete.addListener('place_changed', () => {
+      this.ngZone.run(() => {
+        autocomplete.getPlace().address_components.forEach(element => {
+          if (element.types[0] === 'route') {
+            this.route = element.long_name;
+          }
+          if (element.types[0] === 'locality') {
+            this.city = element.long_name;
+          }
+          if (element.types[0] === 'administrative_area_level_1') {
+            this.state = element.long_name;
+          }
+          if (element.types[0] === 'country') {
+            this.country = element.short_name;
+          }
+          this.shortAddress = this.route + ',' + this.city + ',' + this.state + ',' + this.country;
+        });
+        console.log('this.shortAddress 1', this.shortAddress);
+      });
+    });
   }
+
 
   editProfileFormValidations() {
     if (this.roleCode === config.user_rolecode_cba.toString()) {
@@ -175,6 +204,21 @@ export class EditprofileComponent implements OnInit {
     this.edituserobj.lastname = this.editprofileForm.get('lastname').value;
     this.edituserobj.preferlang = this.editprofileForm.get('preferlang').value;
     this.edituserobj.userbizdetails.fulladdress = this.searchElementRef.nativeElement.value;
+    if (this.route != null) {
+      this.edituserobj.userbizdetails.route = this.route;
+    }
+    if (this.city != null) {
+      this.edituserobj.userbizdetails.city = this.city;
+    }
+    if (this.state != null) {
+      this.edituserobj.userbizdetails.state = this.state;
+    }
+    if (this.country != null) {
+      this.edituserobj.userbizdetails.country = this.country;
+    }
+    if (this.shortAddress != null) {
+      this.edituserobj.userbizdetails.shortaddress = this.shortAddress;
+    }
     if (this.roleCode === config.user_rolecode_cba.toString()) {
       this.edituserobj.userbizdetails.bizname = this.editprofileForm.get('bizname').value;
       this.edituserobj.userbizdetails.biztype = this.editprofileForm.get('biztype').value;
@@ -209,7 +253,7 @@ export class EditprofileComponent implements OnInit {
           this.msgflag = true;
         }
     if (this.typenationalid !== config.profiletype_nationalid.toString() && this.typeavt !== config.profiletype_avatar.toString()) {
-      this.saveorupdateedituser(this.edituserobj, null);
+      this.saveorupdateedituser(this.edituserobj);
       if (this.msgflag) {
         this.alertService.success(this.edituserobj.firstname + ' your account details is updated');
         this.msgflag = false;
@@ -220,7 +264,7 @@ export class EditprofileComponent implements OnInit {
         this.utilService.uploadAvatarsInS3(this.avatarURL, this.editprofileuserId, this.filename).subscribe(
           (returnURL: string) => {
             this.edituserobj.avtarurl = returnURL;
-            this.saveorupdateedituser(this.edituserobj, this.typeavt);
+            this.saveorupdateedituser(this.edituserobj);
             if (this.msgflag) {
               this.alertService.success(this.edituserobj.firstname + ' your account details is updated with profile pic');
               this.msgflag = false;
@@ -238,7 +282,7 @@ export class EditprofileComponent implements OnInit {
             this.msgflagboth = true;
           }
           this.edituserobj.freeLanceDetails.uploadValidPhotoidImgUrl = returnURL;
-          this.saveorupdateedituser(this.edituserobj, this.typenationalid);
+          this.saveorupdateedituser(this.edituserobj);
           if (this.msgflag) {
             this.alertService.success(this.edituserobj.firstname + ' your account details is updated with photo id');
             this.msgflag = false;
@@ -258,7 +302,7 @@ export class EditprofileComponent implements OnInit {
     }
   }
 
-  private saveorupdateedituser(edituserobj: User, type: any) {
+  private saveorupdateedituser(edituserobj: User) {
     this.userService.saveorupdate(edituserobj).subscribe(
       (userObj: any) => {
         this.usrObj = this.userAdapter.adapt(userObj);

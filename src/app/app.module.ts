@@ -45,7 +45,7 @@ import { ViewnewsevicedetailsComponent } from './viewnewsevicedetails/viewnewsev
 import { DashboardofcbaComponent } from './dashboardofcba/dashboardofcba.component';
 import { DashboardoffuComponent } from './dashboardoffu/dashboardoffu.component';
 import { DashboardofadminComponent } from './dashboardofadmin/dashboardofadmin.component';
-import { DashboardsearchfuComponent } from './dashboardsearchfu/dashboardsearchfu.component';
+import { DashboardsearchbyfilterComponent } from './dashboardsearchbyfilter/dashboardsearchbyfilter.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { UsersrvdetailsService } from './AppRestCall/userservice/usersrvdetails.service';
 
@@ -81,7 +81,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     DashboardofcbaComponent,
     DashboardoffuComponent,
     DashboardofadminComponent,
-    DashboardsearchfuComponent
+    DashboardsearchbyfilterComponent
     ],
   imports: [
     BrowserModule,
