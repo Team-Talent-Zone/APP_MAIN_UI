@@ -1,7 +1,7 @@
 import { HttpHeaders } from '@angular/common/http';
 
 export const config = {
-//  httpHeaders : { headers: new HttpHeaders({Authorization: 'Basic cmVzdHNlcnZpY2ViYXNpY2F1dGh1c2VyOlRMIzIwMTdAUkVTVCo4MzI0NjMkIw=='})},
+  //  httpHeaders : { headers: new HttpHeaders({Authorization: 'Basic cmVzdHNlcnZpY2ViYXNpY2F1dGh1c2VyOlRMIzIwMTdAUkVTVCo4MzI0NjMkIw=='})},
   key_domain: 'domain',
   key_service_term: 'Service_Period',
   key_bgstatus: 'BG_Status',
@@ -57,7 +57,8 @@ export const config = {
   newservice_code_rejected: 'REJECTED',
   category_code_A_S: 'A_S',
   category_code_FS_S: 'FS_S',
-  search_byfilter_fu: 'FU'
+  search_byfilter_fu: 'FU',
+  cba_service_event_shortkey: 'service_add',
 };
 
 

@@ -38,6 +38,7 @@ export class SignupComponent implements OnInit {
 
   key: string;
   signupForm: FormGroup;
+  userservicedetailsForm: FormGroup;
   issubmit = false;
   issubcatdisplay = false;
   referencedetailsmap = [];
@@ -68,7 +69,6 @@ export class SignupComponent implements OnInit {
     private sendemailService: SendemailService,
     private reflookuptemplateAdapter: ReferenceLookUpTemplateAdapter,
     private usersrvDetails: UsersrvdetailsService,
-    private userservicedetailsAdapter:UserServicedetailsAdapter,
   ) {
   }
 
@@ -190,14 +190,28 @@ export class SignupComponent implements OnInit {
                 this.usrObj = this.userAdapter.adapt(resp);
                 if (this.usrObj.userId > 0) {
                   if (this.ourserviceid > 0) {
-                    this.usersrvDetails.saveUserServiceDetails(this.usersrvobj , this.usrObj , this.ourserviceid).subscribe(() =>
-                      () => {
+                    this.referService.getReferenceLookupByShortKey(config.cba_service_event_shortkey.toString()).subscribe(
+                      (refCodeStr: string) => {
+                        this.userservicedetailsForm = this.formBuilder.group({
+                          ourserviceId: this.ourserviceid,
+                          userid: this.usrObj.userId,
+                          createdby: this.usrObj.fullname,
+                          status: refCodeStr,
+                          userServiceEventHistory: []
+                        });
+                        this.usersrvDetails.saveUserServiceDetails(this.userservicedetailsForm.value, refCodeStr).subscribe(() =>
+                          () => {
+                          },
+                          error => {
+                            this.spinnerService.hide();
+                            this.alertService.error(error);
+                          }
+                        );
                       },
                       error => {
                         this.spinnerService.hide();
                         this.alertService.error(error);
-                      }
-                    );
+                      });
                   }
                   this.referService.getLookupTemplateEntityByShortkey(config.shortkey_email_verificationemailaddress.toString()).subscribe(
                     referencetemplate => {
