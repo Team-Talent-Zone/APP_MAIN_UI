@@ -27,8 +27,8 @@ export class UserService {
     private http: HttpClient,
     private userAdapter: UserAdapter,
   ) {
-      this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
-      this.currentUser = this.currentUserSubject.asObservable();
+    this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
+    this.currentUser = this.currentUserSubject.asObservable();
   }
 
   public get currentUserValue(): User {
@@ -37,10 +37,10 @@ export class UserService {
   public setCurrentUserValue(userobj: User) {
     this.currentUserSubject.next(userobj);
   }
-  loginUserByUsername(username: string , password: string) {
-    return this.http.get(`${environment.apiUrl}/findByUsername/` + username + '/' + password  + '/') .pipe(map(user => {
+  loginUserByUsername(username: string, password: string) {
+    return this.http.get(`${environment.apiUrl}/findByUsername/` + username + '/' + password + '/').pipe(map(user => {
       this.usrObj = this.userAdapter.adapt(user);
-     // store user details and jwt token in local storage to keep user logged in between page refreshes
+      // store user details and jwt token in local storage to keep user logged in between page refreshes
       localStorage.setItem('currentUser', JSON.stringify(this.usrObj));
       this.currentUserSubject.next(this.usrObj);
     }));
@@ -50,9 +50,9 @@ export class UserService {
     // remove user from local storage to log user out
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
-}
+  }
 
-  saveUser(user: any , refCode: string , shortkey: string , userobj: User) {
+  saveUser(user: any, refCode: string, shortkey: string, userobj: User) {
     userobj.createdby = user.firstname;
     userobj.avtarurl = config.default_avatar;
     userobj.updateby = user.firstname;
@@ -68,55 +68,58 @@ export class UserService {
       this.freelanceobj.bgstatus = config.bg_code_incompleteprofile;
       userobj.freelancehistoryentity.push(this.freelanceobj);
     } else
-    if (shortkey === config.shortkey_role_csst ||
-       shortkey === config.shortkey_role_cssm) {
+      if (shortkey === config.shortkey_role_csst ||
+        shortkey === config.shortkey_role_cssm) {
         userobj.createdby = this.currentUserValue.firstname + ' ' + this.currentUserValue.lastname;
         userobj.updateby = this.currentUserValue.firstname + ' ' + this.currentUserValue.lastname;
         userobj.usermanagerdetailsentity = new UserManagerDetails();
         userobj.usermanagerdetailsentity.managerid = this.currentUserValue.userId;
         userobj.password = user.password;
         userobj.preferlang = user.preferlang;
-    }
+      }
     return this.http.post(`${environment.apiUrl}/saveUser/`, userobj);
   }
 
   checkusernamenotexist(username: string) {
-   return this.http.get(`${environment.apiUrl}/checkusernamenotexist/` + username + '/');
+    return this.http.get(`${environment.apiUrl}/checkusernamenotexist/` + username + '/');
   }
 
   checkusername(username: string) {
     return this.http.get(`${environment.apiUrl}/checkusername/` + username + '/');
-   }
+  }
 
-   saveorupdate(user: User) {
+  saveorupdate(user: User) {
     return this.http.post(`${environment.apiUrl}/saveorupdateuser/`, user);
-   }
+  }
 
-   saveFreeLanceHistory(freelanceHistory: FreelanceHistory) {
+  saveFreeLanceHistory(freelanceHistory: FreelanceHistory) {
     return this.http.post(`${environment.apiUrl}/saveFreeLanceHistory/`, freelanceHistory);
-   }
+  }
 
-   saveFreeLanceDocument(freelanceDocuments: FreelanceDocuments) {
+  saveFreeLanceDocument(freelanceDocuments: FreelanceDocuments) {
     return this.http.post(`${environment.apiUrl}/saveFreeLanceDocument/`, freelanceDocuments);
-   }
+  }
 
-   getUserByUserId(userId: number) {
+  getUserByUserId(userId: number) {
     return this.http.get(`${environment.apiUrl}/getUserByUserId/` + userId + '/');
-   }
+  }
+  getUserDetailsByJobAvailable() {
+    return this.http.get(`${environment.apiUrl}/getUserDetailsByJobAvailable/`);
+  }
 
-   forgetPassword(username: string) {
+  forgetPassword(username: string) {
     return this.http.get(`${environment.apiUrl}/forgetPassword/` + username + '/');
-   }
+  }
 
-   prepareAdminToSignUp(username: string) {
+  prepareAdminToSignUp(username: string) {
     return this.http.get(`${environment.apiUrl}/prepareAdminToSignUp/` + username + '/');
-   }
+  }
 
-   saveUserNotification(usernotification: UserNotification) {
+  saveUserNotification(usernotification: UserNotification) {
     return this.http.post(`${environment.apiUrl}/saveUserNotification/`, usernotification);
-   }
+  }
 
-   getAllUsers() {
+  getAllUsers() {
     return this.http.get(`${environment.apiUrl}/getAllUsers/`);
-   }
+  }
 }

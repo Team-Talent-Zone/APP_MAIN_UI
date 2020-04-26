@@ -67,7 +67,7 @@ export class SignupComponent implements OnInit {
     private referService: ReferenceService,
     private sendemailService: SendemailService,
     private reflookuptemplateAdapter: ReferenceLookUpTemplateAdapter,
-    private usersrvDetails:UsersrvdetailsService,
+    private usersrvDetails: UsersrvdetailsService,
   ) {
   }
 
@@ -76,7 +76,6 @@ export class SignupComponent implements OnInit {
     if (this.key === config.shortkey_role_fu.toString()) {
       this.getAllCategories(this.langcode);
     }
-    console.log("checking this values",this.ourserviceid,this.key);
   }
 
   formValidations() {
@@ -188,23 +187,23 @@ export class SignupComponent implements OnInit {
               (resp) => {
                 this.usrObj = this.userAdapter.adapt(resp);
                 if (this.usrObj.userId > 0) {
-                  //call userservice table
-                /*  if(this.ourserviceid > 0) {
+                  if (this.ourserviceid > 0) {
                     this.usersrvobj.ourserviceId = this.ourserviceid;
                     this.usersrvobj.userId = this.usrObj.userId;
                     this.usersrvobj.createdon = this.usrObj.fullname;
                     this.usersrvobj.userServiceEventHistory = new Array<UserServiceEventHistoryEntity>();
-                    this.usersrvhistobj = new UserServiceEventHistoryEntity()
+                    this.usersrvhistobj = new UserServiceEventHistoryEntity();
                     this.usersrvhistobj.userId = this.usrObj.userId;
                     this.usersrvobj.userServiceEventHistory.push(this.usersrvhistobj);
-                    console.log(' this.usersrvobj' , this.usersrvobj);
                     this.usersrvDetails.saveUserServiceDetails(this.usersrvobj).subscribe(() =>
-                        (error: string) => {
-                          this.spinnerService.hide();
-                          this.alertService.error(error);
-                        }
-                      );
-                  }*/
+                      () => {
+                      },
+                      error => {
+                        this.spinnerService.hide();
+                        this.alertService.error(error);
+                      }
+                    );
+                  }
                   this.referService.getLookupTemplateEntityByShortkey(config.shortkey_email_verificationemailaddress.toString()).subscribe(
                     referencetemplate => {
                       this.templateObj = this.reflookuptemplateAdapter.adapt(referencetemplate);

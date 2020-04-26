@@ -12,8 +12,8 @@ export class UsersrvdetailsService {
     private http: HttpClient,
   ) { }
 
-  /*saveUserServiceDetails(usersrvobj: UserServiceDetails) {
+  saveUserServiceDetails(usersrvobj: UserServiceDetails) {
     return this.http.post(`${environment.apiUrl}/saveUserServiceDetails/`, usersrvobj);
-  }*/
+  }
 
 }

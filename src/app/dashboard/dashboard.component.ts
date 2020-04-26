@@ -30,6 +30,8 @@ export class DashboardComponent implements OnInit {
   selectedIndex = -1;
   // the list to be shown after filtering
 
+  filterOn = '0';
+
   constructor(
     public userService: UserService,
     private router: Router,
@@ -67,20 +69,20 @@ export class DashboardComponent implements OnInit {
             this.showmenufu = false;
           }
         }
-        /* if (this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_cba) {
-           console.log('this.list length', this.list.length);
-           if (this.list.length === 0) {
-             this.signupComponent.getAllCategories(this.userService.currentUserValue.preferlang.toString());
-             this.filteredList = [];
-             setTimeout(() => {
-               this.signupComponent.referencedetailsmapsubcat.forEach((element: any) => {
-                 this.list.push(element);
-                 this.filteredList.push(element);
-               });
-             }, 500);
-           }
-           console.log(' this.filteredList', this.filteredList);
-         }*/
+        if (this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_cba) {
+          console.log('this.list length', this.list.length);
+          if (this.list.length === 0) {
+            this.signupComponent.getAllCategories(this.userService.currentUserValue.preferlang.toString());
+            this.filteredList = [];
+            setTimeout(() => {
+              this.signupComponent.referencedetailsmapsubcat.forEach((element: any) => {
+                this.list.push(element);
+                this.filteredList.push(element);
+              });
+            }, 500);
+          }
+          console.log(' this.filteredList', this.filteredList);
+        }
         this.spinnerService.hide();
       },
       error => {
@@ -107,8 +109,16 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['/app']);
   }
 
-  searchFU(inputItemCode: string) {
-    this.router.navigate(['dashboard/' + inputItemCode]);
+  search(inputItem: string, filterOn: string) {
+    const obj = this.list.filter((item) => item.label.startsWith(inputItem));
+    if (obj.length === 0) {
+      this.alertService.error(' Please search for the text');
+    } else
+      if (filterOn.length === 1) {
+        this.alertService.error(' Please select the filter');
+      } else {
+        this.router.navigate(['dashboard/' + inputItem + '/' + filterOn]);
+      }
   }
 
   // modifies the filtered list as per input
@@ -116,7 +126,7 @@ export class DashboardComponent implements OnInit {
     this.listHidden = false;
     // this.selectedIndex = 0;
     if (!this.listHidden && this.inputItem !== undefined) {
-          this.filteredList = this.list.filter((item) => item.label.toLowerCase().startsWith(this.inputItem.toLowerCase()));
+      this.filteredList = this.list.filter((item) => item.label.toLowerCase().startsWith(this.inputItem.toLowerCase()));
     }
   }
 
@@ -178,7 +188,7 @@ export class DashboardComponent implements OnInit {
         this.listHidden = true;
         if (!this.list.filter(items => items.label.toLowerCase().includes(this.inputItem.toLowerCase()))) {
           this.showError = true;
-          this.filteredList = this.list; 
+          this.filteredList = this.list;
         } else {
           this.showError = false;
         }
