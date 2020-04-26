@@ -13,6 +13,7 @@ import { UserAdapter } from '../adapters/useradapter';
 })
 export class DashboardsearchfuComponent implements OnInit {
 
+  code: string;
   name: string;
   filtername: string;
   userFUObjList: any = [];
@@ -26,6 +27,7 @@ export class DashboardsearchfuComponent implements OnInit {
 
   ) {
     route.params.subscribe(params => {
+      this.code = params.code;
       this.name = params.name;
       this.filtername = params.filtername;
     });
@@ -33,13 +35,19 @@ export class DashboardsearchfuComponent implements OnInit {
 
   ngOnInit() {
     console.log(' search item', this.name);
-    console.log(' search filtername', this.filtername);
-    if (this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_cba.toString()) {
+    console.log(' search filtername', this.userService.currentUserValue.userroles.rolecode);
+    if (this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_cba.toString() ||
+      this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_csct.toString() ||
+      this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_cscm.toString()) {
       this.userService.getUserDetailsByJobAvailable().subscribe(
         (userObjList: any) => {
           userObjList.forEach(element => {
-            this.userFUObjList.push(this.userAdapter.adapt(element));
+            console.log('.freeLanceDetails.subCategory', element.freeLanceDetails.subCategory);
+            if (element.freeLanceDetails.subCategory === this.code) {
+              this.userFUObjList.push(this.userAdapter.adapt(element));
+            }
           });
+          console.log("this.userFUObjList", this.userFUObjList);
         },
         error => {
           this.spinnerService.hide();

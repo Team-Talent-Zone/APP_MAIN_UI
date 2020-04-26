@@ -87,7 +87,7 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'dashboard/:name/:filtername',
+    path: 'dashboard/:code/:name/:filtername',
     component: DashboardComponent,
     children: [
       {

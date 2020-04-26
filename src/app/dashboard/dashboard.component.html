@@ -19,11 +19,11 @@
                 [ngClass]="{'selected': i===selectedIndex}">{{item.label}}
             </list-item>
         </div>
-    <select [(ngModel)]="filterOn" >
-        <option value="0">Select Filter</option>
-        <option value='FU'>Freelancers</option>
-    </select>
-        <button (click)="search(inputItem , filterOn , i)"> Search </button>
+        <select [(ngModel)]="filterOn">
+            <option value="0">Select Filter</option>
+            <option value='FU'>Freelancers</option>
+        </select>
+        <button (click)="search( inputItemCode , inputItem , filterOn)"> Search </button>
     </div>
     <div class="navbar-collapse collapse" id="collapsingNavbar">
         <ul class="navbar-nav ml-auto">

@@ -103,6 +103,7 @@ export class UserService {
   getUserByUserId(userId: number) {
     return this.http.get(`${environment.apiUrl}/getUserByUserId/` + userId + '/');
   }
+
   getUserDetailsByJobAvailable() {
     return this.http.get(`${environment.apiUrl}/getUserDetailsByJobAvailable/`);
   }

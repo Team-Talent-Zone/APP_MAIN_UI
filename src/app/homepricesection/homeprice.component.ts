@@ -40,14 +40,14 @@ export class HomepriceComponent implements OnInit {
     if (this.name === config.lang_english_word.toString()) {
       this.langcode = config.default_prefer_lang;
     } else
-    if (this.name === config.lang_hindi_word.toString()) {
-      this.langcode = config.lang_code_hi;
-    } else
-    if (this.name === config.lang_telugu_word.toString()) {
-      this.langcode = config.lang_code_te;
-    } else {
-      this.langcode = config.default_prefer_lang;
-    }
+      if (this.name === config.lang_hindi_word.toString()) {
+        this.langcode = config.lang_code_hi;
+      } else
+        if (this.name === config.lang_telugu_word.toString()) {
+          this.langcode = config.lang_code_te;
+        } else {
+          this.langcode = config.default_prefer_lang;
+        }
     this.dashboardofcbaobj.getListOfAllActivePlatformServices(this.langcode);
     this.manageserviceComponent.getServiceTerms();
   }

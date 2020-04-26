@@ -31,6 +31,7 @@ export class DashboardComponent implements OnInit {
   // the list to be shown after filtering
 
   filterOn = '0';
+  inputItemCode: string;
 
   constructor(
     public userService: UserService,
@@ -109,15 +110,18 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['/app']);
   }
 
-  search(inputItem: string, filterOn: string) {
-    const obj = this.list.filter((item) => item.label.startsWith(inputItem));
+  search(inputItemCode: string, inputItem: string, filterOn: string) {
+    const obj = this.list.filter((item) => item.code.startsWith(inputItemCode));
     if (obj.length === 0) {
       this.alertService.error(' Please search for the text');
     } else
       if (filterOn.length === 1) {
         this.alertService.error(' Please select the filter');
       } else {
-        this.router.navigate(['dashboard/' + inputItem + '/' + filterOn]);
+        this.router.navigateByUrl('fusearch/', { skipLocationChange: true }).
+          then(() => {
+            this.router.navigate(['dashboard/' + inputItemCode + '/' + inputItem + '/' + filterOn]);
+          });
       }
   }
 
@@ -136,6 +140,7 @@ export class DashboardComponent implements OnInit {
     this.inputItem = obj.label;
     this.listHidden = true;
     this.selectedIndex = ind;
+    this.inputItemCode = obj.code;
   }
 
   // navigate through the list of items
