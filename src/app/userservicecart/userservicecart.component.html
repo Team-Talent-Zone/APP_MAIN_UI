@@ -1,7 +1,7 @@
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 
 <div class="container">
-     <button type="button" class="close" (click)="backToDashBoard()"><i class="fa fa-close"></i></button>
+    <button type="button" class="close" (click)="backToDashBoard()"><i class="fa fa-close"></i></button>
     <table id="cart" class="table table-hover table-condensed">
         <thead>
             <tr>
@@ -31,10 +31,19 @@
                     {{prod.validPeriod}}
                 </td>
                 <td data-th="Subtotal" class="text-center">{{prod.amount > 0 ? prod.amount : 0}}</td>
-                <td class="actions" data-th="">
-                    <button class="btn btn-danger btn-sm" (click)="removeItemFromCart(prod.serviceId)"><i
-                            class="fa fa-trash"></i></button>
+                <td colspan="2" class="actions" data-th="">
+                    <div class="row">
+                        <div class="col-sm-3 hidden-xs">
+                            <button class="btn btn-danger btn-sm  hidden-xs"
+                                (click)="removeItemFromCart(prod.serviceId)"><i class="fa fa-trash" title="Remove {{prod.name}} From Cart"></i></button>
+                        </div>
+                        <div class="col-sm-3 hidden-xs">
+                            <button class="btn btn-success btn-sm " (click)="removeItemFromCart(prod.serviceId)"><i
+                                    class="fa fa-krw" title="Create Widget For {{prod.name}}"></i></button>
+                        </div>
+                    </div>
                 </td>
+
             </tr>
         </tbody>
         <tfoot>
