@@ -49,6 +49,7 @@ import { DashboardsearchbyfilterComponent } from './dashboardsearchbyfilter/dash
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { UsersrvdetailsService } from './AppRestCall/userservice/usersrvdetails.service';
 import { UserServicedetailsAdapter } from './adapters/userserviceadapter';
+import { UserservicecartComponent } from './userservicecart/userservicecart.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -82,7 +83,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     DashboardofcbaComponent,
     DashboardoffuComponent,
     DashboardofadminComponent,
-    DashboardsearchbyfilterComponent
+    DashboardsearchbyfilterComponent,
+    UserservicecartComponent
     ],
   imports: [
     BrowserModule,
@@ -133,7 +135,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ViewaccountdetailsComponent,
     ProcessbgverificationComponent,
     ProcessnewserviceComponent,
-    ViewnewsevicedetailsComponent
+    ViewnewsevicedetailsComponent,
+    UserservicecartComponent
   ],
   bootstrap: [AppComponent]
 })

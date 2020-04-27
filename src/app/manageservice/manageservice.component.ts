@@ -56,14 +56,16 @@ export class ManageserviceComponent implements OnInit {
   }
 
   getServiceTerms() {
-    this.spinnerService.show();
     this.referService.getReferenceLookupByKey(config.key_service_term.toString()).
       pipe(map((data: any[]) => data.map(item => this.refAdapter.adapt(item))),
       ).subscribe(
         data => {
           this.serviceterms = data;
+        },
+        error => {
+          this.spinnerService.hide();
+          this.alertService.error(error);
         });
-    this.spinnerService.hide();
   }
 
   getAllNewServiceDetails() {

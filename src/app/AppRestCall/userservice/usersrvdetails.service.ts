@@ -17,7 +17,7 @@ export class UsersrvdetailsService {
     private http: HttpClient,
   ) { }
 
-  saveUserServiceDetails(usersrvobj: UserServiceDetails , refCode: string) {
+  saveUserServiceDetails(usersrvobj: UserServiceDetails, refCode: string) {
     usersrvobj.userServiceEventHistory = new Array<UserServiceEventHistoryEntity>();
     this.usersrvhistobj = new UserServiceEventHistoryEntity();
     this.usersrvhistobj.userId = usersrvobj.userid;
@@ -27,4 +27,11 @@ export class UsersrvdetailsService {
     return this.http.post(`${environment.apiUrl}/saveUserServiceDetails/`, usersrvobj);
   }
 
+  saveOrUpdateUserSVCDetails(usersrvobj: UserServiceDetails) {
+    return this.http.post(`${environment.apiUrl}/saveOrUpdateUserSVCDetails/`, usersrvobj);
+  }
+
+  getAllUserServiceDetailsByUserId(userId: number) {
+    return this.http.get(`${environment.apiUrl}/getAllUserServiceDetailsByUserId/` + userId + '/');
+  }
 }

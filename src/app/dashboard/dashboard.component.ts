@@ -1,3 +1,4 @@
+import { UserServicedetailsAdapter } from './../adapters/userserviceadapter';
 import { ReferenceAdapter } from './../adapters/referenceadapter';
 import { SignupComponent } from './../signup/signup.component';
 import { Component, OnInit } from '@angular/core';
@@ -8,6 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { AlertsService } from '../AppRestCall/alerts/alerts.service';
 import { TranslateService } from '@ngx-translate/core';
+import { UsersrvdetailsService } from '../AppRestCall/userservice/usersrvdetails.service';
 
 @Component({
   selector: 'app-dashboard',

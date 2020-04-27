@@ -58,7 +58,9 @@ export const config = {
   category_code_A_S: 'A_S',
   category_code_FS_S: 'FS_S',
   search_byfilter_fu: 'FU',
-  cba_service_event_shortkey: 'service_add',
+  cba_service_event_add_shortkey: 'service_add',
+  cba_service_event_remove_shortkey: 'service_remove',
+
 };
 
 

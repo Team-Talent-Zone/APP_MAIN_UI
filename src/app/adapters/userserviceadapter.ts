@@ -6,7 +6,7 @@ export class UserServicedetailsAdapter implements Adapter<UserServiceDetails> {
         return new UserServiceDetails(
             item.serviceId,
             item.ourserviceId,
-            item.userId,
+            item.userid,
             item.createdon,
             item.createdby,
             item.isactive,
@@ -14,7 +14,7 @@ export class UserServicedetailsAdapter implements Adapter<UserServiceDetails> {
             item.servicepackname,
             item.status,
             item.servicestarton,
-            item.serviceendon,            
+            item.serviceendon,
             item.userServiceEventHistory,
           );
     }

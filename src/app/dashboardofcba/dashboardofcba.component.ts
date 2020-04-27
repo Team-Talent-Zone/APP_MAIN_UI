@@ -1,6 +1,4 @@
-import { async } from '@angular/core/testing';
-import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { UserservicecartComponent } from './../userservicecart/userservicecart.component';
 import { ReferenceService } from './../AppRestCall/reference/reference.service';
 import { ManageserviceComponent } from './../manageservice/manageservice.component';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
@@ -8,8 +6,12 @@ import { AlertsService } from './../AppRestCall/alerts/alerts.service';
 import { NewsvcService } from './../AppRestCall/newsvc/newsvc.service';
 import { NewServiceAdapter } from './../adapters/newserviceadapter';
 import { UserService } from './../AppRestCall/user/user.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
 import { config } from 'src/app/appconstants/config';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { UsersrvdetailsService } from '../AppRestCall/userservice/usersrvdetails.service';
+import { BsModalService, ModalOptions, BsModalRef } from 'ngx-bootstrap/modal';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboardofcba',
@@ -24,6 +26,12 @@ export class DashboardofcbaComponent implements OnInit {
   domainServiceProviderObj: any = [];
   show: string = 'show';
   fullContentArray: any = [];
+  @Input() userservicedetailsList: any;
+  @Input() userservicedetailsExistingIds: any;
+  config: ModalOptions = { class: 'modal-lg' };
+  modalRef: BsModalRef;
+  userservicedetailsForm: FormGroup;
+  listOfServicesForCheckOut: any = [];
 
   constructor(
     private referService: ReferenceService,
@@ -33,11 +41,14 @@ export class DashboardofcbaComponent implements OnInit {
     private spinnerService: Ng4LoadingSpinnerService,
     private alertService: AlertsService,
     public manageserviceComponent: ManageserviceComponent,
+    private formBuilder: FormBuilder,
+    private usersrvDetails: UsersrvdetailsService,
+    private router: Router,
+    private modalService: BsModalService,
   ) { }
 
   ngOnInit() {
     this.manageserviceComponent.getServiceTerms();
-    this.getListOfAllActiveServicesByCBAUserId(this.userService.currentUserValue.userId);
     this.getListOfAllActivePlatformServices(this.userService.currentUserValue.preferlang.toString());
   }
 
@@ -124,7 +135,63 @@ export class DashboardofcbaComponent implements OnInit {
     }
   }
 
-  getListOfAllActiveServicesByCBAUserId(userId: number) {
-
+  saveUserServiceForServiceId(ourserviceid: number) {
+    this.spinnerService.show();
+    this.referService.getReferenceLookupByShortKey(config.cba_service_event_add_shortkey.toString()).subscribe(
+      (refCodeStr: string) => {
+        this.userservicedetailsForm = this.formBuilder.group({
+          ourserviceId: ourserviceid,
+          userid: this.userService.currentUserValue.userId,
+          createdby: this.userService.currentUserValue.fullname,
+          status: refCodeStr,
+          userServiceEventHistory: []
+        });
+        this.usersrvDetails.saveUserServiceDetails(this.userservicedetailsForm.value, refCodeStr).subscribe(() => {
+          this.spinnerService.hide();
+          this.router.navigateByUrl('addtocart/', { skipLocationChange: true }).
+            then(() => {
+              this.router.navigate(['dashboard']);
+            });
+        },
+          error => {
+            this.spinnerService.hide();
+            this.alertService.error(error);
+          }
+        );
+      },
+      error => {
+        this.spinnerService.hide();
+        this.alertService.error(error);
+      });
   }
+  openUserServiceCart() {
+    this.listOfServicesForCheckOut = [];
+    this.listOfAllApprovedNewServices.forEach(elementAppService => {
+      this.userservicedetailsList.forEach(element => {
+        if (element.ourserviceId === elementAppService.ourserviceId) {
+          this.listOfServicesForCheckOut.push({
+            serviceId: element.serviceId,
+            name: elementAppService.name,
+            imageUrl: elementAppService.imageUrl,
+            description: elementAppService.description,
+            amount: elementAppService.amount,
+            validPeriod: elementAppService.validPeriod
+          });
+        }
+      });
+    });
+    const initialState = {
+      listOfServicesForCheckOut: this.listOfServicesForCheckOut,
+      userservicedetailsList : this.userservicedetailsList
+    };
+    this.modalRef = this.modalService.show(UserservicecartComponent, Object.assign(
+      {},
+      this.config,
+      {
+        initialState
+      }
+    )
+    );
+  }
+
 }

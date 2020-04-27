@@ -21,12 +21,8 @@ import { ReferenceLookUpTemplate } from '../appmodels/ReferenceLookUpTemplate';
 import { environment } from 'src/environments/environment';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { UserNotification } from 'src/app/appmodels/UserNotification';
-import { ConditionalExpr } from '@angular/compiler';
 import { UserServiceDetails } from '../appmodels/UserServiceDetails';
 import { UsersrvdetailsService } from '../AppRestCall/userservice/usersrvdetails.service';
-import { UserServiceEventHistoryEntity } from '../appmodels/UserServiceEventHistoryEntity';
-import { async } from '@angular/core/testing';
-import { UserServicedetailsAdapter } from '../adapters/userserviceadapter';
 
 @Component({
   selector: 'app-signup',
@@ -73,7 +69,6 @@ export class SignupComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log("checking it", this.ourserviceid);
     this.formValidations();
     if (this.key === config.shortkey_role_fu.toString()) {
       this.getAllCategories(this.langcode);
@@ -190,7 +185,7 @@ export class SignupComponent implements OnInit {
                 this.usrObj = this.userAdapter.adapt(resp);
                 if (this.usrObj.userId > 0) {
                   if (this.ourserviceid > 0) {
-                    this.referService.getReferenceLookupByShortKey(config.cba_service_event_shortkey.toString()).subscribe(
+                    this.referService.getReferenceLookupByShortKey(config.cba_service_event_add_shortkey.toString()).subscribe(
                       (refCodeStr: string) => {
                         this.userservicedetailsForm = this.formBuilder.group({
                           ourserviceId: this.ourserviceid,
