@@ -39,10 +39,12 @@ export class DashboardmapbyuseroleComponent implements OnInit {
     this.userservicedetailsExistingIds = [];
     this.usersrvDetails.getAllUserServiceDetailsByUserId(userId).subscribe(
       (listofusersrvDetails: any) => {
-        listofusersrvDetails.forEach(element => {
-          this.userservicedetailsList.push(this.userServicedetailsAdapter.adapt(element));
-          this.userservicedetailsExistingIds.push(element.ourserviceId);
-        });
+        if (listofusersrvDetails != null) {
+          listofusersrvDetails.forEach(element => {
+            this.userservicedetailsList.push(this.userServicedetailsAdapter.adapt(element));
+            this.userservicedetailsExistingIds.push(element.ourserviceId);
+          });
+        }
         this.spinnerService.hide();
       },
       error => {

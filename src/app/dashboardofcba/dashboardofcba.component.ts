@@ -28,7 +28,10 @@ export class DashboardofcbaComponent implements OnInit {
   fullContentArray: any = [];
   @Input() userservicedetailsList: any;
   @Input() userservicedetailsExistingIds: any;
-  config: ModalOptions = { class: 'modal-lg' };
+  config: ModalOptions = {
+    class: 'modal-lg', backdrop: 'static',
+    keyboard: false
+  };
   modalRef: BsModalRef;
   userservicedetailsForm: FormGroup;
   listOfServicesForCheckOut: any = [];
@@ -182,7 +185,7 @@ export class DashboardofcbaComponent implements OnInit {
     });
     const initialState = {
       listOfServicesForCheckOut: this.listOfServicesForCheckOut,
-      userservicedetailsList : this.userservicedetailsList
+      userservicedetailsList: this.userservicedetailsList
     };
     this.modalRef = this.modalService.show(UserservicecartComponent, Object.assign(
       {},

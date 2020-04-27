@@ -1,5 +1,5 @@
 <button class="btn btn-info btn-lg" (click)="openUserServiceCart()"
-  *ngIf="userservicedetailsList != null && this.userService.currentUserValue.userroles.rolecode != 'FREELANCER_USER' ">
+  *ngIf="userservicedetailsList.length > 0 && this.userService.currentUserValue.userroles.rolecode != 'FREELANCER_USER' ">
   <i class="fa fa-shopping-cart ">
     <span *ngIf="userservicedetailsList.length == 1 ; else morethenOne">
       {{userservicedetailsList.length}} Item
