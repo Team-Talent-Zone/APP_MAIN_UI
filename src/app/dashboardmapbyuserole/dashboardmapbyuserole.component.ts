@@ -34,6 +34,7 @@ export class DashboardmapbyuseroleComponent implements OnInit {
   }
 
   getAllUserServiceDetailsByUserId(userId: number) {
+    this.spinnerService.show();
     this.userservicedetailsList = [];
     this.userservicedetailsExistingIds = [];
     this.usersrvDetails.getAllUserServiceDetailsByUserId(userId).subscribe(
@@ -42,12 +43,12 @@ export class DashboardmapbyuseroleComponent implements OnInit {
           this.userservicedetailsList.push(this.userServicedetailsAdapter.adapt(element));
           this.userservicedetailsExistingIds.push(element.ourserviceId);
         });
+        this.spinnerService.hide();
       },
       error => {
         this.alertService.error(error);
         this.spinnerService.hide();
       }
     );
-    console.log('DashboardmapbyuseroleComponent' , this.userservicedetailsList);
   }
 }
