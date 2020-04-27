@@ -17,6 +17,7 @@ export class NewService  {
         public isupgrade: boolean,
         public validPeriod: string,
         public amount: number,
+        public packwithotherourserviceid: string,
         public userId: number,
         public serviceHistory: NewServiceHistory[] = []
         ) {

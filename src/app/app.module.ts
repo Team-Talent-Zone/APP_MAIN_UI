@@ -45,6 +45,11 @@ import { ViewnewsevicedetailsComponent } from './viewnewsevicedetails/viewnewsev
 import { DashboardofcbaComponent } from './dashboardofcba/dashboardofcba.component';
 import { DashboardoffuComponent } from './dashboardoffu/dashboardoffu.component';
 import { DashboardofadminComponent } from './dashboardofadmin/dashboardofadmin.component';
+import { DashboardsearchbyfilterComponent } from './dashboardsearchbyfilter/dashboardsearchbyfilter.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { UsersrvdetailsService } from './AppRestCall/userservice/usersrvdetails.service';
+import { UserServicedetailsAdapter } from './adapters/userserviceadapter';
+import { UserservicecartComponent } from './userservicecart/userservicecart.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -77,7 +82,9 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ViewnewsevicedetailsComponent,
     DashboardofcbaComponent,
     DashboardoffuComponent,
-    DashboardofadminComponent
+    DashboardofadminComponent,
+    DashboardsearchbyfilterComponent,
+    UserservicecartComponent
     ],
   imports: [
     BrowserModule,
@@ -96,6 +103,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     }),
     Ng4LoadingSpinnerModule.forRoot()
   ],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   providers: [
     BsModalRef,
     ReferenceAdapter,
@@ -110,6 +118,10 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ApiService,
     DashboardofcbaComponent,
     ManageserviceComponent,
+    ManageuserComponent,
+    HeaderComponent,
+    UsersrvdetailsService,
+    UserServicedetailsAdapter,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpErrorInterceptor,
@@ -123,7 +135,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ViewaccountdetailsComponent,
     ProcessbgverificationComponent,
     ProcessnewserviceComponent,
-    ViewnewsevicedetailsComponent
+    ViewnewsevicedetailsComponent,
+    UserservicecartComponent
   ],
   bootstrap: [AppComponent]
 })

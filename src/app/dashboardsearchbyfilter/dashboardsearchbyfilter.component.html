@@ -1,0 +1,56 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+
+<!-- Freelance Search Section -->
+<section id="team" class="pb-5" *ngIf="userFUObjList.length > 0; ">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+                <h5 class=" section-title h1" *ngIf="userFUObjList.length == 1; else morethanone">
+                    Available {{name}} at your city
+                </h5>
+                <ng-template #morethanone>
+                    <h5 class="section-title h1" *ngIf="userFUObjList.length > 1">
+                        Available {{name}}'s at your city
+                    </h5>
+                </ng-template>
+            </div>
+            <div class="col-md-1">
+            </div>
+            <div class="col-md-1">
+                <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i>
+                    Create a Job Now</a>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-xs-12 col-sm-6 col-md-4" *ngFor="let fuuser of userFUObjList">
+                <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
+                    <div class="mainflip">
+                        <div class="frontside">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <p><img class=" img-fluid" src="{{fuuser.avtarurl}}" alt="card image"></p>
+                                    <h4 class="card-title">{{fuuser.fullname}}</h4>
+                                    <p class="card-text">{{fuuser.userbizdetails.shortaddress}}</p>
+                                    <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-exchange "></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="backside">
+                            <div class="card">
+                                <div class="card-body text-center ">
+                                    <h4 class="card-title">About {{fuuser.fullname}}</h4>
+                                    <p class="card-text">{{fuuser.freeLanceDetails.abt}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Freelancer Search Section Ended -->
+<div *ngIf="isNotFound">
+    <h3> No {{name}} Found </h3>
+</div>

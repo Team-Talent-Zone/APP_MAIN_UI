@@ -6,9 +6,9 @@
             <form [formGroup]="newServiceForm" (ngSubmit)="saveorupdateNewService(id)">
                 <div class="card">
                     <div class="card-header">
-                        <div *ngIf="userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM'">
+                        <div *ngIf="this.userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM'">
                             <h4 class="card-title mb-0"
-                                *ngIf="id > 0 && newservicecurrentObj.currentstatus != 'APPROVED' ">Update Service
+                                *ngIf="id > 0 && this.newservicecurrentObj.currentstatus != 'APPROVED' ">Update Service
                                 Request Form</h4>
                             <h4 class="card-title mb-0"
                                 *ngIf="id > 0 && newservicecurrentObj.currentstatus == 'APPROVED'">Upgrade Service
@@ -20,7 +20,8 @@
                         <div class="row">
                             <div class="col-md-8">
                                 <div class="form-row">
-                                    <div class="form-group col-md-12" *ngIf="id == null || newservicecurrentObj.currentstatus != 'APPROVED'  ; else elsereadonlyservicename">
+                                    <div class="form-group col-md-12"
+                                        *ngIf="id == null || newservicecurrentObj.currentstatus !== 'APPROVED'  ; else elsereadonlyservicename">
                                         <span>
                                             <i class="fa fa-suitcase   form-control-icon"></i>
                                         </span>
@@ -46,7 +47,8 @@
 
                                 </div>
                                 <div class="form-row">
-                                    <div class="form-group col-md-6" *ngIf=" id == null || newservicecurrentObj.currentstatus != 'APPROVED' ; else elsereadonlydomain">
+                                    <div class="form-group col-md-6"
+                                        *ngIf=" id == null || newservicecurrentObj.currentstatus != 'APPROVED' ; else elsereadonlydomain">
                                         <span>
                                             <i class="fa fa-crosshairs form-control-icon"></i>
                                         </span>
@@ -77,11 +79,13 @@
                                             </select>
                                         </div>
                                     </ng-template>
-                                    <div class="form-group col-md-6" *ngIf="id == null || newservicecurrentObj.currentstatus != 'APPROVED' ; else elsereadonlycategory">
+                                    <div class="form-group col-md-6"
+                                        *ngIf="id == null || newservicecurrentObj.currentstatus != 'APPROVED' ; else elsereadonlycategory">
                                         <span>
                                             <i class="fa fa-industry form-control-icon"></i>
                                         </span>
-                                        <select class="form-control" formControlName="category"
+                                        <select #sel (change)="getListOfNewServicesByMapId(sel.value);"
+                                            class="form-control" formControlName="category"
                                             [ngClass]="{ 'is-invalid': issubmit && f.category.errors }">
                                             <option value="">Select Category</option>
                                             <option *ngFor="let referencelookupmap of this.referencedetailsmap"
@@ -94,7 +98,7 @@
                                         </div>
                                     </div>
                                     <ng-template #elsereadonlycategory>
-                                        <div class="form-group col-md-6" >
+                                        <div class="form-group col-md-6">
                                             <span>
                                                 <i class="fa fa-industry form-control-icon"></i>
                                             </span>
@@ -165,6 +169,17 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="form-group col-md-14" *ngIf="listofnewservicebymapid.length > 0">
+                                    <span>
+                                        <i class="fa fa-suitcase form-control-icon"></i>
+                                    </span>
+                                    <select #sel class="form-control" formControlName="packwithotherourserviceid">
+                                        <option value="">--Pack with Service (Optional)--</option>
+                                        <option *ngFor="let listofapprovedservices of listofnewservicebymapid"
+                                            value="{{listofapprovedservices.ourserviceId}}">
+                                            {{listofapprovedservices.name}}</option>
+                                    </select>
+                                </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="text-center">
@@ -201,8 +216,7 @@
                         <a class="btn btn-warning" *ngIf="id > 0" [routerLink]="['/manageservice']">Manage New
                             Services</a>
                         <div *ngIf="userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM'">
-                            <button type="submit" class="btn btn-primary"
-                                *ngIf="id > 0 && !newservicecurrentObj.isupgrade && 
+                            <button type="submit" class="btn btn-primary" *ngIf="id > 0 && !newservicecurrentObj.isupgrade && 
                                 newservicecurrentObj.currentstatus != 'APPROVED' "> Update </button>
                             <button type="submit" class="btn btn-primary"
                                 *ngIf="id > 0 && newservicecurrentObj.currentstatus == 'APPROVED'"> Upgrade Now

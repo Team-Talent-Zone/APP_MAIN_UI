@@ -1,0 +1,53 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+
+<div class="container">
+    <table id="cart" class="table table-hover table-condensed">
+        <thead>
+            <tr>
+                <th style="width:50%">Service Name</th>
+                <th style="width:10%">Price</th>
+                <th style="width:8%">Terms</th>
+                <th style="width:22%" class="text-center">Subtotal</th>
+                <th style="width:10%"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let prod of listOfServicesForCheckOut">
+                <td data-th="Product">
+                    <div class="row">
+                        <div class="col-sm-3 hidden-xs"><img src="{{prod.imageUrl}}" alt="..." class="img-responsive" />
+                        </div>
+                        <div class="col-sm-9">
+                            <h4 class="nomargin">{{prod.name}}</h4>
+                            <p>
+                                {{ prod.description | slice:0:100 }}{{ prod.description.length > 100 ? '....' : '' }}
+                            </p>
+                        </div>
+                    </div>
+                </td>
+                <td data-th="Price">{{prod.amount > 0 ? prod.amount : 0}}</td>
+                <td data-th="Terms" class="col-sm-2">
+                    {{prod.validPeriod}}
+                </td>
+                <td data-th="Subtotal" class="text-center">{{prod.amount > 0 ? prod.amount : 0}}</td>
+                <td class="actions" data-th="">
+                    <button class="btn btn-danger btn-sm" (click)="removeItemFromCart(prod.serviceId)"><i
+                            class="fa fa-trash"></i></button>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td>
+                    <a class="btn btn-warning" (click)="backToDashBoard()"><i class="fa fa-angle-left"></i> Continue To
+                        Add Services</a>
+                </td>
+                <td colspan="2" class="hidden-xs"></td>
+                <td class="hidden-xs text-center col-sm-2"><strong>Total
+                        {{totalAmountToPay }} ₹
+                    </strong></td>
+                <td><a href="£" class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i></a></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
