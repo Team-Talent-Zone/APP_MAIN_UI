@@ -31,25 +31,17 @@
                     {{prod.validPeriod}}
                 </td>
                 <td data-th="Subtotal" class="text-center">{{prod.amount > 0 ? prod.amount : 0}}</td>
-                <td colspan="2" class="actions" data-th="">
-                    <div class="row">
-                        <div class="col-sm-3 hidden-xs">
-                            <button class="btn btn-danger btn-sm  hidden-xs"
-                                (click)="removeItemFromCart(prod.serviceId)"><i class="fa fa-trash" title="Remove {{prod.name}} From Cart"></i></button>
-                        </div>
-                        <div class="col-sm-3 hidden-xs">
-                            <button class="btn btn-success btn-sm " (click)="removeItemFromCart(prod.serviceId)"><i
-                                    class="fa fa-window-restore " title="Prepare Widget For {{prod.name}}"></i></button>
-                        </div>
-                    </div>
+                <td class="actions">
+                    <button class="btn btn-danger btn-sm  hidden-xs" (click)="removeItemFromCart(prod.serviceId)"><i
+                            class="fa fa-trash" title="Remove {{prod.name}} From Cart"></i></button>
                 </td>
-
             </tr>
         </tbody>
         <tfoot>
             <tr>
                 <td>
-                    <a class="btn btn-warning" (click)="backToDashBoard()"><i class="fa fa-angle-left"></i> Continue
+                    <a class="btn btn-warning" (click)="backToDashBoard()">
+                        <i class="fa fa-angle-double-left"></i> Continue
                         To
                         Add Services</a>
                 </td>
@@ -58,10 +50,34 @@
                 <td class="hidden-xs text-center col-sm-2"><strong>Total
                         {{totalAmountToPay }} ₹
                     </strong></td>
-                <td><a href="£" class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i></a>
+                <td *ngIf="totalAmountToPay > 0">
+                    <a href="javascript: return false;" class="btn btn-success btn-block">
+                        Checkout
+                        <i class="fa fa-angle-double-right"></i></a>
+                </td>
+                <td *ngIf="totalAmountToPay == 0 && !isFreeVersion">
+                    <a href="javascript: return false;"  (click)="saveorUpdateFreeVersionUserServiceDetails()" class="btn btn-success btn-block">
+                        Continue
+                        <i class="fa fa-angle-double-right"></i></a>
                 </td>
             </tr>
         </tfoot>
     </table>
-
+    <div class="row " *ngIf="totalAmountToPay == 0 && isFreeVersion">
+        <div class="col-md-12 col-sm-offset-3">
+            <br><br>
+            <h2 style="color:#0fad00" class="text-center">You Have Choosen Free Version!
+            </h2>
+            <h3 class="text-center">Dear, {{userService.currentUserValue.fullname}}</h3>
+            <p style="font-size:20px;color:#5C5C5C;">
+                Thank you for choosing free version with {{totalAmountToPay }} ₹ rupee payment until the term ends .
+                We will not do any automatic payments after terms ends as we do not stored or saved your
+                payment details . We will notify you on before the term ends. We hope the business from you after the
+                free version got expire .
+                Without any delay, click on 'Publish Site' to create a your own personal business service
+                site for your business needs . Enjoy Our Services ! </p>
+            <a href="" class="btn btn-success text-center">Public Site</a>
+            <br><br>
+        </div>
+    </div>
 </div>

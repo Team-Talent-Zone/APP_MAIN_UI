@@ -18,6 +18,7 @@ export class UserservicecartComponent implements OnInit {
   listOfServicesForCheckOut: any;
   totalAmountToPay: number;
   userservicedetailsList: any;
+  isFreeVersion = false;
 
   constructor(
     public modalRef: BsModalRef,
@@ -84,6 +85,10 @@ export class UserservicecartComponent implements OnInit {
           });
       }
     });
+  }
+
+  saveorUpdateFreeVersionUserServiceDetails() {
+    this.isFreeVersion = true;
   }
 
 }
