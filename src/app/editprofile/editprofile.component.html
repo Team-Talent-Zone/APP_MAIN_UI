@@ -100,10 +100,8 @@
                                                         <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg"
                                                             #fileInput (change)="uploadFile($event , 'avatar')" />
                                                     </div>
-                                                    <div class="avatar-preview">
-                                                        <div id="imagePreview"
-                                                            [style.backgroundImage]="'url('+ avatarURL +')'">
-                                                        </div>
+                                                    <div>
+                                                        <img class=" img-fluid" src="{{avatarURL}}" alt="card image">
                                                     </div>
                                                 </div>
                                                 <button type="button" class="btn btn-danger btn-sm btn-block"
