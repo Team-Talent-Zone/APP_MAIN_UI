@@ -51,7 +51,7 @@
               <div class="card-footer">
                 <div *ngIf="userservicedetailsExistingIds.includes(svc.ourserviceId) ; else addToCart">
                   <button class="btn btn-success" title="Create or Edit Widgets For {{svc.name}}">
-                    <i class="fa fa-krw" ></i> Prepare Widget </button>
+                    <i class="fa fa-window-restore" ></i> Prepare Custom Widget</button>
                 </div>
                 <ng-template #addToCart>
                   <button type="button" class="btn btn-primary" (click)="saveUserServiceForServiceId(svc.ourserviceId)">
@@ -102,7 +102,7 @@
               <div class="card-footer">
                 <div *ngIf="userservicedetailsExistingIds.includes(svc.ourserviceId) ; else addToCart">
                   <button class="btn btn-success" title="Create or Edit Widgets For {{svc.name}}">
-                    <i class="fa fa-krw"></i> Prepare Widget</button>
+                    <i class="fa fa-window-restore"></i> Prepare Custom Widget</button>
                 </div>
                 <ng-template #addToCart>
                   <button type="button" class="btn btn-primary" (click)="saveUserServiceForServiceId(svc.ourserviceId)">
