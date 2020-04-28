@@ -13,9 +13,11 @@
     <select #sel [(ngModel)]="filterOn" (change)="onSearchByFilterSelected(sel.value)"
         *ngIf="this.userService.currentUserValue.userroles.rolecode != 'FREELANCER_USER'">
         <option value="0">Search By Filter</option>
-        <option value='FU' *ngIf="this.userService.currentUserValue.userroles.rolecode != 'FREELANCER_USER'">Freelancer
+        <option value='FU_SKILL' *ngIf="this.userService.currentUserValue.userroles.rolecode != 'FREELANCER_USER'">Freelancer
             By Skill</option>
-        <option value='NS' *ngIf="this.userService.currentUserValue.userroles.rolecode != 'FREELANCER_USER'">Services
+        <option value='FU_LOC' *ngIf="this.userService.currentUserValue.userroles.rolecode != 'FREELANCER_USER'">Freelancer
+            By Location</option>
+        <option value='SRV' *ngIf="this.userService.currentUserValue.userroles.rolecode != 'FREELANCER_USER'">Services
         </option>
 
     </select>
@@ -53,7 +55,7 @@
                 </a>
             </li>
         </ul>
-        
+
     </div>
 </nav>
 <div class="container-fluid" id="main">

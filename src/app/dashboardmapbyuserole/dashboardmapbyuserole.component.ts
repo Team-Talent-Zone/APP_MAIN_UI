@@ -15,6 +15,7 @@ export class DashboardmapbyuseroleComponent implements OnInit {
 
   userservicedetailsList = new Array();
   userservicedetailsExistingIds = new Array();
+  showmenufu: boolean;
 
   constructor(
     public userService: UserService,
@@ -31,8 +32,22 @@ export class DashboardmapbyuseroleComponent implements OnInit {
         this.getAllUserServiceDetailsByUserId(this.userService.currentUserValue.userId);
       }, 1000);
     }
-  }
 
+    if (this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_fu) {
+      if (this.userService.currentUserValue.freelancehistoryentity[0].bgstatus ===
+        config.bg_code_approved) {
+        this.showmenufu = true;
+      }
+      if (this.userService.currentUserValue.freelancehistoryentity[0].bgstatus ===
+        config.bg_code_rejected) {
+        this.showmenufu = false;
+      }
+      this.getAllActiveJobsDetailsBySubCategory();
+    }
+  }
+  getAllActiveJobsDetailsBySubCategory() {
+
+  }
   getAllUserServiceDetailsByUserId(userId: number) {
     this.spinnerService.show();
     this.userservicedetailsList = [];

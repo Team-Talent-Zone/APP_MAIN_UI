@@ -120,7 +120,11 @@ export class EditprofileComponent implements OnInit {
         });
         this.route = this.route != null ? this.route : '';
         this.city = this.cityElementOne != null ? this.cityElementOne : this.cityElementTwo;
-        this.shortAddress = this.route + ',' + this.city + ',' + this.state + ',' + this.country;
+        let routeDup = this.route.length > 0 ? this.route + ',' : '';
+        let cityDup = this.city.length > 0 ? this.city + ',' : '';
+        let stateDup = this.state.length > 0 ? this.state + ',' : '';
+        let countryDup = this.country.length > 0 ? this.country + ',' : '';
+        this.shortAddress = routeDup + cityDup + stateDup + countryDup;
       });
     });
   }
@@ -230,7 +234,7 @@ export class EditprofileComponent implements OnInit {
     this.edituserobj.userbizdetails.shortaddress = this.shortAddress;
     this.edituserobj.userbizdetails.lat = this.lat;
     this.edituserobj.userbizdetails.lng = this.lng;
-    console.log('this is inside the edit save user' , this.shortAddress);
+    console.log('this is inside the edit save user', this.shortAddress);
 
     if (this.roleCode === config.user_rolecode_cba.toString()) {
       this.edituserobj.userbizdetails.bizname = this.editprofileForm.get('bizname').value;

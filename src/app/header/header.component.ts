@@ -50,14 +50,14 @@ export class HeaderComponent implements OnInit {
   }
 
   openSignupModal(shortkey: string) {
-    if (this.langSelected === config.lang_code_hi.toString()) {
-      this.langcode = config.lang_hindi_word.toString();
+    if (this.langSelected === config.lang_hindi_word.toString()) {
+      this.langcode = config.lang_code_hi.toString();
     }
-    if (this.langSelected === config.lang_code_te.toString()) {
-      this.langcode = config.lang_telugu_word.toString();
+    if (this.langSelected === config.lang_telugu_word.toString()) {
+      this.langcode = config.lang_code_te.toString();
     }
-    if (this.langSelected === config.default_prefer_lang.toString()) {
-      this.langcode = config.lang_english_word.toString();
+    if (this.langSelected === config.lang_english_word.toString()) {
+      this.langcode = config.default_prefer_lang.toString();
     }
     this.modalRef = this.modalService.show(SignupComponent, {
       initialState: {

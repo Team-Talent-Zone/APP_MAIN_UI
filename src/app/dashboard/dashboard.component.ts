@@ -18,7 +18,7 @@ import { UsersrvdetailsService } from '../AppRestCall/userservice/usersrvdetails
 })
 export class DashboardComponent implements OnInit {
 
-  showmenufu: boolean;
+
   name: string;
   list = [];
   filteredList: string[] = [];
@@ -55,7 +55,7 @@ export class DashboardComponent implements OnInit {
     this.signupComponent.getAllCategories(this.userService.currentUserValue.preferlang.toString());
     setTimeout(() => {
       this.resetLoggedInUser();
-    }, 0);
+    }, 100);
   }
 
   private resetLoggedInUser() {
@@ -63,16 +63,6 @@ export class DashboardComponent implements OnInit {
       (userresp: any) => {
         this.userService.setCurrentUserValue(userresp);
         this.translateToLanguage(this.userService.currentUserValue.preferlang.toString());
-        if (this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_fu) {
-          if (this.userService.currentUserValue.freelancehistoryentity[0].bgstatus ===
-            config.bg_code_approved) {
-            this.showmenufu = true;
-          }
-          if (this.userService.currentUserValue.freelancehistoryentity[0].bgstatus ===
-            config.bg_code_rejected) {
-            this.showmenufu = false;
-          }
-        }
         this.spinnerService.hide();
       },
       error => {
@@ -80,6 +70,7 @@ export class DashboardComponent implements OnInit {
         this.spinnerService.hide();
       });
   }
+
   translateToLanguage(preferedLang: string) {
     if (preferedLang === config.lang_code_hi.toString()) {
       preferedLang = config.lang_hindi_word.toString();
@@ -157,34 +148,27 @@ export class DashboardComponent implements OnInit {
 
   // navigate through the list of items
   onKeyPress(event) {
-
     if (!this.listHidden) {
       if (event.key === 'Escape') {
         this.selectedIndex = -1;
         this.toggleListDisplay(0);
       }
-
       if (event.key === 'Enter') {
-
         this.toggleListDisplay(0);
       }
       if (event.key === 'ArrowDown') {
-
         this.listHidden = false;
         this.selectedIndex = (this.selectedIndex + 1) % this.filteredList.length;
         if (this.filteredList.length > 0 && !this.listHidden) {
           document.getElementsByTagName('list-item')[this.selectedIndex].scrollIntoView();
         }
       } else if (event.key === 'ArrowUp') {
-
         this.listHidden = false;
         if (this.selectedIndex <= 0) {
           this.selectedIndex = this.filteredList.length;
         }
         this.selectedIndex = (this.selectedIndex - 1) % this.filteredList.length;
-
         if (this.filteredList.length > 0 && !this.listHidden) {
-
           document.getElementsByTagName('list-item')[this.selectedIndex].scrollIntoView();
         }
       }
@@ -193,7 +177,6 @@ export class DashboardComponent implements OnInit {
 
   // show or hide the dropdown list when input is focused or moves out of focus
   toggleListDisplay(sender: number) {
-
     if (sender === 1) {
       // this.selectedIndex = -1;
       this.listHidden = false;
