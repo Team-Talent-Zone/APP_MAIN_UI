@@ -36,7 +36,7 @@ export class DashboardsearchbyfilterComponent implements OnInit {
   isNotFound = false;
 
   // google maps zoom level
-  zoom: number = 11.5;
+  zoom: number = 11;
 
   markers: marker[] = [];
 

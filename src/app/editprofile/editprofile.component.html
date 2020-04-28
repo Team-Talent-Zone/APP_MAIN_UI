@@ -142,12 +142,10 @@
                                         <span>
                                             <i class="fa fa-globe form-control-icon"></i>
                                         </span>
-                                        <input type="text" placeholder="Business Website*" class="form-control"
+                                        <input type="text" placeholder="Business Website" class="form-control"
                                             formControlName="bizwebsite"
                                             [ngClass]="{ 'is-invalid': issubmit && f.bizwebsite.errors }">
                                         <div *ngIf="issubmit && f.bizwebsite.errors" class="invalid-feedback">
-                                            <div *ngIf="f.bizwebsite.errors.required">Business Website is required
-                                            </div>
                                             <div *ngIf="f.bizwebsite.errors.maxlength">Business Website cant exceed 40
                                                 char</div>
                                         </div>

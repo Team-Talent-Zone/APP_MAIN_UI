@@ -88,17 +88,16 @@ export class EditprofileComponent implements OnInit {
   }
 
   initAutocomplete(maps: Maps) {
-    this.route = null;
-    this.city = null;
-    this.state = null;
-    this.country = null;
-    this.shortAddress = null;
-    this.lng = -1;
-    this.lat = -1;
-
     let autocomplete = new maps.places.Autocomplete(this.searchElementRef.nativeElement);
     autocomplete.addListener('place_changed', () => {
       this.ngZone.run(() => {
+        this.route = null;
+        this.city = null;
+        this.state = null;
+        this.country = null;
+        this.shortAddress = null;
+        this.lng = -1;
+        this.lat = -1;
         const place = autocomplete.getPlace();
         this.lat = place.geometry.location.lat();
         this.lng = place.geometry.location.lng();
@@ -106,14 +105,12 @@ export class EditprofileComponent implements OnInit {
           if (element.types[0] === 'route') {
             this.route = element.long_name;
           }
-
           if (element.types[0] === 'locality') {
             this.cityElementOne = element.long_name;
           } else
             if (element.types[0] === 'administrative_area_level_2') {
               this.cityElementTwo = element.long_name;
             }
-
           if (element.types[0] === 'administrative_area_level_1') {
             this.state = element.long_name;
           }
@@ -139,7 +136,7 @@ export class EditprofileComponent implements OnInit {
         fulladdress: ['', [Validators.required]],
         bizname: ['', [Validators.required, Validators.maxLength(40)]],
         biztype: ['', [Validators.required, Validators.maxLength(40)]],
-        bizwebsite: ['', [Validators.required, Validators.maxLength(40)]],
+        bizwebsite: ['', [Validators.maxLength(40)]],
         abtbiz: ['', [Validators.required]],
         purposeofsignup: ['', [Validators.required]],
         designation: ['', [Validators.required, Validators.maxLength(40)]],
@@ -233,6 +230,7 @@ export class EditprofileComponent implements OnInit {
     this.edituserobj.userbizdetails.shortaddress = this.shortAddress;
     this.edituserobj.userbizdetails.lat = this.lat;
     this.edituserobj.userbizdetails.lng = this.lng;
+    console.log('this is inside the edit save user' , this.shortAddress);
 
     if (this.roleCode === config.user_rolecode_cba.toString()) {
       this.edituserobj.userbizdetails.bizname = this.editprofileForm.get('bizname').value;
@@ -325,6 +323,9 @@ export class EditprofileComponent implements OnInit {
           this.userService.currentUserValue.avtarurl = this.usrObj.avtarurl;
           this.userService.currentUserValue.fullname = this.usrObj.fullname;
           this.userService.currentUserValue.preferlang = this.usrObj.preferlang;
+          this.userService.currentUserValue.userbizdetails.fulladdress = this.usrObj.userbizdetails.fulladdress;
+          this.userService.currentUserValue.userbizdetails.lat = this.usrObj.userbizdetails.lat;
+          this.userService.currentUserValue.userbizdetails.lng = this.usrObj.userbizdetails.lng;
         }
         this.edituserobj = userObj;
       },
