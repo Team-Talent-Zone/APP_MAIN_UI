@@ -106,12 +106,13 @@ export class EditprofileComponent implements OnInit {
           if (element.types[0] === 'route') {
             this.route = element.long_name;
           }
-          if (element.types[0] === 'locality') {
+
+          if (element.types[0] === 'administrative_area_level_2') {
             this.cityElementOne = element.long_name;
           } else
-          if (element.types[0] === 'administrative_area_level_2') {
-            this.cityElementTwo = element.long_name;
-          }
+            if (element.types[0] === 'locality') {
+              this.cityElementTwo = element.long_name;
+            }
 
           if (element.types[0] === 'administrative_area_level_1') {
             this.state = element.long_name;
@@ -120,9 +121,9 @@ export class EditprofileComponent implements OnInit {
             this.country = element.short_name;
           }
         });
-        this.route = this.route != null ? this.route + ',' : '';
+        this.route = this.route != null ? this.route : '';
         this.city = this.cityElementOne != null ? this.cityElementOne : this.cityElementTwo;
-        this.shortAddress = this.route + this.city + ',' + this.state + ',' + this.country;
+        this.shortAddress = this.route + ',' + this.city + ',' + this.state + ',' + this.country;
       });
     });
   }
