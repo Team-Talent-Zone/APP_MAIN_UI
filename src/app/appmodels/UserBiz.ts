@@ -14,6 +14,8 @@ export class UserBiz  {
     public state: string;
     public country: string;
     public shortaddress: string;
+    public lng: number;
+    public lat: number;
     constructor(
     ) {}
 }

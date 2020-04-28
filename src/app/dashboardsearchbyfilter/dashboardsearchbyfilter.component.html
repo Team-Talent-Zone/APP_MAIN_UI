@@ -1,56 +1,96 @@
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 
-<!-- Freelance Search Section -->
-<section id="team" class="pb-5" *ngIf="userFUObjList.length > 0; ">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-9">
-                <h5 class=" section-title h1" *ngIf="userFUObjList.length == 1; else morethanone">
-                    Available {{name}} at your city
-                </h5>
-                <ng-template #morethanone>
-                    <h5 class="section-title h1" *ngIf="userFUObjList.length > 1">
-                        Available {{name}}'s at your city
-                    </h5>
-                </ng-template>
-            </div>
-            <div class="col-md-1">
-            </div>
-            <div class="col-md-1">
-                <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i>
-                    Create a Job Now</a>
-            </div>
-        </div>
-        <div class="row">
-
-            <div class="col-xs-12 col-sm-6 col-md-4" *ngFor="let fuuser of userFUObjList">
-                <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
-                    <div class="mainflip">
-                        <div class="frontside">
-                            <div class="card">
-                                <div class="card-body text-center">
-                                    <p><img class=" img-fluid" src="{{fuuser.avtarurl}}" alt="card image"></p>
-                                    <h4 class="card-title">{{fuuser.fullname}}</h4>
-                                    <p class="card-text">{{fuuser.userbizdetails.shortaddress}}</p>
-                                    <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-exchange "></i></a>
+<div class="container" *ngIf="userFUObjList.length >= 1">
+    <div class=" row">
+    <div class="col-md-9">
+        <h5 class=" section-title h1" *ngIf="userFUObjList.length == 1; else morethanone">
+            Available {{name}} at your city
+        </h5>
+        <ng-template #morethanone>
+            <h5 class="section-title h1" *ngIf="userFUObjList.length > 1">
+                Available {{name}}'s at your city
+            </h5>
+        </ng-template>
+    </div>
+    <div class="col-md-1">
+    </div>
+    <div class="col-md-1">
+        <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i>
+            Create a Job Now</a>
+    </div>
+</div>
+</div>
+<div class="row justify-content-center mt-3 mb-2">
+    <div class="col-auto">
+        <nav class="nav btn-group">
+            <a href="#cardview" class="btn btn-outline-primary active" data-toggle="tab">Card View</a>
+            <a href="#mapview" class="btn btn-outline-primary  " data-toggle="tab"> Map View</a>
+        </nav>
+    </div>
+</div>
+<div class="tab-content">
+    <div class="tab-pane fade show active" id="cardview">
+        <!-- Freelance Search Section -->
+        <section id="team" class="pb-5" *ngIf="userFUObjList.length > 0; ">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-4" *ngFor="let fuuser of userFUObjList">
+                        <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
+                            <div class="mainflip">
+                                <div class="frontside">
+                                    <div class="card">
+                                        <div class="card-body text-center">
+                                            <p><img class=" img-fluid" src="{{fuuser.avtarurl}}" alt="card image"></p>
+                                            <h4 class="card-title">{{fuuser.fullname}}</h4>
+                                            <p class="card-text">{{fuuser.userbizdetails.shortaddress}}</p>
+                                            <a href="#" class="btn btn-primary btn-sm"><i
+                                                    class="fa fa-exchange "></i></a>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="backside">
-                            <div class="card">
-                                <div class="card-body text-center ">
-                                    <h4 class="card-title">About {{fuuser.fullname}}</h4>
-                                    <p class="card-text">{{fuuser.freeLanceDetails.abt}}</p>
+                                <div class="backside">
+                                    <div class="card">
+                                        <div class="card-body text-center ">
+                                            <h4 class="card-title">About {{fuuser.fullname}}</h4>
+                                            <p class="card-text">{{fuuser.freeLanceDetails.abt}}</p>
+                                            <p class="card-text">{{fuuser.username}}</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </section>
+        <!-- Freelancer Search Section Ended -->
+        <div *ngIf="isNotFound">
+            <h3> No {{name}} Found </h3>
         </div>
     </div>
-</section>
-<!-- Freelancer Search Section Ended -->
-<div *ngIf="isNotFound">
-    <h3> No {{name}} Found </h3>
+    <div class="tab-pane fade" id="mapview">
+        <div id="map-container-google-1" class="z-depth-1-half map-container" style="height: 500px">
+            <agm-map [latitude]="this.userService.currentUserValue.userbizdetails.lat" [longitude]="this.userService.currentUserValue.userbizdetails.lng" [zoom]="zoom" [disableDefaultUI]="false" [zoomControl]="false">
+                <agm-marker *ngFor="let m of markers; let i = index" (markerClick)="clickedMarker(m.label, i)"
+                    [latitude]="m.lat" [longitude]="m.lng" [label]="m.label" [markerDraggable]="m.draggable"
+                    (dragEnd)="markerDragEnd(m, $event)">
+
+                    <agm-info-window>
+                        <div class="card" style="width:240px">
+                            <img class="card-img-top" src="{{m.avtarurl}}" alt="card image">
+                            <div class="card-body text-center">
+                                <h3 class="card-title">{{m.label}}</h3>
+                                <p class="card-text">{{m.shortaddress}}</p>
+                            </div>
+                        </div>
+                    </agm-info-window>
+
+                </agm-marker>
+
+                <agm-circle [latitude]="this.userService.currentUserValue.userbizdetails.lat" [longitude]="this.userService.currentUserValue.userbizdetails.lng" [radius]="10000" [fillColor]="'red'"
+                    [circleDraggable]="false" [editable]="false">
+                </agm-circle>
+            </agm-map>
+        </div>
+    </div>
 </div>

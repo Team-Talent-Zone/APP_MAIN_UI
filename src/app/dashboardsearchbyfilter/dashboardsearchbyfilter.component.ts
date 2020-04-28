@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { config } from '../appconstants/config';
 import { AlertsService } from '../AppRestCall/alerts/alerts.service';
 import { UserAdapter } from '../adapters/useradapter';
+import { MouseEvent } from '@agm/core';
 
 @Component({
   selector: 'app-dashboardsearchbyfilter',
@@ -12,12 +13,6 @@ import { UserAdapter } from '../adapters/useradapter';
   styleUrls: ['./dashboardsearchbyfilter.component.css']
 })
 export class DashboardsearchbyfilterComponent implements OnInit {
-
-  code: string;
-  name: string;
-  searchbyfiltername: string;
-  userFUObjList: any = [];
-  isNotFound = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -31,6 +26,25 @@ export class DashboardsearchbyfilterComponent implements OnInit {
       this.code = params.code;
       this.name = params.name;
       this.searchbyfiltername = params.filtername;
+    });
+  }
+
+  code: string;
+  name: string;
+  searchbyfiltername: string;
+  userFUObjList: any = [];
+  isNotFound = false;
+
+  // google maps zoom level
+  zoom: number = 12;
+
+  markers: marker[] = [];
+
+  mapClicked($event: MouseEvent) {
+    this.markers.push({
+      lat: $event.coords.lat,
+      lng: $event.coords.lng,
+      draggable: true
     });
   }
 
@@ -50,6 +64,16 @@ export class DashboardsearchbyfilterComponent implements OnInit {
             if (element.freeLanceDetails.subCategory === this.code &&
               element.userbizdetails.city === this.userService.currentUserValue.userbizdetails.city) {
               this.userFUObjList.push(this.userAdapter.adapt(element));
+              var markPoints = {
+                lat: element.userbizdetails.lat,
+                lng: element.userbizdetails.lng,
+                label: element.fullname,
+                draggable: false,
+                shortaddress: element.userbizdetails.shortaddress,
+                abt: element.freeLanceDetails.abt,
+                avtarurl: element.avtarurl
+              };
+              this.markers.push(markPoints);
             }
           });
           if (this.userFUObjList.length === 0) {
@@ -63,4 +87,12 @@ export class DashboardsearchbyfilterComponent implements OnInit {
       );
     }
   }
+}
+
+// just an interface for type safety.
+interface marker {
+  lat: number;
+  lng: number;
+  label?: string;
+  draggable: boolean;
 }

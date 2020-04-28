@@ -74,6 +74,22 @@ section .section-title {
     margin-bottom: 30px;
 }
 
+ 
+
+  .map-container{
+    overflow:hidden;
+    padding-bottom:56.25%;
+    position:relative;
+    height:0;
+    }
+    .map-container agm-map{
+    left:0;
+    top:0;
+    height:100%;
+    width:100%;
+    position:absolute;
+    }
+
 .backside {
     position: absolute;
     top: 0;

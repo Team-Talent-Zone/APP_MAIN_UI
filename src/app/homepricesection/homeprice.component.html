@@ -35,48 +35,54 @@
           <div class="row justify-content-center mt-3 mb-2">
             <div class="col-auto">
               <nav class="nav btn-group">
-                <a href="#monthly" class="btn btn-outline-primary  active "
+                <a href="#monthly" class="btn btn-outline-primary active"
                   data-toggle="tab">{{ 'PRICE.INDIVIDUAL' | translate }}</a>
-                <a href="#annual" class="btn btn-outline-primary "
+                <a href="#annual" class="btn btn-outline-primary  "
                   data-toggle="tab">{{ 'PRICE.PACKAGE' | translate }}</a>
               </nav>
             </div>
           </div>
-
-          <div class="card-body" id="monthly" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
-            <div class="card-deck">
-              <div class="col-md-6 mb-3 mb-md-0" style="margin-bottom:8px !important"
-                *ngFor="let svc of dashboardofcbaobj.listOfAllApprovedNewServices">
-                <div class="card text-center h-100">
-                  <div class="card-header">
-                    <h4>{{svc.name}}</h4>
-                  </div>
-                  <img class="card-img" src={{svc.imageUrl}}>
-                  <div class="card-body d-flex flex-column">
-                    <div class="card-title">
-                      <span class="display-4" *ngIf="svc.amount > 0">₹{{svc.amount}}</span>
-                      <span class="display-4" *ngIf="svc.amount == null">₹0</span>
-                      <span class="mb-4">
-                        /{{svc.validPeriod}}
-                      </span>
+          <div class="tab-content">
+            <div class="tab-pane fade show active" id="monthly">
+              <div class="card-body" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
+                <div class="card-deck">
+                  <div class="col-md-6 mb-3 mb-md-0" style="margin-bottom:8px !important"
+                    *ngFor="let svc of dashboardofcbaobj.listOfAllApprovedNewServices">
+                    <div class="card text-center h-100">
+                      <div class="card-header">
+                        <h4>{{svc.name}}</h4>
+                      </div>
+                      <img class="card-img" src={{svc.imageUrl}}>
+                      <div class="card-body d-flex flex-column">
+                        <div class="card-title">
+                          <span class="display-4" *ngIf="svc.amount > 0">₹{{svc.amount}}</span>
+                          <span class="display-4" *ngIf="svc.amount == null">₹0</span>
+                          <span class="mb-4">
+                            /{{svc.validPeriod}}
+                          </span>
+                        </div>
+                        <div class="card-text">
+                          <ul class="list-unstyled">
+                            <li class="mb-1" *ngFor="let features of svc.fullContent">
+                              {{features}}
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div class="card-footer">
+                        <button type="button" class="btn btn-primary" (click)="openSignupModal(svc.ourserviceId)">Sign
+                          In</button>
+                        <!-- <a href="javascript: return false;" class="btn btn-primary" onclick="openSignupModal(svc.ourserviceId)">Sign In</a> -->
+                      </div>
                     </div>
-                    <div class="card-text">
-                      <ul class="list-unstyled">
-                        <li class="mb-1" *ngFor="let features of svc.fullContent">
-                          {{features}}
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                  <div class="card-footer">
-                    <button  type="button" class="btn btn-primary" (click)="openSignupModal(svc.ourserviceId)">Sign In</button>
-                    <!-- <a href="javascript: return false;" class="btn btn-primary" onclick="openSignupModal(svc.ourserviceId)">Sign In</a> -->
                   </div>
                 </div>
               </div>
             </div>
+            <div class="tab-pane fade show" id="annual">
+              No Packages
+            </div>
           </div>
-
           <div class="text-center text-white my-4">
             <h2>{{ 'QUESTIONS.FREQUENTLYASKEDQUESTIONS' | translate }}</h2>
           </div>

@@ -53,6 +53,12 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.signupComponent.getAllCategories(this.userService.currentUserValue.preferlang.toString());
+    setTimeout(() => {
+      this.resetLoggedInUser();
+    }, 0);
+  }
+
+  private resetLoggedInUser() {
     this.userService.getUserByUserId(this.userService.currentUserValue.userId).subscribe(
       (userresp: any) => {
         this.userService.setCurrentUserValue(userresp);
@@ -74,7 +80,6 @@ export class DashboardComponent implements OnInit {
         this.spinnerService.hide();
       });
   }
-
   translateToLanguage(preferedLang: string) {
     if (preferedLang === config.lang_code_hi.toString()) {
       preferedLang = config.lang_hindi_word.toString();
@@ -95,17 +100,21 @@ export class DashboardComponent implements OnInit {
 
   search(inputItemCode: string, inputItem: string, searchByFilterName: string) {
     const obj = this.list.filter((item) => item.code.startsWith(inputItemCode));
-    if (searchByFilterName.length === 1) {
-      this.alertService.error(' Please select the filter');
+    if (this.userService.currentUserValue.userbizdetails.fulladdress == null &&
+      searchByFilterName.length > 1 && searchByFilterName === config.search_byfilter_fu) {
+      this.alertService.success(' We need your address to locate workers near by. Please add the address from edit profile.');
     } else
-      if (obj.length === 0) {
-        this.alertService.error(' Please search or select ');
-      } else {
-        this.router.navigateByUrl('fusearch/', { skipLocationChange: true }).
-          then(() => {
-            this.router.navigate(['dashboard/' + inputItemCode + '/' + inputItem + '/' + searchByFilterName]);
-          });
-      }
+      if (searchByFilterName.length === 1) {
+        this.alertService.success(' Please select the filter');
+      } else
+        if (obj.length === 0) {
+          this.alertService.success(' Please search or select ');
+        } else {
+          this.router.navigateByUrl('fusearch/', { skipLocationChange: true }).
+            then(() => {
+              this.router.navigate(['dashboard/' + inputItemCode + '/' + inputItem + '/' + searchByFilterName]);
+            });
+        }
   }
 
   onSearchByFilterSelected(searchByFilterName: string) {

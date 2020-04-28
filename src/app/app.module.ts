@@ -1,7 +1,7 @@
 import { NewServiceAdapter } from './adapters/newserviceadapter';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClient, HttpClientModule , HTTP_INTERCEPTORS} from '@angular/common/http';
+import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -16,7 +16,7 @@ import { HomeComponent } from './home/home.component';
 import { SignupComponent } from './signup/signup.component';
 import { ModalModule, BsModalRef } from 'ngx-bootstrap/modal';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ReferenceAdapter} from './adapters/referenceadapter';
+import { ReferenceAdapter } from './adapters/referenceadapter';
 import { AlertComponent } from './alert/alert.component';
 import { AlertsService } from './AppRestCall/alerts/alerts.service';
 import { UserService } from './AppRestCall/user/user.service';
@@ -24,8 +24,8 @@ import { ReferenceService } from './AppRestCall/reference/reference.service';
 import { UserAdapter } from './adapters/useradapter';
 import { HttpErrorInterceptor } from './alert/http-error.interceptor';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
-import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ReferenceLookUpTemplateAdapter } from './adapters/referencelookuptemplateadapter';
 import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 import { AuthgaurdService } from './AppRestCall/authgaurd/authgaurd.service';
@@ -50,6 +50,8 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { UsersrvdetailsService } from './AppRestCall/userservice/usersrvdetails.service';
 import { UserServicedetailsAdapter } from './adapters/userserviceadapter';
 import { UserservicecartComponent } from './userservicecart/userservicecart.component';
+import { AgmCoreModule } from '@agm/core';
+import { config } from './appconstants/config';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -70,7 +72,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     AlertComponent,
     DashboardComponent,
     ManageuserComponent,
-    EditprofileComponent, 
+    EditprofileComponent,
     ViewaccountdetailsComponent,
     DashboardmapbyuseroleComponent,
     ProcessbgverificationComponent,
@@ -85,7 +87,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     DashboardofadminComponent,
     DashboardsearchbyfilterComponent,
     UserservicecartComponent
-    ],
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -94,6 +96,9 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ReactiveFormsModule,
     ModalModule.forRoot(),
     HttpClientModule,
+    AgmCoreModule.forRoot({
+      apiKey: config.GOOGLE_MAPS_API_KEY
+    }),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -103,14 +108,14 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     }),
     Ng4LoadingSpinnerModule.forRoot()
   ],
-  schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
     BsModalRef,
     ReferenceAdapter,
     UserAdapter,
     ReferenceLookUpTemplateAdapter,
-    AlertsService ,
-    UserService ,
+    AlertsService,
+    UserService,
     NewServiceAdapter,
     ReferenceService,
     AuthgaurdService,

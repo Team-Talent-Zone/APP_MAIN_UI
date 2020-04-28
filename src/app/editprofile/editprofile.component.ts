@@ -50,6 +50,8 @@ export class EditprofileComponent implements OnInit {
   state: string;
   country: string;
   shortAddress: string;
+  lat: number;
+  lng: number;
 
   constructor(
     public fb: FormBuilder,
@@ -83,25 +85,40 @@ export class EditprofileComponent implements OnInit {
   }
 
   initAutocomplete(maps: Maps) {
+    this.route = null;
+    this.city = null;
+    this.state = null;
+    this.country = null;
+    this.shortAddress = null;
+    this.lng = -1;
+    this.lat = -1;
+
     let autocomplete = new maps.places.Autocomplete(this.searchElementRef.nativeElement);
     autocomplete.addListener('place_changed', () => {
       this.ngZone.run(() => {
+        const place = autocomplete.getPlace();
+        this.lat = place.geometry.location.lat();
+        this.lng = place.geometry.location.lng();
         autocomplete.getPlace().address_components.forEach(element => {
+          console.log('element.types', element);
           if (element.types[0] === 'route') {
             this.route = element.long_name;
           }
-          if (element.types[0] === 'locality') {
+          if (element.types[0] === 'administrative_area_level_2') {
             this.city = element.long_name;
-          }
+          } else
+            if (element.types[0] === 'locality') {
+              this.city = element.long_name;
+            }
           if (element.types[0] === 'administrative_area_level_1') {
             this.state = element.long_name;
           }
           if (element.types[0] === 'country') {
             this.country = element.short_name;
           }
-          this.shortAddress = this.route + ',' + this.city + ',' + this.state + ',' + this.country;
         });
-        console.log('this.shortAddress 1', this.shortAddress);
+        this.route = this.route != null ? this.route + ',' : '';
+        this.shortAddress = this.route + this.city + ',' + this.state + ',' + this.country;
       });
     });
   }
@@ -204,21 +221,14 @@ export class EditprofileComponent implements OnInit {
     this.edituserobj.lastname = this.editprofileForm.get('lastname').value;
     this.edituserobj.preferlang = this.editprofileForm.get('preferlang').value;
     this.edituserobj.userbizdetails.fulladdress = this.searchElementRef.nativeElement.value;
-    if (this.route != null) {
-      this.edituserobj.userbizdetails.route = this.route;
-    }
-    if (this.city != null) {
-      this.edituserobj.userbizdetails.city = this.city;
-    }
-    if (this.state != null) {
-      this.edituserobj.userbizdetails.state = this.state;
-    }
-    if (this.country != null) {
-      this.edituserobj.userbizdetails.country = this.country;
-    }
-    if (this.shortAddress != null) {
-      this.edituserobj.userbizdetails.shortaddress = this.shortAddress;
-    }
+    this.edituserobj.userbizdetails.route = this.route;
+    this.edituserobj.userbizdetails.city = this.city;
+    this.edituserobj.userbizdetails.state = this.state;
+    this.edituserobj.userbizdetails.country = this.country;
+    this.edituserobj.userbizdetails.shortaddress = this.shortAddress;
+    this.edituserobj.userbizdetails.lat = this.lat;
+    this.edituserobj.userbizdetails.lng = this.lng;
+
     if (this.roleCode === config.user_rolecode_cba.toString()) {
       this.edituserobj.userbizdetails.bizname = this.editprofileForm.get('bizname').value;
       this.edituserobj.userbizdetails.biztype = this.editprofileForm.get('biztype').value;
