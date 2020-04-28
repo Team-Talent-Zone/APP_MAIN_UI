@@ -52,6 +52,9 @@ export class EditprofileComponent implements OnInit {
   shortAddress: string;
   lat: number;
   lng: number;
+  cityElementOne: string;
+  cityElementTwo: string;
+
 
   constructor(
     public fb: FormBuilder,
@@ -100,16 +103,16 @@ export class EditprofileComponent implements OnInit {
         this.lat = place.geometry.location.lat();
         this.lng = place.geometry.location.lng();
         autocomplete.getPlace().address_components.forEach(element => {
-          console.log('element.types', element);
           if (element.types[0] === 'route') {
             this.route = element.long_name;
           }
-          if (element.types[0] === 'administrative_area_level_2') {
-            this.city = element.long_name;
+          if (element.types[0] === 'locality') {
+            this.cityElementOne = element.long_name;
           } else
-            if (element.types[0] === 'locality') {
-              this.city = element.long_name;
-            }
+          if (element.types[0] === 'administrative_area_level_2') {
+            this.cityElementTwo = element.long_name;
+          }
+
           if (element.types[0] === 'administrative_area_level_1') {
             this.state = element.long_name;
           }
@@ -118,6 +121,7 @@ export class EditprofileComponent implements OnInit {
           }
         });
         this.route = this.route != null ? this.route + ',' : '';
+        this.city = this.cityElementOne != null ? this.cityElementOne : this.cityElementTwo;
         this.shortAddress = this.route + this.city + ',' + this.state + ',' + this.country;
       });
     });

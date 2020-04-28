@@ -1,24 +1,22 @@
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 
-<div class="container" *ngIf="userFUObjList.length >= 1">
+<div class="container" *ngIf="userFUObjList.length > 0">
     <div class=" row">
-    <div class="col-md-9">
-        <h5 class=" section-title h1" *ngIf="userFUObjList.length == 1; else morethanone">
-            Available {{name}} at your city
-        </h5>
-        <ng-template #morethanone>
-            <h5 class="section-title h1" *ngIf="userFUObjList.length > 1">
-                Available {{name}}'s at your city
+        <div class="col-md-9">
+            <h5 class=" section-title h1" *ngIf="userFUObjList.length == 1; else morethanone">
+                Available {{name}} at your city
             </h5>
-        </ng-template>
+            <ng-template #morethanone>
+                <h5 class="section-title h1" *ngIf="userFUObjList.length > 1">
+                    Available {{name}}'s at your city
+                </h5>
+            </ng-template>
+        </div>
+        <div class="col-md-1">
+            <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i>
+                Create a Job Now</a>
+        </div>
     </div>
-    <div class="col-md-1">
-    </div>
-    <div class="col-md-1">
-        <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i>
-            Create a Job Now</a>
-    </div>
-</div>
 </div>
 <div class="row justify-content-center mt-3 mb-2">
     <div class="col-auto">
@@ -70,7 +68,9 @@
     </div>
     <div class="tab-pane fade" id="mapview">
         <div id="map-container-google-1" class="z-depth-1-half map-container" style="height: 500px">
-            <agm-map [latitude]="this.userService.currentUserValue.userbizdetails.lat" [longitude]="this.userService.currentUserValue.userbizdetails.lng" [zoom]="zoom" [disableDefaultUI]="false" [zoomControl]="false">
+            <agm-map [latitude]="this.userService.currentUserValue.userbizdetails.lat"
+                [longitude]="this.userService.currentUserValue.userbizdetails.lng" [zoom]="zoom"
+                [disableDefaultUI]="false" [zoomControl]="false">
                 <agm-marker *ngFor="let m of markers; let i = index" (markerClick)="clickedMarker(m.label, i)"
                     [latitude]="m.lat" [longitude]="m.lng" [label]="m.label" [markerDraggable]="m.draggable"
                     (dragEnd)="markerDragEnd(m, $event)">
@@ -87,8 +87,9 @@
 
                 </agm-marker>
 
-                <agm-circle [latitude]="this.userService.currentUserValue.userbizdetails.lat" [longitude]="this.userService.currentUserValue.userbizdetails.lng" [radius]="10000" [fillColor]="'red'"
-                    [circleDraggable]="false" [editable]="false">
+                <agm-circle [latitude]="this.userService.currentUserValue.userbizdetails.lat"
+                    [longitude]="this.userService.currentUserValue.userbizdetails.lng" [radius]="10000"
+                    [fillColor]="'red'" [circleDraggable]="false" [editable]="false">
                 </agm-circle>
             </agm-map>
         </div>
