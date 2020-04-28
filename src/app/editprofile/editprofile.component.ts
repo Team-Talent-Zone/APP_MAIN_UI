@@ -107,10 +107,10 @@ export class EditprofileComponent implements OnInit {
             this.route = element.long_name;
           }
 
-          if (element.types[0] === 'administrative_area_level_2') {
+          if (element.types[0] === 'locality') {
             this.cityElementOne = element.long_name;
           } else
-            if (element.types[0] === 'locality') {
+            if (element.types[0] === 'administrative_area_level_2') {
               this.cityElementTwo = element.long_name;
             }
 
