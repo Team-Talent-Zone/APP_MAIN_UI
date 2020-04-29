@@ -1,3 +1,4 @@
+import { UserServiceDetails } from 'src/app/appmodels/UserServiceDetails';
 import { UserservicecartComponent } from './../userservicecart/userservicecart.component';
 import { ReferenceService } from './../AppRestCall/reference/reference.service';
 import { ManageserviceComponent } from './../manageservice/manageservice.component';
@@ -34,6 +35,7 @@ export class DashboardofcbaComponent implements OnInit {
   };
   modalRef: BsModalRef;
   userservicedetailsForm: FormGroup;
+  userservicedetailsFormServicePack: FormGroup;
   listOfServicesForCheckOut: any = [];
 
   constructor(
@@ -86,17 +88,19 @@ export class DashboardofcbaComponent implements OnInit {
                       this.referService.translatetext(element.description, lang).subscribe(
                         (description: any) => {
                           element.description = description.translateresp;
-                          this.manageserviceComponent.serviceterms.forEach(elementterms => {
-                            if (elementterms.code === element.validPeriod) {
-                              this.referService.translatetext(elementterms.label, lang).subscribe(
-                                (validPeriod: any) => {
-                                  element.validPeriod = validPeriod.translateresp;
-                                  this.listOfAllApprovedNewServices.push(this.newserviceAdapter.adapt(element));
-                                  this.mapByDomain(element);
-                                  this.spinnerService.hide();
-                                });
-                            }
-                          });
+                          if (this.manageserviceComponent.serviceterms != null) {
+                            this.manageserviceComponent.serviceterms.forEach(elementterms => {
+                              if (elementterms.code === element.validPeriod) {
+                                this.referService.translatetext(elementterms.label, lang).subscribe(
+                                  (validPeriod: any) => {
+                                    element.validPeriod = validPeriod.translateresp;
+                                    this.listOfAllApprovedNewServices.push(this.newserviceAdapter.adapt(element));
+                                    this.mapByDomain(element);
+                                    this.spinnerService.hide();
+                                  });
+                              }
+                            });
+                          }
                         });
                     });
                 } else {
@@ -104,14 +108,16 @@ export class DashboardofcbaComponent implements OnInit {
                     element.fullContent.splice(index, 1);
                     element.fullContent.splice(index, 0, elementFullContent);
                   });
-                  this.manageserviceComponent.serviceterms.forEach(elementterms => {
-                    if (elementterms.code === element.validPeriod) {
-                      element.validPeriod = elementterms.label;
-                      this.listOfAllApprovedNewServices.push(this.newserviceAdapter.adapt(element));
-                      this.mapByDomain(element);
-                      this.spinnerService.hide();
-                    }
-                  });
+                  if (this.manageserviceComponent.serviceterms != null) {
+                    this.manageserviceComponent.serviceterms.forEach(elementterms => {
+                      if (elementterms.code === element.validPeriod) {
+                        element.validPeriod = elementterms.label;
+                        this.listOfAllApprovedNewServices.push(this.newserviceAdapter.adapt(element));
+                        this.mapByDomain(element);
+                        this.spinnerService.hide();
+                      }
+                    });
+                  }
                 }
               }
             });
@@ -138,7 +144,15 @@ export class DashboardofcbaComponent implements OnInit {
     }
   }
 
-  saveUserServiceForServiceId(ourserviceid: number) {
+  prepareSaveUserServiceForServiceId(ourserviceid: number, packwithotherourserviceid: number) {
+    if (packwithotherourserviceid != null) {
+      this.saveUserServiceDetailsForServicePkg(packwithotherourserviceid, ourserviceid);
+    } else {
+      this.saveUserServiceDetailsForIndividual(ourserviceid);
+    }
+  }
+
+  private saveUserServiceDetailsForIndividual(ourserviceid: number) {
     this.spinnerService.show();
     this.referService.getReferenceLookupByShortKey(config.cba_service_event_add_shortkey.toString()).subscribe(
       (refCodeStr: string) => {
@@ -147,15 +161,58 @@ export class DashboardofcbaComponent implements OnInit {
           userid: this.userService.currentUserValue.userId,
           createdby: this.userService.currentUserValue.fullname,
           status: refCodeStr,
+          isservicepack: false,
           userServiceEventHistory: []
         });
-        this.usersrvDetails.saveUserServiceDetails(this.userservicedetailsForm.value, refCodeStr).subscribe(() => {
-          this.spinnerService.hide();
-          this.router.navigateByUrl('addtocart/', { skipLocationChange: true }).
-            then(() => {
-              this.router.navigate(['dashboard']);
+        this.usersrvDetails.saveUserServiceDetails(this.userservicedetailsForm.value, refCodeStr).subscribe(
+          (usersrvobj) => {
+            this.spinnerService.hide();
+            this.router.navigateByUrl('addtocart/', { skipLocationChange: true }).
+              then(() => {
+                this.router.navigate(['dashboard']);
+              });
+          }, error => {
+            this.spinnerService.hide();
+            this.alertService.error(error);
+          });
+      });
+  }
+  private saveUserServiceDetailsForServicePkg(packwithotherourserviceid: number, ourserviceid: number) {
+    this.spinnerService.show();
+    this.referService.getReferenceLookupByShortKey(config.cba_service_event_add_shortkey.toString()).subscribe(
+      (refCodeStr: string) => {
+        this.userservicedetailsFormServicePack = this.formBuilder.group({
+          ourserviceId: packwithotherourserviceid,
+          userid: this.userService.currentUserValue.userId,
+          createdby: this.userService.currentUserValue.fullname,
+          status: refCodeStr,
+          isservicepack: true,
+          userServiceEventHistory: []
+        });
+        this.usersrvDetails.saveUserServiceDetails(this.userservicedetailsFormServicePack.value, refCodeStr).subscribe(
+          (servicepkgusersrvobj: UserServiceDetails) => {
+            this.userservicedetailsForm = this.formBuilder.group({
+              ourserviceId: ourserviceid,
+              userid: this.userService.currentUserValue.userId,
+              createdby: this.userService.currentUserValue.fullname,
+              status: refCodeStr,
+              isservicepack: false,
+              childservicepkgserviceid: servicepkgusersrvobj.serviceId,
+              userServiceEventHistory: []
             });
-        },
+            this.usersrvDetails.saveUserServiceDetails(this.userservicedetailsForm.value, refCodeStr).subscribe(
+              () => {
+                this.spinnerService.hide();
+                this.router.navigateByUrl('addtocart/', { skipLocationChange: true }).
+                  then(() => {
+                    this.router.navigate(['dashboard']);
+                  });
+              },
+              error => {
+                this.spinnerService.hide();
+                this.alertService.error(error);
+              });
+          },
           error => {
             this.spinnerService.hide();
             this.alertService.error(error);
@@ -178,7 +235,10 @@ export class DashboardofcbaComponent implements OnInit {
             imageUrl: elementAppService.imageUrl,
             description: elementAppService.description,
             amount: elementAppService.amount,
-            validPeriod: elementAppService.validPeriod
+            subtotal: element.isservicepack ? 0 : elementAppService.amount,
+            isservicepack: element.isservicepack,
+            validPeriod: elementAppService.validPeriod,
+            childservicepkgserviceid: element.childservicepkgserviceid === null ? 0 : element.childservicepkgserviceid
           });
         }
       });

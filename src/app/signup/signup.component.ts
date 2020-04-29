@@ -35,6 +35,7 @@ export class SignupComponent implements OnInit {
   key: string;
   signupForm: FormGroup;
   userservicedetailsForm: FormGroup;
+  userservicedetailsFormServicePack: FormGroup;
   issubmit = false;
   issubcatdisplay = false;
   referencedetailsmap = [];
@@ -50,7 +51,7 @@ export class SignupComponent implements OnInit {
   reflookupdetails: any;
   langcode: string;
   usersrvobj: UserServiceDetails;
-  ourserviceid: number;
+  ourserviceids: any;
 
 
   constructor(
@@ -184,30 +185,6 @@ export class SignupComponent implements OnInit {
               (resp) => {
                 this.usrObj = this.userAdapter.adapt(resp);
                 if (this.usrObj.userId > 0) {
-                  if (this.ourserviceid > 0) {
-                    this.referService.getReferenceLookupByShortKey(config.cba_service_event_add_shortkey.toString()).subscribe(
-                      (refCodeStr: string) => {
-                        this.userservicedetailsForm = this.formBuilder.group({
-                          ourserviceId: this.ourserviceid,
-                          userid: this.usrObj.userId,
-                          createdby: this.usrObj.fullname,
-                          status: refCodeStr,
-                          userServiceEventHistory: []
-                        });
-                        this.usersrvDetails.saveUserServiceDetails(this.userservicedetailsForm.value, refCodeStr).subscribe(() =>
-                          () => {
-                          },
-                          error => {
-                            this.spinnerService.hide();
-                            this.alertService.error(error);
-                          }
-                        );
-                      },
-                      error => {
-                        this.spinnerService.hide();
-                        this.alertService.error(error);
-                      });
-                  }
                   this.referService.getLookupTemplateEntityByShortkey(config.shortkey_email_verificationemailaddress.toString()).subscribe(
                     referencetemplate => {
                       this.templateObj = this.reflookuptemplateAdapter.adapt(referencetemplate);
@@ -251,6 +228,14 @@ export class SignupComponent implements OnInit {
                       this.alertService.error(error);
                     });
                 }
+
+                if (this.ourserviceids.length > 0) {
+                  if (this.ourserviceids[0].packwithotherourserviceid != null) {
+                    this.saveUserServiceDetailsForServicePkg(this.ourserviceids, this.usrObj);
+                  } else {
+                    this.saveUserServiceDetailsForIndividual(this.ourserviceids[0].ourserviceid, this.usrObj);
+                  }
+                }
               },
               error => {
                 this.spinnerService.hide();
@@ -264,5 +249,66 @@ export class SignupComponent implements OnInit {
         this.alertService.error(error);
       }
     );
+  }
+
+  private saveUserServiceDetailsForIndividual(ourserviceid: number, usrObj: User) {
+    this.referService.getReferenceLookupByShortKey(config.cba_service_event_add_shortkey.toString()).subscribe(
+      (refCodeStr: string) => {
+        this.userservicedetailsForm = this.formBuilder.group({
+          ourserviceId: ourserviceid,
+          userid: this.usrObj.userId,
+          createdby: this.usrObj.fullname,
+          status: refCodeStr,
+          isservicepack: false,
+          userServiceEventHistory: []
+        });
+        this.usersrvDetails.saveUserServiceDetails(this.userservicedetailsForm.value, refCodeStr).subscribe(
+          (usersrvobj) => {
+          }, error => {
+            this.spinnerService.hide();
+            this.alertService.error(error);
+          });
+      });
+  }
+  private saveUserServiceDetailsForServicePkg(ourserviceids: any, usrObj: User) {
+    this.referService.getReferenceLookupByShortKey(config.cba_service_event_add_shortkey.toString()).subscribe(
+      (refCodeStr: string) => {
+        this.userservicedetailsFormServicePack = this.formBuilder.group({
+          ourserviceId: this.ourserviceids[0].packwithotherourserviceid,
+          userid: this.usrObj.userId,
+          createdby: this.usrObj.fullname,
+          status: refCodeStr,
+          isservicepack: true,
+          userServiceEventHistory: []
+        });
+        this.usersrvDetails.saveUserServiceDetails(this.userservicedetailsFormServicePack.value, refCodeStr).subscribe(
+          (servicepkgusersrvobj: UserServiceDetails) => {
+            this.userservicedetailsForm = this.formBuilder.group({
+              ourserviceId: this.ourserviceids[0].ourserviceid,
+              userid: this.usrObj.userId,
+              createdby: this.usrObj.fullname,
+              status: refCodeStr,
+              isservicepack: false,
+              childservicepkgserviceid: servicepkgusersrvobj.serviceId,
+              userServiceEventHistory: []
+            });
+            this.usersrvDetails.saveUserServiceDetails(this.userservicedetailsForm.value, refCodeStr).subscribe(
+              () => {
+              },
+              error => {
+                this.spinnerService.hide();
+                this.alertService.error(error);
+              });
+          },
+          error => {
+            this.spinnerService.hide();
+            this.alertService.error(error);
+          }
+        );
+      },
+      error => {
+        this.spinnerService.hide();
+        this.alertService.error(error);
+      });
   }
 }

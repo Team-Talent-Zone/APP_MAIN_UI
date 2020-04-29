@@ -26,13 +26,19 @@
                         </div>
                     </div>
                 </td>
-                <td data-th="Price">{{prod.amount > 0 ? prod.amount : 0}}</td>
+                <td data-th="Price" *ngIf="prod.subtotal > 0">{{prod.amount}} </td>
+                <td data-th="Price" *ngIf="prod.subtotal == 0 && !prod.isservicepack">{{prod.amount}} </td>
+                <td data-th="Price" *ngIf="prod.subtotal == 0 && prod.isservicepack"><s>{{prod.amount}} </s> </td>
                 <td data-th="Terms" class="col-sm-2">
                     {{prod.validPeriod}}
                 </td>
-                <td data-th="Subtotal" class="text-center">{{prod.amount > 0 ? prod.amount : 0}}</td>
-                <td class="actions">
-                    <button class="btn btn-danger btn-sm  hidden-xs" (click)="removeItemFromCart(prod.serviceId)"><i
+                <td data-th="Subtotal" class="text-center">
+                    {{prod.serviceId }} - {{prod.childservicepkgserviceid}}
+                    {{prod.subtotal > 0 ? prod.subtotal : 0}}
+                </td>
+                <td class="actions" *ngIf="!prod.isservicepack">
+                    <button class="btn btn-danger btn-sm  hidden-xs"
+                        (click)="removeItemFromCart(prod.serviceId ,prod.childservicepkgserviceid)"><i
                             class="fa fa-trash" title="Remove {{prod.name}} From Cart"></i></button>
                 </td>
             </tr>
@@ -56,7 +62,8 @@
                         <i class="fa fa-angle-double-right"></i></a>
                 </td>
                 <td *ngIf="totalAmountToPay == 0 && !isFreeVersion">
-                    <a href="javascript: return false;"  (click)="saveorUpdateFreeVersionUserServiceDetails()" class="btn btn-success btn-block">
+                    <a href="javascript: return false;" (click)="saveorUpdateFreeVersionUserServiceDetails()"
+                        class="btn btn-success btn-block">
                         Continue
                         <i class="fa fa-angle-double-right"></i></a>
                 </td>

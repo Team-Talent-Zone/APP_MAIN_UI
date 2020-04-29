@@ -52,15 +52,13 @@ export class HomepriceComponent implements OnInit {
     this.manageserviceComponent.getServiceTerms();
   }
 
-  preparesignup(servierid: string) {
-
-  }
-  openSignupModal(ourserviceid: number) {
-    console.log(this.dashboardofcbaobj.listOfAllApprovedNewServices)
+  openSignupModal(ourserviceid: number, packwithotherourserviceid: number) {
+    var ourserviceidList = [{ ourserviceid, packwithotherourserviceid }];
+    console.log('ourserviceidList' , ourserviceidList);
     this.modalRef = this.modalService.show(SignupComponent, {
       initialState: {
         key: config.shortkey_role_cba,
-        ourserviceid: ourserviceid,
+        ourserviceids: ourserviceidList,
       }
     });
   }

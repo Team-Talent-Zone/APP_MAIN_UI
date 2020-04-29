@@ -34,4 +34,8 @@ export class UsersrvdetailsService {
   getAllUserServiceDetailsByUserId(userId: number) {
     return this.http.get(`${environment.apiUrl}/getAllUserServiceDetailsByUserId/` + userId + '/');
   }
+
+  deleteUserSVCDetails(usersrvobj: UserServiceDetails) {
+    return this.http.post(`${environment.apiUrl}/deleteUserSVCDetails/`, usersrvobj);
+  }
 }
