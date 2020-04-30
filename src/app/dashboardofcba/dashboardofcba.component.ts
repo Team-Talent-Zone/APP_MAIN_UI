@@ -50,7 +50,8 @@ export class DashboardofcbaComponent implements OnInit {
     private usersrvDetails: UsersrvdetailsService,
     private router: Router,
     private modalService: BsModalService,
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.manageserviceComponent.getServiceTerms();
@@ -145,10 +146,21 @@ export class DashboardofcbaComponent implements OnInit {
   }
 
   prepareSaveUserServiceForServiceId(ourserviceid: number, packwithotherourserviceid: number) {
-    if (packwithotherourserviceid != null) {
-      this.saveUserServiceDetailsForServicePkg(packwithotherourserviceid, ourserviceid);
-    } else {
-      this.saveUserServiceDetailsForIndividual(ourserviceid);
+    var isServiceAlreadyExist = false;
+    this.listOfAllApprovedNewServices.forEach(elementAppService => {
+      this.userservicedetailsList.forEach(element => {
+        if (element.ourserviceId === packwithotherourserviceid && elementAppService.ourserviceId === packwithotherourserviceid) {
+          this.alertService.error(elementAppService.name + 'is already in the selected package. \n\n If you want to add this service then remove ' + elementAppService.name + ' from cart');
+          isServiceAlreadyExist = true;
+        }
+      });
+    });
+    if (!isServiceAlreadyExist) {
+      if (packwithotherourserviceid != null) {
+        this.saveUserServiceDetailsForServicePkg(packwithotherourserviceid, ourserviceid);
+      } else {
+        this.saveUserServiceDetailsForIndividual(ourserviceid);
+      }
     }
   }
 
