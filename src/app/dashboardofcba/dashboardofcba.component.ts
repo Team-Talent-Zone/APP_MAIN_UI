@@ -150,7 +150,8 @@ export class DashboardofcbaComponent implements OnInit {
     this.listOfAllApprovedNewServices.forEach(elementAppService => {
       this.userservicedetailsList.forEach(element => {
         if (element.ourserviceId === packwithotherourserviceid && elementAppService.ourserviceId === packwithotherourserviceid) {
-          this.alertService.error(elementAppService.name + 'is already in the selected package. \n\n If you want to add this service then remove ' + elementAppService.name + ' from cart');
+          // tslint:disable-next-line: max-line-length
+          this.alertService.error(elementAppService.name + 'is a part of this package. We have found ' + elementAppService.name + 'as individual service in the cart.\n\n Please remove the ' + elementAppService.name + ' from the cart before adding this package');
           isServiceAlreadyExist = true;
         }
       });
