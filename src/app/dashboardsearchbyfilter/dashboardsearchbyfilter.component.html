@@ -22,7 +22,8 @@
     <div class="col-auto">
         <nav class="nav btn-group">
             <a href="#cardview" class="btn btn-outline-primary active" data-toggle="tab">Card View</a>
-            <a href="#mapview" class="btn btn-outline-primary  " data-toggle="tab" *ngIf="userFUObjList.length > 0"> Map View</a>
+            <a href="#mapview" class="btn btn-outline-primary  " data-toggle="tab" *ngIf="userFUObjList.length > 0"> Map
+                View</a>
         </nav>
     </div>
 </div>
@@ -44,6 +45,32 @@
                                             <a href="#" class="btn btn-primary btn-sm"><i
                                                     class="fa fa-exchange "></i></a>
                                         </div>
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-9">
+                                                    <div class="well well-sm">
+                                                        <div class="row">
+                                                            <div class="col-xs-12 col-md-9 text-xs-center">
+                                                                <h1 class="rating-num">4.1</h1>
+                                                                <div class="rating">
+                                                                    <span class="fa fa-star "></span>
+                                                                    <span class="fa fa-star "></span>
+                                                                    <span class="fa fa-star "></span>
+                                                                    <span class="fa fa-star "></span>
+                                                                    <span class="fa fa-star-half-empty"></span>
+                                                                </div>
+                                                                <div>
+                                                                    <span class="fa fa-user"></span>125888 reviews
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3"></div>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
                                 <div class="backside">
@@ -71,13 +98,12 @@
             <agm-map [latitude]="this.userService.currentUserValue.userbizdetails.lat"
                 [longitude]="this.userService.currentUserValue.userbizdetails.lng" [zoom]="zoom"
                 [disableDefaultUI]="false" [zoomControl]="false">
-                <agm-marker *ngFor="let m of markers; let i = index" (markerClick)="clickedMarker(m.label, i)"
-                    [latitude]="m.lat" [longitude]="m.lng" [label]="m.label" [markerDraggable]="m.draggable"
-                    (dragEnd)="markerDragEnd(m, $event)">
+                <agm-marker *ngFor="let m of markers; let i = index" [latitude]="m.lat" [longitude]="m.lng"
+                    [label]="m.label" [markerDraggable]="m.draggable">
 
                     <agm-info-window>
                         <div class="card" style="width:240px">
-                            <img class="card-img-top" src="{{m.avtarurl}}" alt="card image">
+                            <img class="card-img-top" src={{m.avtarurl}} alt="card image">
                             <div class="card-body text-center">
                                 <h3 class="card-title">{{m.label}}</h3>
                                 <p class="card-text">{{m.shortaddress}}</p>

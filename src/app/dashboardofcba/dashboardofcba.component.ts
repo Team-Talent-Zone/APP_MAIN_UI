@@ -7,7 +7,7 @@ import { AlertsService } from './../AppRestCall/alerts/alerts.service';
 import { NewsvcService } from './../AppRestCall/newsvc/newsvc.service';
 import { NewServiceAdapter } from './../adapters/newserviceadapter';
 import { UserService } from './../AppRestCall/user/user.service';
-import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { config } from 'src/app/appconstants/config';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { UsersrvdetailsService } from '../AppRestCall/userservice/usersrvdetails.service';
@@ -257,7 +257,7 @@ export class DashboardofcbaComponent implements OnInit {
       });
     });
     const initialState = {
-      listOfServicesForCheckOut: this.listOfServicesForCheckOut,
+      displayUserServicesForCheckOut: this.listOfServicesForCheckOut,
       userservicedetailsList: this.userservicedetailsList
     };
     this.modalRef = this.modalService.show(UserservicecartComponent, Object.assign(

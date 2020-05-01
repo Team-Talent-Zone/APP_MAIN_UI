@@ -52,6 +52,7 @@ import { UserServicedetailsAdapter } from './adapters/userserviceadapter';
 import { UserservicecartComponent } from './userservicecart/userservicecart.component';
 import { AgmCoreModule } from '@agm/core';
 import { config } from './appconstants/config';
+import { PaymentComponent } from './payment/payment.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -86,7 +87,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     DashboardoffuComponent,
     DashboardofadminComponent,
     DashboardsearchbyfilterComponent,
-    UserservicecartComponent
+    UserservicecartComponent,
+    PaymentComponent
   ],
   imports: [
     BrowserModule,
@@ -141,7 +143,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ProcessbgverificationComponent,
     ProcessnewserviceComponent,
     ViewnewsevicedetailsComponent,
-    UserservicecartComponent
+    UserservicecartComponent,
+    PaymentComponent
   ],
   bootstrap: [AppComponent]
 })

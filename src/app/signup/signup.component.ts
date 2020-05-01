@@ -233,7 +233,9 @@ export class SignupComponent implements OnInit {
                   if (this.ourserviceids[0].packwithotherourserviceid != null) {
                     this.saveUserServiceDetailsForServicePkg(this.ourserviceids, this.usrObj);
                   } else {
-                    this.saveUserServiceDetailsForIndividual(this.ourserviceids[0].ourserviceid, this.usrObj);
+                    if (this.ourserviceids[0].ourserviceid != null) {
+                      this.saveUserServiceDetailsForIndividual(this.ourserviceids[0].ourserviceid, this.usrObj);
+                    }
                   }
                 }
               },

@@ -13,7 +13,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let prod of listOfServicesForCheckOut">
+            <tr *ngFor="let prod of displayUserServicesForCheckOut">
                 <td data-th="Product">
                     <div class="row">
                         <div class="col-sm-3 hidden-xs"><img src="{{prod.imageUrl}}" alt="..." class="img-responsive" />
@@ -56,8 +56,8 @@
                         {{totalAmountToPay }} ₹
                     </strong></td>
                 <td *ngIf="totalAmountToPay > 0">
-                    <a href="javascript: return false;" class="btn btn-success btn-block">
-                        Checkout
+                    <a href="javascript: return false;" (click)="openPaymentComponent(totalAmountToPay)" class="btn btn-success btn-block">
+                        Continue
                         <i class="fa fa-angle-double-right"></i></a>
                 </td>
                 <td *ngIf="totalAmountToPay == 0 && !isFreeVersion">

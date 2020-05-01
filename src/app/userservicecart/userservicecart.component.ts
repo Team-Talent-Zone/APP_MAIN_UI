@@ -1,7 +1,8 @@
+import { PaymentComponent } from './../payment/payment.component';
 import { UserService } from './../AppRestCall/user/user.service';
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { BsModalRef } from 'ngx-bootstrap/modal';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { UsersrvdetailsService } from '../AppRestCall/userservice/usersrvdetails.service';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { ReferenceService } from '../AppRestCall/reference/reference.service';
@@ -14,29 +15,32 @@ import { AlertsService } from '../AppRestCall/alerts/alerts.service';
 })
 export class UserservicecartComponent implements OnInit {
 
-  listOfServicesForCheckOut: any;
+  displayUserServicesForCheckOut: any;
   totalAmountToPay: number;
   userservicedetailsList: any;
   isFreeVersion = false;
+  productinfo = [];
 
   constructor(
-    public modalRef: BsModalRef,
+    private modalRefUserSvc: BsModalRef,
+    private modalRef: BsModalRef,
     public userService: UserService,
     private router: Router,
     private spinnerService: Ng4LoadingSpinnerService,
     private usersrvDetails: UsersrvdetailsService,
     private referService: ReferenceService,
     private alertService: AlertsService,
+    private modalService: BsModalService,
   ) {
   }
 
   ngOnInit() {
-    this.totalAmountToPay = this.listOfServicesForCheckOut.filter(item => item.subtotal > 0).
+    this.totalAmountToPay = this.displayUserServicesForCheckOut.filter(item => item.subtotal > 0).
       reduce((sum, current) => sum + current.subtotal, 0);
   }
 
   backToDashBoard() {
-    this.modalRef.hide();
+    this.modalRefUserSvc.hide();
     this.router.navigateByUrl('dboard/', { skipLocationChange: true }).
       then(() => {
         this.router.navigate(['dashboard']);
@@ -45,23 +49,24 @@ export class UserservicecartComponent implements OnInit {
 
   removeItemFromCart(serviceId: number, packwithotherourserviceid: number) {
     if (serviceId > 0) {
-      this.listOfServicesForCheckOut = this.listOfServicesForCheckOut.filter(item => item.serviceId !== serviceId);
+      this.displayUserServicesForCheckOut = this.displayUserServicesForCheckOut.filter(item => item.serviceId !== serviceId);
       this.deleteUserSVCDetails(serviceId);
     }
     if (packwithotherourserviceid > 0) {
-      this.listOfServicesForCheckOut = this.listOfServicesForCheckOut.filter(item => item.serviceId !== packwithotherourserviceid);
+      // tslint:disable-next-line: max-line-length
+      this.displayUserServicesForCheckOut = this.displayUserServicesForCheckOut.filter(item => item.serviceId !== packwithotherourserviceid);
       this.deleteUserSVCDetails(packwithotherourserviceid);
     }
   }
 
   private deleteUserSVCDetails(serviceId: number) {
-    if (this.listOfServicesForCheckOut.length > 0) {
+    if (this.displayUserServicesForCheckOut.length > 0) {
       this.callServiceDeleteUserSVCDetails(serviceId);
-      this.totalAmountToPay = this.listOfServicesForCheckOut.filter(item => item.subtotal > 0).
+      this.totalAmountToPay = this.displayUserServicesForCheckOut.filter(item => item.subtotal > 0).
         reduce((sum, current) => sum + current.subtotal, 0);
     } else {
       this.callServiceDeleteUserSVCDetails(serviceId);
-      this.modalRef.hide();
+      this.modalRefUserSvc.hide();
       this.router.navigateByUrl('dboard/', { skipLocationChange: true }).
         then(() => {
           this.router.navigate(['dashboard']);
@@ -84,6 +89,17 @@ export class UserservicecartComponent implements OnInit {
 
   saveorUpdateFreeVersionUserServiceDetails() {
     this.isFreeVersion = true;
+  }
+  openPaymentComponent(amount: number) {
+    this.displayUserServicesForCheckOut.forEach((element: { name: any; description: any; }) => {
+      this.productinfo.push({ name: element.name }, { description: element.description });
+    });
+    this.modalRef = this.modalService.show(PaymentComponent, {
+      initialState: {
+        totalAmountToPay: amount,
+        productinfoJSON: JSON.stringify(this.productinfo),
+      }
+    });
   }
 
 }
