@@ -16,6 +16,8 @@ export class PaymentComponent implements OnInit {
 
   @Input() totalAmountToPay: number;
   @Input() displayUserServicesForCheckOut: any;
+  @Input() productinfoParam: string;
+
   issubmit = false;
   productinfoJSON: [];
   disablePaymentButton: boolean = true;
@@ -34,9 +36,13 @@ export class PaymentComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.displayUserServicesForCheckOut.forEach((element: { name: any; description: any; }) => {
-      this.productinfo = this.productinfo + '|' + element.name + '|';
-    });
+    if (this.displayUserServicesForCheckOut != null) {
+      this.displayUserServicesForCheckOut.forEach((element: { name: any; description: any; }) => {
+        this.productinfo = this.productinfo + '|' + element.name + '|';
+      });
+    } else {
+      this.productinfo = this.productinfoParam;
+    }
     console.log('1', this.productinfo);
   }
 
