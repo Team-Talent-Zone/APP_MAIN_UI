@@ -19,7 +19,6 @@ export class UserservicecartComponent implements OnInit {
   totalAmountToPay: number;
   userservicedetailsList: any;
   isFreeVersion = false;
-  productinfo = [];
 
   constructor(
     private modalRefUserSvc: BsModalRef,
@@ -91,13 +90,10 @@ export class UserservicecartComponent implements OnInit {
     this.isFreeVersion = true;
   }
   openPaymentComponent(amount: number) {
-    this.displayUserServicesForCheckOut.forEach((element: { name: any; description: any; }) => {
-      this.productinfo.push({ name: element.name }, { description: element.description });
-    });
     this.modalRef = this.modalService.show(PaymentComponent, {
       initialState: {
         totalAmountToPay: amount,
-        productinfoJSON: JSON.stringify(this.productinfo),
+        displayUserServicesForCheckOut: this.displayUserServicesForCheckOut
       }
     });
   }

@@ -54,7 +54,6 @@ export class HomepriceComponent implements OnInit {
 
   openSignupModal(ourserviceid: number, packwithotherourserviceid: number) {
     var ourserviceidList = [{ ourserviceid, packwithotherourserviceid }];
-    console.log('ourserviceidList' , ourserviceidList);
     this.modalRef = this.modalService.show(SignupComponent, {
       initialState: {
         key: config.shortkey_role_cba,
