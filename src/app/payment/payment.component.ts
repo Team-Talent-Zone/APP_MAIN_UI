@@ -21,7 +21,7 @@ export class PaymentComponent implements OnInit {
   disablePaymentButton: boolean = true;
   public payuform: any = {};
   paymentFormDetails: FormGroup;
-  productinfo: string;
+  productinfo = '';
 
 
   constructor(
@@ -35,7 +35,7 @@ export class PaymentComponent implements OnInit {
 
   ngOnInit() {
     this.displayUserServicesForCheckOut.forEach((element: { name: any; description: any; }) => {
-      this.productinfo = this.productinfo + '|' + element.name;
+      this.productinfo = this.productinfo + '|' + element.name + '|';
     });
     console.log('1', this.productinfo);
   }
