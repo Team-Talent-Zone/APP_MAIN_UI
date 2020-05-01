@@ -227,14 +227,15 @@ export class EditprofileComponent implements OnInit {
     this.edituserobj.lastname = this.editprofileForm.get('lastname').value;
     this.edituserobj.preferlang = this.editprofileForm.get('preferlang').value;
     this.edituserobj.userbizdetails.fulladdress = this.searchElementRef.nativeElement.value;
-    this.edituserobj.userbizdetails.route = this.route;
-    this.edituserobj.userbizdetails.city = this.city;
-    this.edituserobj.userbizdetails.state = this.state;
-    this.edituserobj.userbizdetails.country = this.country;
-    this.edituserobj.userbizdetails.shortaddress = this.shortAddress;
-    this.edituserobj.userbizdetails.lat = this.lat;
-    this.edituserobj.userbizdetails.lng = this.lng;
-    console.log('this is inside the edit save user', this.shortAddress);
+    if (this.shortAddress != null) {
+      this.edituserobj.userbizdetails.route = this.route;
+      this.edituserobj.userbizdetails.city = this.city;
+      this.edituserobj.userbizdetails.state = this.state;
+      this.edituserobj.userbizdetails.country = this.country;
+      this.edituserobj.userbizdetails.shortaddress = this.shortAddress;
+      this.edituserobj.userbizdetails.lat = this.lat;
+      this.edituserobj.userbizdetails.lng = this.lng;
+    }
 
     if (this.roleCode === config.user_rolecode_cba.toString()) {
       this.edituserobj.userbizdetails.bizname = this.editprofileForm.get('bizname').value;
