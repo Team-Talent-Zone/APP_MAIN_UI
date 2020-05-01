@@ -11,7 +11,8 @@ export class Freelance  {
     public abt: string;
     public hourlyRate: number;
     public percentageDeduct: number;
-    public isregdone: boolean;
+    public isregfeedone: boolean;
+    public bgCurrentStatus:string;
 
     constructor(
     ) {
