@@ -144,6 +144,7 @@ export class SignupComponent implements OnInit {
         this.spinnerService.hide();
       },
       error => {
+        this.modalRef.hide();
         this.alertService.error(error);
         this.spinnerService.hide();
       }
@@ -176,77 +177,84 @@ export class SignupComponent implements OnInit {
     this.userService.checkusernamenotexist(
       this.signupForm.get('username').value
     ).subscribe(
-      (data: any) => {
-        this.referService.getReferenceLookupByShortKey(this.key).subscribe(
-          (refCode: any) => {
-            this.userService.saveUser(
-              this.signupForm.value, refCode.toString(), this.key, this.signupForm.value
-            ).pipe(first()).subscribe(
-              (resp) => {
-                this.usrObj = this.userAdapter.adapt(resp);
-                if (this.usrObj.userId > 0) {
-                  this.referService.getLookupTemplateEntityByShortkey(config.shortkey_email_verificationemailaddress.toString()).subscribe(
-                    referencetemplate => {
-                      this.templateObj = this.reflookuptemplateAdapter.adapt(referencetemplate);
-                      this.util = new Util();
-                      this.util.preferlang = this.usrObj.preferlang;
-                      this.util.fromuser = ConfigMsg.email_default_fromuser;
-                      this.util.subject = ConfigMsg.email_verficationemailaddress_subj;
-                      this.util.touser = this.usrObj.username;
-                      this.util.templateurl = this.templateObj.url;
-                      this.util.templatedynamicdata = JSON.stringify({
-                        firstName: this.usrObj.firstname,
-                        platformURL: `${environment.uiUrl}` + config.confirmation_fullpathname.toString()
-                          + '/' + this.usrObj.userId
-                      });
-                      this.sendemailService.sendEmail(this.util).subscribe(
-                        (util: any) => {
-                          if (util.lastreturncode === 250) {
-                            this.usernotification = new UserNotification();
-                            this.usernotification.templateid = this.templateObj.templateid;
-                            this.usernotification.sentby = this.usrObj.firstname;
-                            this.usernotification.userid = this.usrObj.userId;
-                            this.usernotification.senton = this.today.toString();
-                            this.userService.saveUserNotification(this.usernotification).subscribe(
-                              (notificationobj: any) => {
-                                this.spinnerService.hide();
-                                this.alertService.success(ConfigMsg.signup_successmsg, true);
-                              },
-                              error => {
-                                this.spinnerService.hide();
-                                this.alertService.error(error);
-                              });
-                          }
-                        },
-                        error => {
-                          this.spinnerService.hide();
-                          this.alertService.error(error);
+      (isusernotexist: any) => {
+        if (isusernotexist) {
+          this.referService.getReferenceLookupByShortKey(this.key).subscribe(
+            (refCode: any) => {
+              this.userService.saveUser(
+                this.signupForm.value, refCode.toString(), this.key, this.signupForm.value
+              ).pipe(first()).subscribe(
+                (resp) => {
+                  this.usrObj = this.userAdapter.adapt(resp);
+                  if (this.usrObj.userId > 0) {
+                    // tslint:disable-next-line: max-line-length
+                    this.referService.getLookupTemplateEntityByShortkey(config.shortkey_email_verificationemailaddress.toString()).subscribe(
+                      referencetemplate => {
+                        this.templateObj = this.reflookuptemplateAdapter.adapt(referencetemplate);
+                        this.util = new Util();
+                        this.util.preferlang = this.usrObj.preferlang;
+                        this.util.fromuser = ConfigMsg.email_default_fromuser;
+                        this.util.subject = ConfigMsg.email_verficationemailaddress_subj;
+                        this.util.touser = this.usrObj.username;
+                        this.util.templateurl = this.templateObj.url;
+                        this.util.templatedynamicdata = JSON.stringify({
+                          firstName: this.usrObj.firstname,
+                          platformURL: `${environment.uiUrl}` + config.confirmation_fullpathname.toString()
+                            + '/' + this.usrObj.userId
                         });
-                    },
-                    error => {
-                      this.spinnerService.hide();
-                      this.alertService.error(error);
-                    });
-                }
+                        this.sendemailService.sendEmail(this.util).subscribe(
+                          (util: any) => {
+                            if (util.lastreturncode === 250) {
+                              this.usernotification = new UserNotification();
+                              this.usernotification.templateid = this.templateObj.templateid;
+                              this.usernotification.sentby = this.usrObj.firstname;
+                              this.usernotification.userid = this.usrObj.userId;
+                              this.usernotification.senton = this.today.toString();
+                              this.userService.saveUserNotification(this.usernotification).subscribe(
+                                (notificationobj: any) => {
+                                  this.spinnerService.hide();
+                                  this.alertService.success(ConfigMsg.signup_successmsg, true);
+                                },
+                                error => {
+                                  this.spinnerService.hide();
+                                  this.alertService.error(error);
+                                });
+                            }
+                          },
+                          error => {
+                            this.spinnerService.hide();
+                            this.alertService.error(error);
+                          });
+                      },
+                      error => {
+                        this.spinnerService.hide();
+                        this.alertService.error(error);
+                      });
+                  }
 
-                if (this.ourserviceids.length > 0) {
-                  if (this.ourserviceids[0].packwithotherourserviceid != null) {
-                    this.saveUserServiceDetailsForServicePkg(this.ourserviceids, this.usrObj);
-                  } else {
-                    if (this.ourserviceids[0].ourserviceid != null) {
-                      this.saveUserServiceDetailsForIndividual(this.ourserviceids[0].ourserviceid, this.usrObj);
+                  if (this.ourserviceids !== null) {
+                    if (this.ourserviceids[0].packwithotherourserviceid != null) {
+                      this.saveUserServiceDetailsForServicePkg(this.ourserviceids, this.usrObj);
+                    } else {
+                      if (this.ourserviceids[0].ourserviceid != null) {
+                        this.saveUserServiceDetailsForIndividual(this.ourserviceids[0].ourserviceid, this.usrObj);
+                      }
                     }
                   }
+                },
+                error => {
+                  this.spinnerService.hide();
+                  this.alertService.error(error);
                 }
-              },
-              error => {
-                this.spinnerService.hide();
-                this.alertService.error(error);
-              }
-            );
-          });
+              );
+            });
+        } else {
+          this.spinnerService.hide();
+          this.alertService.error(ConfigMsg.username_already_exist.toString());
+        }
       },
       error => {
+        this.modalRef.hide();
         this.spinnerService.hide();
         this.alertService.error(error);
       }

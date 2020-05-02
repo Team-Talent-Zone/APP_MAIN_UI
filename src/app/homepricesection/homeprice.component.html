@@ -44,7 +44,8 @@
           </div>
           <div class="tab-content">
             <div class="tab-pane fade show active" id="monthly">
-              <div class="card-body" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
+              <div class="card-body" *ngIf="dashboardofcbaobj.listOfAllApprovedNewServices != null" role="tabpanel"
+                aria-labelledby="headingOne" data-parent="#accordion">
                 <div class="card-deck">
                   <div class="col-md-6 mb-3 mb-md-0" style="margin-bottom:8px !important"
                     *ngFor="let svc of dashboardofcbaobj.listOfAllApprovedNewServices">
@@ -70,7 +71,8 @@
                         </div>
                       </div>
                       <div class="card-footer">
-                        <button type="button" class="btn btn-primary" (click)="openSignupModal(svc.ourserviceId , svc.packwithotherourserviceid)">Sign
+                        <button type="button" class="btn btn-primary"
+                          (click)="openSignupModal(svc.ourserviceId , svc.packwithotherourserviceid)">Sign
                           In</button>
                         <!-- <a href="javascript: return false;" class="btn btn-primary" onclick="openSignupModal(svc.ourserviceId)">Sign In</a> -->
                       </div>

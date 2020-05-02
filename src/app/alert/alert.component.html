@@ -15,7 +15,8 @@
             </button>
         </div>
         <div class="modal-body">
-            {{message.text}}
+            <p *ngIf="errormsg != null "> {{errormsg}}</p>
+            <p *ngIf="errormsg == null"> {{message.text}}</p>
         </div>
         <!-- Modal footer -->
         <div class="modal-footer">

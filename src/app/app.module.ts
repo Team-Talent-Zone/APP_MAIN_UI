@@ -53,6 +53,7 @@ import { UserservicecartComponent } from './userservicecart/userservicecart.comp
 import { AgmCoreModule } from '@agm/core';
 import { config } from './appconstants/config';
 import { PaymentComponent } from './payment/payment.component';
+import { Error504pageComponent } from './error504page/error504page.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -88,7 +89,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     DashboardofadminComponent,
     DashboardsearchbyfilterComponent,
     UserservicecartComponent,
-    PaymentComponent
+    PaymentComponent,
+    Error504pageComponent
   ],
   imports: [
     BrowserModule,

@@ -2,6 +2,7 @@ import { Component, TemplateRef, OnInit, AfterViewInit, ViewChild } from '@angul
 import { Subscription } from 'rxjs';
 import { AlertsService } from '../AppRestCall/alerts/alerts.service';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
+import { Router } from '@angular/router';
 
 @Component({
   // tslint:disable-next-line: component-selector
@@ -18,10 +19,12 @@ export class AlertComponent implements OnInit {
   message: any;
   config: ModalOptions = { class: 'modal-md' };
   errorCallCount: number = 0;
+  errormsg: string;
 
   constructor(
     private alertService: AlertsService,
     private modalService: BsModalService,
+    private router: Router,
   ) {
   }
 
@@ -44,11 +47,19 @@ export class AlertComponent implements OnInit {
   }
 
   openModal(template: TemplateRef<any>) {
-    if (this.errorCallCount === 1) {
-      this.modalRef = this.modalService.show(template, this.config);
-      this.errorCallCount = 0;
+    var errorcode = this.message.text[0].errorcode;
+    this.errormsg = this.message.text[0].errorMsg;
+
+    if (errorcode === 504) {
+      this.router.navigate(['504error']);
+    } else {
+      if (this.errorCallCount === 0 && this.errormsg != null) {
+        this.modalRef = this.modalService.show(template, this.config);
+        this.errorCallCount = this.errorCallCount + 1;
+      } else {
+        this.modalRef = this.modalService.show(template, this.config);
+      }
     }
-    this.errorCallCount = this.errorCallCount + 1;
   }
 
   // tslint:disable-next-line: use-lifecycle-interface

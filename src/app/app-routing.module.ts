@@ -15,6 +15,7 @@ import { HomeComponent } from './home/home.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthgaurdService } from './AppRestCall/authgaurd/authgaurd.service';
 import { ManageserviceComponent } from './manageservice/manageservice.component';
+import { Error504pageComponent } from './error504page/error504page.component';
 
 const routes: Routes = [
   {
@@ -137,6 +138,10 @@ const routes: Routes = [
     ]
   },
   {
+    path: '504error',
+    component: Error504pageComponent
+  },
+  {
     path: '',
     redirectTo: '/home',
     pathMatch: 'full'
@@ -149,7 +154,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes , {onSameUrlNavigation: 'reload'})],
+  imports: [RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' })],
   exports: [RouterModule],
 })
 export class AppRoutingModule { }
