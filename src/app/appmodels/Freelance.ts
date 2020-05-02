@@ -12,7 +12,7 @@ export class Freelance  {
     public hourlyRate: number;
     public percentageDeduct: number;
     public isregfeedone: boolean;
-    public bgCurrentStatus:string;
+    public bgcurrentstatus:string;
 
     constructor(
     ) {
