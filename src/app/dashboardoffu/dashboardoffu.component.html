@@ -1,33 +1,54 @@
-<div class="row placeholders mb-5 justify-content-between"
-    *ngIf="!this.userService.currentUserValue.freeLanceDetails.isregfeedone">
-    <div class="col-6 col-sm-2 placeholder text-center">
-        <img src="{{stage1Img}}" class="mx-auto img-fluid rounded-circle">
-        <a class="btn bt" routerLink='/vieworeditprofile/{{userService.currentUserValue.userId}}'
-            *ngIf="!userService.currentUserValue.freeLanceDetails.isprofilecompleted; else elseFU">
-            <h6>Fill out In-Complete Profile</h6>
-        </a>
-        <ng-template #elseFU>
-            <h6>Profile Updated</h6>
-        </ng-template>
+<div class="container">
+    <div class="row placeholders mb-5 justify-content-between"
+        *ngIf="!this.userService.currentUserValue.freeLanceDetails.isregfeedone">
+        <div class="col-6 col-sm-2 placeholder text-center">
+            <img src="{{stage1Img}}" class="mx-auto img-fluid rounded-circle">
+            <a class="btn bt" routerLink='/vieworeditprofile/{{userService.currentUserValue.userId}}'
+                *ngIf="!userService.currentUserValue.freeLanceDetails.isprofilecompleted; else elseFU">
+                <h6>Fill out In-Complete Profile</h6>
+            </a>
+            <ng-template #elseFU>
+                <h6>Profile Updated</h6>
+            </ng-template>
+        </div>
+        <div class="stepConectorPiece"
+            [ngStyle]="{'background': userService.currentUserValue.freeLanceDetails.isprofilecompleted ? 'green':'lightgrey'}">
+        </div>
+        <div class="col-6 col-sm-2 placeholder text-center">
+            <img src="{{stage2Img}}" class="mx-auto img-fluid rounded-circle" alt="Generic placeholder thumbnail">
+            <h6>BG Verification Started</h6>
+        </div>
+        <div class="stepConectorPiece"
+            [ngStyle]="{'background': userService.currentUserValue.freeLanceDetails.isbgstarted ? 'green':'lightgrey'}">
+        </div>
+        <div class="col-6 col-sm-2 placeholder text-center">
+            <img src="{{stage3Img}}" class="mx-auto img-fluid rounded-circle"
+                alt="Background Verification is completed">
+            <h6>BG Verification Completed</h6>
+        </div>
+        <div class="stepConectorPiece"
+            [ngStyle]="{'background': userService.currentUserValue.freeLanceDetails.isbgdone ? 'green':'lightgrey'}">
+        </div>
+        <div class="col-6 col-sm-2 placeholder text-center">
+            <img src="{{stage4Img}}" class="mx-auto img-fluid rounded-circle" alt="Final Result">
+            <h6>BG Verification Final Result</h6>
+        </div>
     </div>
-    <div class="stepConectorPiece"
-        [ngStyle]="{'background': userService.currentUserValue.freeLanceDetails.isprofilecompleted ? 'green':'lightgrey'}">
-    </div>
-    <div class="col-6 col-sm-2 placeholder text-center">
-        <img src="{{stage2Img}}" class="mx-auto img-fluid rounded-circle" alt="Generic placeholder thumbnail">
-        <h6>BG Verification Started</h6>
-    </div>
-    <div class="stepConectorPiece"
-        [ngStyle]="{'background': userService.currentUserValue.freeLanceDetails.isbgstarted ? 'green':'lightgrey'}">
-    </div>
-    <div class="col-6 col-sm-2 placeholder text-center">
-        <img src="{{stage3Img}}" class="mx-auto img-fluid rounded-circle" alt="Background Verification is completed">
-        <h6>BG Verification Completed</h6>
-    </div>
-    <div class="stepConectorPiece"
-        [ngStyle]="{'background': userService.currentUserValue.freeLanceDetails.isbgdone ? 'green':'lightgrey'}"></div>
-    <div class="col-6 col-sm-2 placeholder text-center">
-        <img src="{{stage4Img}}" class="mx-auto img-fluid rounded-circle" alt="Final Result">
-        <h6>BG Verification Final Result</h6>
+    <div class="row"
+        *ngIf="this.userService.currentUserValue.freeLanceDetails.isregfeedone && this.userService.currentUserValue.freeLanceDetails.bgcurrentstatus == 'BG_APPROVED' ">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-6 col-lg-4 mb-3" *ngFor="let card of infoCards, index as i">
+            <div class="card mb-3 h-60">
+                <div class="card-body">
+                    <h4 class="card-title">{{ card.name }}</h4>
+                    <p class="card-text">
+                        <i class="fa fa-inr fa-4x" *ngIf="card.value > 0" style="color:green;"></i>
+                        <i *ngIf="card.value == 0" class="fa fa-inr  fa-4x" style="color:orange;"></i>
+                        <p>
+                            <h2> {{ card.value }}</h2>
+                            <p class="card-text"><small class="text-muted">Last updated {{indiaTime}} mins ago</small></p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

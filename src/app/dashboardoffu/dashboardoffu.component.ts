@@ -17,6 +17,12 @@ export class DashboardoffuComponent implements OnInit {
   stageBgStatusApprovedImg: string = '//placehold.it/200/dddddd/fff?text=Approved';
   stageBgStatusRejectedImg: string = '//placehold.it/200/dddddd/fff?text=Rejected';
   usrObj: any;
+  indiaTime = new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' });
+
+  infoCards = [
+    { name: 'Current Job Pay', value: '0' },
+    { name: 'Total Earnings', value: '1000' },
+  ];
 
   constructor(
     public userService: UserService
@@ -29,20 +35,20 @@ export class DashboardoffuComponent implements OnInit {
         this.stage1Img = this.stageCompletedImg;
       }
       if (this.usrObj.freeLanceDetails.isbgstarted) {
-      this.stage2Img = this.stageCompletedImg;
+        this.stage2Img = this.stageCompletedImg;
       }
       if (this.usrObj.freeLanceDetails.isbgdone) {
         this.stage3Img = this.stageCompletedImg;
-        }
+      }
       this.usrObj.freelancehistoryentity.forEach(element => {
         if (element.bgstatus === config.bg_code_approved.toString()) {
           this.stage4Img = this.stageBgStatusApprovedImg;
-          } else
-        if (element.bgstatus === config.bg_code_rejected.toString()) {
-                  this.stage4Img = this.stageBgStatusRejectedImg;
+        } else
+          if (element.bgstatus === config.bg_code_rejected.toString()) {
+            this.stage4Img = this.stageBgStatusRejectedImg;
           }
       });
-  }
+    }
   }
 
 }
