@@ -1,12 +1,12 @@
 <button class="btn btn-info btn-lg" (click)="openUserServiceCart()"
-  *ngIf="userservicedetailsList.length > 0 && this.userService.currentUserValue.userroles.rolecode != 'FREELANCER_USER' ">
+  *ngIf="userservicedetailsAddedList.length > 0 && this.userService.currentUserValue.userroles.rolecode != 'FREELANCER_USER' ">
   <i class="fa fa-shopping-cart ">
-    <span *ngIf="userservicedetailsList.length == 1 ; else morethenOne">
-      {{userservicedetailsList.length}} Item
+    <span *ngIf="userservicedetailsAddedList.length == 1 ; else morethenOne">
+      {{userservicedetailsAddedList.length}} Item
     </span>
     <ng-template #morethenOne>
       <span>
-        {{userservicedetailsList.length}} Items
+        {{userservicedetailsAddedList.length}} Items
       </span>
     </ng-template>
   </i>
@@ -101,8 +101,8 @@
             </div>
             <div class="card-footer">
               <div *ngIf="userservicedetailsExistingIds.includes(svc.ourserviceId) ; else addToCart">
-                <button class="btn btn-success" title="Create or Edit Widgets For {{svc.name}}">
-                  <i class="fa fa-window-restore"></i>Open Custom Widget</button>
+                <a class="btn btn-warning" [routerLink]="['/createoreditwidget',svc.ourserviceId]">
+                  <i class="fa fa-window-restore"> Open Custom Widget </i></a>
               </div>
               <ng-template #addToCart>
                 <button type="button" class="btn btn-primary"

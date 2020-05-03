@@ -61,7 +61,9 @@ export const config = {
   cba_service_event_add_shortkey: 'service_add',
   cba_service_event_remove_shortkey: 'service_remove',
   user_service_status_added: 'ADDED',
-  user_service_status_published: 'PUBLISHED'
+  user_service_status_published: 'PUBLISHED',
+  user_service_status_paymentpaid: 'PAYMENT_PAID'
+
 };
 
 

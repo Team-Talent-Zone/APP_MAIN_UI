@@ -1,3 +1,4 @@
+import { CreateoreditwidgetComponent } from './createoreditwidget/createoreditwidget.component';
 import { UsersubscribeservicesComponent } from './usersubscribeservices/usersubscribeservices.component';
 import { ViewuserservicedetailsComponent } from './viewuserservicedetails/viewuserservicedetails.component';
 import { PaymenthistComponent } from './paymenthist/paymenthist.component';
@@ -19,6 +20,7 @@ import { AuthgaurdService } from './AppRestCall/authgaurd/authgaurd.service';
 import { ManageserviceComponent } from './manageservice/manageservice.component';
 import { Error504pageComponent } from './error504page/error504page.component';
 import { ViewfujobdetailsComponent } from './viewfujobdetails/viewfujobdetails.component';
+import { ManagejobsComponent } from './managejobs/managejobs.component';
 
 const routes: Routes = [
   {
@@ -131,6 +133,26 @@ const routes: Routes = [
     ]
   },
   {
+    path: 'managejobs/:id',
+    component: DashboardComponent,
+    children: [
+      {
+        path: '',
+        component: ManagejobsComponent
+      }
+    ]
+  },
+  {
+    path: 'createoreditwidget/:id',
+    component: DashboardComponent,
+    children: [
+      {
+        path: '',
+        component: CreateoreditwidgetComponent
+      }
+    ]
+  },
+  {
     path: 'viewuserservicedetails/:id',
     component: DashboardComponent,
     children: [
@@ -141,15 +163,15 @@ const routes: Routes = [
     ]
   },
   {
-  path: 'viewfujobdetails/:id',
-  component: DashboardComponent,
-  children: [
-    {
-      path: '',
-      component: ViewfujobdetailsComponent
-    }
-  ]
-},
+    path: 'viewfujobdetails/:id',
+    component: DashboardComponent,
+    children: [
+      {
+        path: '',
+        component: ViewfujobdetailsComponent
+      }
+    ]
+  },
   {
     path: 'vieworeditprofile/:id',
     component: DashboardComponent,

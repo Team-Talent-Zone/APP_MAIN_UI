@@ -15,7 +15,6 @@ export class UsersubscribeservicesComponent implements OnInit {
 
   listOfSubscribedServicesByUser: any = [];
   timelaps = false;
-
   constructor(
     public userService: UserService,
     public manageserviceComponent: ManageserviceComponent,
@@ -40,13 +39,24 @@ export class UsersubscribeservicesComponent implements OnInit {
         if (listofusersrvDetails != null) {
           listofusersrvDetails.forEach(elementSubServices => {
             this.dashboardofcbaComponent.listOfAllApprovedNewServices.forEach(element => {
-              if (elementSubServices.ourserviceId === element.ourserviceId && elementSubServices.isservicepurchased) {
-                this.listOfSubscribedServicesByUser.push(element);
+              if (elementSubServices.ourserviceId === element.ourserviceId &&
+                elementSubServices.isservicepurchased) {
+                var list = {
+                  name: element.name,
+                  imageUrl: element.imageUrl,
+                  amount: element.amount,
+                  validPeriod: element.validPeriod,
+                  fullContent: element.fullContent,
+                  ourserviceId: element.ourserviceId,
+                  status: elementSubServices.status,
+                  category: element.category
+                };
+                this.listOfSubscribedServicesByUser.push(list);
               }
             });
           });
-          this.timelaps = true;
         }
+        this.timelaps = true;
         this.spinnerService.hide();
       },
       error => {
