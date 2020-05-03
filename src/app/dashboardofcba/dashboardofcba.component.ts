@@ -29,6 +29,8 @@ export class DashboardofcbaComponent implements OnInit {
   show: string = 'show';
   fullContentArray: any = [];
   userservicedetailsList: any = [];
+  userservicedetailsAddedList: any = [];
+
   userservicedetailsExistingIds: any = [];
   config: ModalOptions = {
     class: 'modal-lg', backdrop: 'static',
@@ -58,7 +60,6 @@ export class DashboardofcbaComponent implements OnInit {
   ngOnInit() {
     this.manageserviceComponent.getServiceTerms();
     this.getListOfAllActivePlatformServices(this.userService.currentUserValue.preferlang.toString());
-    console.log(' this.userservicedetailsList :', this.userservicedetailsList);
     setTimeout(() => {
       this.getAllUserServiceDetailsByUserId(this.userService.currentUserValue.userId);
     }, 500);
@@ -73,15 +74,16 @@ export class DashboardofcbaComponent implements OnInit {
         if (listofusersrvDetails != null) {
           listofusersrvDetails.forEach(element => {
             if (element.status === config.user_service_status_added.toString()) {
-              this.userservicedetailsList.push(this.userServicedetailsAdapter.adapt(element));
+              this.userservicedetailsAddedList.push(this.userServicedetailsAdapter.adapt(element));
             }
             if (element.status === config.user_service_status_added.toString() ||
-              element.status === config.user_service_status_published.toString()) {
+              element.status === config.user_service_status_published.toString() ||
+              element.status === config.user_service_status_paymentpaid.toString()) {
               this.userservicedetailsExistingIds.push(element.ourserviceId);
+              this.userservicedetailsList.push(this.userServicedetailsAdapter.adapt(element));
             }
           });
         }
-        console.log('userservicedetailsExistingIds', this.userservicedetailsExistingIds);
         this.spinnerService.hide();
       },
       error => {
@@ -183,9 +185,14 @@ export class DashboardofcbaComponent implements OnInit {
     var isServiceAlreadyExist = false;
     this.listOfAllApprovedNewServices.forEach(elementAppService => {
       this.userservicedetailsList.forEach(element => {
-        if (element.ourserviceId === packwithotherourserviceid && elementAppService.ourserviceId === packwithotherourserviceid) {
+        if (element.ourserviceId === packwithotherourserviceid &&
+          elementAppService.ourserviceId === packwithotherourserviceid) {
           // tslint:disable-next-line: max-line-length
-          this.alertService.error(elementAppService.name + 'is a part of this package. We have found ' + elementAppService.name + 'as individual service in the cart.\n\n Please remove the ' + elementAppService.name + ' from the cart before adding this package');
+          if (elementAppService.status === config.user_service_status_added) {
+            this.alertService.error(elementAppService.name + 'is a part of this package . We have found ' + elementAppService.name + 'as individual service in the cart.\n\n Please remove the ' + elementAppService.name + ' from the cart before adding this package');
+          } else {
+            this.alertService.error(elementAppService.name + 'is a part of this package . We have found ' + elementAppService.name + 'as individual service already been subscribed.');
+          }
           isServiceAlreadyExist = true;
         }
       });
@@ -276,7 +283,7 @@ export class DashboardofcbaComponent implements OnInit {
   openUserServiceCart() {
     this.listOfServicesForCheckOut = [];
     this.listOfAllApprovedNewServices.forEach(elementAppService => {
-      this.userservicedetailsList.forEach(element => {
+      this.userservicedetailsAddedList.forEach(element => {
         if (element.ourserviceId === elementAppService.ourserviceId) {
           this.listOfServicesForCheckOut.push({
             serviceId: element.serviceId,
@@ -294,7 +301,7 @@ export class DashboardofcbaComponent implements OnInit {
     });
     const initialState = {
       displayUserServicesForCheckOut: this.listOfServicesForCheckOut,
-      userservicedetailsList: this.userservicedetailsList
+      userservicedetailsList: this.userservicedetailsAddedList
     };
     this.modalRef = this.modalService.show(UserservicecartComponent, Object.assign(
       {},

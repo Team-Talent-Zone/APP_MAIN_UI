@@ -57,6 +57,8 @@ import { PaymenthistComponent } from './paymenthist/paymenthist.component';
 import { ViewuserservicedetailsComponent } from './viewuserservicedetails/viewuserservicedetails.component';
 import { ViewfujobdetailsComponent } from './viewfujobdetails/viewfujobdetails.component';
 import { UsersubscribeservicesComponent } from './usersubscribeservices/usersubscribeservices.component';
+import { ManagejobsComponent } from './managejobs/managejobs.component';
+import { CreateoreditwidgetComponent } from './createoreditwidget/createoreditwidget.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -96,7 +98,9 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     PaymenthistComponent,
     ViewuserservicedetailsComponent,
     ViewfujobdetailsComponent,
-    UsersubscribeservicesComponent
+    UsersubscribeservicesComponent,
+    ManagejobsComponent,
+    CreateoreditwidgetComponent,
   ],
   imports: [
     BrowserModule,
