@@ -188,7 +188,7 @@ export class DashboardofcbaComponent implements OnInit {
         if (element.ourserviceId === packwithotherourserviceid &&
           elementAppService.ourserviceId === packwithotherourserviceid) {
           // tslint:disable-next-line: max-line-length
-          if (elementAppService.status === config.user_service_status_added) {
+          if (element.status === config.user_service_status_added) {
             this.alertService.error(elementAppService.name + 'is a part of this package . We have found ' + elementAppService.name + 'as individual service in the cart.\n\n Please remove the ' + elementAppService.name + ' from the cart before adding this package');
           } else {
             this.alertService.error(elementAppService.name + 'is a part of this package . We have found ' + elementAppService.name + 'as individual service already been subscribed.');
