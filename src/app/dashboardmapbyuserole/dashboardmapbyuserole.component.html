@@ -2,9 +2,7 @@
     *<i>Testing Purpose only to check the Role : {{userService.currentUserValue.userroles.rolecode}} </i>
 </h4>
 <app-dashboardoffu *ngIf="userService.currentUserValue.userroles.rolecode =='FREELANCER_USER'"></app-dashboardoffu>
-<app-dashboardofcba [userservicedetailsList]="userservicedetailsList"
-    [userservicedetailsExistingIds]="userservicedetailsExistingIds"
-    *ngIf="userService.currentUserValue.userroles.rolecode == 'CLIENT_BUSINESS_ADMINISTRATOR'">
+<app-dashboardofcba *ngIf="userService.currentUserValue.userroles.rolecode == 'CLIENT_BUSINESS_ADMINISTRATOR'">
 </app-dashboardofcba>
 <app-dashboardofadmin *ngIf="userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM' || 
 userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_MANAGER' "></app-dashboardofadmin>

@@ -28,7 +28,7 @@
                     <i class="fa fa-user fa-4x"></i>
                 </div>
                 <h6 class="text-uppercase">FU</h6>
-                <h1 class="display-4" >{{usrObjFUs.length}}</h1>
+                <h1 class="display-4">{{usrObjFUs.length}}</h1>
             </div>
         </div>
     </div>
@@ -60,21 +60,21 @@
         <div class="row">
             <div class="col-md-12">
                 <ul id="tabs" class="nav nav-tabs">
-                    <li class="nav-item"><a href=""  data-target="#myworktab" data-toggle="tab"
-                        class="nav-link medium text-uppercase active">My Bg Work</a></li>
+                    <li class="nav-item"><a href="" data-target="#myworktab" data-toggle="tab"
+                            class="nav-link medium text-uppercase active">My Bg Work</a></li>
                     <li class="nav-item"><a href="" data-target="#cbatab" data-toggle="tab"
                             class="nav-link medium text-uppercase">Client Business Administrator</a></li>
                     <li class="nav-item"><a href="" data-target="#futab" data-toggle="tab"
                             class="nav-link medium text-uppercase ">FreeLancer</a></li>
                     <li class="nav-item"><a href="" data-target="#admintab" data-toggle="tab"
                             class="nav-link medium text-uppercase">Platform Administrator</a></li>
-                     </ul>
+                </ul>
                 <br>
                 <div id="tabsContent" class="tab-content">
-                    <div id="myworktab" class="tab-pane active fade show" >
-                        <table id="example" class="table table-sm table-bordered" >
+                    <div id="myworktab" class="tab-pane active fade show">
+                        <table id="example" class="table table-sm table-bordered">
                             <thead *ngIf="usrObjMyWork != ''">
-                                <tr >
+                                <tr>
                                     <th>Name</th>
                                     <th>Email Address</th>
                                     <th>Created On</th>
@@ -86,8 +86,9 @@
                             <tbody *ngIf="usrObjMyWork != ''; else elseNoBGWork">
                                 <tr *ngFor="let mywork of usrObjMyWork">
                                     <td>
-                                        <a href="javascript: return false;" (click) = 'openViewAccountDetailsModal(mywork.userId)'>
-                                        {{mywork.fullname}}
+                                        <a href="javascript: return false;"
+                                            (click)='openViewAccountDetailsModal(mywork.userId)'>
+                                            {{mywork.fullname}}
                                         </a>
                                     </td>
                                     <td>{{mywork.username}}</td>
@@ -105,21 +106,21 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <a  *ngIf="mywork.freelancehistoryentity.islocked" class="btn  btn-sm" (click) = 'processbgverficiationopenmodal(mywork.userId)'>
-                                            <i title= "You can start working.."  
-                                                    class="fa fa-lock" style="color: rgb(37, 165, 37)" 
-                                                    >
+                                        <a *ngIf="mywork.freelancehistoryentity.islocked" class="btn  btn-sm"
+                                            (click)='processbgverficiationopenmodal(mywork.userId)'>
+                                            <i title="You can start working.." class="fa fa-lock"
+                                                style="color: rgb(37, 165, 37)">
                                             </i>
                                         </a>
                                     </td>
-                                    
+
                                 </tr>
+                            </tbody>
+                            <ng-template #elseNoBGWork>
+                                <tbody align="center">
+                                    No New Background Verification Cases
                                 </tbody>
-                                <ng-template #elseNoBGWork>
-                                    <tbody align="center">
-                                        No New Background Verification Cases
-                                    </tbody>
-                                </ng-template>
+                            </ng-template>
                         </table>
                     </div>
                     <div id="cbatab" class="tab-pane fade ">
@@ -130,12 +131,14 @@
                                     <th>Email Address</th>
                                     <th>Created On</th>
                                     <th>Language</th>
-                                 </tr>
+                                    <th></th>
+                                </tr>
                             </thead>
                             <tbody>
                                 <tr *ngFor="let cbu of usrObjCBAs">
                                     <td>
-                                        <a href="javascript: return false;" (click) = 'openViewAccountDetailsModal(cbu.userId)'>
+                                        <a href="javascript: return false;"
+                                            (click)='openViewAccountDetailsModal(cbu.userId)'>
                                             {{cbu.fullname}}
                                         </a>
                                     </td>
@@ -152,6 +155,12 @@
                                             हिंदी
                                         </div>
                                     </td>
+                                    <td>
+                                        <a href="javascript: return false;"
+                                            [routerLink]="['/viewuserservicedetails',cbu.userId]">
+                                            View Associated Services
+                                        </a>
+                                    </td>
                                 </tr>
                         </table>
 
@@ -160,26 +169,35 @@
                         <table id="example" class="table table-sm table-bordered">
                             <thead>
                                 <tr>
+                                    <th></th>
                                     <th>Name</th>
                                     <th>Email Address</th>
                                     <th>Language</th>
                                     <th>Is BG Complete</th>
                                     <th>Is BG Start</th>
-                                    <th>Is Profile Complete</th>
-                                    <th>Status</th>
                                     <th></th>
-                                   
+                                    <th></th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr  *ngFor="let fu of usrObjFUs">
-                                    <td >
-                                        <a href="javascript: return false;" (click) = 'openViewAccountDetailsModal(fu.userId)'>
+                                <tr *ngFor="let fu of usrObjFUs">
+                                    <td
+                                        *ngIf="userService.currentUserValue.userroles.rolecode == 'CORE_SERVICE_SUPPORT_TEAM'">
+                                        <a *ngIf="fu.freeLanceDetails.isprofilecompleted && !fu.freeLanceDetails.isbgstarted"
+                                            class="btn  btn-sm" (click)='executeBGVerificationCheck(fu.userId)'>
+                                            <i title="Initiate Background verification" class="fa fa-play"
+                                                style="color: rgb(37, 165, 37)"></i>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="javascript: return false;"
+                                            (click)='openViewAccountDetailsModal(fu.userId)'>
                                             {{fu.fullname}}
                                         </a>
                                     </td>
-                                    <td >{{fu.username}}</td>
-                                     <td>
+                                    <td>{{fu.username}}</td>
+                                    <td>
                                         <div *ngIf="fu.preferlang == 'en'">
                                             English
                                         </div>
@@ -193,58 +211,69 @@
                                     <td *ngIf="fu.freeLanceDetails !=null">
                                         <div *ngIf="fu.freeLanceDetails.isbgstarted">
                                             <div *ngIf="fu.freeLanceDetails.isbgdone">
-                                                <i class="fa fa-check" title="Bg verification is completed" style="color: rgb(37, 165, 37)"></i>
+                                                <i class="fa fa-check" title="Bg verification is completed"
+                                                    style="color: rgb(37, 165, 37)"></i>
                                             </div>
                                             <div *ngIf="!fu.freeLanceDetails.isbgdone">
-                                                <i class="fa fa-spinner" title="Bg verification is in-progress" style="color:rgb(16, 0, 238)"></i>
+                                                <i class="fa fa-spinner" title="Bg verification is in-progress"
+                                                    style="color:rgb(16, 0, 238)"></i>
                                             </div>
                                         </div>
                                     </td>
                                     <td *ngIf="fu.freeLanceDetails !=null">
                                         <div *ngIf="fu.freeLanceDetails.isbgstarted; else elseIsBgNotDone">
-                                            <i class="fa fa-check" title="Bg  verification started" style="color: rgb(37, 165, 37)"></i>
+                                            <i class="fa fa-check" title="Bg  verification started"
+                                                style="color: rgb(37, 165, 37)"></i>
                                         </div>
                                         <ng-template #elseIsBgNotDone>
-                                            <i class="fa fa-ban" title="Bg verification not started" style="color:rgb(199, 25, 25)"></i>
+                                            <i class="fa fa-ban" title="Bg verification not started"
+                                                style="color:rgb(199, 25, 25)"></i>
                                         </ng-template>
                                     </td>
                                     <td *ngIf="fu.freeLanceDetails !=null">
-                                        <div *ngIf="fu.freeLanceDetails.isprofilecompleted; else elseIsProfileCompleted">
-                                            <i class="fa fa-check" title="Profile data is available" style="color: rgb(37, 165, 37)"></i>
+                                        <div
+                                            *ngIf="fu.freeLanceDetails.isprofilecompleted; else elseIsProfileCompleted">
+                                            <i class="fa fa-check" title="Profile data is available"
+                                                style="color: rgb(37, 165, 37)"></i>
                                         </div>
                                         <ng-template #elseIsProfileCompleted>
-                                            <i class="fa fa-ban" title="Profile data not available" style="color:rgb(199, 25, 25)"></i>
+                                            <i class="fa fa-ban" title="Profile data not available"
+                                                style="color:rgb(199, 25, 25)"></i>
                                         </ng-template>
                                     </td>
                                     <td *ngIf="fu.freelancehistoryentity !=null">
                                         <div *ngFor="let refdata of refDataObj">
                                             <div *ngIf="refdata.code === fu.freelancehistoryentity.bgstatus">
                                                 {{refdata.label}}
-                                                <label title="Decision by {{fu.freelancehistoryentity.decisionby}}" >
-                                                <i class="fa fa-question-circle" *ngIf="fu.freelancehistoryentity.decisionby != null"
-                                                style="font-size:10px;color:rgb(35, 124, 226)"></i>
+                                                <label title="Decision by {{fu.freelancehistoryentity.decisionby}}">
+                                                    <i class="fa fa-question-circle"
+                                                        *ngIf="fu.freelancehistoryentity.decisionby != null"
+                                                        style="font-size:10px;color:rgb(35, 124, 226)"></i>
                                                 </label>
                                             </div>
                                         </div>
                                     </td>
                                     <td>
-                                             <i title="{{fu.fullname}} background verification is rejected" class="fa fa-thumbs-down " style="color:rgb(241, 18, 18)" 
-                                                *ngIf="fu.freelancehistoryentity.bgstatus == 'BG_REJECTED'; else elseRejected ">
-                                             </i>
-                                             <ng-template #elseRejected>
-                                                <i *ngIf="fu.freelancehistoryentity.bgstatus == 'BG_APPROVED'; else elseInProgress"
-                                                 title="{{fu.fullname}} background verification is approved" class="fa fa-thumbs-up" style="color:green"></i>
-                                             </ng-template>
-                                            <ng-template #elseInProgress>
-                                                <i title="{{fu.fullname}} background verification is in-progress" class="fa fa-spinner" style="color:blue"></i>
-                                                </ng-template>
-                                                  
+                                        <i title="{{fu.fullname}} background verification is rejected"
+                                            class="fa fa-thumbs-down " style="color:rgb(241, 18, 18)"
+                                            *ngIf="fu.freelancehistoryentity.bgstatus == 'BG_REJECTED'; else elseRejected ">
+                                        </i>
+                                        <ng-template #elseRejected>
+                                            <i *ngIf="fu.freelancehistoryentity.bgstatus == 'BG_APPROVED'; else elseInProgress"
+                                                title="{{fu.fullname}} background verification is approved"
+                                                class="fa fa-thumbs-up" style="color:green"></i>
+                                        </ng-template>
+                                        <ng-template #elseInProgress>
+                                            <i title="{{fu.fullname}} background verification is in-progress"
+                                                class="fa fa-spinner" style="color:blue"></i>
+                                        </ng-template>
+
                                     </td>
-                                    <td *ngIf="userService.currentUserValue.userroles.rolecode == 'CORE_SERVICE_SUPPORT_TEAM'">
-                                        <a *ngIf="fu.freeLanceDetails.isprofilecompleted && !fu.freeLanceDetails.isbgstarted"
-                                             class="btn  btn-sm" (click)='executeBGVerificationCheck(fu.userId)'>
-                                            <i title="Initiate Background verification"  class="fa fa-play" style="color: rgb(37, 165, 37)"></i>
-                                            </a>
+                                    <td>
+                                        <a href="javascript: return false;"
+                                            [routerLink]="['/viewfujobdetails',fu.userId]">
+                                            View Jobs
+                                        </a>
                                     </td>
                                 </tr>
                         </table>
@@ -259,12 +288,13 @@
                                     <th>Created By</th>
                                     <th>Language</th>
                                     <th>Designation</th>
-                                 </tr>
+                                </tr>
                             </thead>
                             <tbody>
                                 <tr *ngFor="let platformuser of usrObjPlatformAdmins">
                                     <td>
-                                        <a href="javascript: return false;" (click) = 'openViewAccountDetailsModal(platformuser.userId)'>
+                                        <a href="javascript: return false;"
+                                            (click)='openViewAccountDetailsModal(platformuser.userId)'>
                                             {{platformuser.fullname}}
                                         </a>
                                     </td>
@@ -283,17 +313,18 @@
                                         </div>
                                     </td>
                                     <td>
-                                         <div *ngIf="platformuser.userroles.rolecode == 'CORE_SERVICE_SUPPORT_TEAM'; else elseCBA" >
-                                             Core Service Analyst
+                                        <div
+                                            *ngIf="platformuser.userroles.rolecode == 'CORE_SERVICE_SUPPORT_TEAM'; else elseCBA">
+                                            Core Service Analyst
                                         </div>
                                         <ng-template #elseCBA>
                                             Core Service Manager
                                         </ng-template>
-                                         </td>
+                                    </td>
                                 </tr>
                         </table>
                     </div>
-                   
+
                 </div>
             </div>
         </div>

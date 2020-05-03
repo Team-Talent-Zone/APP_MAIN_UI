@@ -12,14 +12,19 @@
 
     <select #sel [(ngModel)]="filterOn" (change)="onSearchByFilterSelected(sel.value)"
         *ngIf="this.userService.currentUserValue.userroles.rolecode != 'FREELANCER_USER'">
-        <option value="0">Search By Filter</option>
-        <option value='FU_SKILL' *ngIf="this.userService.currentUserValue.userroles.rolecode != 'FREELANCER_USER'">Freelancer
+        <option value="0">Select a Filter</option>
+        <option value="USR_NAME_SEARCH"
+            *ngIf="this.userService.currentUserValue.userroles.rolecode != 'FREELANCER_USER'">
+            Search By Name</option>
+        <option value="USR_USERName_SEARCH"
+            *ngIf="this.userService.currentUserValue.userroles.rolecode != 'FREELANCER_USER'">
+            Search By Email Address</option>
+        <option value='FU_SKILL_SEARCH'
+            *ngIf="this.userService.currentUserValue.userroles.rolecode != 'FREELANCER_USER'">Freelancer
             By Skill</option>
-        <option value='FU_LOC' *ngIf="this.userService.currentUserValue.userroles.rolecode != 'FREELANCER_USER'">Freelancer
-            By Location</option>
-        <option value='SRV' *ngIf="this.userService.currentUserValue.userroles.rolecode != 'FREELANCER_USER'">Services
-        </option>
-
+        <option value='FU_CITY_SEARCH'
+            *ngIf="this.userService.currentUserValue.userroles.rolecode != 'FREELANCER_USER'">Freelancer
+            By City</option>
     </select>
 
     <div class="combobox" *ngIf="this.userService.currentUserValue.userroles.rolecode != 'FREELANCER_USER'">
@@ -74,20 +79,16 @@
                     <a class="nav-link" [routerLink]="['/manageservice']">Manage New Services</a>
                 </li>
                 <li class="nav-item"
-                    *ngIf="this.userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_TEAM' || this.userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_MANAGER'">
-                    <a class="nav-link" [routerLink]="['/manageuserservice']">Manage User Services</a>
+                    *ngIf="this.userService.currentUserValue.userroles.rolecode =='CLIENT_BUSINESS_ADMINISTRATOR'">
+                    <a class="nav-link" [routerLink]="['/usersubscribeservices']">My Services</a>
                 </li>
                 <li class="nav-item"
                     *ngIf="this.userService.currentUserValue.userroles.rolecode =='CLIENT_BUSINESS_ADMINISTRATOR'">
-                    <a class="nav-link">My Services</a>
-                </li>
-                <li class="nav-item"
-                    *ngIf="this.userService.currentUserValue.userroles.rolecode =='CLIENT_BUSINESS_ADMINISTRATOR'">
-                    <a class="nav-link">Payment History</a>
+                    <a class="nav-link" [routerLink]="['/paymenthistory']">Payment History</a>
                 </li>
                 <li class="nav-item"
                     *ngIf="this.userService.currentUserValue.userroles.rolecode =='FREELANCER_USER' && this.userService.currentUserValue.freeLanceDetails.isregfeedone">
-                    <a class="nav-link" href="#">Payment History</a>
+                    <a class="nav-link" [routerLink]="['/paymenthistory']">Payment History</a>
                 </li>
                 <li class="nav-item"
                     *ngIf="this.userService.currentUserValue.userroles.rolecode =='CORE_SERVICE_SUPPORT_MANAGER'">

@@ -12,6 +12,7 @@ export class UserServicedetailsAdapter implements Adapter<UserServiceDetails> {
             item.createdby,
             item.isactive,
             item.isservicepack,
+            item.isservicepurchased,
             item.reasonofunsubscribe,
             item.status,
             item.servicestarton,

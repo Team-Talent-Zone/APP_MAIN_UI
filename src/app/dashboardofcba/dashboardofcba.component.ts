@@ -13,6 +13,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { UsersrvdetailsService } from '../AppRestCall/userservice/usersrvdetails.service';
 import { BsModalService, ModalOptions, BsModalRef } from 'ngx-bootstrap/modal';
 import { Router } from '@angular/router';
+import { UserServicedetailsAdapter } from '../adapters/userserviceadapter';
 
 @Component({
   selector: 'app-dashboardofcba',
@@ -27,8 +28,8 @@ export class DashboardofcbaComponent implements OnInit {
   domainServiceProviderObj: any = [];
   show: string = 'show';
   fullContentArray: any = [];
-  @Input() userservicedetailsList: any;
-  @Input() userservicedetailsExistingIds: any;
+  userservicedetailsList: any = [];
+  userservicedetailsExistingIds: any = [];
   config: ModalOptions = {
     class: 'modal-lg', backdrop: 'static',
     keyboard: false
@@ -39,6 +40,7 @@ export class DashboardofcbaComponent implements OnInit {
   listOfServicesForCheckOut: any = [];
 
   constructor(
+    private userServicedetailsAdapter: UserServicedetailsAdapter,
     private referService: ReferenceService,
     public userService: UserService,
     public newsvcservice: NewsvcService,
@@ -56,6 +58,37 @@ export class DashboardofcbaComponent implements OnInit {
   ngOnInit() {
     this.manageserviceComponent.getServiceTerms();
     this.getListOfAllActivePlatformServices(this.userService.currentUserValue.preferlang.toString());
+    console.log(' this.userservicedetailsList :', this.userservicedetailsList);
+    setTimeout(() => {
+      this.getAllUserServiceDetailsByUserId(this.userService.currentUserValue.userId);
+    }, 500);
+  }
+
+  getAllUserServiceDetailsByUserId(userId: number) {
+    this.spinnerService.show();
+    this.userservicedetailsList = [];
+    this.userservicedetailsExistingIds = [];
+    this.usersrvDetails.getAllUserServiceDetailsByUserId(userId).subscribe(
+      (listofusersrvDetails: any) => {
+        if (listofusersrvDetails != null) {
+          listofusersrvDetails.forEach(element => {
+            if (element.status === config.user_service_status_added.toString()) {
+              this.userservicedetailsList.push(this.userServicedetailsAdapter.adapt(element));
+            }
+            if (element.status === config.user_service_status_added.toString() ||
+              element.status === config.user_service_status_published.toString()) {
+              this.userservicedetailsExistingIds.push(element.ourserviceId);
+            }
+          });
+        }
+        console.log('userservicedetailsExistingIds', this.userservicedetailsExistingIds);
+        this.spinnerService.hide();
+      },
+      error => {
+        this.alertService.error(error);
+        this.spinnerService.hide();
+      }
+    );
   }
 
   getListOfAllActivePlatformServices(lang: string) {
@@ -101,6 +134,7 @@ export class DashboardofcbaComponent implements OnInit {
                                   });
                               }
                             });
+
                           }
                         });
                     });
@@ -175,6 +209,7 @@ export class DashboardofcbaComponent implements OnInit {
           createdby: this.userService.currentUserValue.fullname,
           status: refCodeStr,
           isservicepack: false,
+          isservicepurchased: false,
           userServiceEventHistory: []
         });
         this.usersrvDetails.saveUserServiceDetails(this.userservicedetailsForm.value, refCodeStr).subscribe(
@@ -200,6 +235,7 @@ export class DashboardofcbaComponent implements OnInit {
           createdby: this.userService.currentUserValue.fullname,
           status: refCodeStr,
           isservicepack: true,
+          isservicepurchased: false,
           userServiceEventHistory: []
         });
         this.usersrvDetails.saveUserServiceDetails(this.userservicedetailsFormServicePack.value, refCodeStr).subscribe(

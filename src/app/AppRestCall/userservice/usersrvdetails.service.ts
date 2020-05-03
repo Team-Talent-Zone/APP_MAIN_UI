@@ -36,6 +36,8 @@ export class UsersrvdetailsService {
   }
 
   deleteUserSVCDetails(usersrvobj: UserServiceDetails) {
+    console.log('usersrvobj : ' , usersrvobj);
+
     return this.http.post(`${environment.apiUrl}/deleteUserSVCDetails/`, usersrvobj);
   }
 }

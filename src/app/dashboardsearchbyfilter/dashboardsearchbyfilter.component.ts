@@ -33,7 +33,7 @@ export class DashboardsearchbyfilterComponent implements OnInit {
   name: string;
   searchbyfiltername: string;
   userFUObjList: any = [];
-  isNotFound = false;
+  timelaps = false;
 
   // google maps zoom level
   zoom: number = 11;
@@ -61,8 +61,6 @@ export class DashboardsearchbyfilterComponent implements OnInit {
       this.userService.getUserDetailsByJobAvailable().subscribe(
         (userObjList: any) => {
           userObjList.forEach(element => {
-            console.log('username', element.username, 'element.userbizdetails.city', element.userbizdetails.city);
-            console.log('username', element.username, 'element.freeLanceDetails.subCategory', element.freeLanceDetails.subCategory);
             if (element.freeLanceDetails.subCategory === this.code &&
               element.userbizdetails.city === this.userService.currentUserValue.userbizdetails.city) {
               this.userFUObjList.push(this.userAdapter.adapt(element));
@@ -78,10 +76,7 @@ export class DashboardsearchbyfilterComponent implements OnInit {
               this.markers.push(markPoints);
             }
           });
-          console.log('userFUObjList', this.userFUObjList);
-          if (this.userFUObjList.length === 0) {
-            this.isNotFound = true;
-          }
+          this.timelaps = true;
         },
         error => {
           this.spinnerService.hide();

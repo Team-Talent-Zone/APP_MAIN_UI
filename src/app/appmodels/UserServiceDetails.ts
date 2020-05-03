@@ -10,6 +10,7 @@ export class UserServiceDetails  {
         public createdon: string,
         public isactive: boolean,
         public isservicepack: boolean,
+        public isservicepurchased: boolean,
         public reasonofunsubscribe: string,
         public status: string,
         public servicestarton: string,

@@ -38,7 +38,6 @@ import { ProcessbgverificationComponent } from './processbgverification/processb
 import { SignupadminComponent } from './signupadmin/signupadmin.component';
 import { NewserviceComponent } from './newservice/newservice.component';
 import { ManageserviceComponent } from './manageservice/manageservice.component';
-import { ManageuserserviceComponent } from './manageuserservice/manageuserservice.component';
 import { ApiService } from './adapters/api.service';
 import { ProcessnewserviceComponent } from './processnewservice/processnewservice.component';
 import { ViewnewsevicedetailsComponent } from './viewnewsevicedetails/viewnewsevicedetails.component';
@@ -54,6 +53,10 @@ import { AgmCoreModule } from '@agm/core';
 import { config } from './appconstants/config';
 import { PaymentComponent } from './payment/payment.component';
 import { Error504pageComponent } from './error504page/error504page.component';
+import { PaymenthistComponent } from './paymenthist/paymenthist.component';
+import { ViewuserservicedetailsComponent } from './viewuserservicedetails/viewuserservicedetails.component';
+import { ViewfujobdetailsComponent } from './viewfujobdetails/viewfujobdetails.component';
+import { UsersubscribeservicesComponent } from './usersubscribeservices/usersubscribeservices.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -81,7 +84,6 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     SignupadminComponent,
     NewserviceComponent,
     ManageserviceComponent,
-    ManageuserserviceComponent,
     ProcessnewserviceComponent,
     ViewnewsevicedetailsComponent,
     DashboardofcbaComponent,
@@ -90,7 +92,11 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     DashboardsearchbyfilterComponent,
     UserservicecartComponent,
     PaymentComponent,
-    Error504pageComponent
+    Error504pageComponent,
+    PaymenthistComponent,
+    ViewuserservicedetailsComponent,
+    ViewfujobdetailsComponent,
+    UsersubscribeservicesComponent
   ],
   imports: [
     BrowserModule,

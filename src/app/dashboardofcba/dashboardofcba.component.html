@@ -12,6 +12,7 @@
   </i>
 </button>
 
+
 <div class=" card">
   <div class="card-header" role="tab" id="headingOne">
     <h5 class="mb-0">
@@ -101,7 +102,7 @@
             <div class="card-footer">
               <div *ngIf="userservicedetailsExistingIds.includes(svc.ourserviceId) ; else addToCart">
                 <button class="btn btn-success" title="Create or Edit Widgets For {{svc.name}}">
-                  <i class="fa fa-window-restore"></i> Prepare Custom Widget</button>
+                  <i class="fa fa-window-restore"></i>Open Custom Widget</button>
               </div>
               <ng-template #addToCart>
                 <button type="button" class="btn btn-primary"
