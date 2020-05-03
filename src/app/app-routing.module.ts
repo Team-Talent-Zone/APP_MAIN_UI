@@ -1,6 +1,8 @@
+import { UsersubscribeservicesComponent } from './usersubscribeservices/usersubscribeservices.component';
+import { ViewuserservicedetailsComponent } from './viewuserservicedetails/viewuserservicedetails.component';
+import { PaymenthistComponent } from './paymenthist/paymenthist.component';
 import { DashboardsearchbyfilterComponent } from './dashboardsearchbyfilter/dashboardsearchbyfilter.component';
 import { HomepriceComponent } from './homepricesection/homeprice.component';
-import { ManageuserserviceComponent } from './manageuserservice/manageuserservice.component';
 import { NewserviceComponent } from './newservice/newservice.component';
 import { SignupadminComponent } from './signupadmin/signupadmin.component';
 import { DashboardmapbyuseroleComponent } from './dashboardmapbyuserole/dashboardmapbyuserole.component';
@@ -15,6 +17,8 @@ import { HomeComponent } from './home/home.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthgaurdService } from './AppRestCall/authgaurd/authgaurd.service';
 import { ManageserviceComponent } from './manageservice/manageservice.component';
+import { Error504pageComponent } from './error504page/error504page.component';
+import { ViewfujobdetailsComponent } from './viewfujobdetails/viewfujobdetails.component';
 
 const routes: Routes = [
   {
@@ -117,15 +121,35 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'manageuserservice',
+    path: 'usersubscribeservices',
     component: DashboardComponent,
     children: [
       {
         path: '',
-        component: ManageuserserviceComponent
+        component: UsersubscribeservicesComponent
       }
     ]
   },
+  {
+    path: 'viewuserservicedetails/:id',
+    component: DashboardComponent,
+    children: [
+      {
+        path: '',
+        component: ViewuserservicedetailsComponent
+      }
+    ]
+  },
+  {
+  path: 'viewfujobdetails/:id',
+  component: DashboardComponent,
+  children: [
+    {
+      path: '',
+      component: ViewfujobdetailsComponent
+    }
+  ]
+},
   {
     path: 'vieworeditprofile/:id',
     component: DashboardComponent,
@@ -133,6 +157,20 @@ const routes: Routes = [
       {
         path: '',
         component: EditprofileComponent
+      }
+    ]
+  },
+  {
+    path: '504error',
+    component: Error504pageComponent
+  },
+  {
+    path: 'paymenthistory',
+    component: DashboardComponent,
+    children: [
+      {
+        path: '',
+        component: PaymenthistComponent
       }
     ]
   },
@@ -149,7 +187,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes , {onSameUrlNavigation: 'reload'})],
+  imports: [RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' })],
   exports: [RouterModule],
 })
 export class AppRoutingModule { }

@@ -50,6 +50,11 @@ export class EditprofileComponent implements OnInit {
   state: string;
   country: string;
   shortAddress: string;
+  lat: number;
+  lng: number;
+  cityElementOne: string;
+  cityElementTwo: string;
+
 
   constructor(
     public fb: FormBuilder,
@@ -86,22 +91,40 @@ export class EditprofileComponent implements OnInit {
     let autocomplete = new maps.places.Autocomplete(this.searchElementRef.nativeElement);
     autocomplete.addListener('place_changed', () => {
       this.ngZone.run(() => {
+        this.route = null;
+        this.city = null;
+        this.state = null;
+        this.country = null;
+        this.shortAddress = null;
+        this.lng = -1;
+        this.lat = -1;
+        const place = autocomplete.getPlace();
+        this.lat = place.geometry.location.lat();
+        this.lng = place.geometry.location.lng();
         autocomplete.getPlace().address_components.forEach(element => {
           if (element.types[0] === 'route') {
             this.route = element.long_name;
           }
           if (element.types[0] === 'locality') {
-            this.city = element.long_name;
-          }
+            this.cityElementOne = element.long_name;
+          } else
+            if (element.types[0] === 'administrative_area_level_2') {
+              this.cityElementTwo = element.long_name;
+            }
           if (element.types[0] === 'administrative_area_level_1') {
             this.state = element.long_name;
           }
           if (element.types[0] === 'country') {
             this.country = element.short_name;
           }
-          this.shortAddress = this.route + ',' + this.city + ',' + this.state + ',' + this.country;
         });
-        console.log('this.shortAddress 1', this.shortAddress);
+        this.route = this.route != null ? this.route : '';
+        this.city = this.cityElementOne != null ? this.cityElementOne : this.cityElementTwo;
+        let routeDup = this.route.length > 0 ? this.route + ',' : '';
+        let cityDup = this.city.length > 0 ? this.city + ',' : '';
+        let stateDup = this.state.length > 0 ? this.state + ',' : '';
+        let countryDup = this.country.length > 0 ? this.country + ',' : '';
+        this.shortAddress = routeDup + cityDup + stateDup + countryDup;
       });
     });
   }
@@ -117,7 +140,7 @@ export class EditprofileComponent implements OnInit {
         fulladdress: ['', [Validators.required]],
         bizname: ['', [Validators.required, Validators.maxLength(40)]],
         biztype: ['', [Validators.required, Validators.maxLength(40)]],
-        bizwebsite: ['', [Validators.required, Validators.maxLength(40)]],
+        bizwebsite: ['', [Validators.maxLength(40)]],
         abtbiz: ['', [Validators.required]],
         purposeofsignup: ['', [Validators.required]],
         designation: ['', [Validators.required, Validators.maxLength(40)]],
@@ -204,21 +227,16 @@ export class EditprofileComponent implements OnInit {
     this.edituserobj.lastname = this.editprofileForm.get('lastname').value;
     this.edituserobj.preferlang = this.editprofileForm.get('preferlang').value;
     this.edituserobj.userbizdetails.fulladdress = this.searchElementRef.nativeElement.value;
-    if (this.route != null) {
-      this.edituserobj.userbizdetails.route = this.route;
-    }
-    if (this.city != null) {
-      this.edituserobj.userbizdetails.city = this.city;
-    }
-    if (this.state != null) {
-      this.edituserobj.userbizdetails.state = this.state;
-    }
-    if (this.country != null) {
-      this.edituserobj.userbizdetails.country = this.country;
-    }
     if (this.shortAddress != null) {
+      this.edituserobj.userbizdetails.route = this.route;
+      this.edituserobj.userbizdetails.city = this.city;
+      this.edituserobj.userbizdetails.state = this.state;
+      this.edituserobj.userbizdetails.country = this.country;
       this.edituserobj.userbizdetails.shortaddress = this.shortAddress;
+      this.edituserobj.userbizdetails.lat = this.lat;
+      this.edituserobj.userbizdetails.lng = this.lng;
     }
+
     if (this.roleCode === config.user_rolecode_cba.toString()) {
       this.edituserobj.userbizdetails.bizname = this.editprofileForm.get('bizname').value;
       this.edituserobj.userbizdetails.biztype = this.editprofileForm.get('biztype').value;
@@ -310,6 +328,9 @@ export class EditprofileComponent implements OnInit {
           this.userService.currentUserValue.avtarurl = this.usrObj.avtarurl;
           this.userService.currentUserValue.fullname = this.usrObj.fullname;
           this.userService.currentUserValue.preferlang = this.usrObj.preferlang;
+          this.userService.currentUserValue.userbizdetails.fulladdress = this.usrObj.userbizdetails.fulladdress;
+          this.userService.currentUserValue.userbizdetails.lat = this.usrObj.userbizdetails.lat;
+          this.userService.currentUserValue.userbizdetails.lng = this.usrObj.userbizdetails.lng;
         }
         this.edituserobj = userObj;
       },

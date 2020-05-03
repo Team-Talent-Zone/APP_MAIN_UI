@@ -1,11 +1,11 @@
+import { PaymentComponent } from './../payment/payment.component';
 import { UserService } from './../AppRestCall/user/user.service';
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { BsModalRef } from 'ngx-bootstrap/modal';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { UsersrvdetailsService } from '../AppRestCall/userservice/usersrvdetails.service';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { ReferenceService } from '../AppRestCall/reference/reference.service';
-import { config } from 'src/app/appconstants/config';
 import { AlertsService } from '../AppRestCall/alerts/alerts.service';
 
 @Component({
@@ -15,73 +15,85 @@ import { AlertsService } from '../AppRestCall/alerts/alerts.service';
 })
 export class UserservicecartComponent implements OnInit {
 
-  listOfServicesForCheckOut: any;
+  displayUserServicesForCheckOut: any;
   totalAmountToPay: number;
   userservicedetailsList: any;
+  isFreeVersion = false;
 
   constructor(
-    public modalRef: BsModalRef,
+    private modalRefUserSvc: BsModalRef,
+    private modalRef: BsModalRef,
     public userService: UserService,
     private router: Router,
     private spinnerService: Ng4LoadingSpinnerService,
     private usersrvDetails: UsersrvdetailsService,
     private referService: ReferenceService,
     private alertService: AlertsService,
+    private modalService: BsModalService,
   ) {
   }
 
   ngOnInit() {
-    this.totalAmountToPay = this.listOfServicesForCheckOut.filter(item => item.amount > 0).
-      reduce((sum, current) => sum + current.amount, 0);
+    this.totalAmountToPay = this.displayUserServicesForCheckOut.filter(item => item.subtotal > 0).
+      reduce((sum, current) => sum + current.subtotal, 0);
   }
 
   backToDashBoard() {
-    this.modalRef.hide();
+    this.modalRefUserSvc.hide();
     this.router.navigateByUrl('dboard/', { skipLocationChange: true }).
       then(() => {
         this.router.navigate(['dashboard']);
       });
   }
 
-  removeItemFromCart(serviceId: number) {
-    this.listOfServicesForCheckOut = this.listOfServicesForCheckOut.filter(item => item.serviceId !== serviceId);
-    if (this.listOfServicesForCheckOut.length > 0) {
-      this.prepareSaveOrUpdateUserSVCDetails(serviceId);
-      this.totalAmountToPay = this.listOfServicesForCheckOut.filter(item => item.amount > 0).
-        reduce((sum, current) => sum + current.amount, 0);
+  removeItemFromCart(serviceId: number, packwithotherourserviceid: number) {
+    if (serviceId > 0) {
+      this.displayUserServicesForCheckOut = this.displayUserServicesForCheckOut.filter(item => item.serviceId !== serviceId);
+      this.deleteUserSVCDetails(serviceId);
+    }
+    if (packwithotherourserviceid > 0) {
+      // tslint:disable-next-line: max-line-length
+      this.displayUserServicesForCheckOut = this.displayUserServicesForCheckOut.filter(item => item.serviceId !== packwithotherourserviceid);
+      this.deleteUserSVCDetails(packwithotherourserviceid);
+    }
+  }
+
+  private deleteUserSVCDetails(serviceId: number) {
+    if (this.displayUserServicesForCheckOut.length > 0) {
+      this.callServiceDeleteUserSVCDetails(serviceId);
+      this.totalAmountToPay = this.displayUserServicesForCheckOut.filter(item => item.subtotal > 0).
+        reduce((sum, current) => sum + current.subtotal, 0);
     } else {
-      this.prepareSaveOrUpdateUserSVCDetails(serviceId);
-      this.modalRef.hide();
+      this.callServiceDeleteUserSVCDetails(serviceId);
+      this.modalRefUserSvc.hide();
       this.router.navigateByUrl('dboard/', { skipLocationChange: true }).
         then(() => {
           this.router.navigate(['dashboard']);
         });
     }
-
   }
-
-  private prepareSaveOrUpdateUserSVCDetails(serviceId: number) {
+  private callServiceDeleteUserSVCDetails(serviceId: number) {
     this.userservicedetailsList.forEach(element => {
       if (element.serviceId === serviceId) {
-        element.isactive = false;
-        this.spinnerService.show();
-        this.referService.getReferenceLookupByShortKey(config.cba_service_event_remove_shortkey.toString()).subscribe(
-          (refCodeStr: string) => {
-            element.status = refCodeStr;
-            element.userServiceEventHistory[0].eventcode = refCodeStr;
-            element.userServiceEventHistory[0].updatedby = this.userService.currentUserValue.fullname;
-            this.usersrvDetails.saveOrUpdateUserSVCDetails(element).subscribe(() => {
-              this.spinnerService.hide();
-            },
-              error => {
-                this.spinnerService.hide();
-                this.alertService.error(error);
-              });
-          },
+        this.usersrvDetails.deleteUserSVCDetails(element).subscribe(() => {
+          this.spinnerService.hide();
+        },
           error => {
             this.spinnerService.hide();
             this.alertService.error(error);
           });
+      }
+    });
+  }
+
+  saveorUpdateFreeVersionUserServiceDetails() {
+    this.isFreeVersion = true;
+  }
+  openPaymentComponent(amount: number) {
+    this.modalRef = this.modalService.show(PaymentComponent, {
+      initialState: {
+        totalAmountToPay: amount,
+        displayUserServicesForCheckOut: this.displayUserServicesForCheckOut
       }
     });
   }

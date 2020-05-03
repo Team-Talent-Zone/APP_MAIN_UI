@@ -74,6 +74,51 @@ section .section-title {
     margin-bottom: 30px;
 }
 
+.fa {
+    margin-right: 5px;
+}
+
+.rating .fa {
+    font-size: 22px;
+}
+
+.rating-num {
+    margin-top: 0px;
+    font-size: 60px;
+}
+
+.progress {
+    margin-bottom: 5px;
+}
+
+.progress-bar {
+    text-align: left;
+}
+
+.rating-desc .col-md-3 {
+    padding-right: 0px;
+}
+
+.sr-only {
+    margin-left: 5px;
+    overflow: visible;
+    clip: auto;
+}
+
+  .map-container{
+    overflow:hidden;
+    padding-bottom:56.25%;
+    position:relative;
+    height:0;
+    }
+    .map-container agm-map{
+    left:0;
+    top:0;
+    height:100%;
+    width:100%;
+    position:absolute;
+    }
+
 .backside {
     position: absolute;
     top: 0;

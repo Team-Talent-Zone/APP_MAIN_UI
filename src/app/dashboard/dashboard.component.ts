@@ -18,7 +18,7 @@ import { UsersrvdetailsService } from '../AppRestCall/userservice/usersrvdetails
 })
 export class DashboardComponent implements OnInit {
 
-  showmenufu: boolean;
+
   name: string;
   list = [];
   filteredList: string[] = [];
@@ -53,20 +53,16 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.signupComponent.getAllCategories(this.userService.currentUserValue.preferlang.toString());
+    setTimeout(() => {
+      this.resetLoggedInUser();
+    }, 100);
+  }
+
+  private resetLoggedInUser() {
     this.userService.getUserByUserId(this.userService.currentUserValue.userId).subscribe(
       (userresp: any) => {
         this.userService.setCurrentUserValue(userresp);
         this.translateToLanguage(this.userService.currentUserValue.preferlang.toString());
-        if (this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_fu) {
-          if (this.userService.currentUserValue.freelancehistoryentity[0].bgstatus ===
-            config.bg_code_approved) {
-            this.showmenufu = true;
-          }
-          if (this.userService.currentUserValue.freelancehistoryentity[0].bgstatus ===
-            config.bg_code_rejected) {
-            this.showmenufu = false;
-          }
-        }
         this.spinnerService.hide();
       },
       error => {
@@ -95,17 +91,21 @@ export class DashboardComponent implements OnInit {
 
   search(inputItemCode: string, inputItem: string, searchByFilterName: string) {
     const obj = this.list.filter((item) => item.code.startsWith(inputItemCode));
-    if (searchByFilterName.length === 1) {
-      this.alertService.error(' Please select the filter');
+    if (this.userService.currentUserValue.userbizdetails.fulladdress == null &&
+      searchByFilterName.length > 1 && searchByFilterName === config.search_byfilter_fu) {
+      this.alertService.success(' We need your address to locate workers near by. Please add the address from edit profile.');
     } else
-      if (obj.length === 0) {
-        this.alertService.error(' Please search or select ');
-      } else {
-        this.router.navigateByUrl('fusearch/', { skipLocationChange: true }).
-          then(() => {
-            this.router.navigate(['dashboard/' + inputItemCode + '/' + inputItem + '/' + searchByFilterName]);
-          });
-      }
+      if (searchByFilterName.length === 1) {
+        this.alertService.success(' Please select the filter');
+      } else
+        if (obj.length === 0) {
+          this.alertService.success(' Please search or select ');
+        } else {
+          this.router.navigateByUrl('fusearch/', { skipLocationChange: true }).
+            then(() => {
+              this.router.navigate(['dashboard/' + inputItemCode + '/' + inputItem + '/' + searchByFilterName]);
+            });
+        }
   }
 
   onSearchByFilterSelected(searchByFilterName: string) {
@@ -148,34 +148,27 @@ export class DashboardComponent implements OnInit {
 
   // navigate through the list of items
   onKeyPress(event) {
-
     if (!this.listHidden) {
       if (event.key === 'Escape') {
         this.selectedIndex = -1;
         this.toggleListDisplay(0);
       }
-
       if (event.key === 'Enter') {
-
         this.toggleListDisplay(0);
       }
       if (event.key === 'ArrowDown') {
-
         this.listHidden = false;
         this.selectedIndex = (this.selectedIndex + 1) % this.filteredList.length;
         if (this.filteredList.length > 0 && !this.listHidden) {
           document.getElementsByTagName('list-item')[this.selectedIndex].scrollIntoView();
         }
       } else if (event.key === 'ArrowUp') {
-
         this.listHidden = false;
         if (this.selectedIndex <= 0) {
           this.selectedIndex = this.filteredList.length;
         }
         this.selectedIndex = (this.selectedIndex - 1) % this.filteredList.length;
-
         if (this.filteredList.length > 0 && !this.listHidden) {
-
           document.getElementsByTagName('list-item')[this.selectedIndex].scrollIntoView();
         }
       }
@@ -184,7 +177,6 @@ export class DashboardComponent implements OnInit {
 
   // show or hide the dropdown list when input is focused or moves out of focus
   toggleListDisplay(sender: number) {
-
     if (sender === 1) {
       // this.selectedIndex = -1;
       this.listHidden = false;

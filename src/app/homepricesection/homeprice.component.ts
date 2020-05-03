@@ -21,6 +21,8 @@ export class HomepriceComponent implements OnInit {
 
   name: string;
   langcode: string;
+  listofAllIndividualServices: any = [];
+  listofAllPackageServices: any = [];
 
   constructor(
     private newsvcservice: NewsvcService,
@@ -50,17 +52,30 @@ export class HomepriceComponent implements OnInit {
         }
     this.dashboardofcbaobj.getListOfAllActivePlatformServices(this.langcode);
     this.manageserviceComponent.getServiceTerms();
+    setTimeout(() => {
+      this.divideByIndOrPackageService();
+    }, 1000);
   }
 
-  preparesignup(servierid: string) {
-
+  divideByIndOrPackageService() {
+    this.listofAllIndividualServices = [];
+    this.listofAllPackageServices = [];
+    this.dashboardofcbaobj.listOfAllApprovedNewServices.forEach(element => {
+      console.log('element.packwithotherourserviceid', element.packwithotherourserviceid);
+      if (element.packwithotherourserviceid === null) {
+        this.listofAllIndividualServices.push(element);
+      } else {
+        this.listofAllPackageServices.push(element);
+      }
+    });
+    console.log('listofAllIndividualServices', this.listofAllIndividualServices);
   }
-  openSignupModal(ourserviceid: number) {
-    console.log(this.dashboardofcbaobj.listOfAllApprovedNewServices)
+  openSignupModal(ourserviceid: number, packwithotherourserviceid: number) {
+    var ourserviceidList = [{ ourserviceid, packwithotherourserviceid }];
     this.modalRef = this.modalService.show(SignupComponent, {
       initialState: {
         key: config.shortkey_role_cba,
-        ourserviceid: ourserviceid,
+        ourserviceids: ourserviceidList,
       }
     });
   }

@@ -1,0 +1,51 @@
+<div class="container">
+    <div class="card-header">
+        <h4 class="card-title mb-0">One step for the payment process...</h4>
+        <button type="button" class="close" (click)="modalRef.hide()">&times;</button>
+    </div>
+    <form ngNoForm action="https://sandboxsecure.payu.in/_payment" name="payuform" method="POST" target="payment_popup"
+        onsubmit="window.open('about:blank','payment_popup','width=900,height=500');">
+        <div class="card-body">
+            <h4 class="card-title">We need your phone number </h4>
+            <span id="reauth-email" class="reauth-email"></span>
+            <div class="form-row">
+                <div class="form-group col-md-3"></div>
+                <div class="form-group col-md-7">
+                    <span>
+                        <i class="fa fa-phone form-control-icon"></i>
+                    </span>
+                    <input type="text" placeholder="Enter Mobile Number*" class="form-control"
+                        [(ngModel)]="payuform.phone" id="phone" maxlength="10" name="phone">
+                </div>
+                <input type="text" hidden class="form-control" id="firstname" name="firstname"
+                    [(ngModel)]="payuform.firstname">
+                <input type="email" hidden class="form-control" id="email" name="email" [(ngModel)]="payuform.email">
+                <input type="text" hidden class="form-control" id="amount" name="amount" [(ngModel)]="payuform.amount">
+                <textarea rows="2" cols="2" hidden class="form-control" id="productInfo" name="productInfo"
+                    [(ngModel)]="payuform.productInfo"></textarea>
+                <textarea rows="2" cols="2" hidden class="form-control" id="surl" name="surl"
+                    [(ngModel)]="payuform.surl"></textarea>
+                <textarea rows="2" cols="2" hidden class="form-control" id="furl" name="furl"
+                    [(ngModel)]="payuform.furl"></textarea>
+                <textarea rows="2" cols="2"  hidden class="form-control" id="key" name="key"
+                    [(ngModel)]="payuform.key"></textarea>
+                <textarea rows="2" cols="2" hidden class="form-control" id="hash" name="hash"
+                    [(ngModel)]="payuform.hash"></textarea>
+                <textarea rows="2" cols="2" hidden class="form-control" id="txnid" name="txnid"
+                    [(ngModel)]="payuform.txnid"></textarea>
+                <textarea rows="2" cols="2" hidden class="form-control" id="service_provider" name="service_provider"
+                    [(ngModel)]="payuform.service_provider"></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="row">
+                <div class="col-md-5" *ngIf="disablePaymentButton">
+                    <button type="button" (click)="confirmPayment()" class="btn btn-default">Confirm </button>
+                </div>
+                <div class="col-md-5" *ngIf="!disablePaymentButton">
+                    <button type="submit" class="btn btn-primary">Checkout</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
