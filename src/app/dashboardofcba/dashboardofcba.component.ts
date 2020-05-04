@@ -127,14 +127,15 @@ export class DashboardofcbaComponent implements OnInit {
   // tslint:disable-next-line: max-line-length
   prepareSaveUserServiceForServiceId(ourserviceid: number, packwithotherourserviceid: number, amount: number, validPeriodLabel: string, serviceendon: string, servicestarton: string) {
     let isServiceAlreadyExist = false;
-    const isInsideCart = this.userservicedetailsAddedList.filter(item => item.ourserviceId === packwithotherourserviceid);
-    if (isInsideCart != null) {
+    var isInsideCart = this.userservicedetailsAddedList.filter(item => item.ourserviceId === packwithotherourserviceid);
+    console.log('isInsideCart', isInsideCart);
+    if (isInsideCart.length > 0) {
       // tslint:disable-next-line: max-line-length
-      this.alertService.error(isInsideCart[0].name + 'is a part of this package . We have found ' + isInsideCart[0].name + 'as individual service in the cart.\n\n Please remove the ' + isInsideCart[0].name + ' from the cart before adding this package');
+      this.alertService.error(isInsideCart[0].name + 'is a part of this package . We have found ' + isInsideCart[0].name + 'as individual service in the cart.Please remove the ' + isInsideCart[0].name + ' from the cart before adding this package');
       isServiceAlreadyExist = true;
     } else {
-      const isAlreadySubService = this.userservicedetailsList.filter(item => item.ourserviceId === packwithotherourserviceid);
-      if (isAlreadySubService != null) {
+      var isAlreadySubService = this.userservicedetailsList.filter(item => item.ourserviceId === packwithotherourserviceid);
+      if (isAlreadySubService.length > 0) {
         // tslint:disable-next-line: max-line-length
         this.alertService.error(isAlreadySubService[0].name + 'is a part of this package . We have found ' + isAlreadySubService[0].name + 'as individual service already been subscribed.');
         isServiceAlreadyExist = true;
