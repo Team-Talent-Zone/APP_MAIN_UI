@@ -126,23 +126,22 @@ export class DashboardofcbaComponent implements OnInit {
 
   // tslint:disable-next-line: max-line-length
   prepareSaveUserServiceForServiceId(ourserviceid: number, packwithotherourserviceid: number, amount: number, validPeriodLabel: string, serviceendon: string, servicestarton: string) {
-    var isServiceAlreadyExist = false;
-    this.listOfAllApprovedNewServices.forEach(elementAppService => {
-      this.userservicedetailsList.forEach(element => {
-        if (element.ourserviceId === packwithotherourserviceid &&
-          elementAppService.ourserviceId === packwithotherourserviceid) {
-          // tslint:disable-next-line: max-line-length
-          if (element.status === config.user_service_status_paymentpending) {
-            // tslint:disable-next-line: max-line-length
-            this.alertService.error(elementAppService.name + 'is a part of this package . We have found ' + elementAppService.name + 'as individual service in the cart.\n\n Please remove the ' + elementAppService.name + ' from the cart before adding this package');
-          } else {
-            // tslint:disable-next-line: max-line-length
-            this.alertService.error(elementAppService.name + 'is a part of this package . We have found ' + elementAppService.name + 'as individual service already been subscribed.');
-          }
-          isServiceAlreadyExist = true;
-        }
-      });
-    });
+    let isServiceAlreadyExist = false;
+    const isInsideCart = this.userservicedetailsAddedList.filter(item => item.ourserviceId === packwithotherourserviceid);
+    if (isInsideCart != null) {
+      // tslint:disable-next-line: max-line-length
+      this.alertService.error(isInsideCart[0].name + 'is a part of this package . We have found ' + isInsideCart[0].name + 'as individual service in the cart.\n\n Please remove the ' + isInsideCart[0].name + ' from the cart before adding this package');
+      isServiceAlreadyExist = true;
+    } else {
+      const isAlreadySubService = this.userservicedetailsList.filter(item => item.ourserviceId === packwithotherourserviceid);
+      if (isAlreadySubService != null) {
+        // tslint:disable-next-line: max-line-length
+        this.alertService.error(isAlreadySubService[0].name + 'is a part of this package . We have found ' + isAlreadySubService[0].name + 'as individual service already been subscribed.');
+        isServiceAlreadyExist = true;
+      }
+    }
+
+
     if (!isServiceAlreadyExist) {
       if (packwithotherourserviceid != null) {
         // tslint:disable-next-line: max-line-length
