@@ -65,14 +65,19 @@ export class UserservicecartComponent implements OnInit {
         reduce((sum, current) => sum + current.amount, 0);
     } else {
       this.callServiceDeleteUserSVCDetails(serviceId);
-      this.modalRefUserSvc.hide();
-      this.router.navigateByUrl('dboard/', { skipLocationChange: true }).
-        then(() => {
-          this.router.navigate(['dashboard']);
-        });
+      setTimeout(() => {
+        this.modalRefUserSvc.hide();
+        console.log('dboard', this.displayUserServicesForCheckOut);
+        this.router.navigateByUrl('dboard/', { skipLocationChange: true }).
+          then(() => {
+            this.router.navigate(['dashboard']);
+          });
+      }, 1000);
+
     }
   }
   private callServiceDeleteUserSVCDetails(serviceId: number) {
+    this.spinnerService.show();
     this.usersrvDetails.getUserServiceDetailsByServiceId(serviceId).subscribe(
       (element: any) => {
         this.usersrvDetails.deleteUserSVCDetails(element).subscribe(() => {

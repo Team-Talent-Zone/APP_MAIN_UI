@@ -1,6 +1,6 @@
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 
-<div class="container">
+<div class="container" *ngIf="displayUserServicesForCheckOut.length > 0">
     <button type="button" class="close" (click)="backToDashBoard()"><i class="fa fa-close"></i></button>
     <table id="cart" class="table table-hover table-condensed">
         <thead>

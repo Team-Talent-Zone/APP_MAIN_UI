@@ -57,7 +57,6 @@ export class DashboardofcbaComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.manageserviceComponent.getServiceTerms();
     this.getListOfAllActivePlatformServices(this.userService.currentUserValue.preferlang.toString());
     setTimeout(() => {
       this.getAllUserServiceDetailsByUserId(this.userService.currentUserValue.userId);
@@ -127,7 +126,6 @@ export class DashboardofcbaComponent implements OnInit {
   prepareSaveUserServiceForServiceId(ourserviceid: number, packwithotherourserviceid: number, amount: number, validPeriodLabel: string, serviceendon: string, servicestarton: string) {
     let isServiceAlreadyExist = false;
     var isInsideCart = this.userservicedetailsAddedList.filter(item => item.ourserviceId === packwithotherourserviceid);
-    console.log('isInsideCart', isInsideCart);
     if (isInsideCart.length > 0) {
       // tslint:disable-next-line: max-line-length
       this.alertService.error(isInsideCart[0].name + 'is a part of this package . We have found ' + isInsideCart[0].name + 'as individual service in the cart.Please remove the ' + isInsideCart[0].name + ' from the cart before adding this package');

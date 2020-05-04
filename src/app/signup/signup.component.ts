@@ -270,6 +270,10 @@ export class SignupComponent implements OnInit {
           createdby: this.usrObj.fullname,
           status: refCodeStr,
           isservicepack: false,
+          amount: this.ourserviceids[0].amount,
+          validPeriod: this.ourserviceids[0].validPeriodLabel,
+          serviceendon: this.ourserviceids[0].serviceendon,
+          servicestarton: this.ourserviceids[0].servicestarton,
           userServiceEventHistory: []
         });
         this.usersrvDetails.saveUserServiceDetails(this.userservicedetailsForm.value, refCodeStr).subscribe(
@@ -289,6 +293,10 @@ export class SignupComponent implements OnInit {
           createdby: this.usrObj.fullname,
           status: refCodeStr,
           isservicepack: true,
+          amount: 0,
+          validPeriod: this.ourserviceids[0].validPeriodLabel,
+          serviceendon: this.ourserviceids[0].serviceendon,
+          servicestarton: this.ourserviceids[0].servicestarton,
           userServiceEventHistory: []
         });
         this.usersrvDetails.saveUserServiceDetails(this.userservicedetailsFormServicePack.value, refCodeStr).subscribe(
@@ -300,6 +308,10 @@ export class SignupComponent implements OnInit {
               status: refCodeStr,
               isservicepack: false,
               childservicepkgserviceid: servicepkgusersrvobj.serviceId,
+              amount: this.ourserviceids[0].amount,
+              validPeriod: this.ourserviceids[0].validPeriodLabel,
+              serviceendon: this.ourserviceids[0].serviceendon,
+              servicestarton: this.ourserviceids[0].servicestarton,
               userServiceEventHistory: []
             });
             this.usersrvDetails.saveUserServiceDetails(this.userservicedetailsForm.value, refCodeStr).subscribe(

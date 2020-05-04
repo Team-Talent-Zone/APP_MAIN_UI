@@ -71,8 +71,9 @@ export class HomepriceComponent implements OnInit {
       }
     });
   }
-  openSignupModal(ourserviceid: number, packwithotherourserviceid: number) {
-    var ourserviceidList = [{ ourserviceid, packwithotherourserviceid }];
+  // tslint:disable-next-line: max-line-length
+  openSignupModal(ourserviceid: number, packwithotherourserviceid: number, amount: string, validPeriodLabel: string, serviceendon: string, servicestarton: string) {
+    var ourserviceidList = [{ ourserviceid, packwithotherourserviceid, amount , validPeriodLabel, serviceendon, servicestarton }];
     const initialState = {
       key: config.shortkey_role_cba,
       ourserviceids: ourserviceidList,
