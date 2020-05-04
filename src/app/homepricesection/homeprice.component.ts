@@ -54,7 +54,6 @@ export class HomepriceComponent implements OnInit {
           this.langcode = config.default_prefer_lang;
         }
     this.dashboardofcbaobj.getListOfAllActivePlatformServices(this.langcode);
-    this.manageserviceComponent.getServiceTerms();
     setTimeout(() => {
       this.divideByIndOrPackageService();
     }, 1000);
@@ -63,6 +62,7 @@ export class HomepriceComponent implements OnInit {
   divideByIndOrPackageService() {
     this.listofAllIndividualServices = [];
     this.listofAllPackageServices = [];
+    console.log('this.dashboardofcbaobj.listOfAllApprovedNewServices', this.dashboardofcbaobj.listOfAllApprovedNewServices);
     this.dashboardofcbaobj.listOfAllApprovedNewServices.forEach(element => {
       if (element.packwithotherourserviceid === null) {
         this.listofAllIndividualServices.push(element);

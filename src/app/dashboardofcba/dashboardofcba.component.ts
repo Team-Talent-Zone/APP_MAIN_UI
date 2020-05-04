@@ -95,7 +95,6 @@ export class DashboardofcbaComponent implements OnInit {
     this.spinnerService.show();
     this.newsvcservice.getAllNewServiceDetails().subscribe(
       (allNewServiceObjs: any) => {
-        this.listOfAllApprovedNewServices = allNewServiceObjs;
         allNewServiceObjs.forEach(element => {
           var array = element.fullcontent.split(',');
           element.fullcontent = array;
