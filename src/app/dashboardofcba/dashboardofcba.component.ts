@@ -30,8 +30,8 @@ export class DashboardofcbaComponent implements OnInit {
   fullContentArray: any = [];
   userservicedetailsList: any = [];
   userservicedetailsAddedList: any = [];
-
   userservicedetailsExistingIds: any = [];
+
   config: ModalOptions = {
     class: 'modal-lg', backdrop: 'static',
     keyboard: false
@@ -40,13 +40,12 @@ export class DashboardofcbaComponent implements OnInit {
   userservicedetailsForm: FormGroup;
   userservicedetailsFormServicePack: FormGroup;
   listOfServicesForCheckOut: any = [];
+  fullContent: any[];
 
   constructor(
-    private userServicedetailsAdapter: UserServicedetailsAdapter,
     private referService: ReferenceService,
     public userService: UserService,
     public newsvcservice: NewsvcService,
-    private newserviceAdapter: NewServiceAdapter,
     private spinnerService: Ng4LoadingSpinnerService,
     private alertService: AlertsService,
     public manageserviceComponent: ManageserviceComponent,
@@ -58,7 +57,6 @@ export class DashboardofcbaComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.manageserviceComponent.getServiceTerms();
     this.getListOfAllActivePlatformServices(this.userService.currentUserValue.preferlang.toString());
     setTimeout(() => {
       this.getAllUserServiceDetailsByUserId(this.userService.currentUserValue.userId);
@@ -66,31 +64,27 @@ export class DashboardofcbaComponent implements OnInit {
   }
 
   getAllUserServiceDetailsByUserId(userId: number) {
-    this.spinnerService.show();
     this.userservicedetailsList = [];
     this.userservicedetailsExistingIds = [];
+    this.userservicedetailsAddedList = [];
+    this.spinnerService.show();
     this.usersrvDetails.getAllUserServiceDetailsByUserId(userId).subscribe(
       (listofusersrvDetails: any) => {
         if (listofusersrvDetails != null) {
-          listofusersrvDetails.forEach(element => {
-            if (element.status === config.user_service_status_added.toString()) {
-              this.userservicedetailsAddedList.push(this.userServicedetailsAdapter.adapt(element));
+          listofusersrvDetails.forEach((element: any) => {
+            this.userservicedetailsList.push(element);
+            this.userservicedetailsExistingIds.push(element.ourserviceId);
+            if (element.status === config.user_service_status_paymentpending.toString()) {
+              this.userservicedetailsAddedList.push(element);
             }
-            if (element.status === config.user_service_status_added.toString() ||
-              element.status === config.user_service_status_published.toString() ||
-              element.status === config.user_service_status_paymentpaid.toString()) {
-              this.userservicedetailsExistingIds.push(element.ourserviceId);
-              this.userservicedetailsList.push(this.userServicedetailsAdapter.adapt(element));
-            }
+            this.spinnerService.hide();
           });
         }
-        this.spinnerService.hide();
       },
       error => {
         this.alertService.error(error);
         this.spinnerService.hide();
-      }
-    );
+      });
   }
 
   getListOfAllActivePlatformServices(lang: string) {
@@ -100,65 +94,12 @@ export class DashboardofcbaComponent implements OnInit {
     this.spinnerService.show();
     this.newsvcservice.getAllNewServiceDetails().subscribe(
       (allNewServiceObjs: any) => {
-        allNewServiceObjs.forEach((element: any) => {
-          this.newServiceCommentHistory.push(this.newserviceAdapter.adapt(element));
-          if (element.serviceHistory != null) {
-            element.serviceHistory.forEach((elementHis: any) => {
-              if (element.currentstatus === elementHis.status &&
-                element.currentstatus === config.newservice_code_approved.toString()) {
-                element.serviceHistory = [];
-                element.serviceHistory.push(elementHis);
-                element.fullContent = element.fullContent.split(',');
-                if (lang !== config.default_prefer_lang.toString()) {
-                  this.spinnerService.show();
-                  element.fullContent.forEach((elementFullContent: any, index: number) => {
-                    this.referService.translatetext(elementFullContent, lang).subscribe(
-                      (resp: any) => {
-                        element.fullContent.splice(index, 1);
-                        element.fullContent.splice(index, 0, resp.translateresp);
-                      });
-                  });
-                  this.referService.translatetext(element.name, lang).subscribe(
-                    (servicename: any) => {
-                      element.name = servicename.translateresp;
-                      this.referService.translatetext(element.description, lang).subscribe(
-                        (description: any) => {
-                          element.description = description.translateresp;
-                          if (this.manageserviceComponent.serviceterms != null) {
-                            this.manageserviceComponent.serviceterms.forEach(elementterms => {
-                              if (elementterms.code === element.validPeriod) {
-                                this.referService.translatetext(elementterms.label, lang).subscribe(
-                                  (validPeriod: any) => {
-                                    element.validPeriod = validPeriod.translateresp;
-                                    this.listOfAllApprovedNewServices.push(this.newserviceAdapter.adapt(element));
-                                    this.mapByDomain(element);
-                                    this.spinnerService.hide();
-                                  });
-                              }
-                            });
-
-                          }
-                        });
-                    });
-                } else {
-                  element.fullContent.forEach((elementFullContent: any, index: number) => {
-                    element.fullContent.splice(index, 1);
-                    element.fullContent.splice(index, 0, elementFullContent);
-                  });
-                  if (this.manageserviceComponent.serviceterms != null) {
-                    this.manageserviceComponent.serviceterms.forEach(elementterms => {
-                      if (elementterms.code === element.validPeriod) {
-                        element.validPeriod = elementterms.label;
-                        this.listOfAllApprovedNewServices.push(this.newserviceAdapter.adapt(element));
-                        this.mapByDomain(element);
-                        this.spinnerService.hide();
-                      }
-                    });
-                  }
-                }
-              }
-            });
-          }
+        allNewServiceObjs.forEach(element => {
+          var array = element.fullcontent.split(',');
+          element.fullcontent = array;
+          this.listOfAllApprovedNewServices.push(element);
+          this.mapByDomain(element);
+          this.spinnerService.hide();
         });
       },
       error => {
@@ -181,34 +122,38 @@ export class DashboardofcbaComponent implements OnInit {
     }
   }
 
-  prepareSaveUserServiceForServiceId(ourserviceid: number, packwithotherourserviceid: number) {
-    var isServiceAlreadyExist = false;
-    this.listOfAllApprovedNewServices.forEach(elementAppService => {
-      this.userservicedetailsList.forEach(element => {
-        if (element.ourserviceId === packwithotherourserviceid &&
-          elementAppService.ourserviceId === packwithotherourserviceid) {
-          // tslint:disable-next-line: max-line-length
-          if (elementAppService.status === config.user_service_status_added) {
-            this.alertService.error(elementAppService.name + 'is a part of this package . We have found ' + elementAppService.name + 'as individual service in the cart.\n\n Please remove the ' + elementAppService.name + ' from the cart before adding this package');
-          } else {
-            this.alertService.error(elementAppService.name + 'is a part of this package . We have found ' + elementAppService.name + 'as individual service already been subscribed.');
-          }
-          isServiceAlreadyExist = true;
-        }
-      });
-    });
+  // tslint:disable-next-line: max-line-length
+  prepareSaveUserServiceForServiceId(ourserviceid: number, packwithotherourserviceid: number, amount: number, validPeriodLabel: string, serviceendon: string, servicestarton: string) {
+    let isServiceAlreadyExist = false;
+    var isInsideCart = this.userservicedetailsAddedList.filter(item => item.ourserviceId === packwithotherourserviceid);
+    if (isInsideCart.length > 0) {
+      // tslint:disable-next-line: max-line-length
+      this.alertService.error(isInsideCart[0].name + 'is a part of this package . We have found ' + isInsideCart[0].name + 'as individual service in the cart.Please remove the ' + isInsideCart[0].name + ' from the cart before adding this package');
+      isServiceAlreadyExist = true;
+    } else {
+      var isAlreadySubService = this.userservicedetailsList.filter(item => item.ourserviceId === packwithotherourserviceid);
+      if (isAlreadySubService.length > 0) {
+        // tslint:disable-next-line: max-line-length
+        this.alertService.error(isAlreadySubService[0].name + 'is a part of this package . We have found ' + isAlreadySubService[0].name + 'as individual service already been subscribed.');
+        isServiceAlreadyExist = true;
+      }
+    }
+
+
     if (!isServiceAlreadyExist) {
       if (packwithotherourserviceid != null) {
-        this.saveUserServiceDetailsForServicePkg(packwithotherourserviceid, ourserviceid);
+        // tslint:disable-next-line: max-line-length
+        this.saveUserServiceDetailsForServicePkg(packwithotherourserviceid, ourserviceid, amount, validPeriodLabel, serviceendon, servicestarton);
       } else {
-        this.saveUserServiceDetailsForIndividual(ourserviceid);
+        this.saveUserServiceDetailsForIndividual(ourserviceid, amount, validPeriodLabel, serviceendon, servicestarton);
       }
     }
   }
 
-  private saveUserServiceDetailsForIndividual(ourserviceid: number) {
+  // tslint:disable-next-line: max-line-length
+  private saveUserServiceDetailsForIndividual(ourserviceid: number, amountval: number, validPeriodLabel: string, serviceendonval: string, servicestartonval: string) {
     this.spinnerService.show();
-    this.referService.getReferenceLookupByShortKey(config.cba_service_event_add_shortkey.toString()).subscribe(
+    this.referService.getReferenceLookupByShortKey(config.user_service_status_paymentpending_shortkey.toString()).subscribe(
       (refCodeStr: string) => {
         this.userservicedetailsForm = this.formBuilder.group({
           ourserviceId: ourserviceid,
@@ -217,6 +162,10 @@ export class DashboardofcbaComponent implements OnInit {
           status: refCodeStr,
           isservicepack: false,
           isservicepurchased: false,
+          amount: amountval,
+          validPeriod: validPeriodLabel,
+          servicestarton: servicestartonval,
+          serviceendon: serviceendonval,
           userServiceEventHistory: []
         });
         this.usersrvDetails.saveUserServiceDetails(this.userservicedetailsForm.value, refCodeStr).subscribe(
@@ -232,9 +181,10 @@ export class DashboardofcbaComponent implements OnInit {
           });
       });
   }
-  private saveUserServiceDetailsForServicePkg(packwithotherourserviceid: number, ourserviceid: number) {
+  // tslint:disable-next-line: max-line-length
+  private saveUserServiceDetailsForServicePkg(packwithotherourserviceid: number, ourserviceid: number, amountval: number, validPeriodLabel: string, serviceendonval: string, servicestartonval: string) {
     this.spinnerService.show();
-    this.referService.getReferenceLookupByShortKey(config.cba_service_event_add_shortkey.toString()).subscribe(
+    this.referService.getReferenceLookupByShortKey(config.user_service_status_paymentpending_shortkey.toString()).subscribe(
       (refCodeStr: string) => {
         this.userservicedetailsFormServicePack = this.formBuilder.group({
           ourserviceId: packwithotherourserviceid,
@@ -243,6 +193,10 @@ export class DashboardofcbaComponent implements OnInit {
           status: refCodeStr,
           isservicepack: true,
           isservicepurchased: false,
+          amount: 0,
+          validPeriod: validPeriodLabel,
+          servicestarton: servicestartonval,
+          serviceendon: serviceendonval,
           userServiceEventHistory: []
         });
         this.usersrvDetails.saveUserServiceDetails(this.userservicedetailsFormServicePack.value, refCodeStr).subscribe(
@@ -254,6 +208,10 @@ export class DashboardofcbaComponent implements OnInit {
               status: refCodeStr,
               isservicepack: false,
               childservicepkgserviceid: servicepkgusersrvobj.serviceId,
+              amount: amountval,
+              validPeriod: validPeriodLabel,
+              servicestarton: servicestartonval,
+              serviceendon: serviceendonval,
               userServiceEventHistory: []
             });
             this.usersrvDetails.saveUserServiceDetails(this.userservicedetailsForm.value, refCodeStr).subscribe(
@@ -282,21 +240,16 @@ export class DashboardofcbaComponent implements OnInit {
   }
   openUserServiceCart() {
     this.listOfServicesForCheckOut = [];
-    this.listOfAllApprovedNewServices.forEach(elementAppService => {
-      this.userservicedetailsAddedList.forEach(element => {
-        if (element.ourserviceId === elementAppService.ourserviceId) {
-          this.listOfServicesForCheckOut.push({
-            serviceId: element.serviceId,
-            name: elementAppService.name,
-            imageUrl: elementAppService.imageUrl,
-            description: elementAppService.description,
-            amount: elementAppService.amount,
-            subtotal: element.isservicepack ? 0 : elementAppService.amount,
-            isservicepack: element.isservicepack,
-            validPeriod: elementAppService.validPeriod,
-            childservicepkgserviceid: element.childservicepkgserviceid === null ? 0 : element.childservicepkgserviceid
-          });
-        }
+    this.userservicedetailsAddedList.forEach(element => {
+      this.listOfServicesForCheckOut.push({
+        serviceId: element.serviceId,
+        name: element.name,
+        imageUrl: element.imgurl,
+        description: element.description,
+        amount: element.amount,
+        isservicepack: element.isservicepack,
+        validPeriod: element.validPeriod,
+        childservicepkgserviceid: element.childservicepkgserviceid === null ? 0 : element.childservicepkgserviceid
       });
     });
     const initialState = {

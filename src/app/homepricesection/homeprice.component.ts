@@ -8,7 +8,7 @@ import { ManageserviceComponent } from '../manageservice/manageservice.component
 import { config } from 'src/app/appconstants/config';
 import { SignupComponent } from '../signup/signup.component';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
-import { BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 
 
 @Component({
@@ -23,7 +23,10 @@ export class HomepriceComponent implements OnInit {
   langcode: string;
   listofAllIndividualServices: any = [];
   listofAllPackageServices: any = [];
-
+  config: ModalOptions = {
+    class: 'modal-md', backdrop: 'static',
+    keyboard: false
+  };
   constructor(
     private newsvcservice: NewsvcService,
     private route: ActivatedRoute,
@@ -51,7 +54,6 @@ export class HomepriceComponent implements OnInit {
           this.langcode = config.default_prefer_lang;
         }
     this.dashboardofcbaobj.getListOfAllActivePlatformServices(this.langcode);
-    this.manageserviceComponent.getServiceTerms();
     setTimeout(() => {
       this.divideByIndOrPackageService();
     }, 1000);
@@ -60,24 +62,29 @@ export class HomepriceComponent implements OnInit {
   divideByIndOrPackageService() {
     this.listofAllIndividualServices = [];
     this.listofAllPackageServices = [];
+    console.log('this.dashboardofcbaobj.listOfAllApprovedNewServices', this.dashboardofcbaobj.listOfAllApprovedNewServices);
     this.dashboardofcbaobj.listOfAllApprovedNewServices.forEach(element => {
-      console.log('element.packwithotherourserviceid', element.packwithotherourserviceid);
       if (element.packwithotherourserviceid === null) {
         this.listofAllIndividualServices.push(element);
       } else {
         this.listofAllPackageServices.push(element);
       }
     });
-    console.log('listofAllIndividualServices', this.listofAllIndividualServices);
   }
-  openSignupModal(ourserviceid: number, packwithotherourserviceid: number) {
-    var ourserviceidList = [{ ourserviceid, packwithotherourserviceid }];
-    this.modalRef = this.modalService.show(SignupComponent, {
-      initialState: {
-        key: config.shortkey_role_cba,
-        ourserviceids: ourserviceidList,
+  // tslint:disable-next-line: max-line-length
+  openSignupModal(ourserviceid: number, packwithotherourserviceid: number, amount: string, validPeriodLabel: string, serviceendon: string, servicestarton: string) {
+    var ourserviceidList = [{ ourserviceid, packwithotherourserviceid, amount , validPeriodLabel, serviceendon, servicestarton }];
+    const initialState = {
+      key: config.shortkey_role_cba,
+      ourserviceids: ourserviceidList,
+    };
+    this.modalRef = this.modalService.show(SignupComponent, Object.assign(
+      {},
+      this.config,
+      {
+        initialState
       }
-    });
+    ));
   }
 
 }

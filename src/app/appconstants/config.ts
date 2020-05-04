@@ -58,9 +58,8 @@ export const config = {
   category_code_A_S: 'A_S',
   category_code_FS_S: 'FS_S',
   search_byfilter_fu: 'FU_SKILL_SEARCH',
-  cba_service_event_add_shortkey: 'service_add',
-  cba_service_event_remove_shortkey: 'service_remove',
-  user_service_status_added: 'ADDED',
+  user_service_status_paymentpending_shortkey: 'payment-pending',
+  user_service_status_paymentpending: 'PAYMENT_PENDING',
   user_service_status_published: 'PUBLISHED',
   user_service_status_paymentpaid: 'PAYMENT_PAID'
 

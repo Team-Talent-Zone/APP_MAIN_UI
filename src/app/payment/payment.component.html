@@ -4,7 +4,7 @@
         <button type="button" class="close" (click)="modalRef.hide()">&times;</button>
     </div>
     <form ngNoForm action="https://sandboxsecure.payu.in/_payment" name="payuform" method="POST" target="payment_popup"
-        onsubmit="window.open('about:blank','payment_popup','width=900,height=500');">
+        onsubmit="window.open('about:blank','payment_popup','_self');">
         <div class="card-body">
             <h4 class="card-title">We need your phone number </h4>
             <span id="reauth-email" class="reauth-email"></span>
@@ -13,7 +13,7 @@
                 <div class="form-group col-md-7">
                     <span>
                         <i class="fa fa-phone form-control-icon"></i>
-                    </span>
+                    </span> 
                     <input type="text" placeholder="Enter Mobile Number*" class="form-control"
                         [(ngModel)]="payuform.phone" id="phone" maxlength="10" name="phone">
                 </div>

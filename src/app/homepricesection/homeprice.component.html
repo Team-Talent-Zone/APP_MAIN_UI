@@ -11,7 +11,7 @@
         *ngFor="let svc of dashboardofcbaobj.listOfAllApprovedNewServices">
         <div class="row">
           <div class="col-md-3">
-            <img src={{svc.imageUrl}} class="section-7-box-icon">
+            <img src={{svc.imgurl}} class="section-7-box-icon">
           </div>
           <div class="col-md-9">
             <h3>{{svc.name}}</h3>
@@ -53,17 +53,17 @@
                       <div class="card-header">
                         <h4>{{svc.name}}</h4>
                       </div>
-                      <img class="card-img" src={{svc.imageUrl}}>
+                      <img class="card-img" src={{svc.imgurl}}>
                       <div class="card-body d-flex flex-column">
                         <div class="card-title">
                           <span class="display-4"><i class="fa fa-inr"></i>{{svc.amount}}</span>
                           <span class="mb-4">
-                            /{{svc.validPeriod}}
+                            /{{svc.validPeriodLabel}}
                           </span>
                         </div>
                         <div class="card-text">
                           <ul class="list-unstyled">
-                            <li class="mb-1" *ngFor="let features of svc.fullContent">
+                            <li class="mb-1" *ngFor="let features of svc.fullcontent">
                               {{features}}
                             </li>
                           </ul>
@@ -71,9 +71,8 @@
                       </div>
                       <div class="card-footer">
                         <button type="button" class="btn btn-primary"
-                          (click)="openSignupModal(svc.ourserviceId , svc.packwithotherourserviceid)">Sign
+                          (click)="openSignupModal(svc.ourserviceId , svc.packwithotherourserviceid , svc.amount , svc.validPeriodLabel, svc.serviceendon, svc.servicestarton)">Sign
                           In</button>
-                        <!-- <a href="javascript: return false;" class="btn btn-primary" onclick="openSignupModal(svc.ourserviceId)">Sign In</a> -->
                       </div>
                     </div>
                   </div>
@@ -90,17 +89,17 @@
                       <div class="card-header">
                         <h4>{{svc.name}}</h4>
                       </div>
-                      <img class="card-img" src={{svc.imageUrl}}>
+                      <img class="card-img" src={{svc.imgurl}}>
                       <div class="card-body d-flex flex-column">
                         <div class="card-title">
                           <span class="display-4"><i class="fa fa-inr"></i>{{svc.amount}}</span>
                           <span class="mb-4">
-                            /{{svc.validPeriod}}
+                            /{{svc.validPeriodLabel}}
                           </span>
                         </div>
                         <div class="card-text">
                           <ul class="list-unstyled">
-                            <li class="mb-1" *ngFor="let features of svc.fullContent">
+                            <li class="mb-1" *ngFor="let features of svc.fullcontent">
                               {{features}}
                             </li>
                           </ul>
@@ -108,9 +107,8 @@
                       </div>
                       <div class="card-footer">
                         <button type="button" class="btn btn-primary"
-                          (click)="openSignupModal(svc.ourserviceId , svc.packwithotherourserviceid)">Sign
+                          (click)="openSignupModal(svc.ourserviceId , svc.packwithotherourserviceid ,svc.amount , svc.validPeriodLabel, svc.serviceendon, svc.servicestarton)">Sign
                           In</button>
-                        <!-- <a href="javascript: return false;" class="btn btn-primary" onclick="openSignupModal(svc.ourserviceId)">Sign In</a> -->
                       </div>
                     </div>
                   </div>

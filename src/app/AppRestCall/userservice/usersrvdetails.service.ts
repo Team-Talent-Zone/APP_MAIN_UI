@@ -35,9 +35,11 @@ export class UsersrvdetailsService {
     return this.http.get(`${environment.apiUrl}/getAllUserServiceDetailsByUserId/` + userId + '/');
   }
 
-  deleteUserSVCDetails(usersrvobj: UserServiceDetails) {
-    console.log('usersrvobj : ' , usersrvobj);
+  getUserServiceDetailsByServiceId(serviceId: number) {
+    return this.http.get(`${environment.apiUrl}/getUserServiceDetailsByServiceId/` + serviceId);
+  }
 
+  deleteUserSVCDetails(usersrvobj: UserServiceDetails) {
     return this.http.post(`${environment.apiUrl}/deleteUserSVCDetails/`, usersrvobj);
   }
 }

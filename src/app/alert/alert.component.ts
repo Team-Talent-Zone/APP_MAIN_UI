@@ -49,7 +49,6 @@ export class AlertComponent implements OnInit {
   openModal(template: TemplateRef<any>) {
     var errorcode = this.message.text[0].errorcode;
     this.errormsg = this.message.text[0].errorMsg;
-
     if (errorcode === 504) {
       this.router.navigate(['504error']);
     } else {

@@ -15,7 +15,8 @@ export class Payment {
         public service_provider: string,
         public surl: string,
         public txnid: string,
-        public serviceId: number
+        public serviceIds: string,
+        public jobids: string
     ) {
 
     }
