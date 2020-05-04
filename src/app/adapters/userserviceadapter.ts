@@ -17,6 +17,8 @@ export class UserServicedetailsAdapter implements Adapter<UserServiceDetails> {
             item.status,
             item.servicestarton,
             item.serviceendon,
+            item.amount,
+            item.validPeriod,
             item.userServiceEventHistory,
           );
     }

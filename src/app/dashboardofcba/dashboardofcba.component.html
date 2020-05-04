@@ -33,17 +33,16 @@
             <div class="card-header">
               <h4>{{svc.name}}</h4>
             </div>
-            <img class="card-img" src={{svc.imageUrl}}>
+            <img class="card-img" src={{svc.imgurl}}>
             <div class="card-body d-flex flex-column">
               <div class="card-title">
-                <span class="display-4" *ngIf="svc.amount > 0">₹{{svc.amount}}</span>
-                <span class="display-4" *ngIf="svc.amount == null">₹0</span>
-                <span class="mb-4">/{{svc.validPeriod}}
+                <span class="display-4"><i class="fa fa-inr">{{svc.amount}}</i></span>
+                <span class="mb-4">/{{svc.validPeriodLabel}}
                 </span>
               </div>
               <div class="card-text">
                 <ul class="list-unstyled">
-                  <li class="mb-1" *ngFor="let features of svc.fullContent">
+                  <li class="mb-1" *ngFor="let features of svc.fullcontent">
                     {{features}}
                   </li>
                 </ul>
@@ -54,7 +53,7 @@
               </div>
               <ng-template #addToCart>
                 <button type="button" class="btn btn-primary"
-                  (click)="prepareSaveUserServiceForServiceId(svc.ourserviceId , svc.packwithotherourserviceid)">
+                  (click)="prepareSaveUserServiceForServiceId(svc.ourserviceId , svc.packwithotherourserviceid , svc.amount , svc.validPeriodLabel , svc.serviceendon, svc.servicestarton)">
                   <i class="fa fa-plus"> Add To Cart </i></button>
               </ng-template>
             </div>
@@ -83,17 +82,16 @@
             <div class="card-header">
               <h4>{{svc.name}}</h4>
             </div>
-            <img class="card-img" src={{svc.imageUrl}}>
+            <img class="card-img" src={{svc.imgurl}}>
             <div class="card-body d-flex flex-column">
               <div class="card-title">
-                <span class="display-4" *ngIf="svc.amount > 0">₹{{svc.amount}}</span>
-                <span class="display-4" *ngIf="svc.amount == 0">₹0</span>
-                <span class="mb-4">/{{svc.validPeriod}}
+                <span class="display-4"><i class="fa fa-inr">{{svc.amount}}</i></span>
+                <span class="mb-4">/{{svc.validPeriodLabel}}
                 </span>
               </div>
               <div class="card-text">
                 <ul class="list-unstyled">
-                  <li class="mb-1" *ngFor="let features of svc.fullContent">
+                  <li class="mb-1" *ngFor="let features of svc.fullcontent">
                     {{features}}
                   </li>
                 </ul>
@@ -106,7 +104,7 @@
               </div>
               <ng-template #addToCart>
                 <button type="button" class="btn btn-primary"
-                  (click)="prepareSaveUserServiceForServiceId(svc.ourserviceId , svc.packwithotherourserviceid)">
+                  (click)="prepareSaveUserServiceForServiceId(svc.ourserviceId , svc.packwithotherourserviceid ,svc.amount , svc.validPeriodLabel, svc.serviceendon, svc.servicestarton)">
                   <i class="fa fa-plus"> Add To Cart </i></button>
               </ng-template>
             </div>

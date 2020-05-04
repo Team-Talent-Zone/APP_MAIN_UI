@@ -26,14 +26,12 @@
                         </div>
                     </div>
                 </td>
-                <td data-th="Price" *ngIf="prod.subtotal > 0">{{prod.amount}} </td>
-                <td data-th="Price" *ngIf="prod.subtotal == 0 && !prod.isservicepack">{{prod.amount}} </td>
-                <td data-th="Price" *ngIf="prod.subtotal == 0 && prod.isservicepack"><s>{{prod.amount}} </s> </td>
+                <td data-th="Price">{{prod.amount}} </td>
                 <td data-th="Terms" class="col-sm-2">
                     {{prod.validPeriod}}
                 </td>
                 <td data-th="Subtotal" class="text-center">
-                    {{prod.subtotal > 0 ? prod.subtotal : 0}}
+                    {{prod.amount}}
                 </td>
                 <td class="actions" *ngIf="!prod.isservicepack">
                     <button class="btn btn-danger btn-sm  hidden-xs"
@@ -56,7 +54,8 @@
                         {{totalAmountToPay }} ₹
                     </strong></td>
                 <td *ngIf="totalAmountToPay > 0">
-                    <a href="javascript: return false;" (click)="openPaymentComponent(totalAmountToPay)" class="btn btn-success btn-block">
+                    <a href="javascript: return false;" (click)="openPaymentComponent(totalAmountToPay)"
+                        class="btn btn-success btn-block">
                         Continue
                         <i class="fa fa-angle-double-right"></i></a>
                 </td>

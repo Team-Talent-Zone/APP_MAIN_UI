@@ -14,55 +14,38 @@ import { AlertsService } from '../AppRestCall/alerts/alerts.service';
 export class UsersubscribeservicesComponent implements OnInit {
 
   listOfSubscribedServicesByUser: any = [];
-  timelaps = false;
+  fullContent: any = [];
+  istimelap = false;
   constructor(
     public userService: UserService,
-    public manageserviceComponent: ManageserviceComponent,
-    public dashboardofcbaComponent: DashboardofcbaComponent,
     private usersrvDetails: UsersrvdetailsService,
     private alertService: AlertsService,
     private spinnerService: Ng4LoadingSpinnerService,
   ) { }
 
   ngOnInit() {
-    this.manageserviceComponent.getServiceTerms();
-    this.dashboardofcbaComponent.getListOfAllActivePlatformServices(this.userService.currentUserValue.preferlang.toString());
-    setTimeout(() => {
-      this.getAllUserServiceDetailsByUserId(this.userService.currentUserValue.userId);
-    }, 500);
+    this.getAllUserServiceDetailsByUserId(this.userService.currentUserValue.userId);
   }
-
+  /** The below method will fetch all the user service for the user id */
   getAllUserServiceDetailsByUserId(userId: number) {
     this.spinnerService.show();
     this.usersrvDetails.getAllUserServiceDetailsByUserId(userId).subscribe(
       (listofusersrvDetails: any) => {
         if (listofusersrvDetails != null) {
-          listofusersrvDetails.forEach(elementSubServices => {
-            this.dashboardofcbaComponent.listOfAllApprovedNewServices.forEach(element => {
-              if (elementSubServices.ourserviceId === element.ourserviceId &&
-                elementSubServices.isservicepurchased) {
-                var list = {
-                  name: element.name,
-                  imageUrl: element.imageUrl,
-                  amount: element.amount,
-                  validPeriod: element.validPeriod,
-                  fullContent: element.fullContent,
-                  ourserviceId: element.ourserviceId,
-                  status: elementSubServices.status,
-                  category: element.category
-                };
-                this.listOfSubscribedServicesByUser.push(list);
-              }
-            });
+          listofusersrvDetails.forEach((element: any) => {
+            if (element.isservicepurchased) {
+              var array = element.fullcontent.split(',');
+              element.fullcontent = array;
+              this.listOfSubscribedServicesByUser.push(element);
+            }
           });
+          this.spinnerService.hide();
         }
-        this.timelaps = true;
-        this.spinnerService.hide();
+        this.istimelap = true;
       },
       error => {
         this.alertService.error(error);
         this.spinnerService.hide();
-      }
-    );
+      });
   }
 }

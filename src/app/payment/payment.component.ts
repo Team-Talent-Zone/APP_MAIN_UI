@@ -19,11 +19,12 @@ export class PaymentComponent implements OnInit {
   @Input() productinfoParam: string;
 
   issubmit = false;
-  productinfoJSON: [];
   disablePaymentButton: boolean = true;
   public payuform: any = {};
   paymentFormDetails: FormGroup;
   productinfo = '';
+  serviceids = '';
+  jobids = '';
 
 
   constructor(
@@ -37,13 +38,14 @@ export class PaymentComponent implements OnInit {
 
   ngOnInit() {
     if (this.displayUserServicesForCheckOut != null) {
-      this.displayUserServicesForCheckOut.forEach((element: { name: any; description: any; }) => {
+      this.displayUserServicesForCheckOut.forEach((element: any) => {
+        console.log('element', element);
         this.productinfo = this.productinfo + '|' + element.name + '|';
+        this.serviceids = this.serviceids + '|' + element.serviceId + '|'
       });
     } else {
       this.productinfo = this.productinfoParam;
     }
-    console.log('1', this.productinfo);
   }
 
   confirmPayment() {
@@ -64,8 +66,9 @@ export class PaymentComponent implements OnInit {
             phone: this.payuform.phone,
             productinfo: this.productinfo,
             amount: this.totalAmountToPay,
-            serviceId: 250,
-            userId: 211
+            serviceids: this.serviceids,
+            jobids: this.jobids,
+            userId: this.userService.currentUserValue.userId
           });
           this.payment.savePayments(this.paymentFormDetails.value).subscribe(
             (data: Payment) => {

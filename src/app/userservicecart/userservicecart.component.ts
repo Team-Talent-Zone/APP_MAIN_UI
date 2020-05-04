@@ -34,8 +34,8 @@ export class UserservicecartComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.totalAmountToPay = this.displayUserServicesForCheckOut.filter(item => item.subtotal > 0).
-      reduce((sum, current) => sum + current.subtotal, 0);
+    this.totalAmountToPay = this.displayUserServicesForCheckOut.filter(item => item.amount > 0).
+      reduce((sum, current) => sum + current.amount, 0);
   }
 
   backToDashBoard() {
@@ -61,8 +61,8 @@ export class UserservicecartComponent implements OnInit {
   private deleteUserSVCDetails(serviceId: number) {
     if (this.displayUserServicesForCheckOut.length > 0) {
       this.callServiceDeleteUserSVCDetails(serviceId);
-      this.totalAmountToPay = this.displayUserServicesForCheckOut.filter(item => item.subtotal > 0).
-        reduce((sum, current) => sum + current.subtotal, 0);
+      this.totalAmountToPay = this.displayUserServicesForCheckOut.filter(item => item.amount > 0).
+        reduce((sum, current) => sum + current.amount, 0);
     } else {
       this.callServiceDeleteUserSVCDetails(serviceId);
       this.modalRefUserSvc.hide();
@@ -73,8 +73,8 @@ export class UserservicecartComponent implements OnInit {
     }
   }
   private callServiceDeleteUserSVCDetails(serviceId: number) {
-    this.userservicedetailsList.forEach(element => {
-      if (element.serviceId === serviceId) {
+    this.usersrvDetails.getUserServiceDetailsByServiceId(serviceId).subscribe(
+      (element: any) => {
         this.usersrvDetails.deleteUserSVCDetails(element).subscribe(() => {
           this.spinnerService.hide();
         },
@@ -82,8 +82,7 @@ export class UserservicecartComponent implements OnInit {
             this.spinnerService.hide();
             this.alertService.error(error);
           });
-      }
-    });
+      });
   }
 
   saveorUpdateFreeVersionUserServiceDetails() {
