@@ -3,8 +3,8 @@
         <h4 class="card-title mb-0">One step for the payment process...</h4>
         <button type="button" class="close" (click)="modalRef.hide()">&times;</button>
     </div>
-    <form ngNoForm action="https://sandboxsecure.payu.in/_payment" name="payuform" method="POST" target="payment_popup"
-        onsubmit="window.open('about:blank','payment_popup','_self');">
+    <form ngNoForm action="https://sandboxsecure.payu.in/_payment" name="payuform" method="POST" target="_self"
+        onsubmit="window.open('about:blank','_self');">
         <div class="card-body">
             <h4 class="card-title">We need your phone number </h4>
             <span id="reauth-email" class="reauth-email"></span>
@@ -40,7 +40,7 @@
         <div class="modal-footer">
             <div class="row">
                 <div class="col-md-5" *ngIf="disablePaymentButton">
-                    <button type="button" (click)="confirmPayment()" class="btn btn-default">Confirm </button>
+                    <button type="button" (click)="confirmPayment()" class="btn btn-warning">Confirm </button>
                 </div>
                 <div class="col-md-5" *ngIf="!disablePaymentButton">
                     <button type="submit" class="btn btn-primary">Checkout</button>
