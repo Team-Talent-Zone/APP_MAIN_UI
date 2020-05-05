@@ -123,7 +123,7 @@ export class DashboardofcbaComponent implements OnInit {
   }
 
   // tslint:disable-next-line: max-line-length
-  prepareSaveUserServiceForServiceId(ourserviceid: number, packwithotherourserviceid: number, amount: number, validPeriodLabel: string, serviceendon: string, servicestarton: string) {
+  prepareSaveUserServiceForServiceId(ourserviceid: number, packwithotherourserviceid: number, amount: number, validPeriodLabel: string, validPeriodCode: string, serviceendon: string, servicestarton: string) {
     let isServiceAlreadyExist = false;
     var isInsideCart = this.userservicedetailsAddedList.filter(item => item.ourserviceId === packwithotherourserviceid);
     if (isInsideCart.length > 0) {
@@ -143,15 +143,15 @@ export class DashboardofcbaComponent implements OnInit {
     if (!isServiceAlreadyExist) {
       if (packwithotherourserviceid != null) {
         // tslint:disable-next-line: max-line-length
-        this.saveUserServiceDetailsForServicePkg(packwithotherourserviceid, ourserviceid, amount, validPeriodLabel, serviceendon, servicestarton);
+        this.saveUserServiceDetailsForServicePkg(packwithotherourserviceid, ourserviceid, amount, validPeriodLabel, validPeriodCode, serviceendon, servicestarton);
       } else {
-        this.saveUserServiceDetailsForIndividual(ourserviceid, amount, validPeriodLabel, serviceendon, servicestarton);
+        this.saveUserServiceDetailsForIndividual(ourserviceid, amount, validPeriodLabel, validPeriodCode, serviceendon, servicestarton);
       }
     }
   }
 
   // tslint:disable-next-line: max-line-length
-  private saveUserServiceDetailsForIndividual(ourserviceid: number, amountval: number, validPeriodLabel: string, serviceendonval: string, servicestartonval: string) {
+  private saveUserServiceDetailsForIndividual(ourserviceid: number, amountval: number, validPeriodLabelVal: string, validPeriodCodeVal: string, serviceendonval: string, servicestartonval: string) {
     this.spinnerService.show();
     this.referService.getReferenceLookupByShortKey(config.user_service_status_paymentpending_shortkey.toString()).subscribe(
       (refCodeStr: string) => {
@@ -163,7 +163,8 @@ export class DashboardofcbaComponent implements OnInit {
           isservicepack: false,
           isservicepurchased: false,
           amount: amountval,
-          validPeriod: validPeriodLabel,
+          validPeriodLabel: validPeriodLabelVal,
+          validPeriodCode: validPeriodCodeVal,
           servicestarton: servicestartonval,
           serviceendon: serviceendonval,
           userServiceEventHistory: []
@@ -182,7 +183,7 @@ export class DashboardofcbaComponent implements OnInit {
       });
   }
   // tslint:disable-next-line: max-line-length
-  private saveUserServiceDetailsForServicePkg(packwithotherourserviceid: number, ourserviceid: number, amountval: number, validPeriodLabel: string, serviceendonval: string, servicestartonval: string) {
+  private saveUserServiceDetailsForServicePkg(packwithotherourserviceid: number, ourserviceid: number, amountval: number, validPeriodLabelVal: string, validPeriodCodeVal: string, serviceendonval: string, servicestartonval: string) {
     this.spinnerService.show();
     this.referService.getReferenceLookupByShortKey(config.user_service_status_paymentpending_shortkey.toString()).subscribe(
       (refCodeStr: string) => {
@@ -194,7 +195,8 @@ export class DashboardofcbaComponent implements OnInit {
           isservicepack: true,
           isservicepurchased: false,
           amount: 0,
-          validPeriod: validPeriodLabel,
+          validPeriodLabel: validPeriodLabelVal,
+          validPeriodCode: validPeriodCodeVal,
           servicestarton: servicestartonval,
           serviceendon: serviceendonval,
           userServiceEventHistory: []
@@ -209,7 +211,8 @@ export class DashboardofcbaComponent implements OnInit {
               isservicepack: false,
               childservicepkgserviceid: servicepkgusersrvobj.serviceId,
               amount: amountval,
-              validPeriod: validPeriodLabel,
+              validPeriodLabel: validPeriodLabelVal,
+              validPeriodCode: validPeriodCodeVal,
               servicestarton: servicestartonval,
               serviceendon: serviceendonval,
               userServiceEventHistory: []

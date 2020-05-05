@@ -16,7 +16,8 @@ export class UserServiceDetails  {
         public servicestarton: string,
         public serviceendon: string,
         public amount: number,
-        public validPeriod: string,
+        public validPeriodLabel: string,
+        public validPeriodCode: string,
         public userServiceEventHistory: UserServiceEventHistoryEntity[] = [],
     ) {}
 }
