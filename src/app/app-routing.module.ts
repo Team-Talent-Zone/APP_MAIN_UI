@@ -21,6 +21,7 @@ import { ManageserviceComponent } from './manageservice/manageservice.component'
 import { Error504pageComponent } from './error504page/error504page.component';
 import { ViewfujobdetailsComponent } from './viewfujobdetails/viewfujobdetails.component';
 import { ManagejobsComponent } from './managejobs/managejobs.component';
+import { PaymentComponent } from './payment/payment.component';
 
 const routes: Routes = [
   {
@@ -65,6 +66,7 @@ const routes: Routes = [
   {
     path: 'manageuser',
     component: DashboardComponent,
+    canActivate: [AuthgaurdService],
     children: [
       {
         path: '',
@@ -75,6 +77,7 @@ const routes: Routes = [
   {
     path: 'newservice',
     component: DashboardComponent,
+    canActivate: [AuthgaurdService],
     children: [
       {
         path: '',
@@ -85,6 +88,7 @@ const routes: Routes = [
   {
     path: 'editorviewnewservice/:id',
     component: DashboardComponent,
+    canActivate: [AuthgaurdService],
     children: [
       {
         path: '',
@@ -95,6 +99,7 @@ const routes: Routes = [
   {
     path: 'dashboard/:code/:name/:filtername',
     component: DashboardComponent,
+    canActivate: [AuthgaurdService],
     children: [
       {
         path: '',
@@ -103,8 +108,20 @@ const routes: Routes = [
     ]
   },
   {
+    path: 'dashboard/:txtid',
+    component: DashboardComponent,
+    canActivate: [AuthgaurdService],
+    children: [
+      {
+        path: '',
+        component: DashboardmapbyuseroleComponent
+      },
+    ]
+  },
+  {
     path: 'signupadmin',
     component: DashboardComponent,
+    canActivate: [AuthgaurdService],
     children: [
       {
         path: '',
@@ -115,6 +132,7 @@ const routes: Routes = [
   {
     path: 'manageservice',
     component: DashboardComponent,
+    canActivate: [AuthgaurdService],
     children: [
       {
         path: '',
@@ -125,6 +143,7 @@ const routes: Routes = [
   {
     path: 'usersubscribeservices',
     component: DashboardComponent,
+    canActivate: [AuthgaurdService],
     children: [
       {
         path: '',
@@ -135,6 +154,7 @@ const routes: Routes = [
   {
     path: 'managejobs/:id',
     component: DashboardComponent,
+    canActivate: [AuthgaurdService],
     children: [
       {
         path: '',
@@ -145,6 +165,7 @@ const routes: Routes = [
   {
     path: 'createoreditwidget/:id',
     component: DashboardComponent,
+    canActivate: [AuthgaurdService],
     children: [
       {
         path: '',
@@ -155,6 +176,7 @@ const routes: Routes = [
   {
     path: 'viewuserservicedetails/:id',
     component: DashboardComponent,
+    canActivate: [AuthgaurdService],
     children: [
       {
         path: '',
@@ -165,6 +187,7 @@ const routes: Routes = [
   {
     path: 'viewfujobdetails/:id',
     component: DashboardComponent,
+    canActivate: [AuthgaurdService],
     children: [
       {
         path: '',
@@ -175,6 +198,7 @@ const routes: Routes = [
   {
     path: 'vieworeditprofile/:id',
     component: DashboardComponent,
+    canActivate: [AuthgaurdService],
     children: [
       {
         path: '',
@@ -184,11 +208,13 @@ const routes: Routes = [
   },
   {
     path: '504error',
-    component: Error504pageComponent
+    component: Error504pageComponent,
+    canActivate: [AuthgaurdService]
   },
   {
     path: 'paymenthistory',
     component: DashboardComponent,
+    canActivate: [AuthgaurdService],
     children: [
       {
         path: '',
@@ -196,6 +222,7 @@ const routes: Routes = [
       }
     ]
   },
+  
   {
     path: '',
     redirectTo: '/home',

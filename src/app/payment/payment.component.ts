@@ -6,6 +6,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UserService } from '../AppRestCall/user/user.service';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { AlertsService } from '../AppRestCall/alerts/alerts.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-payment',
@@ -26,22 +27,23 @@ export class PaymentComponent implements OnInit {
   serviceids = '';
   jobids = '';
 
-
   constructor(
     public modalRef: BsModalRef,
     private formBuilder: FormBuilder,
     private userService: UserService,
-    private payment: PaymentService,
+    private paymentsvc: PaymentService,
     private spinnerService: Ng4LoadingSpinnerService,
     private alertService: AlertsService,
-  ) { }
+    private route: ActivatedRoute,
+  ) {
+  }
 
   ngOnInit() {
     if (this.displayUserServicesForCheckOut != null) {
       this.displayUserServicesForCheckOut.forEach((element: any) => {
-        console.log('element', element);
         this.productinfo = this.productinfo + '|' + element.name + '|';
-        this.serviceids = this.serviceids + '|' + element.serviceId + '|'
+        const svcid = this.serviceids.length == 0 ? '' : + this.serviceids + ',';
+        this.serviceids = this.serviceids.concat(element.serviceId, ',');
       });
     } else {
       this.productinfo = this.productinfoParam;
@@ -50,16 +52,14 @@ export class PaymentComponent implements OnInit {
 
   confirmPayment() {
     var phonenoreg = new RegExp('^[0-9]*$');
-
     if (this.payuform.phone == null || this.payuform.phone.length === 0) {
       this.alertService.error('Enter Mobile number');
-
     } else
       if (this.payuform.phone != null && (this.payuform.phone.length > 10 || this.payuform.phone.length < 10)) {
         this.alertService.error('Mobile number must be 10 digits');
-
       } else {
         if (phonenoreg.test(this.payuform.phone)) {
+          this.spinnerService.show();
           this.paymentFormDetails = this.formBuilder.group({
             email: this.userService.currentUserValue.username,
             name: this.userService.currentUserValue.fullname,
@@ -70,10 +70,9 @@ export class PaymentComponent implements OnInit {
             jobids: this.jobids,
             userId: this.userService.currentUserValue.userId
           });
-          this.payment.savePayments(this.paymentFormDetails.value).subscribe(
+          this.paymentsvc.savePayments(this.paymentFormDetails.value).subscribe(
             (data: Payment) => {
               this.disablePaymentButton = false;
-              console.log('paymentPayload : ', data);
               this.payuform.txnid = data.txnid;
               this.payuform.surl = data.surl;
               this.payuform.furl = data.furl;
@@ -86,6 +85,7 @@ export class PaymentComponent implements OnInit {
               this.payuform.amount = data.amount;
               this.payuform.phone = data.phone;
               this.payuform.productInfo = data.productinfo;
+              this.spinnerService.hide();
             },
             error => {
               this.spinnerService.hide();

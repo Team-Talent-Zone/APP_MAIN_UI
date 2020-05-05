@@ -10,6 +10,7 @@ import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { AlertsService } from '../AppRestCall/alerts/alerts.service';
 import { TranslateService } from '@ngx-translate/core';
 import { UsersrvdetailsService } from '../AppRestCall/userservice/usersrvdetails.service';
+import { PaymentService } from '../AppRestCall/payment/payment.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -34,6 +35,7 @@ export class DashboardComponent implements OnInit {
 
   filterOn = '0';
   inputItemCode: string;
+  txtid: string;
 
   constructor(
     public userService: UserService,
@@ -44,7 +46,11 @@ export class DashboardComponent implements OnInit {
     public translate: TranslateService,
     public signupComponent: SignupComponent,
     private refAdapter: ReferenceAdapter,
+    private paymentsvc: PaymentService,
   ) {
+    route.params.subscribe(params => {
+      this.txtid = params.txtid;
+    });
     translate.addLangs([config.lang_english_word.toString(), config.lang_telugu_word.toString(), config.lang_hindi_word.toString()]);
     translate.setDefaultLang(config.lang_english_word.toString());
     const browserLang = translate.getBrowserLang();
@@ -52,12 +58,31 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (this.txtid != null) {
+      this.getPaymentDetailsByTxnId(this.txtid);
+    }
     this.signupComponent.getAllCategories(this.userService.currentUserValue.preferlang.toString());
     setTimeout(() => {
       this.resetLoggedInUser();
     }, 100);
   }
 
+  getPaymentDetailsByTxnId(txnid: string) {
+    this.paymentsvc.getPaymentDetailsByTxnId(txnid).subscribe((paymentobj: any) => {
+      if (paymentobj.paymentsCBATrans != null || paymentobj.paymentsFUTrans != null) {
+        if (paymentobj.paymentsCBATrans.status === 'Success') {
+          // tslint:disable-next-line: max-line-length
+          this.alertService.success('Thank you for payment .Go to Payment History for the transcation details. Payment is successfully with transcation or reference:' + paymentobj.txnid);
+        } else {
+          this.alertService.error('Transcation Failed. Please try again.');
+        }
+      }
+    },
+      error => {
+        this.alertService.error(error);
+        this.spinnerService.hide();
+      });
+  }
   private resetLoggedInUser() {
     this.userService.getUserByUserId(this.userService.currentUserValue.userId).subscribe(
       (userresp: any) => {

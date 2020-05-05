@@ -15,4 +15,8 @@ export class PaymentService {
   savePayments(payment: Payment) {
     return this.http.post(`${environment.apiUrl}/savePayments/`, payment);
   }
+
+  getPaymentDetailsByTxnId(txnid: string) {
+    return this.http.get(`${environment.apiUrl}/getPaymentDetailsByTxnId/` + txnid + '/');
+  }
 }
