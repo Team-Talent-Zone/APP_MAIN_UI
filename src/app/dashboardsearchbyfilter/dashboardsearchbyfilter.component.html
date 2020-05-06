@@ -40,7 +40,7 @@
                                         <div class="card-body text-center">
                                             <p><img class=" img-fluid" src="{{fuuser.avtarurl}}" alt="card image"></p>
                                             <h4 class="card-title">{{fuuser.fullname}}</h4>
-                                            <p class="card-text">{{fuuser.userbizdetails.shortaddress}}</p>
+                                            <p class="card-text">{{fuuser.shortaddress}}</p>
                                             <a href="#" class="btn btn-primary btn-sm"><i
                                                     class="fa fa-exchange "></i></a>
                                         </div>
@@ -51,16 +51,14 @@
                                                     <div class="well well-sm">
                                                         <div class="row">
                                                             <div class="col-xs-12 col-md-9 text-xs-center">
-                                                                <h1 class="rating-num">4.1</h1>
-                                                                <div class="rating">
-                                                                    <span class="fa fa-star "></span>
-                                                                    <span class="fa fa-star "></span>
-                                                                    <span class="fa fa-star "></span>
-                                                                    <span class="fa fa-star "></span>
-                                                                    <span class="fa fa-star-half-empty"></span>
+                                                                <div class="rating" *ngIf="fuuser.starRate != null">
+                                                                    <span class="fa fa-star "
+                                                                        *ngFor="let i of fuuser.starRate"></span>
                                                                 </div>
                                                                 <div>
-                                                                    <span class="fa fa-user"></span>125888 reviews
+                                                                    <span class="fa fa-user"
+                                                                        *ngIf="fuuser.feedBackBy != null"> By
+                                                                        {{fuuser.feedBackBy}}</span>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -76,7 +74,7 @@
                                     <div class="card">
                                         <div class="card-body text-center ">
                                             <h4 class="card-title">About {{fuuser.fullname}}</h4>
-                                            <p class="card-text">{{fuuser.freeLanceDetails.abt}}</p>
+                                            <p class="card-text">{{fuuser.abt}}</p>
                                             <p class="card-text">{{fuuser.username}}</p>
                                         </div>
                                     </div>

@@ -61,16 +61,20 @@ export class DashboardsearchbyfilterComponent implements OnInit {
       this.userService.getUserDetailsByJobAvailable().subscribe(
         (userObjList: any) => {
           userObjList.forEach(element => {
-            if (element.freeLanceDetails.subCategory === this.code &&
-              element.userbizdetails.city === this.userService.currentUserValue.userbizdetails.city) {
-              this.userFUObjList.push(this.userAdapter.adapt(element));
+            if (element.subCategory === this.code &&
+              element.city === this.userService.currentUserValue.userbizdetails.city) {
+              if (element.starRate != null) {
+                element.starRate = Array(element.starRate);
+              }
+              console.log('starrate', element.starRate);
+              this.userFUObjList.push(element);
               var markPoints = {
-                lat: element.userbizdetails.lat,
-                lng: element.userbizdetails.lng,
+                lat: element.lat,
+                lng: element.lng,
                 label: element.fullname,
                 draggable: false,
-                shortaddress: element.userbizdetails.shortaddress,
-                abt: element.freeLanceDetails.abt,
+                shortaddress: element.shortaddress,
+                abt: element.abt,
                 avtarurl: element.avtarurl
               };
               this.markers.push(markPoints);
