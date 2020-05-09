@@ -227,6 +227,7 @@ export class EditprofileComponent implements OnInit {
     this.edituserobj.lastname = this.editprofileForm.get('lastname').value;
     this.edituserobj.preferlang = this.editprofileForm.get('preferlang').value;
     this.edituserobj.userbizdetails.fulladdress = this.searchElementRef.nativeElement.value;
+    console.log('shortAddress', this.shortAddress);
     if (this.shortAddress != null) {
       this.edituserobj.userbizdetails.route = this.route;
       this.edituserobj.userbizdetails.city = this.city;
@@ -331,6 +332,8 @@ export class EditprofileComponent implements OnInit {
           this.userService.currentUserValue.userbizdetails.fulladdress = this.usrObj.userbizdetails.fulladdress;
           this.userService.currentUserValue.userbizdetails.lat = this.usrObj.userbizdetails.lat;
           this.userService.currentUserValue.userbizdetails.lng = this.usrObj.userbizdetails.lng;
+          this.userService.currentUserValue.userbizdetails.city = this.usrObj.userbizdetails.city;
+          this.userService.currentUserValue.userbizdetails.shortaddress = this.usrObj.userbizdetails.shortaddress;
         }
         this.edituserobj = userObj;
       },
