@@ -105,6 +105,17 @@ const routes: Routes = [
     ]
   },
   {
+    path: 'job',
+    component: DashboardComponent,
+    canActivate: [AuthgaurdService],
+    children: [
+      {
+        path: '',
+        component: ManagejobsComponent
+      }
+    ]
+  },
+  {
     path: 'job/:code/:name/:filtername',
     component: DashboardComponent,
     canActivate: [AuthgaurdService],

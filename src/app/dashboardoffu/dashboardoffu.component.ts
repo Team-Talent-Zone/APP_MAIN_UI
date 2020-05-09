@@ -20,8 +20,8 @@ export class DashboardoffuComponent implements OnInit {
   indiaTime = new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' });
 
   infoCards = [
-    { name: 'Current Job Pay', value: '0' },
-    { name: 'Total Earnings', value: '1000' },
+    { name: 'Upcoming Pay', value: '1000' },
+    { name: 'Total Earnings', value: '10000' },
   ];
 
   constructor(
