@@ -5,15 +5,11 @@
             <h5 class=" section-title h2" *ngIf="userFUObjList.length == 1; else morethanone">
                 Available {{name}} at <b> : </b>
                 {{userService.currentUserValue.userbizdetails.shortaddress}}
-                <i class="fa fa-question-circle" title="Change address at edit proifle for new location search"
-                    style="font-size:14px;color:rgb(17, 0, 255)"></i>
             </h5>
             <ng-template #morethanone>
                 <h5 class="section-title h2" *ngIf="userFUObjList.length > 1">
                     Available {{name}}'s at
                     <b> : </b>{{userService.currentUserValue.userbizdetails.shortaddress}}
-                    <i class="fa fa-question-circle" title="Change address at edit proifle for new location search"
-                        style="font-size:14px;color:rgb(0, 17, 255)"></i>
                 </h5>
             </ng-template>
         </div>
@@ -24,7 +20,7 @@
     </div>
     <div class="row">
         <div class="col-md-9">
-             <i>To Create a Job for {{name}} 'Select Job Start Date & Job Location'</i>  
+            <i>To Create a Job for {{name}} 'Select Job Start Date & Job Location'</i>
         </div>
     </div>
     <div class="row">
