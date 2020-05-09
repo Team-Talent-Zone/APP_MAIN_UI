@@ -110,14 +110,18 @@
         </div>
         <!--/col-->
 
+
         <div class="col main pt-5 mt-4">
-            <div class="jumbotron text-center" *ngIf="ispaysuccess">
-                <h1 class="display-3">Thank You For Payment!</h1>
-                <p class="lead"> We have recieved your payment details and for your reference , Here is the
-                    transcation
-                    id <strong>this.txtid</strong>
-                    setup.</p>
-                <hr>
+            <!--Alert-->
+            <div class="row" *ngIf="txtid != null">
+                <div class="alert alert-success alert-dismissible fade show w-100" role="alert">
+                    <h4 class="display-4">We have recieved your payment details and here is the
+                        transcation Id {{txtid}}</h4>
+                    <!--Close Icon-->
+                    <button type="button" class="btn close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
             </div>
             <router-outlet></router-outlet>
         </div>

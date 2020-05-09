@@ -74,7 +74,7 @@ export class DashboardComponent implements OnInit {
         if (paymentobj.paymentsCBATrans.status === 'Success') {
           this.ispaysuccess = true;
           // tslint:disable-next-line: max-line-length
-          this.alertService.success('Thank you for payment .Go to Payment History for the transcation details. Payment is successfully with transcation or reference:' + paymentobj.txnid);
+          this.alertService.success('Thank you for the payment. Payment is Successfully');
         } else {
           this.alertService.error('Transcation Failed. Please try again.');
         }
