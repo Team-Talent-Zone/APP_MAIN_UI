@@ -3,20 +3,44 @@
     <div class=" row">
         <div class="col-md-9">
             <h5 class=" section-title h1" *ngIf="userFUObjList.length == 1; else morethanone">
-                Available {{name}} at your city
+                Available {{name}} near your location <br>{{userService.currentUserValue.userbizdetails.shortaddress}}
+                <i class="fa fa-question-circle" title="Change address at edit proifle for new location search"
+                    style="font-size:14px;color:rgb(17, 0, 255)"></i>
             </h5>
             <ng-template #morethanone>
                 <h5 class="section-title h1" *ngIf="userFUObjList.length > 1">
-                    Available {{name}}'s at your city
+                    Available {{name}}'s near your location <br>
+                    {{userService.currentUserValue.userbizdetails.shortaddress}}
+                    <i class="fa fa-question-circle" title="Change address at edit proifle for new location search"
+                        style="font-size:14px;color:rgb(0, 17, 255)"></i>
                 </h5>
             </ng-template>
         </div>
-        <div class="col-md-1">
-            <a [routerLink]="['/managejobs',0]" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i>
+        <div class="col-md-2" *ngIf="issearchbydate">
+            <a [routerLink]="['/job',code,name,searchbyfiltername]" class="btn btn-primary"><i class="fa fa-plus"></i>
                 Create a Job Now</a>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-9">
+            <h5>To Create a Job for {{name}} 'Select & Search Freelancer By Job Start Date' </h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-4">
+            <input readonly [owlDateTime]="dt1" [(ngModel)]="startdate" [min]="startDate" [owlDateTimeTrigger]="dt1"
+                class="form-control" placeholder="Select the Job Start Date" #dateTime="ngModel">
+            <owl-date-time [pickerType]="'calendar'" #dt1></owl-date-time>
+        </div>
+        <div class="col-md-2">
+            <input type="button" class="btn btn-primary" (click)="searchByFilterFreelancer(startdate)" value="Search" />
+        </div>
+
+    </div>
 </div>
+<hr>
 <div class="row justify-content-center mt-3 mb-2" *ngIf="userFUObjList.length > 0 && timelaps">
     <div class="col-auto">
         <nav class="nav btn-group">

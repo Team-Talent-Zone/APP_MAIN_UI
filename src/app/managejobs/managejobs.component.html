@@ -1,2 +1,91 @@
-<p *ngIf="iscreatejob">Create Job</p>
-<p *ngIf="!iscreatejob">Manage Job works!</p>
+<div class="container p-1">
+    <div class="row" *ngIf="iscreatejob">
+        <div class="col-md-8 mx-auto">
+            <!-- form card register -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="mb-0">Create a Job for {{name}}</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <p>Job Location </p>
+                        <span>
+                            <i class="fa fa-address-book form-control-icon"></i>
+                        </span>
+                        <input type="text" class="form-control" readonly
+                            value={{userService.currentUserValue.userbizdetails.fulladdress}} id="input4"
+                            placeholder="Job Location" required="" />
+                    </div>
+                    <div class="form-group">
+                        <div class="form-row">
+                            <div class="form-group col-md-5">
+                                <span>
+                                    <i class="fa fa-calendar   form-control-icon"></i>
+                                </span>
+                                <input readonly [owlDateTime]="dt1" [(ngModel)]="startdate" [min]="startDate"
+                                    [owlDateTimeTrigger]="dt1" class="form-control" placeholder="Job Start Date"
+                                    #dateTime="ngModel" (blur)="onChangeEndDateCalcHours()">
+                                <owl-date-time #dt1></owl-date-time>
+                            </div>
+                            <div class="form-group col-md-5">
+                                <span>
+                                    <i class="fa fa-calendar   form-control-icon"></i>
+                                </span>
+                                <input readonly [owlDateTime]="dt2" [min]="endDate" [owlDateTimeTrigger]="dt2"
+                                    [(ngModel)]="enddate" class="form-control" placeholder="Job End Date"
+                                    #dateTime="ngModel" (blur)="onChangeEndDateCalcHours()">
+                                <owl-date-time #dt2></owl-date-time>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-row">
+                            <div class="form-group col-md-5">
+                                <span>
+                                    <i class="fa fa-clock-o form-control-icon"></i>
+                                </span>
+                                <input type="url" class="form-control" id="input3" placeholder="Enter hours of work " />
+                                <p *ngIf="this.maxHours">Enter between min 1 & max {{this.maxHours}} hours.</p>
+                            </div>
+                            <div class="form-group col-md-5">
+                                <span>
+                                    <i class="fa fa-clock-o form-control-icon"></i>
+                                </span>
+                                <input type="url" class="form-control" id="input3"
+                                    placeholder="Enter price for the work " />
+                                <p *ngIf="this.maxHours">Enter amount min 1 & max {{this.maxHours}} hours.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-row">
+                            <div class="form-group col-md-5">
+                                <span>
+                                    <i class="fa fa-at  form-control-icon"></i>
+                                </span>
+                                <textarea class="form-control" id="input5"
+                                    placeholder="Enter Job Description"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <button type="button" (click)="backToSearch()"
+                                class="btn btn-warning btn-lg float-right">New Search</button>
+                        </div>
+                        <div class="col-md-9">
+                            <button type="button" class="btn btn-success btn-lg float-right">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /form card register -->
+        </div>
+    </div>
+    <p *ngIf="!iscreatejob">Manage Job works!</p>
+</div>

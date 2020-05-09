@@ -9,9 +9,7 @@ import { SignupadminComponent } from './signupadmin/signupadmin.component';
 import { DashboardmapbyuseroleComponent } from './dashboardmapbyuserole/dashboardmapbyuserole.component';
 import { EditprofileComponent } from './editprofile/editprofile.component';
 import { ManageuserComponent } from './manageuser/manageuser.component';
-import { AppComponent } from './app.component';
 import { SignupComponent } from './signup/signup.component';
-import { LoginComponent } from './login/login.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
@@ -21,7 +19,6 @@ import { ManageserviceComponent } from './manageservice/manageservice.component'
 import { Error504pageComponent } from './error504page/error504page.component';
 import { ViewfujobdetailsComponent } from './viewfujobdetails/viewfujobdetails.component';
 import { ManagejobsComponent } from './managejobs/managejobs.component';
-import { PaymentComponent } from './payment/payment.component';
 
 const routes: Routes = [
   {
@@ -108,6 +105,17 @@ const routes: Routes = [
     ]
   },
   {
+    path: 'job/:code/:name/:filtername',
+    component: DashboardComponent,
+    canActivate: [AuthgaurdService],
+    children: [
+      {
+        path: '',
+        component: ManagejobsComponent
+      }
+    ]
+  },
+  {
     path: 'dashboard/:txtid',
     component: DashboardComponent,
     canActivate: [AuthgaurdService],
@@ -151,17 +159,7 @@ const routes: Routes = [
       }
     ]
   },
-  {
-    path: 'managejobs/:id',
-    component: DashboardComponent,
-    canActivate: [AuthgaurdService],
-    children: [
-      {
-        path: '',
-        component: ManagejobsComponent
-      }
-    ]
-  },
+
   {
     path: 'createoreditwidget/:id',
     component: DashboardComponent,
@@ -222,7 +220,7 @@ const routes: Routes = [
       }
     ]
   },
-  
+
   {
     path: '',
     redirectTo: '/home',

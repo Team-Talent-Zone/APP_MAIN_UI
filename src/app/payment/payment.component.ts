@@ -7,6 +7,7 @@ import { UserService } from '../AppRestCall/user/user.service';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { AlertsService } from '../AppRestCall/alerts/alerts.service';
 import { ActivatedRoute } from '@angular/router';
+import { UserAdapter } from '../adapters/useradapter';
 
 @Component({
   selector: 'app-payment',
@@ -26,8 +27,10 @@ export class PaymentComponent implements OnInit {
   productinfo = '';
   serviceids = '';
   jobids = '';
+  usrobj: any;
 
   constructor(
+    private userAdapter: UserAdapter,
     public modalRef: BsModalRef,
     private formBuilder: FormBuilder,
     private userService: UserService,
@@ -85,7 +88,14 @@ export class PaymentComponent implements OnInit {
               this.payuform.amount = data.amount;
               this.payuform.phone = data.phone;
               this.payuform.productInfo = data.productinfo;
-              this.spinnerService.hide();
+              this.usrobj = this.userAdapter.adapt(this.userService.currentUserValue);
+              this.usrobj.phoneno = data.phone;
+              this.userService.saveorupdate(this.usrobj).subscribe(() => {
+                this.spinnerService.hide();
+              }, error => {
+                this.spinnerService.hide();
+                this.alertService.error(error);
+              });
             },
             error => {
               this.spinnerService.hide();

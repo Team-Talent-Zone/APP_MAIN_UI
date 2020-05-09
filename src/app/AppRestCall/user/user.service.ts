@@ -89,6 +89,7 @@ export class UserService {
   }
 
   saveorupdate(user: User) {
+    console.log('this.usrobj.phoneno', user.phoneno);
     return this.http.post(`${environment.apiUrl}/saveorupdateuser/`, user);
   }
 
@@ -106,6 +107,10 @@ export class UserService {
 
   getUserDetailsByJobAvailable() {
     return this.http.get(`${environment.apiUrl}/getUserDetailsByJobAvailable/`);
+  }
+
+  getUserDetailsByJobAvailableByCreateOn(jobcreatedon: string, scategory: string) {
+    return this.http.get(`${environment.apiUrl}/getUserDetailsByJobAvailableByCreateOn/` + jobcreatedon + '/' + scategory + '/');
   }
 
   forgetPassword(username: string) {

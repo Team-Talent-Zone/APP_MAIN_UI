@@ -14,6 +14,11 @@ import { MouseEvent } from '@agm/core';
 })
 export class DashboardsearchbyfilterComponent implements OnInit {
 
+  startDate = new Date();
+  startdate: Date;
+  issearchbydate = false;
+  markPoints: any;
+
   constructor(
     private route: ActivatedRoute,
     public userService: UserService,
@@ -49,47 +54,105 @@ export class DashboardsearchbyfilterComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.searchByFilterFreelancer();
+    this.setFUMinStartDateToSearch();
+    this.searchResults(null);
   }
 
-  searchByFilterFreelancer() {
+  setFUMinStartDateToSearch() {
+    var minStartDate = new Date();
+    minStartDate.setDate(minStartDate.getDate() + 1);
+    var dd = minStartDate.getDate();
+    var mm = minStartDate.getMonth() + 1;
+    var y = minStartDate.getFullYear();
+    var startDtFmt = mm + '/' + dd + '/' + y;
+    this.startDate = new Date(startDtFmt);
+  }
+  searchByFilterFreelancer(startdate: Date) {
+    console.log('this is startdate :', Object.prototype.toString.call(startdate));
+    if (Object.prototype.toString.call(startdate) === '[object Date]') {
+      this.searchResults(startdate);
+    } else {
+      this.alertService.error('Please select job create date your looking.');
+
+    }
+  }
+  searchResults(startdate: Date) {
+    this.issearchbydate = false;
+    this.timelaps = false;
     this.userFUObjList = [];
+    this.markPoints = [];
+    this.markers = [];
     if (this.searchbyfiltername === config.search_byfilter_fu.toString() &&
       this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_cba.toString() ||
       this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_csct.toString() ||
       this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_cscm.toString()) {
-      this.userService.getUserDetailsByJobAvailable().subscribe(
-        (userObjList: any) => {
-          userObjList.forEach(element => {
-            if (element.subCategory === this.code &&
-              element.city === this.userService.currentUserValue.userbizdetails.city) {
-              if (element.starRate != null) {
-                element.starRate = Array(element.starRate);
-              }
-              console.log('starrate', element.starRate);
-              this.userFUObjList.push(element);
-              var markPoints = {
-                lat: element.lat,
-                lng: element.lng,
-                label: element.fullname,
-                draggable: false,
-                shortaddress: element.shortaddress,
-                abt: element.abt,
-                avtarurl: element.avtarurl
-              };
-              this.markers.push(markPoints);
-            }
+      if (startdate === null) {
+        this.spinnerService.show();
+        this.userService.getUserDetailsByJobAvailable().subscribe(
+          (userObjList: any) => {
+            this.setuserObjList(userObjList);
+            this.timelaps = true;
+            this.spinnerService.hide();
+          },
+          error => {
+            this.spinnerService.hide();
+            this.alertService.error(error);
           });
-          this.timelaps = true;
-        },
-        error => {
-          this.spinnerService.hide();
-          this.alertService.error(error);
-        }
-      );
+      } else {
+        this.spinnerService.show();
+        let sdate = this.getDateFormat(startdate);
+        this.userService.getUserDetailsByJobAvailableByCreateOn(sdate, this.code).subscribe(
+          (userObjList: any) => {
+            this.setuserObjList(userObjList);
+            this.timelaps = true;
+            this.issearchbydate = true;
+            this.spinnerService.hide();
+          },
+          error => {
+            this.spinnerService.hide();
+            this.alertService.error(error);
+          });
+      }
     }
   }
+  setuserObjList(userObjList: any) {
+    userObjList.forEach(element => {
+      if (element.subCategory === this.code &&
+        element.city === this.userService.currentUserValue.userbizdetails.city) {
+        if (element.starRate != null) {
+          element.starRate = Array(element.starRate);
+        }
+        this.userFUObjList.push(element);
+        this.markPoints = {
+          lat: element.lat,
+          lng: element.lng,
+          label: element.fullname,
+          draggable: false,
+          shortaddress: element.shortaddress,
+          abt: element.abt,
+          avtarurl: element.avtarurl
+        };
+        this.markers.push(this.markPoints);
+      }
+    });
+  }
+
+  getDateFormat(dt: Date) {
+    var date = new Date(dt);
+    var year = date.getFullYear();
+    var tempmonth = date.getMonth() + 1; //getMonth is zero based;
+    var tempday = date.getDate();
+    var hr = date.getHours();
+    var tempmin = date.getMinutes();
+
+    var month = tempmonth > 10 ? tempmonth : '0' + tempmonth;
+    var day = tempday > 10 ? tempday : '0' + tempday;
+
+    var formatted = year + '-' + month + '-' + day;
+    return formatted;
+  }
 }
+
 
 // just an interface for type safety.
 interface marker {

@@ -36,6 +36,7 @@ export class DashboardComponent implements OnInit {
   filterOn = '0';
   inputItemCode: string;
   txtid: string;
+  ispaysuccess = false;
 
   constructor(
     public userService: UserService,
@@ -71,6 +72,7 @@ export class DashboardComponent implements OnInit {
     this.paymentsvc.getPaymentDetailsByTxnId(txnid).subscribe((paymentobj: any) => {
       if (paymentobj.paymentsCBATrans != null || paymentobj.paymentsFUTrans != null) {
         if (paymentobj.paymentsCBATrans.status === 'Success') {
+          this.ispaysuccess = true;
           // tslint:disable-next-line: max-line-length
           this.alertService.success('Thank you for payment .Go to Payment History for the transcation details. Payment is successfully with transcation or reference:' + paymentobj.txnid);
         } else {

@@ -59,6 +59,7 @@ import { ViewfujobdetailsComponent } from './viewfujobdetails/viewfujobdetails.c
 import { UsersubscribeservicesComponent } from './usersubscribeservices/usersubscribeservices.component';
 import { ManagejobsComponent } from './managejobs/managejobs.component';
 import { CreateoreditwidgetComponent } from './createoreditwidget/createoreditwidget.component';
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -103,6 +104,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     CreateoreditwidgetComponent,
   ],
   imports: [
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
