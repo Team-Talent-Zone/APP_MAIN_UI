@@ -113,7 +113,7 @@
 
         <div class="col main pt-5 mt-4">
             <!--Alert-->
-            <div class="row" *ngIf="txtid != null">
+            <div class="row" *ngIf="txtid != null && ispaysuccess">
                 <div class="alert alert-success alert-dismissible fade show w-100" role="alert">
                     <h4 class="display-4">We have recieved your payment details and here is the
                         transcation Id {{txtid}}</h4>

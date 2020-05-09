@@ -58,8 +58,6 @@ export class ManagejobsComponent implements OnInit {
     }
   }
 
-  test() {
-  }
 
   backToSearch() {
     this.router.navigateByUrl('fusearch/', { skipLocationChange: true }).
@@ -68,9 +66,6 @@ export class ManagejobsComponent implements OnInit {
       });
   }
   onChangeEndDateCalcHours() {
-    console.log('this is start dat formatted', this.startdate);
-    console.log('this is end date', this.enddate);
-
     if (this.startdate != null && this.enddate != null) {
       if (new Date(this.getDateFormat(this.startdate)) >= new Date(this.getDateFormat(this.enddate))) {
         this.alertService.error('Start Date can not equal same datetime or greater than the End Date');
@@ -78,7 +73,6 @@ export class ManagejobsComponent implements OnInit {
         this.startdate = null;
       } else {
         this.maxHours = this.getHrBetweenDate(this.startdate, this.enddate);
-        console.log('this is max Hourst', this.maxHours);
       }
     } else {
       this.maxHours = null;
@@ -92,7 +86,6 @@ export class ManagejobsComponent implements OnInit {
     let diffDays = Math.floor(this.diffMs / 86400000); // days
     let diffHrs = Math.floor((this.diffMs % 86400000) / 3600000); // hours
     let diffMins = Math.round(((this.diffMs % 86400000) % 3600000) / 60000); // minutes
-    //console.log(diffDays + ' days, ' + diffHrs + ' hours, ' + diffMins + 'minutes');
     if (diffDays > 0) {
       return diffDays * 24;
     } else {
@@ -107,11 +100,9 @@ export class ManagejobsComponent implements OnInit {
     var tempday = date.getDate();
     var hr = date.getHours();
     var tempmin = date.getMinutes();
-
     var month = tempmonth > 10 ? tempmonth : '0' + tempmonth;
     var day = tempday > 10 ? tempday : '0' + tempday;
     var min = tempmin > 10 ? tempmin : '0' + tempmin;
-
     var formatted = year + '-' + month + '-' + day + ' ' + hr + ':' + min;
     return formatted;
   }
