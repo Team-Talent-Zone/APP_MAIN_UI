@@ -1,5 +1,5 @@
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<div class="container" *ngIf="userFUObjList.length > 0 && timelaps">
+<div class="container" *ngIf="userFUObjList.length > 0 && !iscreatejobdiv">
     <div class=" row">
         <div class="col-md-11">
             <h5 class=" section-title h2" *ngIf="userFUObjList.length == 1; else morethanone">
@@ -14,7 +14,7 @@
             </ng-template>
         </div>
         <div class="col-md-2" *ngIf="issearchbydate && userFUObjList.length > 0">
-            <a [routerLink]="['/job',code,name,searchbyfiltername]" class="btn btn-primary"><i class="fa fa-plus"></i>
+            <a (click)="openCreateJobInterface()" class="btn btn-warning"><i class="fa fa-plus"></i>
                 Create a Job Now</a>
         </div>
     </div>
@@ -47,8 +47,95 @@
 
     </div>
 </div>
+<div class="row" *ngIf="userFUObjList.length > 0 && iscreatejobdiv">
+    <div class="col-md-8 mx-auto">
+        <!-- form card register -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="mb-0">Create a Job for {{name}}</h3>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <p>Job Location </p>
+                    <span>
+                        <i class="fa fa-address-book form-control-icon"></i>
+                    </span>
+                    <textarea class="form-control" readonly
+                        value={{userService.currentUserValue.userbizdetails.fulladdress}} id="input4"
+                        placeholder="Job Location" required=""> </textarea>
+                </div>
+                <div class="form-group">
+                    <div class="form-row">
+                        <div class="form-group col-md-5">
+                            <span>
+                                <i class="fa fa-calendar   form-control-icon"></i>
+                            </span>
+                            <input readonly [owlDateTime]="dt1" [(ngModel)]="startdateForjob" [min]="startDateForJob"
+                                [owlDateTimeTrigger]="dt1" class="form-control" placeholder="Job Start Date"
+                                #dateTime="ngModel" (blur)="onChangeEndDateCalcHours()">
+                            <owl-date-time #dt1></owl-date-time>
+                        </div>
+                        <div class="form-group col-md-5">
+                            <span>
+                                <i class="fa fa-calendar   form-control-icon"></i>
+                            </span>
+                            <input readonly [owlDateTime]="dt2" [min]="endDateForJob" [owlDateTimeTrigger]="dt2"
+                                [(ngModel)]="enddateForjob" class="form-control" placeholder="Job End Date"
+                                #dateTime="ngModel" (blur)="onChangeEndDateCalcHours()">
+                            <owl-date-time #dt2></owl-date-time>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-row">
+                        <div class="form-group col-md-5">
+                            <span>
+                                <i class="fa fa-clock-o form-control-icon"></i>
+                            </span>
+                            <input type="url" class="form-control" id="input3" placeholder="Enter hours of work " />
+                            <p *ngIf="this.maxHours">Enter between min 1 & max {{this.maxHours}} hours.</p>
+                        </div>
+                        <div class="form-group col-md-5">
+                            <span>
+                                <i class="fa fa-clock-o form-control-icon"></i>
+                            </span>
+                            <input type="url" class="form-control" id="input3"
+                                placeholder="Enter price for the work " />
+                            <p *ngIf="this.maxHours">Enter amount min 1 & max {{this.maxHours}} hours.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-row">
+                        <div class="form-group col-md-5">
+                            <span>
+                                <i class="fa fa-at  form-control-icon"></i>
+                            </span>
+                            <textarea class="form-control" id="input5" placeholder="Enter Job Description"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-md-3">
+                        <button type="button" (click)="backToSearch();" class="btn btn-warning btn-lg float-right">Back
+                            To Search</button>
+                    </div>
+                    <div class="col-md-9">
+                        <button type="button" class="btn btn-success btn-lg float-right">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /form card register -->
+    </div>
+</div>
 <hr>
-<div class="row justify-content-center mt-3 mb-2" *ngIf="userFUObjList.length > 0 && timelaps">
+<div class="row justify-content-center mt-3 mb-2" *ngIf="userFUObjList.length > 0 && timelaps && !iscreatejobdiv">
     <div class="col-auto">
         <nav class="nav btn-group">
             <a href="#cardview" class="btn btn-outline-primary active" data-toggle="tab">Card View</a>
@@ -57,10 +144,10 @@
         </nav>
     </div>
 </div>
-<div class="tab-content">
+<div class="tab-content" *ngIf="userFUObjList.length > 0 && timelaps && !iscreatejobdiv">
     <div class="tab-pane fade show active" id="cardview">
         <!-- Freelance Search Section -->
-        <section id="team" class="pb-5" *ngIf="userFUObjList.length > 0 && timelaps">
+        <section id="team" class="pb-5" >
             <div class="container">
                 <div class="row">
                     <div class="col-xs-12 col-sm-6 col-md-4" *ngFor="let fuuser of userFUObjList">
