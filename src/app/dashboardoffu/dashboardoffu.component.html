@@ -15,13 +15,26 @@
         </div>
         <div class="col-6 col-sm-2 placeholder text-center">
             <img src="{{stage2Img}}" class="mx-auto img-fluid rounded-circle" alt="Generic placeholder thumbnail">
+            <h6  *ngIf="!userService.currentUserValue.freeLanceDetails.isregfeedone && istimelap;">
+                <a href="javascript: return false;"
+                    (click)="openPaymentComponent()">Payment {{referenceobj[0].label}}</a>
+            </h6>
+            <h6  *ngIf="userService.currentUserValue.freeLanceDetails.isregfeedone">
+                Payment Completed
+            </h6>
+        </div>
+        <div class="stepConectorPiece"
+            [ngStyle]="{'background': userService.currentUserValue.freeLanceDetails.isregfeedone ? 'green':'lightgrey'}">
+        </div>
+        <div class="col-6 col-sm-2 placeholder text-center">
+            <img src="{{stage3Img}}" class="mx-auto img-fluid rounded-circle" alt="Generic placeholder thumbnail">
             <h6>BG Verification Started</h6>
         </div>
         <div class="stepConectorPiece"
             [ngStyle]="{'background': userService.currentUserValue.freeLanceDetails.isbgstarted ? 'green':'lightgrey'}">
         </div>
         <div class="col-6 col-sm-2 placeholder text-center">
-            <img src="{{stage3Img}}" class="mx-auto img-fluid rounded-circle"
+            <img src="{{stage4Img}}" class="mx-auto img-fluid rounded-circle"
                 alt="Background Verification is completed">
             <h6>BG Verification Completed</h6>
         </div>
@@ -29,7 +42,7 @@
             [ngStyle]="{'background': userService.currentUserValue.freeLanceDetails.isbgdone ? 'green':'lightgrey'}">
         </div>
         <div class="col-6 col-sm-2 placeholder text-center">
-            <img src="{{stage4Img}}" class="mx-auto img-fluid rounded-circle" alt="Final Result">
+            <img src="{{stage5Img}}" class="mx-auto img-fluid rounded-circle" alt="Final Result">
             <h6>BG Verification Final Result</h6>
         </div>
     </div>

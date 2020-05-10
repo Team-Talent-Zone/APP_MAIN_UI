@@ -61,8 +61,8 @@ export const config = {
   user_service_status_paymentpending_shortkey: 'payment-pending',
   user_service_status_paymentpending: 'PAYMENT_PENDING',
   user_service_status_published: 'PUBLISHED',
-  user_service_status_paymentpaid: 'PAYMENT_PAID'
-
+  user_service_status_paymentpaid: 'PAYMENT_PAID',
+  refer_key_furegfee: 'FU_RegFee'
 };
 
 
