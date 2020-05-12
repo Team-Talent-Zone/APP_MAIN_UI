@@ -203,10 +203,6 @@
                 </div>
             </div>
         </section>
-        <!-- Freelancer Search Section Ended -->
-        <div *ngIf="userFUObjList.length == 0 && timelaps">
-            <h3> No {{name}} Found </h3>
-        </div>
     </div>
     <div class=" tab-pane fade" id="mapview">
         <div id="map-container-google-1" class="z-depth-1-half map-container" style="height: 500px">
@@ -233,4 +229,8 @@
             </agm-map>
         </div>
     </div>
+</div>
+<!-- Freelancer Search Section Ended -->
+<div *ngIf="userFUObjList.length == 0 && timelaps">
+    <h3> No {{name}} Found </h3>
 </div>
