@@ -49,7 +49,6 @@ export class DashboardoffuComponent implements OnInit {
         this.spinnerService.show();
         this.referService.getReferenceLookupByKey(config.refer_key_furegfee.toString()).pipe().subscribe((refObj: any) => {
           this.referenceobj = refObj;
-          console.log("checking 123.", this.referenceobj)
           this.spinnerService.hide();
           this.istimelap = true;
         },
@@ -84,7 +83,6 @@ export class DashboardoffuComponent implements OnInit {
   }
 
   openPaymentComponent() {
-    console.log("checking response from api.", this.referenceobj[0].code)
     this.modalRef = this.modalService.show(PaymentComponent, {
       initialState: {
         totalAmountToPay: this.referenceobj[0].code,

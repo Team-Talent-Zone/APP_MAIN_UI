@@ -62,6 +62,7 @@ export class UserService {
       userobj.freeLanceDetails = new Freelance();
       userobj.freeLanceDetails.category = user.category;
       userobj.freeLanceDetails.subCategory = user.subcategory;
+      userobj.freeLanceDetails.bgcurrentstatus = config.bg_code_incompleteprofile;
       userobj.freelancehistoryentity = new Array<FreelanceHistory>();
       this.freelanceobj = new FreelanceHistory();
       this.freelanceobj.bgstatus = config.bg_code_incompleteprofile;
@@ -88,7 +89,6 @@ export class UserService {
   }
 
   saveorupdate(user: User) {
-    console.log('this.usrobj.phoneno', user.phoneno);
     return this.http.post(`${environment.apiUrl}/saveorupdateuser/`, user);
   }
 

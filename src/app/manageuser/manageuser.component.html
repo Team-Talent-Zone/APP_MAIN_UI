@@ -175,6 +175,7 @@
                                     <th>Language</th>
                                     <th>Is BG Complete</th>
                                     <th>Is BG Start</th>
+                                    <th>Is Profile Completed</th>
                                     <th></th>
                                     <th></th>
                                     <th></th>
@@ -244,7 +245,7 @@
                                     </td>
                                     <td *ngIf="fu.freelancehistoryentity !=null">
                                         <div *ngFor="let refdata of refDataObj">
-                                            <div *ngIf="refdata.code === fu.freelancehistoryentity.bgstatus">
+                                            <div *ngIf="refdata.code === fu.freeLanceDetails.bgcurrentstatus">
                                                 {{refdata.label}}
                                                 <label title="Decision by {{fu.freelancehistoryentity.decisionby}}">
                                                     <i class="fa fa-question-circle"
@@ -257,10 +258,10 @@
                                     <td>
                                         <i title="{{fu.fullname}} background verification is rejected"
                                             class="fa fa-thumbs-down " style="color:rgb(241, 18, 18)"
-                                            *ngIf="fu.freelancehistoryentity.bgstatus == 'BG_REJECTED'; else elseRejected ">
+                                            *ngIf="fu.freeLanceDetails.bgcurrentstatus == 'BG_REJECTED'; else elseApproved ">
                                         </i>
-                                        <ng-template #elseRejected>
-                                            <i *ngIf="fu.freelancehistoryentity.bgstatus == 'BG_APPROVED'; else elseInProgress"
+                                        <ng-template #elseApproved>
+                                            <i *ngIf="fu.freeLanceDetails.bgcurrentstatus == 'BG_APPROVED'; else elseInProgress"
                                                 title="{{fu.fullname}} background verification is approved"
                                                 class="fa fa-thumbs-up" style="color:green"></i>
                                         </ng-template>
