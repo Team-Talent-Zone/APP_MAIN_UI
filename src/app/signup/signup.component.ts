@@ -107,20 +107,22 @@ export class SignupComponent implements OnInit {
         this.reflookupdetails = data;
         for (const reflookup of data) {
           for (const reflookupmap of reflookup.referencelookupmapping) {
-            if (langcode !== config.default_prefer_lang.toString()) {
-              this.referService.translatetext(reflookupmap.label, langcode).subscribe(
-                (resptranslatetxt: any) => {
-                  if (resptranslatetxt.translateresp != null) {
-                    reflookupmap.label = resptranslatetxt.translateresp;
-                    this.referencedetailsmap.push(reflookupmap);
-                  }
-                },
-                error => {
-                  this.alertService.error(error);
-                  this.spinnerService.hide();
-                });
-            } else {
-              this.referencedetailsmap.push(reflookupmap);
+            if (reflookupmap.code !== config.category_code_FS_S.toString()) {
+              if (langcode !== config.default_prefer_lang.toString()) {
+                this.referService.translatetext(reflookupmap.label, langcode).subscribe(
+                  (resptranslatetxt: any) => {
+                    if (resptranslatetxt.translateresp != null) {
+                      reflookupmap.label = resptranslatetxt.translateresp;
+                      this.referencedetailsmap.push(reflookupmap);
+                    }
+                  },
+                  error => {
+                    this.alertService.error(error);
+                    this.spinnerService.hide();
+                  });
+              } else {
+                this.referencedetailsmap.push(reflookupmap);
+              }
             }
             for (const reflookupmapsubcat of reflookupmap.referencelookupmappingsubcategories) {
               if (langcode !== config.default_prefer_lang.toString()) {

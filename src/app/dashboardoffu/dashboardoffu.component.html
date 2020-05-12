@@ -15,11 +15,15 @@
         </div>
         <div class="col-6 col-sm-2 placeholder text-center">
             <img src="{{stage2Img}}" class="mx-auto img-fluid rounded-circle" alt="Generic placeholder thumbnail">
-            <h6  *ngIf="!userService.currentUserValue.freeLanceDetails.isregfeedone && istimelap;">
-                <a href="javascript: return false;"
-                    (click)="openPaymentComponent()">Payment {{referenceobj[0].label}}</a>
+            <h6 *ngIf="!userService.currentUserValue.freeLanceDetails.isregfeedone && istimelap && 
+            userService.currentUserValue.freeLanceDetails.isprofilecompleted">
+                <a href=" javascript: return false;" (click)="openPaymentComponent()">Payment
+                    {{referenceobj[0].label}}</a>
             </h6>
-            <h6  *ngIf="userService.currentUserValue.freeLanceDetails.isregfeedone">
+            <h6 *ngIf=" istimelap &&  !userService.currentUserValue.freeLanceDetails.isprofilecompleted">
+                Payment {{referenceobj[0].label}}
+            </h6>
+            <h6 *ngIf="userService.currentUserValue.freeLanceDetails.isregfeedone">
                 Payment Completed
             </h6>
         </div>
@@ -56,10 +60,10 @@
                     <p class="card-text">
                         <i class="fa fa-inr fa-4x" *ngIf="card.value > 0" style="color:green;"></i>
                         <i *ngIf="card.value == 0" class="fa fa-inr  fa-4x" style="color:orange;"></i>
-                        <p>
-                            <h2> {{ card.value }}</h2>
-                            <p class="card-text"><small class="text-muted">Last updated {{indiaTime}} mins ago</small>
-                            </p>
+                    <p>
+                    <h2> {{ card.value }}</h2>
+                    <p class="card-text"><small class="text-muted">Last updated {{indiaTime}} mins ago</small>
+                    </p>
                 </div>
             </div>
         </div>

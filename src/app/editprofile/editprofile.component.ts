@@ -30,6 +30,7 @@ export class EditprofileComponent implements OnInit {
   edituserobj: User;
   roleCode: string;
   issubmit = false;
+  defaultTxtImg: string = '//placehold.it/200/dddddd/fff?text=' + this.getNameInitials(this.userService.currentUserValue.fullname);
   /*########################## File Upload ########################*/
   el: ElementRef;
   avatarURL: any;
@@ -87,6 +88,11 @@ export class EditprofileComponent implements OnInit {
     }
   }
 
+  getNameInitials(fullname: string) {
+    let initials = fullname.match(/\b\w/g) || [];
+    let initialsfinal = ((initials.shift() || '') + (initials.pop() || '')).toUpperCase();
+    return initialsfinal;
+  }
   initAutocomplete(maps: Maps) {
     let autocomplete = new maps.places.Autocomplete(this.searchElementRef.nativeElement);
     autocomplete.addListener('place_changed', () => {
@@ -158,6 +164,7 @@ export class EditprofileComponent implements OnInit {
           experienceInField: ['', [Validators.required, Validators.maxLength(2), Validators.pattern('^[0-9]*$')]],
           abt: ['', [Validators.required]],
           uploadValidPhotoidImgUrl: ['', [Validators.required]],
+          avtarurl: ['', [Validators.required]],
           hourlyRate: ['', [Validators.required, Validators.maxLength(5), Validators.pattern('^[0-9]*$')]],
         });
       } else {
@@ -217,6 +224,9 @@ export class EditprofileComponent implements OnInit {
     if (this.roleCode === config.user_rolecode_fu.toString()) {
       this.editprofileForm.patchValue({ uploadValidPhotoidImgUrl: this.nationalIDURL });
     }
+    if (this.roleCode === config.user_rolecode_fu.toString()) {
+      this.editprofileForm.patchValue({ avtarurl: this.avatarURL });
+    }
     this.issubmit = true;
     if (this.editprofileForm.invalid) {
       return;
@@ -227,7 +237,6 @@ export class EditprofileComponent implements OnInit {
     this.edituserobj.lastname = this.editprofileForm.get('lastname').value;
     this.edituserobj.preferlang = this.editprofileForm.get('preferlang').value;
     this.edituserobj.userbizdetails.fulladdress = this.searchElementRef.nativeElement.value;
-    console.log('shortAddress', this.shortAddress);
     if (this.shortAddress != null) {
       this.edituserobj.userbizdetails.route = this.route;
       this.edituserobj.userbizdetails.city = this.city;

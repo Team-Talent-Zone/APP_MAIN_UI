@@ -54,7 +54,6 @@ export class UserService {
 
   saveUser(user: any, refCode: string, shortkey: string, userobj: User) {
     userobj.createdby = user.firstname;
-    userobj.avtarurl = config.default_avatar;
     userobj.updateby = user.firstname;
     userobj.userroles = new UserRole();
     userobj.userroles.rolecode = refCode;

@@ -36,7 +36,7 @@ export const config = {
   bg_code_senttoccst: 'BG_SENTTOCSST',
   bg_code_incompleteprofile: 'BG_INCOMPLETEPROFILE',
   bg_code_completedprofile: 'BG_COMPLETEDPROFILE',
-  default_avatar: 'https://platform-asserts.s3.amazonaws.com/Platform+Imgs/avatar1.png',
+  login_avatar: 'https://platform-asserts.s3.amazonaws.com/Platform+Imgs/avatar1.png',
   default_prefer_lang: 'en',
   lang_code_hi: 'hi',
   lang_code_te: 'te',

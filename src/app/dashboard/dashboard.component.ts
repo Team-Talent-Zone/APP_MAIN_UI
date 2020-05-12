@@ -38,6 +38,9 @@ export class DashboardComponent implements OnInit {
   txtid: string;
   ispaysuccess = false;
 
+  defaultTxtImg: string = '//placehold.it/200/dddddd/fff?text=' + this.getNameInitials(this.userService.currentUserValue.fullname);
+
+
   constructor(
     public userService: UserService,
     private router: Router,
@@ -66,6 +69,12 @@ export class DashboardComponent implements OnInit {
     setTimeout(() => {
       this.resetLoggedInUser();
     }, 100);
+  }
+
+  getNameInitials(fullname: string) {
+    let initials = fullname.match(/\b\w/g) || [];
+    let initialsfinal = ((initials.shift() || '') + (initials.pop() || '')).toUpperCase();
+    return initialsfinal;
   }
 
   getPaymentDetailsByTxnId(txnid: string) {
