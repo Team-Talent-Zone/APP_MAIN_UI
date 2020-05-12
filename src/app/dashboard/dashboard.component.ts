@@ -79,11 +79,20 @@ export class DashboardComponent implements OnInit {
 
   getPaymentDetailsByTxnId(txnid: string) {
     this.paymentsvc.getPaymentDetailsByTxnId(txnid).subscribe((paymentobj: any) => {
-      if (paymentobj.paymentsCBATrans != null || paymentobj.paymentsFUTrans != null) {
+      console.log('paymentobj.paymentsFUTrans', paymentobj.paymentsFUTrans);
+      if (paymentobj.paymentsCBATrans != null) {
         if (paymentobj.paymentsCBATrans.status === 'Success') {
           this.ispaysuccess = true;
           // tslint:disable-next-line: max-line-length
           this.alertService.success('Thank you for the payment. Payment is Successfully');
+        }
+      } else {
+        if (paymentobj.paymentsFUTrans != null) {
+          if (paymentobj.paymentsFUTrans.status === 'Success') {
+            this.alertService.success('Thank you for the payment. Payment is Successfully');
+          } else {
+            this.alertService.error('Transcation Failed. Please try again.');
+          }
         } else {
           this.alertService.error('Transcation Failed. Please try again.');
         }

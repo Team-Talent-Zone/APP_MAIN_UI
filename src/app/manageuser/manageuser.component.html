@@ -184,7 +184,7 @@
                                 <tr *ngFor="let fu of usrObjFUs">
                                     <td
                                         *ngIf="userService.currentUserValue.userroles.rolecode == 'CORE_SERVICE_SUPPORT_TEAM'">
-                                        <a *ngIf="fu.freeLanceDetails.isprofilecompleted && fu.freeLanceDetails.isregdone
+                                        <a *ngIf="fu.freeLanceDetails.isprofilecompleted && fu.freeLanceDetails.isregfeedone
                                          && !fu.freeLanceDetails.isbgstarted" class="btn  btn-sm"
                                             (click)='executeBGVerificationCheck(fu.userId)'>
                                             <i title="Initiate Background verification" class="fa fa-play"

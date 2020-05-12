@@ -1,4 +1,4 @@
-export class Freelance  {
+export class Freelance {
     public userId: number;
     public uploadValidPhotoidImgUrl: string;
     public isbgdone: boolean;
@@ -12,8 +12,7 @@ export class Freelance  {
     public hourlyRate: number;
     public percentageDeduct: number;
     public isregfeedone: boolean;
-    public bgcurrentstatus:string;
-
+    public bgcurrentstatus: string;
     constructor(
     ) {
     }

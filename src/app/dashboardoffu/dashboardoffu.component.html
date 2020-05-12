@@ -39,8 +39,8 @@
         </div>
         <div class="col-6 col-sm-2 placeholder text-center">
             <img src="{{stage4Img}}" class="mx-auto img-fluid rounded-circle"
-                alt="Background Verification is completed">
-            <h6>BG Verification Completed</h6>
+                alt="Background Verification is In Progress">
+            <h6>BG Verification In Progress</h6>
         </div>
         <div class="stepConectorPiece"
             [ngStyle]="{'background': userService.currentUserValue.freeLanceDetails.isbgdone ? 'green':'lightgrey'}">
@@ -68,8 +68,8 @@
             </div>
         </div>
     </div>
-
-    <div *ngIf="this.userService.currentUserValue.userroles.rolecode === 'FREELANCER_USER'">
+    <div
+        *ngIf="this.userService.currentUserValue.freeLanceDetails.isregfeedone && this.userService.currentUserValue.freeLanceDetails.bgcurrentstatus == 'BG_APPROVED' ">
         <div class="card">
             <div class="card-header" role="tab" id="headingOne">
                 <h5 class="mb-0">

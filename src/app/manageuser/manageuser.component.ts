@@ -85,6 +85,7 @@ export class ManageuserComponent implements OnInit {
                 elementFhistory.bgstatus === config.bg_code_completedprofile.toString()
               ) {
                 this.usrObj.freelancehistoryentity = elementFhistory;
+                console.log('this.usrObj' ,this.usrObj);
                 this.usrObjFUs.push(this.usrObj);
               }
             });
