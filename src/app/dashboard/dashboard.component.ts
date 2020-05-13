@@ -20,7 +20,6 @@ import { ToastConfig, Toaster, ToastType } from 'ngx-toast-notifications';
 export class DashboardComponent implements OnInit {
 
   private types: Array<ToastType> = ['success', 'danger', 'warning', 'info', 'primary', 'secondary', 'dark', 'light'];
-  private text = 'Make sure you completed the profile';
 
   name: string;
   list = [];
@@ -82,18 +81,19 @@ export class DashboardComponent implements OnInit {
   }
 
   getToastNotification() {
-    this.showToast();
+    if (this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_fu.toString()) {
+      if (!this.userService.currentUserValue.freeLanceDetails.isprofilecompleted) {
+        // tslint:disable-next-line: max-line-length
+        let txtmsg = 'Hi ' + this.userService.currentUserValue.fullname + ', Please complete your profile for futher actions to complete';
+        this.showToastNotification(txtmsg, this.types[3]);
+      }
+    }
   }
-
-  get randomType() {
-    return this.types[Math.ceil((Math.random() * 8)) % this.types.length];
-  }
-
-  showToast() {
-    const type = this.types[3];
+  showToastNotification(txtmsg: string, typeName: any) {
+    const type = typeName;
     this.toaster.open({
-      text: this.text,
-      caption: type + ' notification',
+      text: txtmsg,
+      caption: type + ' Notification',
       type: type,
     });
   }
