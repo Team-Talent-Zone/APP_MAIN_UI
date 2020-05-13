@@ -1,9 +1,5 @@
-import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
-import { AlertsService } from './../AppRestCall/alerts/alerts.service';
-import { UserServicedetailsAdapter } from './../adapters/userserviceadapter';
 import { UserService } from '../AppRestCall/user/user.service';
 import { Component, OnInit } from '@angular/core';
-import { UsersrvdetailsService } from '../AppRestCall/userservice/usersrvdetails.service';
 import { config } from '../appconstants/config';
 
 @Component({

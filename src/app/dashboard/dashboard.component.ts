@@ -1,4 +1,3 @@
-import { UserServicedetailsAdapter } from './../adapters/userserviceadapter';
 import { ReferenceAdapter } from './../adapters/referenceadapter';
 import { SignupComponent } from './../signup/signup.component';
 import { Component, OnInit } from '@angular/core';
@@ -9,8 +8,9 @@ import { ActivatedRoute } from '@angular/router';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { AlertsService } from '../AppRestCall/alerts/alerts.service';
 import { TranslateService } from '@ngx-translate/core';
-import { UsersrvdetailsService } from '../AppRestCall/userservice/usersrvdetails.service';
 import { PaymentService } from '../AppRestCall/payment/payment.service';
+import { timer } from 'rxjs';
+import { ToastConfig, Toaster, ToastType } from 'ngx-toast-notifications';
 
 @Component({
   selector: 'app-dashboard',
@@ -19,6 +19,8 @@ import { PaymentService } from '../AppRestCall/payment/payment.service';
 })
 export class DashboardComponent implements OnInit {
 
+  private types: Array<ToastType> = ['success', 'danger', 'warning', 'info', 'primary', 'secondary', 'dark', 'light'];
+  private text = 'Make sure you completed the profile';
 
   name: string;
   list = [];
@@ -51,6 +53,7 @@ export class DashboardComponent implements OnInit {
     public signupComponent: SignupComponent,
     private refAdapter: ReferenceAdapter,
     private paymentsvc: PaymentService,
+    private toaster: Toaster
   ) {
     route.params.subscribe(params => {
       this.txtid = params.txtid;
@@ -62,6 +65,13 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
+    const source = timer(1000, 20000);
+    source.subscribe((val: number) => {
+      console.log(val);
+      this.getToastNotification();
+    });
+
+
     if (this.txtid != null) {
       this.getPaymentDetailsByTxnId(this.txtid);
     }
@@ -71,6 +81,22 @@ export class DashboardComponent implements OnInit {
     }, 100);
   }
 
+  getToastNotification() {
+    this.showToast();
+  }
+
+  get randomType() {
+    return this.types[Math.ceil((Math.random() * 8)) % this.types.length];
+  }
+
+  showToast() {
+    const type = this.types[3];
+    this.toaster.open({
+      text: this.text,
+      caption: type + ' notification',
+      type: type,
+    });
+  }
   getNameInitials(fullname: string) {
     let initials = fullname.match(/\b\w/g) || [];
     let initialsfinal = ((initials.shift() || '') + (initials.pop() || '')).toUpperCase();
