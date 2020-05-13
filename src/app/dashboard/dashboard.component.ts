@@ -11,6 +11,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { PaymentService } from '../AppRestCall/payment/payment.service';
 import { timer } from 'rxjs';
 import { ToastConfig, Toaster, ToastType } from 'ngx-toast-notifications';
+import { ConfigMsg } from '../appconstants/configmsg';
 
 @Component({
   selector: 'app-dashboard',
@@ -66,8 +67,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     const source = timer(1000, 20000);
     source.subscribe((val: number) => {
-      console.log(val);
-      this.getToastNotification();
+      this.autoToastNotifications();
     });
 
 
@@ -80,20 +80,38 @@ export class DashboardComponent implements OnInit {
     }, 100);
   }
 
-  getToastNotification() {
+  autoToastNotifications() {
     if (this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_fu.toString()) {
       if (!this.userService.currentUserValue.freeLanceDetails.isprofilecompleted) {
         // tslint:disable-next-line: max-line-length
-        let txtmsg = 'Hi ' + this.userService.currentUserValue.fullname + ', Please complete your profile for futher actions to complete';
-        this.showToastNotification(txtmsg, this.types[3]);
-      }
+        let msg = 'Hi ' + this.userService.currentUserValue.fullname + ', ' + ConfigMsg.toast_notification_fu_isprofilenotcompelted;
+        this.showToastNotification(msg, this.types[3], 'Profile');
+      } else
+        if (!this.userService.currentUserValue.freeLanceDetails.isregfeedone) {
+          // tslint:disable-next-line: max-line-length
+          let msg = 'Hi ' + this.userService.currentUserValue.fullname + ', ' + ConfigMsg.toast_notification_fu_isregfeenotcompelted;
+          this.showToastNotification(msg, this.types[2], 'Payment');
+        }
     }
+
+    if (this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_cba.toString()) {
+
+    }
+
+    if (this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_csct.toString()) {
+
+    }
+
+    if (this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_cscm.toString()) {
+
+    }
+
   }
-  showToastNotification(txtmsg: string, typeName: any) {
+  showToastNotification(txtmsg: string, typeName: any, toastheader: string) {
     const type = typeName;
     this.toaster.open({
       text: txtmsg,
-      caption: type + ' Notification',
+      caption: toastheader + ' Notification',
       type: type,
     });
   }

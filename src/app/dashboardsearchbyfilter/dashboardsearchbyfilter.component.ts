@@ -7,6 +7,7 @@ import { AlertsService } from '../AppRestCall/alerts/alerts.service';
 import { UserAdapter } from '../adapters/useradapter';
 import { MouseEvent } from '@agm/core';
 import { UsersrvdetailsService } from '../AppRestCall/userservice/usersrvdetails.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-dashboardsearchbyfilter',
@@ -21,10 +22,6 @@ export class DashboardsearchbyfilterComponent implements OnInit {
   markPoints: any;
   fulladdress: string;
   isfreelancerservicesubscribed = false;
-  startdateForjob: Date;
-  enddateForjob: Date;
-  startDateForJob = new Date();
-  endDateForJob = new Date();
   diffMs: any;
   actDate: any;
   purchaseDate: any;
@@ -38,7 +35,12 @@ export class DashboardsearchbyfilterComponent implements OnInit {
   // google maps zoom level
   zoom: number = 11;
   markers: marker[] = [];
-
+  enddatevalue: string;
+  listofhourlyRateDetailsoffus: any = [];
+  maxHourlyRate: number;
+  minHourlyRate: number;
+  createjobform: FormGroup;
+  issubmit = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -46,7 +48,8 @@ export class DashboardsearchbyfilterComponent implements OnInit {
     private spinnerService: Ng4LoadingSpinnerService,
     private alertService: AlertsService,
     private userAdapter: UserAdapter,
-    private usersrvDetails: UsersrvdetailsService
+    private usersrvDetails: UsersrvdetailsService,
+    private formBuilder: FormBuilder,
   ) {
     route.params.subscribe(params => {
       this.code = params.code;
@@ -66,13 +69,36 @@ export class DashboardsearchbyfilterComponent implements OnInit {
   ngOnInit() {
     this.isfreelancerservicesubscribed = false;
     this.fulladdress = this.userService.currentUserValue.userbizdetails.fulladdress;
-    this.setFUMinStartDateToSearch();
     this.searchResults(null);
+    this.createFormValidation();
+  }
+
+  createFormValidation() {
+    this.createjobform = this.formBuilder.group({
+      totalhoursofjob: ['', [Validators.required, Validators.maxLength(2), Validators.pattern('^[0-9]*$')]],
+      jobendedon: [''],
+      jobstartedon: [''],
+      amount: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
+      jobdescription: ['', [Validators.required]],
+      joblocation: ['']
+    });
+  }
+
+  preparetosavefreelanceonservice() {
+    this.issubmit = true;
+    if (this.createjobform.invalid) {
+      return;
+    }
+    if (this.createjobform.get('amount').value > this.minHourlyRate &&
+      this.createjobform.get('amount').value < this.maxHourlyRate) {
+    } else {
+      // tslint:disable-next-line: max-line-length
+      this.alertService.error('The amount ' + this.createjobform.get('amount').value + ' is must between ' + this.minHourlyRate + ' and ' + this.maxHourlyRate);
+    }
   }
 
   openCreateJobInterface() {
     this.iscreatejobdiv = true;
-    this.startdateForjob = this.startDate;
   }
 
   backToSearch() {
@@ -80,20 +106,84 @@ export class DashboardsearchbyfilterComponent implements OnInit {
     this.issearchbydate = false;
   }
 
-  setFUMinStartDateToSearch() {
-    var minStartDate = new Date();
-    minStartDate.setDate(minStartDate.getDate() + 1);
-    var dd = minStartDate.getDate();
-    var mm = minStartDate.getMonth() + 1;
-    var y = minStartDate.getFullYear();
+  setDefaultTimeForStartDate(st: Date) {
+    st.setDate(st.getDate());
+    var dd = st.getDate();
+    var mm = st.getMonth() + 1;
+    var y = st.getFullYear();
     var startDtFmt = mm + '/' + dd + '/' + y + ' 10:00';
-    this.startDate = new Date(startDtFmt);
+    st = new Date(startDtFmt);
+    return st;
   }
 
+  get f() {
+    return this.createjobform.controls;
+  }
+
+  addHoursToJobStartDateAndMinMaxAmount(event: any) {
+    let hours = event.target.value;
+    var jobEndDate = new Date();
+    jobEndDate.setTime(this.startdate.getTime() + (hours * 60 * 60 * 1000));
+    var dd = jobEndDate.getDate();
+    var mm = jobEndDate.getMonth() + 1;
+    var y = jobEndDate.getFullYear();
+    var hr = jobEndDate.getHours();
+    var min = jobEndDate.getMinutes();
+    var month = mm > 10 ? mm : '0' + mm;
+    var day = dd > 10 ? dd : '0' + dd;
+    var mins = min > 10 ? min : '0' + min;
+    var addedhourstodate = y + '-' + month + '-' + day + ' ' + hr + ':' + mins;
+    this.enddatevalue = addedhourstodate;
+    this.listofhourlyRateDetailsoffus = [];
+    if (this.userFUObjList != null) {
+      this.userFUObjList.forEach(element => {
+        this.listofhourlyRateDetailsoffus.push(element.hourlyRate);
+      });
+      var maxAmt = Math.max.apply(null, this.listofhourlyRateDetailsoffus);
+      var minAmt = Math.min.apply(null, this.listofhourlyRateDetailsoffus);
+      this.maxHourlyRate = maxAmt * hours;
+      this.minHourlyRate = minAmt * hours;
+      this.createjobform.patchValue({ jobendedon: this.enddatevalue });
+    }
+  }
+
+  getDateFormat(dt: Date) {
+    var date = new Date(dt);
+    var year = date.getFullYear();
+    var tempmonth = date.getMonth() + 1; //getMonth is zero based;
+    var tempday = date.getDate();
+    var hr = date.getHours();
+    var tempmin = date.getMinutes();
+    var month = tempmonth > 10 ? tempmonth : '0' + tempmonth;
+    var day = tempday > 10 ? tempday : '0' + tempday;
+    var formatted = year + '-' + month + '-' + day;
+    return formatted;
+  }
+
+
+  getDateTimeFormat(dt: Date) {
+    var date = new Date(dt);
+    var year = date.getFullYear();
+    var tempmonth = date.getMonth() + 1; //getMonth is zero based;
+    var tempday = date.getDate();
+    var hr = date.getHours();
+    var tempmin = date.getMinutes();
+    var month = tempmonth > 10 ? tempmonth : '0' + tempmonth;
+    var day = tempday > 10 ? tempday : '0' + tempday;
+    var min = tempmin > 10 ? tempmin : '0' + tempmin;
+    var formatted = year + '-' + month + '-' + day + ' ' + hr + ':' + min;
+    return formatted;
+  }
+
+  /* Search Functionality is below */
+
+
+
   searchByFilterFreelancer(startdate: Date) {
-    this.iscreatejobdiv = false;
-    this.timelaps = false;
     if (Object.prototype.toString.call(startdate) === '[object Date]') {
+      this.iscreatejobdiv = false;
+      this.timelaps = false;
+      this.enddatevalue = null;
       this.usersrvDetails.getAllUserServiceDetailsByUserId(this.userService.currentUserValue.userId).subscribe(
         (listofusersrvDetails: any) => {
           if (listofusersrvDetails != null) {
@@ -103,8 +193,10 @@ export class DashboardsearchbyfilterComponent implements OnInit {
                 this.isfreelancerservicesubscribed = true;
                 this.userFUObjList = [];
                 this.searchResults(startdate);
+                this.startdate = this.setDefaultTimeForStartDate(startdate);
               }
             });
+            this.createjobform.patchValue({ jobstartedon: this.getDateTimeFormat(this.startdate) });
           }
           if (!this.isfreelancerservicesubscribed) {
             // tslint:disable-next-line: max-line-length
@@ -180,79 +272,7 @@ export class DashboardsearchbyfilterComponent implements OnInit {
     });
   }
 
-  getDateFormat(dt: Date) {
-    var date = new Date(dt);
-    var year = date.getFullYear();
-    var tempmonth = date.getMonth() + 1; //getMonth is zero based;
-    var tempday = date.getDate();
-    var hr = date.getHours();
-    var tempmin = date.getMinutes();
-    var month = tempmonth > 10 ? tempmonth : '0' + tempmonth;
-    var day = tempday > 10 ? tempday : '0' + tempday;
-    var formatted = year + '-' + month + '-' + day;
-    return formatted;
-  }
 
-  createJobInit() {
-    var minStartDate = new Date();
-    minStartDate.setDate(minStartDate.getDate() + 1);
-    var dd = minStartDate.getDate();
-    var mm = minStartDate.getMonth() + 1;
-    var y = minStartDate.getFullYear();
-    var startDtFmt = mm + '/' + dd + '/' + y + ' 10:00:00';
-    this.startDateForJob = new Date(startDtFmt);
-
-    var maxStartDate = new Date();
-    maxStartDate.setDate(maxStartDate.getDate() + 2);
-    var dd = maxStartDate.getDate();
-    var mm = maxStartDate.getMonth() + 1;
-    var y = maxStartDate.getFullYear();
-    var endDtFmt = mm + '/' + dd + '/' + y + ' 10:00:00';
-    this.endDateForJob = new Date(endDtFmt);
-
-  }
-
-  onChangeEndDateCalcHours() {
-    if (this.startdateForjob != null && this.enddateForjob != null) {
-      if (new Date(this.getDateTimeFormat(this.startdate)) >= new Date(this.getDateTimeFormat(this.enddateForjob))) {
-        this.alertService.error('Start Date can not equal same datetime or greater than the End Date');
-        this.maxHours = null;
-        this.startdate = null;
-      } else {
-        this.maxHours = this.getHrBetweenDate(this.startdateForjob, this.enddateForjob);
-      }
-    } else {
-      this.maxHours = null;
-    }
-  }
-
-  private getHrBetweenDate(stDate: Date, eDate: Date) {
-    this.actDate = new Date(this.startdateForjob);
-    this.purchaseDate = new Date(this.enddateForjob);
-    this.diffMs = (this.purchaseDate - this.actDate); // milliseconds
-    let diffDays = Math.floor(this.diffMs / 86400000); // days
-    let diffHrs = Math.floor((this.diffMs % 86400000) / 3600000); // hours
-    let diffMins = Math.round(((this.diffMs % 86400000) % 3600000) / 60000); // minutes
-    if (diffDays > 0) {
-      return diffDays * 24;
-    } else {
-      return diffHrs;
-    }
-  }
-
-  getDateTimeFormat(dt: Date) {
-    var date = new Date(dt);
-    var year = date.getFullYear();
-    var tempmonth = date.getMonth() + 1; //getMonth is zero based;
-    var tempday = date.getDate();
-    var hr = date.getHours();
-    var tempmin = date.getMinutes();
-    var month = tempmonth > 10 ? tempmonth : '0' + tempmonth;
-    var day = tempday > 10 ? tempday : '0' + tempday;
-    var min = tempmin > 10 ? tempmin : '0' + tempmin;
-    var formatted = year + '-' + month + '-' + day + ' ' + hr + ':' + min;
-    return formatted;
-  }
 }
 
 // just an interface for type safety.
