@@ -1,4 +1,5 @@
 export class Freelance {
+    public freeLanceId:number;
     public userId: number;
     public uploadValidPhotoidImgUrl: string;
     public isbgdone: boolean;
