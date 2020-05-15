@@ -98,7 +98,7 @@ export class DashboardsearchbyfilterComponent implements OnInit {
     if (this.createjobform.invalid) {
       return;
     }
-    if (this.createjobform.get('amount').value >= this.avgHourlyRate ) {
+    if (this.createjobform.get('amount').value >= this.avgHourlyRate) {
       this.spinnerService.show();
       this.referService.getReferenceLookupByShortKey(config.fu_job_created_shortkey.toString()).subscribe(
         refCode => {
@@ -126,7 +126,31 @@ export class DashboardsearchbyfilterComponent implements OnInit {
   }
 
   openCreateJobInterface() {
-    this.iscreatejobdiv = true;
+    this.usersrvDetails.getAllUserServiceDetailsByUserId(this.userService.currentUserValue.userId).subscribe(
+      (listofusersrvDetails: any) => {
+        if (listofusersrvDetails != null) {
+          listofusersrvDetails.forEach((element: any) => {
+            if (element.category === config.category_code_FS_S && element.isservicepurchased
+              && this.getDateFormat(element.serviceendon) > this.getDateFormat(new Date())) {
+              this.isfreelancerservicesubscribed = true;
+              this.createjobform.patchValue({ serviceId: element.serviceId });
+            }
+          });
+          this.createjobform.patchValue({ jobstartedon: this.getDateTimeFormat(this.startdate) });
+        }
+        if (this.isfreelancerservicesubscribed) {
+          this.iscreatejobdiv = true;
+        }
+        if (!this.isfreelancerservicesubscribed) {
+          // tslint:disable-next-line: max-line-length
+          let errorMsg = 'Please purchase Freelancer Service , before you create a job for ' + this.name;
+          this.alertService.error(errorMsg);
+        }
+      },
+      error => {
+        this.alertService.error(error);
+        this.spinnerService.hide();
+      });
   }
 
   backToSearch() {
@@ -213,31 +237,9 @@ export class DashboardsearchbyfilterComponent implements OnInit {
       this.iscreatejobdiv = false;
       this.timelaps = false;
       this.enddatevalue = null;
-      this.usersrvDetails.getAllUserServiceDetailsByUserId(this.userService.currentUserValue.userId).subscribe(
-        (listofusersrvDetails: any) => {
-          if (listofusersrvDetails != null) {
-            listofusersrvDetails.forEach((element: any) => {
-              if (element.category === config.category_code_FS_S && element.isservicepurchased
-                && this.getDateFormat(element.serviceendon) > this.getDateFormat(new Date())) {
-                this.isfreelancerservicesubscribed = true;
-                this.userFUObjList = [];
-                this.searchResults(startdate);
-                this.startdate = this.setDefaultTimeForStartDate(startdate);
-                this.createjobform.patchValue({ serviceId: element.serviceId });
-              }
-            });
-            this.createjobform.patchValue({ jobstartedon: this.getDateTimeFormat(this.startdate) });
-          }
-          if (!this.isfreelancerservicesubscribed) {
-            // tslint:disable-next-line: max-line-length
-            let errorMsg = 'Please purchase Freelancer Service , before you create a job for ' + this.name;
-            this.alertService.error(errorMsg);
-          }
-        },
-        error => {
-          this.alertService.error(error);
-          this.spinnerService.hide();
-        });
+      this.userFUObjList = [];
+      this.searchResults(startdate);
+      this.startdate = this.setDefaultTimeForStartDate(startdate);
     } else {
       this.alertService.error('Please select job create date your looking.');
     }
