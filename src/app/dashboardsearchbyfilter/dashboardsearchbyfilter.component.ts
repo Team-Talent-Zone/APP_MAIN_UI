@@ -1,7 +1,7 @@
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { UserService } from '../AppRestCall/user/user.service';
 import { Component, OnInit, Input } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { config } from '../appconstants/config';
 import { AlertsService } from '../AppRestCall/alerts/alerts.service';
 import { UserAdapter } from '../adapters/useradapter';
@@ -39,8 +39,7 @@ export class DashboardsearchbyfilterComponent implements OnInit {
   markers: marker[] = [];
   enddatevalue: string;
   listofhourlyRateDetailsoffus: any = [];
-  maxHourlyRate: number;
-  minHourlyRate: number;
+  avgHourlyRate: number;
   createjobform: FormGroup;
   issubmit = false;
   serviceId: number;
@@ -54,6 +53,7 @@ export class DashboardsearchbyfilterComponent implements OnInit {
     private formBuilder: FormBuilder,
     private freelanceserviceService: FreelanceserviceService,
     private referService: ReferenceService,
+    private router: Router,
   ) {
     route.params.subscribe(params => {
       this.code = params.code;
@@ -84,12 +84,12 @@ export class DashboardsearchbyfilterComponent implements OnInit {
       jobstartedon: [''],
       amount: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
       jobdescription: ['', [Validators.required]],
-      joblocation: [''],
+      joblocation: this.userService.currentUserValue.userbizdetails.fulladdress,
       userId: this.userService.currentUserValue.userId,
       subcategory: this.code,
       updatedby: this.userService.currentUserValue.fullname,
       serviceId: [''],
-
+      status: ['']
     });
   }
 
@@ -98,8 +98,7 @@ export class DashboardsearchbyfilterComponent implements OnInit {
     if (this.createjobform.invalid) {
       return;
     }
-    if (this.createjobform.get('amount').value > this.minHourlyRate &&
-      this.createjobform.get('amount').value > this.maxHourlyRate) {
+    if (this.createjobform.get('amount').value >= this.avgHourlyRate ) {
       this.spinnerService.show();
       this.referService.getReferenceLookupByShortKey(config.fu_job_created_shortkey.toString()).subscribe(
         refCode => {
@@ -107,7 +106,8 @@ export class DashboardsearchbyfilterComponent implements OnInit {
           this.freelanceserviceService.saveFreelancerOnService(this.createjobform.value).subscribe((obj: any) => {
             if (obj.jobId > 0) {
               this.spinnerService.hide();
-              this.alertService.success('Job Id : ' + obj.jobId + 'has been created successfully ');
+              this.router.navigate(['/job']);
+              this.alertService.success('Job Id : ' + obj.jobId + ' is created successfully ');
             }
           },
             error => {
@@ -121,7 +121,7 @@ export class DashboardsearchbyfilterComponent implements OnInit {
         });
     } else {
       // tslint:disable-next-line: max-line-length
-      this.alertService.error('The amount ' + this.createjobform.get('amount').value + ' is must between ' + this.minHourlyRate + ' and ' + this.maxHourlyRate);
+      this.alertService.error('The amount ' + this.createjobform.get('amount').value + ' is must greater than ' + this.avgHourlyRate);
     }
   }
 
@@ -169,8 +169,9 @@ export class DashboardsearchbyfilterComponent implements OnInit {
       });
       var maxAmt = Math.max.apply(null, this.listofhourlyRateDetailsoffus);
       var minAmt = Math.min.apply(null, this.listofhourlyRateDetailsoffus);
-      this.maxHourlyRate = maxAmt * hours;
-      this.minHourlyRate = minAmt * hours;
+      var maxHourlyRate = maxAmt * hours;
+      var minHourlyRate = minAmt * hours;
+      this.avgHourlyRate = maxHourlyRate / minHourlyRate;
       this.createjobform.patchValue({ jobendedon: this.enddatevalue });
     }
   }

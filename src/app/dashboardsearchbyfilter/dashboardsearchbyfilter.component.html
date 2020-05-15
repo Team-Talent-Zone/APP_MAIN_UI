@@ -66,7 +66,7 @@
                                     <i class="fa fa-address-book form-control-icon"></i>
                                 </span>
                                 <textarea formControlName="joblocation" class="form-control" readonly
-                                    value={{userService.currentUserValue.userbizdetails.fulladdress}} id="input4"
+                                    id="input4"
                                     placeholder="Job Location"> </textarea>
                             </div>
                         </div>
@@ -154,9 +154,8 @@
                                     <div *ngIf="f.amount.errors.pattern">Must be digit only
                                     </div>
                                 </div>
-                                <p *ngIf=" maxHourlyRate != null && minHourlyRate != null">
-                                    Our estimatation of amount min to be {{minHourlyRate}} and max can be
-                                    {{maxHourlyRate}}
+                                <p *ngIf=" avgHourlyRate != null">
+                                    Our estimatation quote of amount {{avgHourlyRate}}
                                 </p>
                             </div>
                         </div>
