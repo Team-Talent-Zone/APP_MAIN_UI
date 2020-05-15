@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { FreelanceOnSvc } from 'src/app/appmodels/FreelanceOnSvc';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +12,8 @@ export class FreelanceserviceService {
     private http: HttpClient,
   ) { }
 
-  saveFreelancerOnService(freelanceonserviceobj: FreelanceserviceService) {
-    return this.http.post(`${environment.apiUrl}/saveFreeLanceOnService/`, freelanceonserviceobj);
+  saveFreelancerOnService(freelanceOnService: FreelanceOnSvc) {
+    return this.http.post(`${environment.apiUrl}/saveFreeLanceOnService/`, freelanceOnService);
   }
 
   saveOrUpdateFreelancerOnService() {

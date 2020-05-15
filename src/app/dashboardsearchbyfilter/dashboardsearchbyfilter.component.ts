@@ -8,6 +8,8 @@ import { UserAdapter } from '../adapters/useradapter';
 import { MouseEvent } from '@agm/core';
 import { UsersrvdetailsService } from '../AppRestCall/userservice/usersrvdetails.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FreelanceserviceService } from '../AppRestCall/freelanceservice/freelanceservice.service';
+import { ReferenceService } from '../AppRestCall/reference/reference.service';
 
 @Component({
   selector: 'app-dashboardsearchbyfilter',
@@ -41,7 +43,7 @@ export class DashboardsearchbyfilterComponent implements OnInit {
   minHourlyRate: number;
   createjobform: FormGroup;
   issubmit = false;
-
+  serviceId: number;
   constructor(
     private route: ActivatedRoute,
     public userService: UserService,
@@ -50,6 +52,8 @@ export class DashboardsearchbyfilterComponent implements OnInit {
     private userAdapter: UserAdapter,
     private usersrvDetails: UsersrvdetailsService,
     private formBuilder: FormBuilder,
+    private freelanceserviceService: FreelanceserviceService,
+    private referService: ReferenceService,
   ) {
     route.params.subscribe(params => {
       this.code = params.code;
@@ -80,7 +84,12 @@ export class DashboardsearchbyfilterComponent implements OnInit {
       jobstartedon: [''],
       amount: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
       jobdescription: ['', [Validators.required]],
-      joblocation: ['']
+      joblocation: [''],
+      userId: this.userService.currentUserValue.userId,
+      subcategory: this.code,
+      updatedby: this.userService.currentUserValue.fullname,
+      serviceId: [''],
+
     });
   }
 
@@ -90,7 +99,26 @@ export class DashboardsearchbyfilterComponent implements OnInit {
       return;
     }
     if (this.createjobform.get('amount').value > this.minHourlyRate &&
-      this.createjobform.get('amount').value < this.maxHourlyRate) {
+      this.createjobform.get('amount').value > this.maxHourlyRate) {
+      this.spinnerService.show();
+      this.referService.getReferenceLookupByShortKey(config.fu_job_created_shortkey.toString()).subscribe(
+        refCode => {
+          this.createjobform.patchValue({ status: refCode });
+          this.freelanceserviceService.saveFreelancerOnService(this.createjobform.value).subscribe((obj: any) => {
+            if (obj.jobId > 0) {
+              this.spinnerService.hide();
+              this.alertService.success('Job Id : ' + obj.jobId + 'has been created successfully ');
+            }
+          },
+            error => {
+              this.spinnerService.hide();
+              this.alertService.error(error);
+            });
+        },
+        error => {
+          this.spinnerService.hide();
+          this.alertService.error(error);
+        });
     } else {
       // tslint:disable-next-line: max-line-length
       this.alertService.error('The amount ' + this.createjobform.get('amount').value + ' is must between ' + this.minHourlyRate + ' and ' + this.maxHourlyRate);
@@ -194,6 +222,7 @@ export class DashboardsearchbyfilterComponent implements OnInit {
                 this.userFUObjList = [];
                 this.searchResults(startdate);
                 this.startdate = this.setDefaultTimeForStartDate(startdate);
+                this.createjobform.patchValue({ serviceId: element.serviceId });
               }
             });
             this.createjobform.patchValue({ jobstartedon: this.getDateTimeFormat(this.startdate) });
@@ -271,8 +300,6 @@ export class DashboardsearchbyfilterComponent implements OnInit {
       }
     });
   }
-
-
 }
 
 // just an interface for type safety.
