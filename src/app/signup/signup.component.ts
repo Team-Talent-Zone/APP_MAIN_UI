@@ -277,7 +277,8 @@ export class SignupComponent implements OnInit {
           status: refCodeStr,
           isservicepack: false,
           amount: this.ourserviceids[0].amount,
-          validPeriod: this.ourserviceids[0].validPeriodLabel,
+          validPeriodLabel: this.ourserviceids[0].validPeriodLabel,
+          
           serviceendon: this.ourserviceids[0].serviceendon,
           servicestarton: this.ourserviceids[0].servicestarton,
           userServiceEventHistory: []
@@ -300,7 +301,8 @@ export class SignupComponent implements OnInit {
           status: refCodeStr,
           isservicepack: true,
           amount: 0,
-          validPeriod: this.ourserviceids[0].validPeriodLabel,
+          validPeriodLabel: this.ourserviceids[0].validPeriodLabel,
+          validPeriodCode: this.ourserviceids[0].validPeriodCode,
           serviceendon: this.ourserviceids[0].serviceendon,
           servicestarton: this.ourserviceids[0].servicestarton,
           userServiceEventHistory: []
@@ -315,7 +317,8 @@ export class SignupComponent implements OnInit {
               isservicepack: false,
               childservicepkgserviceid: servicepkgusersrvobj.serviceId,
               amount: this.ourserviceids[0].amount,
-              validPeriod: this.ourserviceids[0].validPeriodLabel,
+              validPeriodLabel: this.ourserviceids[0].validPeriodLabel,
+              validPeriodCode: this.ourserviceids[0].validPeriodCode,
               serviceendon: this.ourserviceids[0].serviceendon,
               servicestarton: this.ourserviceids[0].servicestarton,
               userServiceEventHistory: []
