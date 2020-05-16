@@ -111,6 +111,7 @@ export class ProcessbgverificationComponent implements OnInit {
               this.sendemailService.sendEmail(this.util).subscribe(
                 (util: any) => {
                   if (util.lastreturncode === 250) {
+                    this.usrObjMyWork.freeLanceDetails.bgcurrentstatus = config.bg_code_senttoccsm.toString();
                     this.userService.saveorupdate(this.usrObjMyWork).subscribe(
                       (userObj: any) => {
                         this.freehistObj = new FreelanceHistory();
@@ -132,6 +133,7 @@ export class ProcessbgverificationComponent implements OnInit {
                                 (freedocObj: any) => {
                                   this.modalRef.hide();
                                   this.spinnerService.hide();
+                                  // tslint:disable-next-line: max-line-length
                                   this.alertService.success('Additional Doc Uploaded and Sent background verification to ' + freehisObj.decisionby);
                                 },
                                 error => {
@@ -171,6 +173,7 @@ export class ProcessbgverificationComponent implements OnInit {
       if (this.bgverificationForm.get('bgstatus').value === config.bg_code_approved.toString() ||
         this.bgverificationForm.get('bgstatus').value === config.bg_code_rejected.toString()) {
         this.usrObjMyWork.freelancehistoryentity.bgcomment = this.bgverificationForm.get('bgcomment').value;
+        this.usrObjMyWork.freeLanceDetails.bgcurrentstatus = this.bgverificationForm.get('bgstatus').value;
         this.usrObjMyWork.freelancehistoryentity.bgstatus = this.bgverificationForm.get('bgstatus').value;
         this.usrObjMyWork.freeLanceDetails.isbgdone = true;
         let csstid = this.usrObjMyWork.freelancehistoryentity.csstid;
@@ -260,6 +263,7 @@ export class ProcessbgverificationComponent implements OnInit {
                 this.sendemailService.sendEmail(this.util).subscribe(
                   (util: any) => {
                     if (util.lastreturncode === 250) {
+                      this.usrObjMyWork.freeLanceDetails.bgcurrentstatus = config.bg_code_senttoccst.toString();
                       this.userService.saveorupdate(this.usrObjMyWork).subscribe(
                         (userObj: any) => {
                           this.freehistObj = new FreelanceHistory();

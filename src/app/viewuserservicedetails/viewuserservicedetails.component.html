@@ -1,1 +1,33 @@
-<p>viewuserservicedetails works!</p>
+<div class="container">
+    <div class="row" *ngIf="userservicedetails.length > 0">
+        <h2>Service Details</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Service Start Date</th>
+                    <th>Service End Date</th>
+                    <th>Status</th>
+                    <th>Valid Period</th>
+                    <th>Valid Days</th>
+                    <th>Transction Id</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let usrvdetails of userservicedetails">
+                    <td>{{usrvdetails.name}}</td>
+                    <td>{{usrvdetails.servicestarton}}</td>
+                    <td>{{usrvdetails.servicestarton}}</td>
+                    <td>{{usrvdetails.status}}</td>
+                    <td>{{usrvdetails.validPeriodLabel}}</td>
+                    <td>{{usrvdetails.validdays}}</td>
+                    <td><a [routerLink]="['/payment',usrvdetails.txnid]">{{usrvdetails.txnid}}</a></td>
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="row" *ngIf="userservicedetails.length == 0">
+        No Services found
+    </div>
+</div>

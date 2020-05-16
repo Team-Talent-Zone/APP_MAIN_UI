@@ -62,7 +62,6 @@ export class HomepriceComponent implements OnInit {
   divideByIndOrPackageService() {
     this.listofAllIndividualServices = [];
     this.listofAllPackageServices = [];
-    console.log('this.dashboardofcbaobj.listOfAllApprovedNewServices', this.dashboardofcbaobj.listOfAllApprovedNewServices);
     this.dashboardofcbaobj.listOfAllApprovedNewServices.forEach(element => {
       if (element.packwithotherourserviceid === null) {
         this.listofAllIndividualServices.push(element);

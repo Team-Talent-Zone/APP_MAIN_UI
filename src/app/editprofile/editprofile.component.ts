@@ -30,8 +30,8 @@ export class EditprofileComponent implements OnInit {
   edituserobj: User;
   roleCode: string;
   issubmit = false;
+  defaultTxtImg: string = '//placehold.it/200/dddddd/fff?text=' + this.getNameInitials(this.userService.currentUserValue.fullname);
   /*########################## File Upload ########################*/
-  el: ElementRef;
   avatarURL: any;
   avatarReturnURL: any;
   nationalIDURL: any;
@@ -87,6 +87,11 @@ export class EditprofileComponent implements OnInit {
     }
   }
 
+  getNameInitials(fullname: string) {
+    let initials = fullname.match(/\b\w/g) || [];
+    let initialsfinal = ((initials.shift() || '') + (initials.pop() || '')).toUpperCase();
+    return initialsfinal;
+  }
   initAutocomplete(maps: Maps) {
     let autocomplete = new maps.places.Autocomplete(this.searchElementRef.nativeElement);
     autocomplete.addListener('place_changed', () => {
@@ -158,6 +163,7 @@ export class EditprofileComponent implements OnInit {
           experienceInField: ['', [Validators.required, Validators.maxLength(2), Validators.pattern('^[0-9]*$')]],
           abt: ['', [Validators.required]],
           uploadValidPhotoidImgUrl: ['', [Validators.required]],
+          avtarurl: ['', [Validators.required]],
           hourlyRate: ['', [Validators.required, Validators.maxLength(5), Validators.pattern('^[0-9]*$')]],
         });
       } else {
@@ -217,6 +223,9 @@ export class EditprofileComponent implements OnInit {
     if (this.roleCode === config.user_rolecode_fu.toString()) {
       this.editprofileForm.patchValue({ uploadValidPhotoidImgUrl: this.nationalIDURL });
     }
+    if (this.roleCode === config.user_rolecode_fu.toString()) {
+      this.editprofileForm.patchValue({ avtarurl: this.avatarURL });
+    }
     this.issubmit = true;
     if (this.editprofileForm.invalid) {
       return;
@@ -251,11 +260,13 @@ export class EditprofileComponent implements OnInit {
       this.edituserobj.freeLanceDetails.subCategory = this.editprofileForm.get('subCategory').value;
       this.edituserobj.freeLanceDetails.abt = this.editprofileForm.get('abt').value;
       this.edituserobj.freeLanceDetails.hourlyRate = this.editprofileForm.get('hourlyRate').value;
+      this.edituserobj.freeLanceDetails.uploadValidPhotoidImgUrl = this.editprofileForm.get('uploadValidPhotoidImgUrl').value;
       if (this.edituserobj.freeLanceDetails.experienceInField != null &&
         this.edituserobj.freeLanceDetails.hourlyRate != null &&
         this.edituserobj.freeLanceDetails.uploadValidPhotoidImgUrl != null &&
         this.edituserobj.userbizdetails.fulladdress != null) {
         this.edituserobj.freeLanceDetails.isprofilecompleted = true;
+        this.edituserobj.freeLanceDetails.bgcurrentstatus = config.bg_code_completedprofile;
         this.edituserobj.freelancehistoryentity[0].bgstatus = config.bg_code_completedprofile;
       }
     }
@@ -331,6 +342,8 @@ export class EditprofileComponent implements OnInit {
           this.userService.currentUserValue.userbizdetails.fulladdress = this.usrObj.userbizdetails.fulladdress;
           this.userService.currentUserValue.userbizdetails.lat = this.usrObj.userbizdetails.lat;
           this.userService.currentUserValue.userbizdetails.lng = this.usrObj.userbizdetails.lng;
+          this.userService.currentUserValue.userbizdetails.city = this.usrObj.userbizdetails.city;
+          this.userService.currentUserValue.userbizdetails.shortaddress = this.usrObj.userbizdetails.shortaddress;
         }
         this.edituserobj = userObj;
       },

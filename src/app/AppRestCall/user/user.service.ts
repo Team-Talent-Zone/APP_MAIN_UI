@@ -54,7 +54,6 @@ export class UserService {
 
   saveUser(user: any, refCode: string, shortkey: string, userobj: User) {
     userobj.createdby = user.firstname;
-    userobj.avtarurl = config.default_avatar;
     userobj.updateby = user.firstname;
     userobj.userroles = new UserRole();
     userobj.userroles.rolecode = refCode;
@@ -63,6 +62,7 @@ export class UserService {
       userobj.freeLanceDetails = new Freelance();
       userobj.freeLanceDetails.category = user.category;
       userobj.freeLanceDetails.subCategory = user.subcategory;
+      userobj.freeLanceDetails.bgcurrentstatus = config.bg_code_incompleteprofile;
       userobj.freelancehistoryentity = new Array<FreelanceHistory>();
       this.freelanceobj = new FreelanceHistory();
       this.freelanceobj.bgstatus = config.bg_code_incompleteprofile;
@@ -106,6 +106,10 @@ export class UserService {
 
   getUserDetailsByJobAvailable() {
     return this.http.get(`${environment.apiUrl}/getUserDetailsByJobAvailable/`);
+  }
+
+  getUserDetailsByJobAvailableByCreateOn(jobcreatedon: string, scategory: string) {
+    return this.http.get(`${environment.apiUrl}/getUserDetailsByJobAvailableByCreateOn/` + jobcreatedon + '/' + scategory + '/');
   }
 
   forgetPassword(username: string) {

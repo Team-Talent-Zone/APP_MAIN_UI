@@ -36,7 +36,7 @@ export const config = {
   bg_code_senttoccst: 'BG_SENTTOCSST',
   bg_code_incompleteprofile: 'BG_INCOMPLETEPROFILE',
   bg_code_completedprofile: 'BG_COMPLETEDPROFILE',
-  default_avatar: 'https://platform-asserts.s3.amazonaws.com/Platform+Imgs/avatar1.png',
+  login_avatar: 'https://platform-asserts.s3.amazonaws.com/Platform+Imgs/avatar1.png',
   default_prefer_lang: 'en',
   lang_code_hi: 'hi',
   lang_code_te: 'te',
@@ -57,12 +57,15 @@ export const config = {
   newservice_code_rejected: 'REJECTED',
   category_code_A_S: 'A_S',
   category_code_FS_S: 'FS_S',
+  domain_code_SE_P: 'SE_P',
   search_byfilter_fu: 'FU_SKILL_SEARCH',
   user_service_status_paymentpending_shortkey: 'payment-pending',
   user_service_status_paymentpending: 'PAYMENT_PENDING',
   user_service_status_published: 'PUBLISHED',
-  user_service_status_paymentpaid: 'PAYMENT_PAID'
-
+  user_service_status_paymentpaid: 'PAYMENT_PAID',
+  refer_key_furegfee: 'FU_RegFee',
+  fu_job_created_shortkey: 'fu-job-created',
+  
 };
 
 

@@ -25,5 +25,7 @@ export const ConfigMsg = {
     newservice_alreadyexist_msg: 'The entered service name is already exist',
     newservice_txt_cssm_comment: 'Please review the new service and approve it',
     upgradeservice_txt_cssm_comment: 'Please review the upgraded existing service and approve it',
-
+    // tslint:disable-next-line: max-line-length
+    toast_notification_fu_isregfeenotcompelted: 'Please complete your registation fee  and start job employment with us after background vertification approves.',
+    toast_notification_fu_isprofilenotcompelted: 'Please complete your profile for futher actions to complete'
 };

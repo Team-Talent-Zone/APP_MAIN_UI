@@ -93,7 +93,7 @@
                                     </td>
                                     <td>
                                         <div *ngFor="let referencelookupmap of  signupComponent.referencedetailsmap">
-                                            <div *ngIf="mywork.category == referencelookupmap.code">
+                                            <div *ngIf="mywork.category === referencelookupmap.code">
                                                 {{referencelookupmap.label}}
                                             </div>
                                         </div>

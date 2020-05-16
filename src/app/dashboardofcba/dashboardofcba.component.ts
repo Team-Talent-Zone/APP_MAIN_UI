@@ -251,7 +251,7 @@ export class DashboardofcbaComponent implements OnInit {
         description: element.description,
         amount: element.amount,
         isservicepack: element.isservicepack,
-        validPeriod: element.validPeriod,
+        validPeriod: element.validPeriodLabel,
         childservicepkgserviceid: element.childservicepkgserviceid === null ? 0 : element.childservicepkgserviceid
       });
     });

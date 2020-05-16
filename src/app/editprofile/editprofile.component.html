@@ -66,7 +66,8 @@
                                                     char</div>
                                             </div>
                                         </div>
-                                        <div class="form-group" *ngIf="this.userService.currentUserValue.userroles.rolecode =='FREELANCER_USER' ||
+                                        <div class="form-group"
+                                            *ngIf="this.userService.currentUserValue.userroles.rolecode =='FREELANCER_USER' ||
                                         this.userService.currentUserValue.userroles.rolecode =='CLIENT_BUSINESS_ADMINISTRATOR'">
                                             <span>
                                                 <i class="fa fa fa-language	form-control-icon"></i>
@@ -96,12 +97,23 @@
                                         <div class="text-center">
                                             <div class="mt-2">
                                                 <div class="avatar-upload">
+                                                    <div
+                                                        *ngIf="avatarURL == null && 
+                                                        this.userService.currentUserValue.userroles.rolecode ==='FREELANCER_USER'">
+                                                        <span style="font-size:13px;color:rgb(255, 30, 0)">Pic is
+                                                            required
+                                                        </span>
+                                                    </div>
                                                     <div class="avatar-edit">
                                                         <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg"
                                                             #fileInput (change)="uploadFile($event , 'avatar')" />
                                                     </div>
                                                     <div>
-                                                        <img class=" img-fluid" src="{{avatarURL}}" alt="card image">
+                                                        <img *ngIf="avatarURL != null" class=" img-fluid"
+                                                            src="{{avatarURL}}" alt="card image">
+                                                        <img *ngIf="avatarURL === null" src="{{defaultTxtImg}}"
+                                                            class="mx-auto img-fluid rounded-circle">
+
                                                     </div>
                                                 </div>
                                                 <button type="button" class="btn btn-danger btn-sm btn-block"
@@ -116,7 +128,8 @@
                             </div>
                         </div>
 
-                        <div class="card" *ngIf="this.userService.currentUserValue.userroles.rolecode =='CLIENT_BUSINESS_ADMINISTRATOR'">
+                        <div class="card"
+                            *ngIf="this.userService.currentUserValue.userroles.rolecode =='CLIENT_BUSINESS_ADMINISTRATOR'">
                             <div class="card-header">
                                 <div class="card-actions float-right">
                                 </div>
@@ -209,7 +222,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card" *ngIf="this.userService.currentUserValue.userroles.rolecode =='FREELANCER_USER'">
+                        <div class="card"
+                            *ngIf="this.userService.currentUserValue.userroles.rolecode =='FREELANCER_USER'">
                             <div class="card-header">
                                 <div class="card-actions float-right">
                                 </div>

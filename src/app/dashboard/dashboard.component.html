@@ -56,7 +56,9 @@
             </li>
             <li class="nav-item ">
                 <a routerLink='/vieworeditprofile/{{userService.currentUserValue.userId}}'>
-                    <img id="profile-img" class="profile-img-card" src="{{userService.currentUserValue.avtarurl}}">
+                    <img id="profile-img" *ngIf="userService.currentUserValue.avtarurl != null" class="profile-img-card"
+                        src="{{userService.currentUserValue.avtarurl}}">
+                    <img *ngIf="userService.currentUserValue.avtarurl === null" src="{{defaultTxtImg}}" class="profile-img-card">
                 </a>
             </li>
         </ul>
@@ -88,7 +90,7 @@
                 </li>
                 <li class="nav-item"
                     *ngIf="this.userService.currentUserValue.userroles.rolecode =='CLIENT_BUSINESS_ADMINISTRATOR'">
-                    <a class="nav-link" [routerLink]="['/managejobs',1]">Manage Jobs</a>
+                    <a class="nav-link" [routerLink]="['/job']">Manage Jobs</a>
                 </li>
                 <li class="nav-item"
                     *ngIf="this.userService.currentUserValue.userroles.rolecode =='FREELANCER_USER' && this.userService.currentUserValue.freeLanceDetails.isregfeedone">
@@ -110,6 +112,18 @@
         </div>
         <!--/col-->
 
+
         <div class="col main pt-5 mt-4">
+            <!--Alert-->
+            <div class="row" *ngIf="txtid != null && ispaysuccess">
+                <div class="alert alert-success alert-dismissible fade show w-100" role="alert">
+                    <h4 class="display-4">We have recieved your payment details and here is the
+                        transcation Id {{txtid}}</h4>
+                    <!--Close Icon-->
+                    <button type="button" class="btn close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+            </div>
             <router-outlet></router-outlet>
         </div>

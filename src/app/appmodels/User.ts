@@ -4,7 +4,7 @@ import { UserBiz } from './UserBiz';
 import { UserRole } from './UserRole';
 import { Freelance } from './Freelance';
 import { FreelanceHistory } from './FreelanceHistory';
-export class User  {
+export class User {
     constructor(
         public userId: number,
         public username: string,
@@ -21,6 +21,7 @@ export class User  {
         public updatedon: string,
         public avtarurl: string,
         public preferlang: string,
+        public phoneno: string,
         public userroles: UserRole,
         public userbizdetails: UserBiz,
         public freeLanceDetails: Freelance,
@@ -28,6 +29,6 @@ export class User  {
         public freelancedocumententity: FreelanceDocuments[] = [],
         public usermanagerdetailsentity: UserManagerDetails,
     ) {
-        
+
     }
 }

@@ -12,6 +12,10 @@ export class NewsvcService {
 
   constructor(private http: HttpClient) { }
 
+  getAllNewServices() {
+    return this.http.get(`${environment.apiUrl}/getAllNewServices/`);
+  }
+
   getAllNewServiceDetails() {
     return this.http.get(`${environment.apiUrl}/getAllNewServiceDetails/`);
   }

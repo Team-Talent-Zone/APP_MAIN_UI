@@ -78,12 +78,8 @@ export class ManageuserComponent implements OnInit {
                 this.usrObj.freelancehistoryentity = elementFhistory;
                 this.usrObjMyWork.push(this.usrObj);
               }
-              if (elementFhistory.bgstatus === config.bg_code_incompleteprofile.toString() ||
-                elementFhistory.islocked ||
-                elementFhistory.bgstatus === config.bg_code_approved.toString() ||
-                elementFhistory.bgstatus === config.bg_code_rejected.toString() ||
-                elementFhistory.bgstatus === config.bg_code_completedprofile.toString()
-              ) {
+              if (this.usrObj.freeLanceDetails.bgcurrentstatus === elementFhistory.bgstatus ||
+                elementFhistory.islocked) {
                 this.usrObj.freelancehistoryentity = elementFhistory;
                 this.usrObjFUs.push(this.usrObj);
               }
@@ -111,6 +107,7 @@ export class ManageuserComponent implements OnInit {
           this.usrobjById.freeLanceDetails.isbgdone = false,
           this.referService.getReferenceLookupByShortKey(config.shortkey_bg_sentocsst.toString()).subscribe(
             (refCode: any) => {
+              this.usrobjById.freeLanceDetails.bgcurrentstatus = refCode.toString();
               this.usrobjById.freelancehistoryentity[0].bgstatus = refCode.toString();
               this.usrobjById.freelancehistoryentity[0].decisionby = this.userService.currentUserValue.fullname;
               this.usrobjById.freelancehistoryentity[0].decisionbyemailid = this.userService.currentUserValue.username;
@@ -147,27 +144,27 @@ export class ManageuserComponent implements OnInit {
         this.spinnerService.hide();
         this.alertService.error(error);
       });
-}
+  }
 
-openViewAccountDetailsModalByUserId(userId: number) {
-  this.spinnerService.show();
-  this.userService.getUserByUserId(userId).pipe(first()).subscribe(
-    (respuser: any) => {
-      console.log('respuser' , respuser);
-      const initialState = {usrdetailsObj: respuser};
-      this.modalRef = this.modalService.show(ViewaccountdetailsComponent, Object.assign(
-        {},
-        this.config,
-        {
-          initialState
-        }
+  openViewAccountDetailsModalByUserId(userId: number) {
+    this.spinnerService.show();
+    this.userService.getUserByUserId(userId).pipe(first()).subscribe(
+      (respuser: any) => {
+        console.log('respuser', respuser);
+        const initialState = { usrdetailsObj: respuser };
+        this.modalRef = this.modalService.show(ViewaccountdetailsComponent, Object.assign(
+          {},
+          this.config,
+          {
+            initialState
+          }
         ));
-    },
-    error => {
-      this.spinnerService.hide();
-      this.alertService.error(error);
-    });
-}
+      },
+      error => {
+        this.spinnerService.hide();
+        this.alertService.error(error);
+      });
+  }
   openViewAccountDetailsModal(userId: number) {
     this.usrObjTotalUsers.forEach((element: any) => {
       const initialState = { usrdetailsObj: element };

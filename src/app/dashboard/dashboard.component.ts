@@ -1,4 +1,3 @@
-import { UserServicedetailsAdapter } from './../adapters/userserviceadapter';
 import { ReferenceAdapter } from './../adapters/referenceadapter';
 import { SignupComponent } from './../signup/signup.component';
 import { Component, OnInit } from '@angular/core';
@@ -9,8 +8,10 @@ import { ActivatedRoute } from '@angular/router';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { AlertsService } from '../AppRestCall/alerts/alerts.service';
 import { TranslateService } from '@ngx-translate/core';
-import { UsersrvdetailsService } from '../AppRestCall/userservice/usersrvdetails.service';
 import { PaymentService } from '../AppRestCall/payment/payment.service';
+import { timer } from 'rxjs';
+import { ToastConfig, Toaster, ToastType } from 'ngx-toast-notifications';
+import { ConfigMsg } from '../appconstants/configmsg';
 
 @Component({
   selector: 'app-dashboard',
@@ -19,6 +20,7 @@ import { PaymentService } from '../AppRestCall/payment/payment.service';
 })
 export class DashboardComponent implements OnInit {
 
+  private types: Array<ToastType> = ['success', 'danger', 'warning', 'info', 'primary', 'secondary', 'dark', 'light'];
 
   name: string;
   list = [];
@@ -36,6 +38,10 @@ export class DashboardComponent implements OnInit {
   filterOn = '0';
   inputItemCode: string;
   txtid: string;
+  ispaysuccess = false;
+
+  defaultTxtImg: string = '//placehold.it/200/dddddd/fff?text=' + this.getNameInitials(this.userService.currentUserValue.fullname);
+
 
   constructor(
     public userService: UserService,
@@ -47,6 +53,7 @@ export class DashboardComponent implements OnInit {
     public signupComponent: SignupComponent,
     private refAdapter: ReferenceAdapter,
     private paymentsvc: PaymentService,
+    private toaster: Toaster
   ) {
     route.params.subscribe(params => {
       this.txtid = params.txtid;
@@ -58,6 +65,12 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
+    const source = timer(1000, 20000);
+    source.subscribe((val: number) => {
+      this.autoToastNotifications();
+    });
+
+
     if (this.txtid != null) {
       this.getPaymentDetailsByTxnId(this.txtid);
     }
@@ -67,12 +80,62 @@ export class DashboardComponent implements OnInit {
     }, 100);
   }
 
+  autoToastNotifications() {
+    if (this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_fu.toString()) {
+      if (!this.userService.currentUserValue.freeLanceDetails.isprofilecompleted) {
+        // tslint:disable-next-line: max-line-length
+        let msg = 'Hi ' + this.userService.currentUserValue.fullname + ', ' + ConfigMsg.toast_notification_fu_isprofilenotcompelted;
+        this.showToastNotification(msg, this.types[3], 'Profile');
+      } else
+        if (!this.userService.currentUserValue.freeLanceDetails.isregfeedone) {
+          // tslint:disable-next-line: max-line-length
+          let msg = 'Hi ' + this.userService.currentUserValue.fullname + ', ' + ConfigMsg.toast_notification_fu_isregfeenotcompelted;
+          this.showToastNotification(msg, this.types[2], 'Payment');
+        }
+    }
+
+    if (this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_cba.toString()) {
+
+    }
+
+    if (this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_csct.toString()) {
+
+    }
+
+    if (this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_cscm.toString()) {
+
+    }
+
+  }
+  showToastNotification(txtmsg: string, typeName: any, toastheader: string) {
+    const type = typeName;
+    this.toaster.open({
+      text: txtmsg,
+      caption: toastheader + ' Notification',
+      type: type,
+    });
+  }
+  getNameInitials(fullname: string) {
+    let initials = fullname.match(/\b\w/g) || [];
+    let initialsfinal = ((initials.shift() || '') + (initials.pop() || '')).toUpperCase();
+    return initialsfinal;
+  }
+
   getPaymentDetailsByTxnId(txnid: string) {
     this.paymentsvc.getPaymentDetailsByTxnId(txnid).subscribe((paymentobj: any) => {
-      if (paymentobj.paymentsCBATrans != null || paymentobj.paymentsFUTrans != null) {
+      if (paymentobj.paymentsCBATrans != null) {
         if (paymentobj.paymentsCBATrans.status === 'Success') {
+          this.ispaysuccess = true;
           // tslint:disable-next-line: max-line-length
-          this.alertService.success('Thank you for payment .Go to Payment History for the transcation details. Payment is successfully with transcation or reference:' + paymentobj.txnid);
+          this.alertService.success('Thank you for the payment. Payment is Successfully');
+        }
+      } else {
+        if (paymentobj.paymentsFUTrans != null) {
+          if (paymentobj.paymentsFUTrans.status === 'Success') {
+            this.alertService.success('Thank you for the payment. Payment is Successfully');
+          } else {
+            this.alertService.error('Transcation Failed. Please try again.');
+          }
         } else {
           this.alertService.error('Transcation Failed. Please try again.');
         }
