@@ -63,7 +63,8 @@ export const config = {
   user_service_status_published: 'PUBLISHED',
   user_service_status_paymentpaid: 'PAYMENT_PAID',
   refer_key_furegfee: 'FU_RegFee',
-  fu_job_created_shortkey: 'fu-job-created'
+  fu_job_created_shortkey: 'fu-job-created',
+  
 };
 
 

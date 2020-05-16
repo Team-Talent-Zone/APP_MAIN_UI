@@ -32,7 +32,6 @@ export class EditprofileComponent implements OnInit {
   issubmit = false;
   defaultTxtImg: string = '//placehold.it/200/dddddd/fff?text=' + this.getNameInitials(this.userService.currentUserValue.fullname);
   /*########################## File Upload ########################*/
-  el: ElementRef;
   avatarURL: any;
   avatarReturnURL: any;
   nationalIDURL: any;

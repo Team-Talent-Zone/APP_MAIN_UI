@@ -1,6 +1,6 @@
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { UserService } from '../AppRestCall/user/user.service';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ElementRef, ViewChild, NgZone } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { config } from '../appconstants/config';
 import { AlertsService } from '../AppRestCall/alerts/alerts.service';
@@ -10,6 +10,7 @@ import { UsersrvdetailsService } from '../AppRestCall/userservice/usersrvdetails
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FreelanceserviceService } from '../AppRestCall/freelanceservice/freelanceservice.service';
 import { ReferenceService } from '../AppRestCall/reference/reference.service';
+import { ApiService, Maps } from '../adapters/api.service';
 
 @Component({
   selector: 'app-dashboardsearchbyfilter',
@@ -17,6 +18,9 @@ import { ReferenceService } from '../AppRestCall/reference/reference.service';
   styleUrls: ['./dashboardsearchbyfilter.component.css']
 })
 export class DashboardsearchbyfilterComponent implements OnInit {
+
+  @ViewChild('search', null)
+  public searchElementRef: ElementRef;
 
   startDate = new Date();
   startdate: Date;
@@ -43,8 +47,18 @@ export class DashboardsearchbyfilterComponent implements OnInit {
   createjobform: FormGroup;
   issubmit = false;
   serviceId: number;
+  route: string;
+  city: string;
+  state: string;
+  country: string;
+  shortAddress: string;
+  lat: number;
+  lng: number;
+  cityElementOne: string;
+  cityElementTwo: string;
+
   constructor(
-    private route: ActivatedRoute,
+    private routeA: ActivatedRoute,
     public userService: UserService,
     private spinnerService: Ng4LoadingSpinnerService,
     private alertService: AlertsService,
@@ -54,8 +68,13 @@ export class DashboardsearchbyfilterComponent implements OnInit {
     private freelanceserviceService: FreelanceserviceService,
     private referService: ReferenceService,
     private router: Router,
+    private ngZone: NgZone,
+    public apiService: ApiService,
   ) {
-    route.params.subscribe(params => {
+    this.apiService.api.then(maps => {
+      this.initAutocomplete(maps);
+    });
+    routeA.params.subscribe(params => {
       this.code = params.code;
       this.name = params.name;
       this.searchbyfiltername = params.filtername;
@@ -72,7 +91,7 @@ export class DashboardsearchbyfilterComponent implements OnInit {
 
   ngOnInit() {
     this.isfreelancerservicesubscribed = false;
-    this.fulladdress = this.userService.currentUserValue.userbizdetails.fulladdress;
+    // this.searchElementRef.nativeElement.value = this.userService.currentUserValue.userbizdetails.fulladdress;
     this.searchResults(null);
     this.createFormValidation();
   }
@@ -84,7 +103,7 @@ export class DashboardsearchbyfilterComponent implements OnInit {
       jobstartedon: [''],
       amount: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
       jobdescription: ['', [Validators.required]],
-      joblocation: this.userService.currentUserValue.userbizdetails.fulladdress,
+      joblocation: [''],
       userId: this.userService.currentUserValue.userId,
       subcategory: this.code,
       updatedby: this.userService.currentUserValue.fullname,
@@ -93,6 +112,48 @@ export class DashboardsearchbyfilterComponent implements OnInit {
     });
   }
 
+  initAutocomplete(maps: Maps) {
+    console.log('this.searchElementRef.nativeElement', this.searchElementRef);
+    let autocomplete = new maps.places.Autocomplete(this.searchElementRef.nativeElement);
+    autocomplete.addListener('place_changed', () => {
+      this.ngZone.run(() => {
+        this.route = null;
+        this.city = null;
+        this.state = null;
+        this.country = null;
+        this.shortAddress = null;
+        this.lng = -1;
+        this.lat = -1;
+        const place = autocomplete.getPlace();
+        this.lat = place.geometry.location.lat();
+        this.lng = place.geometry.location.lng();
+        autocomplete.getPlace().address_components.forEach(element => {
+          if (element.types[0] === 'route') {
+            this.route = element.long_name;
+          }
+          if (element.types[0] === 'locality') {
+            this.cityElementOne = element.long_name;
+          } else
+            if (element.types[0] === 'administrative_area_level_2') {
+              this.cityElementTwo = element.long_name;
+            }
+          if (element.types[0] === 'administrative_area_level_1') {
+            this.state = element.long_name;
+          }
+          if (element.types[0] === 'country') {
+            this.country = element.short_name;
+          }
+        });
+        this.route = this.route != null ? this.route : '';
+        this.city = this.cityElementOne != null ? this.cityElementOne : this.cityElementTwo;
+        let routeDup = this.route.length > 0 ? this.route + ',' : '';
+        let cityDup = this.city.length > 0 ? this.city + ',' : '';
+        let stateDup = this.state.length > 0 ? this.state + ',' : '';
+        let countryDup = this.country.length > 0 ? this.country + ',' : '';
+        this.shortAddress = routeDup + cityDup + stateDup + countryDup;
+      });
+    });
+  }
   preparetosavefreelanceonservice() {
     this.issubmit = true;
     if (this.createjobform.invalid) {

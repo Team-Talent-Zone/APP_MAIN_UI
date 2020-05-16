@@ -61,6 +61,7 @@
                             <small class="text-muted">Expire on <b> {{svc.serviceendon}} </b> [i.e
                                 <b>{{svc.validdays}} days remaining </b> ] </small>
                         </p>
+                        Payment Details : <a [routerLink]="['/payment',svc.txnid]" > <i class="fa fa-inr"></i></a>
                     </div>
                 </div>
             </div>

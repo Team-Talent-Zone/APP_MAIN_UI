@@ -19,4 +19,12 @@ export class PaymentService {
   getPaymentDetailsByTxnId(txnid: string) {
     return this.http.get(`${environment.apiUrl}/getPaymentDetailsByTxnId/` + txnid + '/');
   }
+
+  getPaymentFUDetailsByUserId(userId: number) {
+    return this.http.get(`${environment.apiUrl}/getPaymentFUDetailsByUserId/` + userId + '/');
+  }
+
+  getPaymentCBADetailsByUserId(userId: number) {
+    return this.http.get(`${environment.apiUrl}/getPaymentCBADetailsByUserId/` + userId + '/');
+  }
 }

@@ -220,7 +220,17 @@ const routes: Routes = [
       }
     ]
   },
-
+  {
+    path: 'payment/:txnid',
+    component: DashboardComponent,
+    canActivate: [AuthgaurdService],
+    children: [
+      {
+        path: '',
+        component: PaymenthistComponent
+      }
+    ]
+  },
   {
     path: '',
     redirectTo: '/home',

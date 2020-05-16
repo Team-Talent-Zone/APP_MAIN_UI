@@ -1,3 +1,85 @@
-<div class="jumbotron text-center">
-    <h1 class="display-3" > Payment his</h1> 
+<div class="container">
+    <div class="row" *ngIf="paymentdetails != null">
+        <h2>Payment Details</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Transcation Id</th>
+                    <th>Name</th>
+                    <th>Transcation Date</th>
+                    <th>Payment Mode</th>
+                    <th>Status</th>
+                    <th>Amount</th>
+                    <th>Remarks</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{paymentdetails.txnid}}</td>
+                    <td>{{paymentdetails.name}}</td>
+                    <td>{{paymentdetails.createdon}}</td>
+                    <td>{{paymentdetails.paymentsCBATrans.mode}}</td>
+                    <td>{{paymentdetails.paymentsCBATrans.status}}</td>
+                    <td>{{paymentdetails.amount}}</td>
+                    <td>{{paymentdetails.productinfo}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row" *ngIf="fupaymenthistorydetails.length > 0 ">
+        <h2>Payment History</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Transcation Id</th>
+                    <th>Name</th>
+                    <th>Payment On</th>
+                    <th>Mode</th>
+                    <th>Status</th>
+                    <th>Amount</th>
+                    <th>Remarks</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let fupayments of fupaymenthistorydetails">
+                    <td>{{fupayments.txnid}}</td>
+                    <td>{{fupayments.name}}</td>
+                    <td>{{fupayments.createdon}}</td>
+                    <td>{{fupayments.mode}}</td>
+                    <td>{{fupayments.status}}</td>
+                    <td>{{fupayments.amount}}</td>
+                    <td>{{fupayments.productinfo}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row" *ngIf="cbapaymenthistorydetails.length >0  && paymentdetails == null">
+        <h2>Payment History</h2>
+        <table class="table" >
+            <thead>
+                <tr>
+                    <th>Transcation Id</th>
+                    <th>Name</th>
+                    <th>Transcation Date</th>
+                    <th>Payment Mode</th>
+                    <th>Status</th>
+                    <th>Amount</th>
+                    <th>Remarks</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let cbupayments of cbapaymenthistorydetails">
+                    <td>{{cbupayments.txnid}}</td>
+                    <td>{{cbupayments.name}}</td>
+                    <td>{{cbupayments.createdon}}</td>
+                    <td>{{cbupayments.mode}}</td>
+                    <td>{{cbupayments.status}}</td>
+                    <td>{{cbupayments.amount}}</td>
+                    <td>{{cbupayments.productinfo}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>

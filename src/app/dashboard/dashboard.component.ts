@@ -123,7 +123,6 @@ export class DashboardComponent implements OnInit {
 
   getPaymentDetailsByTxnId(txnid: string) {
     this.paymentsvc.getPaymentDetailsByTxnId(txnid).subscribe((paymentobj: any) => {
-      console.log('paymentobj.paymentsFUTrans', paymentobj.paymentsFUTrans);
       if (paymentobj.paymentsCBATrans != null) {
         if (paymentobj.paymentsCBATrans.status === 'Success') {
           this.ispaysuccess = true;

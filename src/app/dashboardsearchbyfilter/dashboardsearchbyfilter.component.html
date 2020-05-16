@@ -37,8 +37,8 @@
                 <span>
                     <i class="fa fa-address-book form-control-icon"></i>
                 </span>
-                <input readonly autocorrect="off" autocomplete="off" autocapitalize="off" spellcheck="off" type="text"
-                    class="form-control" [(ngModel)]="fulladdress" #search>
+                <input [(ngModel)]="fulladdress" placeholder="Enter your address" autocorrect="off" autocomplete="off" autocapitalize="off"
+                    spellcheck="off" type="text" class="form-control" #search>
             </div>
         </div>
         <div class="col-md-2">
@@ -65,8 +65,7 @@
                                 <span>
                                     <i class="fa fa-address-book form-control-icon"></i>
                                 </span>
-                                <textarea formControlName="joblocation" class="form-control" readonly
-                                    id="input4"
+                                <textarea formControlName="joblocation" class="form-control" readonly id="input4"
                                     placeholder="Job Location"> </textarea>
                             </div>
                         </div>
