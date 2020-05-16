@@ -45,14 +45,15 @@ export class ManageserviceComponent implements OnInit {
     private refAdapter: ReferenceAdapter,
     private referService: ReferenceService,
   ) {
-    this.signupComponent.reflookupdetails = [];
-    this.signupComponent.referencedetailsmap = [];
+
   }
 
   ngOnInit() {
-    this.getAllNewServiceDetails();
-    this.signupComponent.getAllCategories(config.default_prefer_lang.toString());
-    this.getServiceTerms();
+    this.getAllNewServices();
+    setTimeout(() => {
+      this.signupComponent.getAllCategories(config.default_prefer_lang.toString());
+      this.getServiceTerms();
+    }, 1000);
   }
 
   getServiceTerms() {
@@ -68,9 +69,11 @@ export class ManageserviceComponent implements OnInit {
         });
   }
 
-  getAllNewServiceDetails() {
+  getAllNewServices() {
+    this.listOfAllApprovedNewServices = [];
+    this.myNewServiceForReviewAllCommentHistory = [];
     this.spinnerService.show();
-    this.newsvcservice.getAllNewServiceDetails().subscribe(
+    this.newsvcservice.getAllNewServices().subscribe(
       (allNewServiceObjs: NewService[]) => {
         for (const element of allNewServiceObjs) {
           this.myNewServiceForReviewAllCommentHistory.push(this.newserviceAdapter.adapt(element));
@@ -81,7 +84,6 @@ export class ManageserviceComponent implements OnInit {
                 element.serviceHistory.push(elementHis);
                 this.listOfAllNewServices.push(this.newserviceAdapter.adapt(element));
               }
-
               if (elementHis.decisionbyemailid === this.userService.currentUserValue.username &&
                 elementHis.islocked && element.currentstatus === elementHis.status) {
                 element.serviceHistory = [];

@@ -81,29 +81,32 @@ export class NewserviceComponent implements OnInit {
     route.params.subscribe(params => {
       this.id = params.id;
     });
-    this.signupcomponent.referencedetailsmap = [];
-    this.manageserviceComponent.listOfAllApprovedNewServices = [];
   }
 
-  async ngOnInit() {
-    this.signupcomponent.getAllCategories(config.default_prefer_lang.toString());
-    this.getServiceTerms();
+  ngOnInit() {
     this.newServiceValidationForm();
-    this.manageserviceComponent.getAllNewServiceDetails();
+    this.manageserviceComponent.getAllNewServices();
+    setTimeout(() => {
+      this.signupcomponent.getAllCategories(config.default_prefer_lang.toString());
+      this.getServiceTerms();
+    }, 1000);
     if (this.id > 0) {
-       this.populatenewservice(this.id);
+      setTimeout(() => {
+        this.populatenewservice(this.id);
+      }, 1000);
     }
   }
 
   populatenewservice(ourserviceId: number) {
-    this.newsvcservice.getNewServiceDetailsByServiceId(ourserviceId).pipe(first()).subscribe(
-      (newserviceobj: NewService) => {
-        this.spinnerService.show();
-        this.newservicecurrentObj = this.newserviceAdapter.adapt(newserviceobj);
-        this.getCategoryByRefId(this.newservicecurrentObj.domain);
-        this.getListOfNewServicesByMapId('FS_S');
+    this.newservicecurrentObj = null;
+    this.spinnerService.show();
+    this.newsvcservice.getNewServiceDetailsByServiceId(ourserviceId).subscribe(
+      (newserviceobj: any) => {
+        this.getCategoryByRefId(newserviceobj.domain);
+        this.getListOfNewServicesByMapId(newserviceobj.category);
         newserviceobj.serviceHistory.forEach(element => {
           if (element.status === newserviceobj.currentstatus) {
+            this.newservicecurrentObj = newserviceobj;
             newserviceobj.serviceHistory = [];
             this.newServiceForm.patchValue({ name: this.newservicecurrentObj.name });
             this.newServiceForm.patchValue({ description: this.newservicecurrentObj.description });
@@ -156,11 +159,12 @@ export class NewserviceComponent implements OnInit {
     }
     this.spinnerService.show();
     this.newservice = this.newserviceAdapter.adapt(this.newServiceForm.value);
+    console.log('this.newServiceForm.value', this.newServiceForm.value);
     if (id > 0 && !this.newservicecurrentObj.active) {
-      this.preparetoupdatenewservice(this.newservicecurrentObj, this.newservice);
+      this.preparetoupdatenewservice(this.newservicecurrentObj, this.newServiceForm.value);
     } else
       if (id > 0 && this.newservicecurrentObj.active) {
-        this.preparetoupgradenewservice(this.newservicecurrentObj, this.newservice);
+        this.preparetoupgradenewservice(this.newservicecurrentObj, this.newServiceForm.value);
       } else {
         this.newservice.name = this.newServiceForm.get('name').value;
         this.newservice.category = this.newServiceForm.get('category').value;
@@ -312,6 +316,7 @@ export class NewserviceComponent implements OnInit {
     newservicecurrentObj.active = false;
     newservicecurrentObj.createdBy = this.userService.currentUserValue.fullname;
     newservicecurrentObj.updatedBy = this.userService.currentUserValue.fullname;
+    newservicecurrentObj.packwithotherourserviceid = newserviceForm.packwithotherourserviceid;
     newservicecurrentObj.currentstatus = config.newservice_code_senttocssm.toString();
     newservicecurrentObj.serviceHistory[0].status = null;
     if (this.filename != null) {
@@ -457,7 +462,8 @@ export class NewserviceComponent implements OnInit {
 
   getListOfNewServicesByMapId(category: string) {
     this.listofnewservicebymapid = this.manageserviceComponent.listOfAllApprovedNewServices.
-    filter(x => (x.category === category || x.category === 'FS_S'));
+      filter(x => (x.category === category || x.category === config.category_code_FS_S.toString()));
+    console.log('this is listofnewservicebymapid', this.listofnewservicebymapid);
   }
   getServiceTerms() {
     this.spinnerService.show();

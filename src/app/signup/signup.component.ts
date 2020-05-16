@@ -99,13 +99,17 @@ export class SignupComponent implements OnInit {
   }
 
   getAllCategories(langcode: string) {
+    this.reflookupdetails = [];
+    this.referencedetailsmap = [];
     this.spinnerService.show();
     this.referService.getReferenceLookupByKey(config.key_domain.toString()).pipe(map((data: any[]) =>
       data.map(item => this.refAdapter.adapt(item))),
     ).subscribe(
       data => {
-        this.reflookupdetails = data;
         for (const reflookup of data) {
+          if (reflookup.code !== config.domain_code_SE_P.toString()) {
+            this.reflookupdetails.push(reflookup);
+          }
           for (const reflookupmap of reflookup.referencelookupmapping) {
             if (reflookupmap.code !== config.category_code_FS_S.toString()) {
               if (langcode !== config.default_prefer_lang.toString()) {

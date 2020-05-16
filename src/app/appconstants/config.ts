@@ -57,6 +57,7 @@ export const config = {
   newservice_code_rejected: 'REJECTED',
   category_code_A_S: 'A_S',
   category_code_FS_S: 'FS_S',
+  domain_code_SE_P: 'SE_P',
   search_byfilter_fu: 'FU_SKILL_SEARCH',
   user_service_status_paymentpending_shortkey: 'payment-pending',
   user_service_status_paymentpending: 'PAYMENT_PENDING',
