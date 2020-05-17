@@ -45,10 +45,11 @@ export class DashboardsearchbyfilterComponent implements OnInit {
   listofhourlyRateDetailsoffus: any = [];
   avgHourlyRate: number;
   createjobform: FormGroup;
+  searchform: FormGroup;
   issubmit = false;
   serviceId: number;
   route: string;
-  city: string;
+  city: string = null;
   state: string;
   country: string;
   shortAddress: string;
@@ -56,6 +57,7 @@ export class DashboardsearchbyfilterComponent implements OnInit {
   lng: number;
   cityElementOne: string;
   cityElementTwo: string;
+  bufferhours: number = 4;
 
   constructor(
     private routeA: ActivatedRoute,
@@ -71,9 +73,11 @@ export class DashboardsearchbyfilterComponent implements OnInit {
     private ngZone: NgZone,
     public apiService: ApiService,
   ) {
-    this.apiService.api.then(maps => {
-      this.initAutocomplete(maps);
-    });
+    setTimeout(() => {
+      this.apiService.api.then(maps => {
+        this.initAutocomplete(maps);
+      });
+    }, 2000);
     routeA.params.subscribe(params => {
       this.code = params.code;
       this.name = params.name;
@@ -91,11 +95,16 @@ export class DashboardsearchbyfilterComponent implements OnInit {
 
   ngOnInit() {
     this.isfreelancerservicesubscribed = false;
-    // this.searchElementRef.nativeElement.value = this.userService.currentUserValue.userbizdetails.fulladdress;
     this.searchResults(null);
     this.createFormValidation();
+    this.searchFormValidation();
   }
-
+  searchFormValidation() {
+    this.searchform = this.formBuilder.group({
+      startdate: ['', [Validators.required]],
+      fulladdress: ['', [Validators.required]],
+    });
+  }
   createFormValidation() {
     this.createjobform = this.formBuilder.group({
       totalhoursofjob: ['', [Validators.required, Validators.maxLength(2), Validators.pattern('^[0-9]*$')]],
@@ -103,7 +112,7 @@ export class DashboardsearchbyfilterComponent implements OnInit {
       jobstartedon: [''],
       amount: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
       jobdescription: ['', [Validators.required]],
-      joblocation: [''],
+      joblocation: ['', [Validators.required]],
       userId: this.userService.currentUserValue.userId,
       subcategory: this.code,
       updatedby: this.userService.currentUserValue.fullname,
@@ -113,7 +122,6 @@ export class DashboardsearchbyfilterComponent implements OnInit {
   }
 
   initAutocomplete(maps: Maps) {
-    console.log('this.searchElementRef.nativeElement', this.searchElementRef);
     let autocomplete = new maps.places.Autocomplete(this.searchElementRef.nativeElement);
     autocomplete.addListener('place_changed', () => {
       this.ngZone.run(() => {
@@ -217,6 +225,11 @@ export class DashboardsearchbyfilterComponent implements OnInit {
   backToSearch() {
     this.iscreatejobdiv = false;
     this.issearchbydate = false;
+    setTimeout(() => {
+      this.apiService.api.then(maps => {
+        this.initAutocomplete(maps);
+      });
+    }, 2000);
   }
 
   setDefaultTimeForStartDate(st: Date) {
@@ -232,11 +245,16 @@ export class DashboardsearchbyfilterComponent implements OnInit {
   get f() {
     return this.createjobform.controls;
   }
+  get s() {
+    return this.searchform.controls;
+  }
 
   addHoursToJobStartDateAndMinMaxAmount(event: any) {
-    let hours = event.target.value;
+    var hours = event.target.value;
+    var totalhours = (Number.parseInt(hours) + this.bufferhours);
+    console.log('this is total hours :', totalhours);
     var jobEndDate = new Date();
-    jobEndDate.setTime(this.startdate.getTime() + (hours * 60 * 60 * 1000));
+    jobEndDate.setTime(this.startdate.getTime() + (totalhours * 60 * 60 * 1000));
     var dd = jobEndDate.getDate();
     var mm = jobEndDate.getMonth() + 1;
     var y = jobEndDate.getFullYear();
@@ -290,20 +308,18 @@ export class DashboardsearchbyfilterComponent implements OnInit {
   }
 
   /* Search Functionality is below */
-
-
-
-  searchByFilterFreelancer(startdate: Date) {
-    if (Object.prototype.toString.call(startdate) === '[object Date]') {
-      this.iscreatejobdiv = false;
-      this.timelaps = false;
-      this.enddatevalue = null;
-      this.userFUObjList = [];
-      this.searchResults(startdate);
-      this.startdate = this.setDefaultTimeForStartDate(startdate);
-    } else {
-      this.alertService.error('Please select job create date your looking.');
+  searchByFilterFreelancer() {
+    this.issubmit = true;
+    if (this.searchform.invalid) {
+      return;
     }
+    this.createjobform.patchValue({ joblocation: this.searchElementRef.nativeElement.value });
+    this.searchform.patchValue({ fulladdress: this.searchElementRef.nativeElement.value });
+    this.iscreatejobdiv = false;
+    this.timelaps = false;
+    this.enddatevalue = null;
+    this.searchResults(this.searchform.get('startdate').value);
+    this.startdate = this.setDefaultTimeForStartDate(this.searchform.get('startdate').value);
   }
   searchResults(startdate: Date) {
     this.issearchbydate = false;
@@ -311,16 +327,19 @@ export class DashboardsearchbyfilterComponent implements OnInit {
     this.markPoints = [];
     this.markers = [];
     if (this.searchbyfiltername === config.search_byfilter_fu.toString() &&
-      this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_cba.toString() ||
-      this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_csct.toString() ||
-      this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_cscm.toString()) {
+      this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_cba.toString()) {
       if (startdate === null) {
         this.spinnerService.show();
+        this.userFUObjList = [];
         this.userService.getUserDetailsByJobAvailable().subscribe(
           (userObjList: any) => {
-            this.setuserObjList(userObjList);
-            this.timelaps = true;
-            this.spinnerService.hide();
+            setTimeout(() => {
+              userObjList.forEach(element => {
+                this.setuserObjList(element);
+              });
+              this.timelaps = true;
+              this.spinnerService.hide();
+            }, 1000);
           },
           error => {
             this.spinnerService.hide();
@@ -331,10 +350,20 @@ export class DashboardsearchbyfilterComponent implements OnInit {
         let sdate = this.getDateFormat(startdate);
         this.userService.getUserDetailsByJobAvailableByCreateOn(sdate, this.code).subscribe(
           (userObjList: any) => {
-            this.setuserObjList(userObjList);
-            this.timelaps = true;
-            this.issearchbydate = true;
-            this.spinnerService.hide();
+            this.userFUObjList = [];
+            setTimeout(() => {
+              userObjList.forEach(element => {
+                console.log('this.city', this.city);
+                if (this.city !== null) {
+                  if (element.city === this.city) {
+                    this.setuserObjList(element);
+                  }
+                }
+              });
+              this.issearchbydate = true;
+              this.spinnerService.hide();
+              this.timelaps = true;
+            }, 1000);
           },
           error => {
             this.spinnerService.hide();
@@ -343,26 +372,23 @@ export class DashboardsearchbyfilterComponent implements OnInit {
       }
     }
   }
-  setuserObjList(userObjList: any) {
-    userObjList.forEach(element => {
-      if (element.subCategory === this.code &&
-        element.city === this.userService.currentUserValue.userbizdetails.city) {
-        if (element.starRate != null) {
-          element.starRate = Array(element.starRate);
-        }
-        this.userFUObjList.push(element);
-        this.markPoints = {
-          lat: element.lat,
-          lng: element.lng,
-          label: element.fullname,
-          draggable: false,
-          shortaddress: element.shortaddress,
-          abt: element.abt,
-          avtarurl: element.avtarurl
-        };
-        this.markers.push(this.markPoints);
+  setuserObjList(element: any) {
+    if (element.subCategory === this.code) {
+      if (element.starRate != null) {
+        element.starRate = Array(element.starRate);
       }
-    });
+      this.userFUObjList.push(element);
+      this.markPoints = {
+        lat: element.lat,
+        lng: element.lng,
+        label: element.fullname,
+        draggable: false,
+        shortaddress: element.shortaddress,
+        abt: element.abt,
+        avtarurl: element.avtarurl
+      };
+      this.markers.push(this.markPoints);
+    }
   }
 }
 

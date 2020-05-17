@@ -11,23 +11,15 @@
     </button>
 
     <select #sel [(ngModel)]="filterOn" (change)="onSearchByFilterSelected(sel.value)"
-        *ngIf="this.userService.currentUserValue.userroles.rolecode != 'FREELANCER_USER'">
+        *ngIf="this.userService.currentUserValue.userroles.rolecode === 'CLIENT_BUSINESS_ADMINISTRATOR'">
         <option value="0">Select a Filter</option>
-        <option value="USR_NAME_SEARCH"
-            *ngIf="this.userService.currentUserValue.userroles.rolecode != 'FREELANCER_USER'">
-            Search By Name</option>
-        <option value="USR_USERName_SEARCH"
-            *ngIf="this.userService.currentUserValue.userroles.rolecode != 'FREELANCER_USER'">
-            Search By Email Address</option>
-        <option value='FU_SKILL_SEARCH'
-            *ngIf="this.userService.currentUserValue.userroles.rolecode != 'FREELANCER_USER'">Freelancer
+        <option value='FU_SKILL_SEARCH'>Freelancer
             By Skill</option>
-        <option value='FU_CITY_SEARCH'
-            *ngIf="this.userService.currentUserValue.userroles.rolecode != 'FREELANCER_USER'">Freelancer
+        <option value='FU_CITY_SEARCH'>Freelancer
             By City</option>
     </select>
 
-    <div class="combobox" *ngIf="this.userService.currentUserValue.userroles.rolecode != 'FREELANCER_USER'">
+    <div class="combobox" *ngIf="this.userService.currentUserValue.userroles.rolecode === 'CLIENT_BUSINESS_ADMINISTRATOR'">
         <input type="text" [(ngModel)]="inputItem" (ngModelChange)="getFilteredList()" class="combobox-input"
             (keyup)="onKeyPress($event)" (blur)="toggleListDisplay(0)" (focus)="toggleListDisplay(1)"
             placeholder="Search by keyword or select one..." [ngClass]="{'error': showError}">
@@ -37,7 +29,6 @@
                 [ngClass]="{'selected': i===selectedIndex}">{{item.label}}
             </list-item>
         </div>
-
         <button (click)="search( inputItemCode , inputItem , filterOn)"> Search </button>
     </div>
 
@@ -58,7 +49,8 @@
                 <a routerLink='/vieworeditprofile/{{userService.currentUserValue.userId}}'>
                     <img id="profile-img" *ngIf="userService.currentUserValue.avtarurl != null" class="profile-img-card"
                         src="{{userService.currentUserValue.avtarurl}}">
-                    <img *ngIf="userService.currentUserValue.avtarurl === null" src="{{defaultTxtImg}}" class="profile-img-card">
+                    <img *ngIf="userService.currentUserValue.avtarurl === null" src="{{defaultTxtImg}}"
+                        class="profile-img-card">
                 </a>
             </li>
         </ul>
