@@ -5,7 +5,6 @@ import { ManageserviceComponent } from './../manageservice/manageservice.compone
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { AlertsService } from './../AppRestCall/alerts/alerts.service';
 import { NewsvcService } from './../AppRestCall/newsvc/newsvc.service';
-import { NewServiceAdapter } from './../adapters/newserviceadapter';
 import { UserService } from './../AppRestCall/user/user.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { config } from 'src/app/appconstants/config';
@@ -94,13 +93,15 @@ export class DashboardofcbaComponent implements OnInit {
     this.spinnerService.show();
     this.newsvcservice.getAllNewServiceDetails().subscribe(
       (allNewServiceObjs: any) => {
-        allNewServiceObjs.forEach(element => {
-          var array = element.fullcontent.split(',');
-          element.fullcontent = array;
-          this.listOfAllApprovedNewServices.push(element);
-          this.mapByDomain(element);
-          this.spinnerService.hide();
-        });
+        if (allNewServiceObjs != null) {
+          allNewServiceObjs.forEach(element => {
+            var array = element.fullcontent.split(',');
+            element.fullcontent = array;
+            this.listOfAllApprovedNewServices.push(element);
+            this.mapByDomain(element);
+          });
+        }
+        this.spinnerService.hide();
       },
       error => {
         this.spinnerService.hide();

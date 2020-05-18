@@ -4,6 +4,7 @@ export const config = {
   //  httpHeaders : { headers: new HttpHeaders({Authorization: 'Basic cmVzdHNlcnZpY2ViYXNpY2F1dGh1c2VyOlRMIzIwMTdAUkVTVCo4MzI0NjMkIw=='})},
   key_domain: 'domain',
   key_service_term: 'Service_Period',
+  key_apartmentservice_url: 'ApartmentService_URL',
   key_bgstatus: 'BG_Status',
   confirmation_fullpathname: 'home/_confirm',
   confirmation_shortpathname: '_confirm',
@@ -58,14 +59,12 @@ export const config = {
   category_code_A_S: 'A_S',
   category_code_FS_S: 'FS_S',
   domain_code_SE_P: 'SE_P',
-  search_byfilter_fu: 'FU_SKILL_SEARCH',
   user_service_status_paymentpending_shortkey: 'payment-pending',
   user_service_status_paymentpending: 'PAYMENT_PENDING',
   user_service_status_published: 'PUBLISHED',
   user_service_status_paymentpaid: 'PAYMENT_PAID',
   refer_key_furegfee: 'FU_RegFee',
   fu_job_created_shortkey: 'fu-job-created',
-  
 };
 
 

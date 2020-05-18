@@ -1,22 +1,23 @@
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<div class="container" *ngIf="userFUObjList.length > 0 && !iscreatejobdiv">
+<div class="container" *ngIf="!iscreatejobdiv">
     <div class=" row">
         <div class="col-md-11">
-            <h5 class=" section-title h2" *ngIf="userFUObjList.length == 1; else morethanone">
-                Available {{name}} at <b> : </b>
-                {{userService.currentUserValue.userbizdetails.shortaddress}}
+            <h5 class=" section-title h2" *ngIf="userFUObjList.length > 1 && !issearchbydate;">
+                <p>Below are the {{name}}'s all over the locations.
+                </p>
             </h5>
-            <ng-template #morethanone>
-                <h5 class="section-title h2" *ngIf="userFUObjList.length > 1">
-                    Available {{name}}'s at
-                    <b> : </b>{{userService.currentUserValue.userbizdetails.shortaddress}}
-                </h5>
-            </ng-template>
+            <h5 class=" section-title h2" *ngIf="userFUObjList.length == 1 && issearchbydate &&
+            this.searchform.get('fulladdress').value.length > 0;">
+                Available {{name}} at <b> : </b>
+                {{this.searchform.get('fulladdress').value}}
+            </h5>
+            <h5 class="section-title h2" *ngIf="userFUObjList.length > 1 && issearchbydate && 
+                this.searchform.get('fulladdress').value.length > 0;">
+                Available {{name}}'s at
+                <b> : </b>{{this.searchform.get('fulladdress').value}}
+            </h5>
         </div>
-        <div class="col-md-2" *ngIf="issearchbydate && userFUObjList.length > 0">
-            <a (click)="openCreateJobInterface()" class="btn btn-warning"><i class="fa fa-plus"></i>
-                Create a Job Now</a>
-        </div>
+
     </div>
     <div class="row">
         <div class="col-md-9">
@@ -24,27 +25,43 @@
         </div>
     </div>
     <div class="row">
-        <div class="form-row  col-md-10">
-            <div class="form-group col-md-6">
-                <span>
-                    <i class="fa fa-briefcase form-control-icon"></i>
-                </span>
-                <input readonly [owlDateTime]="dt1" [(ngModel)]="startdate" [min]="startDate" [owlDateTimeTrigger]="dt1"
-                    class="form-control" placeholder="Select the Job Start Date" #dateTime="ngModel">
-                <owl-date-time [pickerType]="'calendar'" #dt1></owl-date-time>
-            </div>
-            <div class="form-group col-md-6">
-                <span>
-                    <i class="fa fa-address-book form-control-icon"></i>
-                </span>
-                <input [(ngModel)]="fulladdress" placeholder="Enter your address" autocorrect="off" autocomplete="off" autocapitalize="off"
-                    spellcheck="off" type="text" class="form-control" #search>
-            </div>
-        </div>
-        <div class="col-md-2">
-            <input type="button" class="btn btn-primary" (click)="searchByFilterFreelancer(startdate)" value="Search" />
-        </div>
+        <form [formGroup]="searchform" (ngSubmit)="searchByFilterFreelancer()">
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <span>
+                        <i class="fa fa-briefcase form-control-icon"></i>
+                    </span>
+                    <input readonly [owlDateTime]="dt1" formControlName="startdate" [min]="startDate"
+                        [owlDateTimeTrigger]="dt1" class="form-control" placeholder="Select the Job Start Date"
+                        [ngClass]="{ 'is-invalid': issubmit && s.startdate.errors }">
+                    <div *ngIf="issubmit && s.startdate.errors" class="invalid-feedback">
+                        <div *ngIf="s.startdate.errors.required">Start Date is required
+                        </div>
+                    </div>
+                    <owl-date-time [pickerType]="'calendar'" #dt1></owl-date-time>
+                </div>
+                <div class="form-group col-md-4">
+                    <span>
+                        <i class="fa fa-address-book form-control-icon"></i>
+                    </span>
+                    <input formControlName="fulladdress" placeholder="Enter Job Location" autocorrect="off"
+                        autocomplete="off" autocapitalize="off" spellcheck="off" type="text" class="form-control"
+                        #search [ngClass]="{ 'is-invalid': issubmit && s.fulladdress.errors }">
+                    <div *ngIf="issubmit && s.fulladdress.errors" class="invalid-feedback">
+                        <div *ngIf="s.fulladdress.errors.required">Address is required
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <input type="submit" class="btn btn-primary" value="Search" />
+                </div>
+                <div class="col-md-2" *ngIf="issearchbydate && userFUObjList.length > 0">
+                    <a (click)="openCreateJobInterface()" class="btn btn-warning"><i class="fa fa-plus"></i>
+                        Create a Job Now</a>
+                </div>
 
+            </div>
+        </form>
     </div>
 </div>
 <div class="row" *ngIf="userFUObjList.length > 0 && iscreatejobdiv">
@@ -91,6 +108,8 @@
                                     <div *ngIf="f.totalhoursofjob.errors.required">Total hours of job is
                                         required
                                     </div>
+                                    <div *ngIf="f.totalhoursofjob.errors.min">Can't be Zero.
+                                    </div>
                                     <div *ngIf="f.totalhoursofjob.errors.maxlength">Total hours of job cant
                                         exceed
                                         2
@@ -131,6 +150,9 @@
                                     <i class="fa fa-calendar   form-control-icon"></i>
                                 </span>
                                 <input readonly formControlName="jobendedon" class="form-control">
+                                <p *ngIf="enddatevalue != null">
+                                    Our auto estimated end date & time : {{enddatevalue}}
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -154,7 +176,11 @@
                                     </div>
                                 </div>
                                 <p *ngIf=" avgHourlyRate != null">
-                                    Our estimatation quote of amount {{avgHourlyRate}}
+                                    Our auto estimated quote of amount between {{avgHourlyRate}} and
+                                    {{maxHourlyRateCal}}
+                                    <i class="fa fa-question-circle"
+                                        title="We calcuate estimated rates based on the hours of the work entered"
+                                        style="font-size:10px;color:rgb(76, 0, 255)"></i>
                                 </p>
                             </div>
                         </div>
@@ -198,69 +224,38 @@
     </div>
 </div>
 <hr>
-<div class="row justify-content-center mt-3 mb-2" *ngIf="userFUObjList.length > 0 && timelaps && !iscreatejobdiv">
+<div class="row justify-content-center mt-3 mb-2">
     <div class="col-auto">
         <nav class="nav btn-group">
-            <a href="#cardview" class="btn btn-outline-primary active" data-toggle="tab">Card View</a>
-            <a href="#mapview" class="btn btn-outline-primary  " data-toggle="tab"> Map
+            <a href="#cardview" class="btn btn-outline-primary active"
+                *ngIf="userFUObjList.length > 0 && timelaps && !iscreatejobdiv && issearchbydate" data-toggle="tab">Card
+                View</a>
+            <a href="#mapview" class="btn btn-outline-primary"
+                *ngIf="userFUObjList.length > 0 && timelaps && !iscreatejobdiv && issearchbydate" data-toggle="tab"> Map
                 View</a>
         </nav>
     </div>
 </div>
-<div class="tab-content" *ngIf="userFUObjList.length > 0 && timelaps && !iscreatejobdiv">
-    <div class="tab-pane fade show active" id="cardview">
+<div class="tab-content">
+    <div class="tab-pane fade show active" *ngIf="userFUObjList.length > 0 && timelaps && !iscreatejobdiv"
+        id="cardview">
         <!-- Freelance Search Section -->
         <section id="team" class="pb-5">
             <div class="container">
                 <div class="row">
                     <div class="col-xs-12 col-sm-6 col-md-4" *ngFor="let fuuser of userFUObjList">
-                        <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
-                            <div class="mainflip">
-                                <div class="frontside">
-                                    <div class="card">
-                                        <div class="card-body text-center">
-                                            <p><img class=" img-fluid" src="{{fuuser.avtarurl}}" alt="card image">
-                                            </p>
-                                            <h4 class="card-title">{{fuuser.fullname}}</h4>
-                                            <p class="card-text">{{fuuser.shortaddress}}</p>
-                                            <a href="#" class="btn btn-primary btn-sm"><i
-                                                    class="fa fa-exchange "></i></a>
-                                        </div>
-                                        <div class="container">
-                                            <div class="row">
-                                                <div class="col-md-1"></div>
-                                                <div class="col-md-9">
-                                                    <div class="well well-sm">
-                                                        <div class="row">
-                                                            <div class="col-xs-12 col-md-9 text-xs-center">
-                                                                <div class="rating" *ngIf="fuuser.starRate != null">
-                                                                    <span class="fa fa-star "
-                                                                        *ngFor="let i of fuuser.starRate"></span>
-                                                                </div>
-                                                                <div>
-                                                                    <span class="fa fa-user"
-                                                                        *ngIf="fuuser.feedBackBy != null"> By
-                                                                        {{fuuser.feedBackBy}}</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3"></div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="backside">
-                                    <div class="card">
-                                        <div class="card-body text-center ">
-                                            <h4 class="card-title">About {{fuuser.fullname}}</h4>
-                                            <p class="card-text">{{fuuser.abt}}</p>
-                                            <p class="card-text">{{fuuser.username}}</p>
-                                        </div>
-                                    </div>
-                                </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <span class="fa fa-star" *ngFor="let i of fuuser.starRate"></span>
+                                <small *ngIf="fuuser.starRate !== null">/ out of 5</small>
+                            </div>
+                            <div class="card-body flex-column h-100 text-center">
+                                <p><img class="card-img-top img-fluid " src="{{fuuser.avtarurl}}" alt="card image">
+                                </p>
+                                <h4 class="card-title">{{fuuser.fullname}}</h4>
+                                <hr>
+                                <p class="card-text">{{fuuser.shortaddress}}</p>
+                                <p class="card-text">{{fuuser.username}}</p>
                             </div>
                         </div>
                     </div>
@@ -268,11 +263,10 @@
             </div>
         </section>
     </div>
-    <div class=" tab-pane fade" id="mapview">
+    <div class=" tab-pane fade" *ngIf="userFUObjList.length > 0 && timelaps && !iscreatejobdiv && issearchbydate"
+        id="mapview">
         <div id="map-container-google-1" class="z-depth-1-half map-container" style="height: 500px">
-            <agm-map [latitude]="this.userService.currentUserValue.userbizdetails.lat"
-                [longitude]="this.userService.currentUserValue.userbizdetails.lng" [zoom]="zoom"
-                [disableDefaultUI]="false" [zoomControl]="false">
+            <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false" [zoomControl]="false">
                 <agm-marker *ngFor="let m of markers; let i = index" [latitude]="m.lat" [longitude]="m.lng"
                     [label]="m.label" [markerDraggable]="m.draggable">
 
@@ -286,15 +280,17 @@
                         </div>
                     </agm-info-window>
                 </agm-marker>
-                <agm-circle [latitude]="this.userService.currentUserValue.userbizdetails.lat"
-                    [longitude]="this.userService.currentUserValue.userbizdetails.lng" [radius]="10000"
-                    [fillColor]="'red'" [circleDraggable]="false" [editable]="false">
+                <agm-circle [latitude]="lat" [longitude]="lng" [radius]="10000" [fillColor]="'red'"
+                    [circleDraggable]="false" [editable]="false">
                 </agm-circle>
             </agm-map>
         </div>
     </div>
 </div>
 <!-- Freelancer Search Section Ended -->
-<div *ngIf="userFUObjList.length == 0 && timelaps">
-    <h3> No {{name}} Found </h3>
+<div *ngIf="userFUObjList.length == 0 && timelaps && this.searchform.get('fulladdress').value.length > 0">
+    <h3> No {{name}} Found near the address {{this.searchform.get('fulladdress').value}}</h3>
+</div>
+<div *ngIf="userFUObjList.length == 0 && timelaps && this.searchform.get('fulladdress').value.length === 0">
+    <h3> Currently all our {{name}}'s are busy at work. Try search by job date and job location address</h3>
 </div>

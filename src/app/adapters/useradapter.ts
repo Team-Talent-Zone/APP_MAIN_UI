@@ -20,6 +20,7 @@ export class UserAdapter implements Adapter<User> {
             item.avtarurl,
             item.preferlang,
             item.phoneno,
+            item.uniqueidentificationcode,
             item.userroles,
             item.userbizdetails,
             item.freeLanceDetails,

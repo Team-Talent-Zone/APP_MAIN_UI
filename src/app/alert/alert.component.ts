@@ -47,18 +47,16 @@ export class AlertComponent implements OnInit {
   }
 
   openModal(template: TemplateRef<any>) {
+    console.log(' this.message',  this.message);
     var errorcode = this.message.text[0].errorcode;
     this.errormsg = this.message.text[0].errorMsg;
-    console.log('errormsg', this.errormsg);
     if (errorcode === 504) {
       this.router.navigate(['504error']);
     } else {
       if (this.errorCallCount === 0 && this.errormsg != null) {
-        console.log('errormsg 12');
         this.modalRef = this.modalService.show(template, this.config);
         this.errorCallCount = this.errorCallCount + 1;
       } else {
-        console.log('errormsg 12333');
         this.modalRef = this.modalService.show(template, this.config);
       }
     }

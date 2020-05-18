@@ -104,6 +104,10 @@ export class UserService {
     return this.http.get(`${environment.apiUrl}/getUserByUserId/` + userId + '/');
   }
 
+  getUsersByRole(role: string) {
+    return this.http.get(`${environment.apiUrl}/getUsersByRole/` + role + '/');
+  }
+
   getUserDetailsByJobAvailable() {
     return this.http.get(`${environment.apiUrl}/getUserDetailsByJobAvailable/`);
   }

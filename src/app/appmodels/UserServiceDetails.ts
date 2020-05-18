@@ -18,6 +18,7 @@ export class UserServiceDetails  {
         public amount: number,
         public validPeriodLabel: string,
         public validPeriodCode: string,
+        public publishedlinkurl: string,
         public userServiceEventHistory: UserServiceEventHistoryEntity[] = [],
     ) {}
 }

@@ -1,12 +1,13 @@
+import { UserServiceDetails } from 'src/app/appmodels/UserServiceDetails';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { UserService } from './../AppRestCall/user/user.service';
 import { Component, OnInit } from '@angular/core';
-import { ManageserviceComponent } from '../manageservice/manageservice.component';
-import { DashboardofcbaComponent } from '../dashboardofcba/dashboardofcba.component';
 import { UsersrvdetailsService } from '../AppRestCall/userservice/usersrvdetails.service';
 import { AlertsService } from '../AppRestCall/alerts/alerts.service';
-import { ActivatedRoute } from '@angular/router';
-import { PaymentService } from '../AppRestCall/payment/payment.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { config } from 'src/app/appconstants/config';
+import { ReferenceService } from '../AppRestCall/reference/reference.service';
+
 
 @Component({
   selector: 'app-usersubscribeservices',
@@ -23,9 +24,11 @@ export class UsersubscribeservicesComponent implements OnInit {
   constructor(
     public userService: UserService,
     private route: ActivatedRoute,
+    private router: Router,
     private alertService: AlertsService,
     private spinnerService: Ng4LoadingSpinnerService,
-    private usersrvDetails: UsersrvdetailsService
+    private usersrvDetails: UsersrvdetailsService,
+    private referService: ReferenceService,
   ) {
 
   }
@@ -34,7 +37,47 @@ export class UsersubscribeservicesComponent implements OnInit {
     this.getAllUserServiceDetailsByUserId(this.userService.currentUserValue.userId);
   }
 
-
+  publishNow(serviceId: number) {
+    this.spinnerService.show();
+    let objstatus = false;
+    if (this.userService.currentUserValue.userbizdetails.bizname === null) {
+      this.alertService.error('To Publish , Please Complete The Profile . Go To Edit Profile');
+    } else {
+      if (this.listOfSubscribedServicesByUser != null) {
+        this.usersrvDetails.getUserServiceDetailsByServiceId(serviceId).subscribe((usrserviceobj: UserServiceDetails) => {
+          if (usrserviceobj.serviceId == serviceId) {
+            usrserviceobj.status = config.user_service_status_published.toString();
+            // tslint:disable-next-line: max-line-length
+            this.usersrvDetails.saveOrUpdateUserSVCDetails(usrserviceobj).subscribe((obj: any) => {
+              if (obj.status === config.user_service_status_published.toString()) {
+                this.alertService.success('Published Succesfully. Your site Is Activated');
+                objstatus = true;
+                this.spinnerService.hide();
+              }
+              if (objstatus) {
+                this.spinnerService.show();
+                setTimeout(() => {
+                  this.router.navigateByUrl('dashboard/', { skipLocationChange: true }).
+                    then(() => {
+                      this.router.navigate(['usersubscribeservices/']);
+                    });
+                }, 2800);
+                this.spinnerService.hide();
+              }
+            },
+              error => {
+                this.alertService.error(error);
+                this.spinnerService.hide();
+              });
+          }
+        },
+          error => {
+            this.alertService.error(error);
+            this.spinnerService.hide();
+          });
+      }
+    }
+  }
   /** The below method will fetch all the user service for the user id */
   getAllUserServiceDetailsByUserId(userId: number) {
     this.spinnerService.show();

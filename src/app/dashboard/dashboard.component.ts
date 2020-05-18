@@ -1,5 +1,4 @@
 import { ReferenceAdapter } from './../adapters/referenceadapter';
-import { SignupComponent } from './../signup/signup.component';
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../AppRestCall/user/user.service';
 import { Router } from '@angular/router';
@@ -12,6 +11,8 @@ import { PaymentService } from '../AppRestCall/payment/payment.service';
 import { timer } from 'rxjs';
 import { ToastConfig, Toaster, ToastType } from 'ngx-toast-notifications';
 import { ConfigMsg } from '../appconstants/configmsg';
+import { ReferenceService } from '../AppRestCall/reference/reference.service';
+import { map, first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-dashboard',
@@ -50,10 +51,10 @@ export class DashboardComponent implements OnInit {
     private spinnerService: Ng4LoadingSpinnerService,
     private alertService: AlertsService,
     public translate: TranslateService,
-    public signupComponent: SignupComponent,
     private refAdapter: ReferenceAdapter,
     private paymentsvc: PaymentService,
-    private toaster: Toaster
+    private toaster: Toaster,
+    private referService: ReferenceService,
   ) {
     route.params.subscribe(params => {
       this.txtid = params.txtid;
@@ -70,14 +71,17 @@ export class DashboardComponent implements OnInit {
       this.autoToastNotifications();
     });
 
-
     if (this.txtid != null) {
       this.getPaymentDetailsByTxnId(this.txtid);
     }
-    this.signupComponent.getAllCategories(this.userService.currentUserValue.preferlang.toString());
+
     setTimeout(() => {
       this.resetLoggedInUser();
     }, 100);
+
+    if (this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_cba.toString()) {
+      this.getAllAvailableFUSkills();
+    }
   }
 
   autoToastNotifications() {
@@ -115,6 +119,7 @@ export class DashboardComponent implements OnInit {
       type: type,
     });
   }
+
   getNameInitials(fullname: string) {
     let initials = fullname.match(/\b\w/g) || [];
     let initialsfinal = ((initials.shift() || '') + (initials.pop() || '')).toUpperCase();
@@ -177,45 +182,30 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['/app']);
   }
 
-  search(inputItemCode: string, inputItem: string, searchByFilterName: string) {
+  search(inputItemCode: string, inputItem: string) {
     const obj = this.list.filter((item) => item.code.startsWith(inputItemCode));
-    if (this.userService.currentUserValue.userbizdetails.fulladdress == null &&
-      searchByFilterName.length > 1 && searchByFilterName === config.search_byfilter_fu) {
-      this.alertService.success(' We need your address to locate workers near by. Please add the address from edit profile.');
-    } else
-      if (searchByFilterName.length === 1) {
-        this.alertService.success(' Please select the filter');
-      } else
-        if (obj.length === 0) {
-          this.alertService.success(' Please search or select ');
-        } else {
-          this.router.navigateByUrl('fusearch/', { skipLocationChange: true }).
-            then(() => {
-              this.router.navigate(['dashboard/' + inputItemCode + '/' + inputItem + '/' + searchByFilterName]);
-            });
-        }
-  }
-
-  onSearchByFilterSelected(searchByFilterName: string) {
-    if (searchByFilterName === config.search_byfilter_fu) {
-      this.list = [];
-      this.filteredList = [];
-      this.signupComponent.referencedetailsmapsubcat.forEach(element => {
-        this.list.push(element);
-      });
-      this.filteredList = this.list;
-      if (this.list.length === 0) {
-        this.signupComponent.getAllCategories(this.userService.currentUserValue.preferlang.toString());
-        this.filteredList = [];
-        setTimeout(() => {
-          this.signupComponent.referencedetailsmapsubcat.forEach((element: any) => {
-            this.list.push(element);
-            this.filteredList.push(element);
-          });
-        }, 500);
-      }
+    if (obj.length === 0) {
+      this.alertService.error('Enter Valid Skill Keyword To Search');
+    } else {
+      this.router.navigateByUrl('fusearch/', { skipLocationChange: true }).
+        then(() => {
+          this.router.navigate(['dashboard/' + inputItemCode + '/' + inputItem]);
+        });
     }
   }
+
+  getAllAvailableFUSkills() {
+    this.list = [];
+    this.referService.getReferenceLookupByKey(config.key_domain.toString()).pipe(map((data: any[]) =>
+      data.map(item => this.refAdapter.adapt(item))),
+    ).subscribe(
+      data => {
+        data[0].referencelookupmapping[0].referencelookupmappingsubcategories.forEach(element => {
+          this.list.push(element);
+        });
+      });
+  }
+
   // modifies the filtered list as per input
   getFilteredList() {
     this.listHidden = false;
@@ -227,11 +217,13 @@ export class DashboardComponent implements OnInit {
 
   // select highlighted item when enter is pressed or any item that is clicked
   selectItem(ind) {
-    const obj = this.refAdapter.adapt(this.filteredList[ind]);
-    this.inputItem = obj.label;
-    this.listHidden = true;
-    this.selectedIndex = ind;
-    this.inputItemCode = obj.code;
+    if (ind > -1) {
+      const obj = this.refAdapter.adapt(this.filteredList[ind]);
+      this.inputItem = obj.label;
+      this.listHidden = true;
+      this.selectedIndex = ind;
+      this.inputItemCode = obj.code;
+    }
   }
 
   // navigate through the list of items

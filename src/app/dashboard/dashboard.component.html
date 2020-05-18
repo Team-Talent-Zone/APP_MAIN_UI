@@ -10,35 +10,18 @@
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <select #sel [(ngModel)]="filterOn" (change)="onSearchByFilterSelected(sel.value)"
-        *ngIf="this.userService.currentUserValue.userroles.rolecode != 'FREELANCER_USER'">
-        <option value="0">Select a Filter</option>
-        <option value="USR_NAME_SEARCH"
-            *ngIf="this.userService.currentUserValue.userroles.rolecode != 'FREELANCER_USER'">
-            Search By Name</option>
-        <option value="USR_USERName_SEARCH"
-            *ngIf="this.userService.currentUserValue.userroles.rolecode != 'FREELANCER_USER'">
-            Search By Email Address</option>
-        <option value='FU_SKILL_SEARCH'
-            *ngIf="this.userService.currentUserValue.userroles.rolecode != 'FREELANCER_USER'">Freelancer
-            By Skill</option>
-        <option value='FU_CITY_SEARCH'
-            *ngIf="this.userService.currentUserValue.userroles.rolecode != 'FREELANCER_USER'">Freelancer
-            By City</option>
-    </select>
-
-    <div class="combobox" *ngIf="this.userService.currentUserValue.userroles.rolecode != 'FREELANCER_USER'">
+    <div class="combobox"
+        *ngIf="this.userService.currentUserValue.userroles.rolecode === 'CLIENT_BUSINESS_ADMINISTRATOR'">
         <input type="text" [(ngModel)]="inputItem" (ngModelChange)="getFilteredList()" class="combobox-input"
             (keyup)="onKeyPress($event)" (blur)="toggleListDisplay(0)" (focus)="toggleListDisplay(1)"
-            placeholder="Search by keyword or select one..." [ngClass]="{'error': showError}">
+            placeholder="Search Freelance By Skill" [ngClass]="{'error': showError}">
         <span *ngIf="showError" class="error-text"><i>Invalid Selection.</i></span>
         <div class="combobox-options" *ngIf="!listHidden">
             <list-item *ngFor="let item of filteredList;let i = index" (click)="selectItem(i)"
                 [ngClass]="{'selected': i===selectedIndex}">{{item.label}}
             </list-item>
         </div>
-
-        <button (click)="search( inputItemCode , inputItem , filterOn)"> Search </button>
+        <button (click)="search( inputItemCode , inputItem)"> Search </button>
     </div>
 
     <div class="navbar-collapse collapse" id="collapsingNavbar">
@@ -58,7 +41,8 @@
                 <a routerLink='/vieworeditprofile/{{userService.currentUserValue.userId}}'>
                     <img id="profile-img" *ngIf="userService.currentUserValue.avtarurl != null" class="profile-img-card"
                         src="{{userService.currentUserValue.avtarurl}}">
-                    <img *ngIf="userService.currentUserValue.avtarurl === null" src="{{defaultTxtImg}}" class="profile-img-card">
+                    <img *ngIf="userService.currentUserValue.avtarurl === null" src="{{defaultTxtImg}}"
+                        class="profile-img-card">
                 </a>
             </li>
         </ul>
