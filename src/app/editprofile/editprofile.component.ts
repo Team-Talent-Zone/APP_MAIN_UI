@@ -345,6 +345,7 @@ export class EditprofileComponent implements OnInit {
           this.userService.currentUserValue.userbizdetails.lng = this.usrObj.userbizdetails.lng;
           this.userService.currentUserValue.userbizdetails.city = this.usrObj.userbizdetails.city;
           this.userService.currentUserValue.userbizdetails.shortaddress = this.usrObj.userbizdetails.shortaddress;
+          this.userService.currentUserValue.userbizdetails.bizname = this.usrObj.userbizdetails.bizname;
         }
         this.edituserobj = userObj;
       },

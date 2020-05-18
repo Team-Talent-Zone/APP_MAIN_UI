@@ -83,7 +83,7 @@ export class SignupComponent implements OnInit {
         username: ['', [Validators.required, Validators.email, Validators.maxLength(40)]],
         firstname: ['', [Validators.required, Validators.maxLength(40)]],
         lastname: ['', [Validators.required, Validators.maxLength(40)]],
-        preferlang: ['', [Validators.required]],
+        preferlang: config.default_prefer_lang
       });
     } else {
       this.signupForm = this.formBuilder.group({
@@ -278,7 +278,7 @@ export class SignupComponent implements OnInit {
           isservicepack: false,
           amount: this.ourserviceids[0].amount,
           validPeriodLabel: this.ourserviceids[0].validPeriodLabel,
-          
+
           serviceendon: this.ourserviceids[0].serviceendon,
           servicestarton: this.ourserviceids[0].servicestarton,
           userServiceEventHistory: []

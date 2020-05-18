@@ -99,8 +99,9 @@
             </div>
             <div class="card-footer">
               <div *ngIf="userservicedetailsExistingIds.includes(svc.ourserviceId) ; else addToCart">
-                <a class="btn btn-warning" [routerLink]="['/createoreditwidget',svc.ourserviceId]">
+                <!-- <a class="btn btn-warning" [routerLink]="['/createoreditwidget',svc.ourserviceId]">
                   <i class="fa fa-window-restore"> Open Custom Widget </i></a>
+                  -->
               </div>
               <ng-template #addToCart>
                 <button type="button" class="btn btn-primary"

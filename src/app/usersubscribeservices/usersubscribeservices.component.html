@@ -41,17 +41,24 @@
                             <div class="col-sm-4">
                                 <div *ngIf="svc.category !=='FS_S'">
                                     <a class="btn btn-warning" [routerLink]="['/createoreditwidget',svc.ourserviceId]">
-                                        <i class="fa fa-window-restore"> Open Custom Widget </i></a>
+                                        <i class="fa fa-window-restore">Custom Widget</i></a>
                                 </div>
                             </div>
                             <div class="col-sm-3"></div>
                             <div class="col-sm-4">
                                 <div *ngIf="svc.status === 'PAYMENT_PAID' && svc.category !=='FS_S'">
-                                    <button class="btn btn-success" title="Activate {{svc.name}} Now">
-                                        <i class="fa fa-play"> Activate Now</i></button>
+                                    <a class="btn btn-success" (click)="publishNow(svc.serviceId)">
+                                        <i class="fa fa-play" title="Click to Pubish the Site for {{svc.name}}"
+                                            style="font-size:12px;color:rgb(76, 0, 255)"> </i>
+                                    </a>
+                                </div>
+                                <div *ngIf="svc.status === 'PUBLISHED' && svc.category !=='FS_S'">
+                                    <a class="btn btn-success" href={{svc.publishedlinkurl}} target="_blank" title={{svc.publishedlinkurl}}>
+                                        Go To Site</a>
                                 </div>
                             </div>
                         </div>
+
                     </div>
                     <div class="card-footer">
                         <p class="card-text">
@@ -61,7 +68,7 @@
                             <small class="text-muted">Expire on <b> {{svc.serviceendon}} </b> [i.e
                                 <b>{{svc.validdays}} days remaining </b> ] </small>
                         </p>
-                        Payment Details : <a [routerLink]="['/payment',svc.txnid]" > <i class="fa fa-inr"></i></a>
+                        Payment Details : <a [routerLink]="['/payment',svc.txnid]"> <i class="fa fa-inr"></i></a>
                     </div>
                 </div>
             </div>

@@ -22,6 +22,7 @@ export class User {
         public avtarurl: string,
         public preferlang: string,
         public phoneno: string,
+        public uniqueidentificationcode: string,
         public userroles: UserRole,
         public userbizdetails: UserBiz,
         public freeLanceDetails: Freelance,

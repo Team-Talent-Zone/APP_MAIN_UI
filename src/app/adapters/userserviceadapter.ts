@@ -20,6 +20,7 @@ export class UserServicedetailsAdapter implements Adapter<UserServiceDetails> {
             item.amount,
             item.validPeriodLabel,
             item.validPeriodCode,
+            item.publishedlinkurl,
             item.userServiceEventHistory,
           );
     }
