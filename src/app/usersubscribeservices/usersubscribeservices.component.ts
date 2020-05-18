@@ -38,6 +38,8 @@ export class UsersubscribeservicesComponent implements OnInit {
   }
 
   publishNow(serviceId: number) {
+    this.spinnerService.show();
+    let objstatus = false;
     if (this.userService.currentUserValue.userbizdetails.bizname === null) {
       this.alertService.error('To Publish , Please Complete The Profile . Go To Edit Profile');
     } else {
@@ -45,28 +47,28 @@ export class UsersubscribeservicesComponent implements OnInit {
         this.usersrvDetails.getUserServiceDetailsByServiceId(serviceId).subscribe((usrserviceobj: UserServiceDetails) => {
           if (usrserviceobj.serviceId == serviceId) {
             usrserviceobj.status = config.user_service_status_published.toString();
-            this.spinnerService.show();
-            this.referService.getReferenceLookupByKey(config.key_apartmentservice_url.toString()).subscribe((refobj: any) => {
-              // tslint:disable-next-line: max-line-length
-              usrserviceobj.publishedlinkurl = refobj[0].code + '/' + this.userService.currentUserValue.userbizdetails.bizname + '/' + this.userService.currentUserValue.uniqueidentificationcode
-              this.usersrvDetails.saveOrUpdateUserSVCDetails(usrserviceobj).subscribe((obj: any) => {
-                this.router.navigateByUrl('dashboard/', { skipLocationChange: true }).
-                  then(() => {
-                    this.router.navigate(['usersubscribeservices/']);
-                  });
-                this.alertService.success('Published Succesfully. You Personal site is activated');
+            // tslint:disable-next-line: max-line-length
+            this.usersrvDetails.saveOrUpdateUserSVCDetails(usrserviceobj).subscribe((obj: any) => {
+              if (obj.status === config.user_service_status_published.toString()) {
+                this.alertService.success('Published Succesfully. Your site Is Activated');
+                objstatus = true;
                 this.spinnerService.hide();
-              },
-                error => {
-                  this.alertService.error(error);
-                  this.spinnerService.hide();
-                });
+              }
+              if (objstatus) {
+                this.spinnerService.show();
+                setTimeout(() => {
+                  this.router.navigateByUrl('dashboard/', { skipLocationChange: true }).
+                    then(() => {
+                      this.router.navigate(['usersubscribeservices/']);
+                    });
+                }, 2800);
+                this.spinnerService.hide();
+              }
             },
               error => {
                 this.alertService.error(error);
                 this.spinnerService.hide();
-              }
-            );
+              });
           }
         },
           error => {

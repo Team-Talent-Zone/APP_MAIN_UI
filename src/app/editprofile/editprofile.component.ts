@@ -54,7 +54,8 @@ export class EditprofileComponent implements OnInit {
   lng: number;
   cityElementOne: string;
   cityElementTwo: string;
-
+  isbiznamexist = true;
+  allUserCBAList: any;
 
   constructor(
     public fb: FormBuilder,
@@ -84,6 +85,15 @@ export class EditprofileComponent implements OnInit {
     this.editProfileFormValidations();
     if (this.roleCode === config.user_rolecode_fu.toString()) {
       this.signupComponent.getAllCategories(this.userService.currentUserValue.preferlang);
+    }
+    if (this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_cba.toString()) {
+      this.userService.getUsersByRole(config.user_rolecode_cba.toString()).subscribe((usrobjlist: any) => {
+        this.allUserCBAList = usrobjlist;
+      },
+        error => {
+          this.spinnerService.hide();
+          this.alertService.error(error);
+        });
     }
   }
 
@@ -219,6 +229,14 @@ export class EditprofileComponent implements OnInit {
     }
   }
 
+  preparetosaveorupdateeditprofile() {
+    this.isBizNameAlreadyExist(this.editprofileForm.get('bizname').value);
+    console.log('isbiznamexist', this.isbiznamexist);
+    if (!this.isbiznamexist) {
+      this.saveorupdateeditprofile();
+    }
+  }
+
   saveorupdateeditprofile() {
     if (this.roleCode === config.user_rolecode_fu.toString()) {
       this.editprofileForm.patchValue({ uploadValidPhotoidImgUrl: this.nationalIDURL });
@@ -333,6 +351,7 @@ export class EditprofileComponent implements OnInit {
   }
 
   private saveorupdateedituser(edituserobj: User) {
+
     this.userService.saveorupdate(edituserobj).subscribe(
       (userObj: any) => {
         this.usrObj = this.userAdapter.adapt(userObj);
@@ -383,6 +402,21 @@ export class EditprofileComponent implements OnInit {
       }
     } else {
       this.alertService.error('Invalid file format. it should be .png,.jpg,.jpeg');
+    }
+  }
+  isBizNameAlreadyExist(bizname: string) {
+    this.isbiznamexist = false;
+    console.log('allUserCBAList' , this.allUserCBAList);
+    if (this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_cba.toString()) {
+      if (this.allUserCBAList != null) {
+        this.allUserCBAList.forEach(element => {
+          if (element.userbizdetails.bizname === bizname &&
+            element.userId !== this.userService.currentUserValue.userId) {
+            this.alertService.error('The Business Name ' + bizname + 'is already exist. Please change and save again');
+            this.isbiznamexist = true;
+          }
+        });
+      }
     }
   }
 }

@@ -159,7 +159,6 @@ const routes: Routes = [
       }
     ]
   },
-
   {
     path: 'createoreditwidget/:id',
     component: DashboardComponent,

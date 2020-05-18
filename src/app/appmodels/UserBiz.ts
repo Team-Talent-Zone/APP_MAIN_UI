@@ -1,4 +1,4 @@
-export class UserBiz  {
+export class UserBiz {
 
     public Id: number;
     public userId: number;
@@ -17,5 +17,5 @@ export class UserBiz  {
     public lng: number;
     public lat: number;
     constructor(
-    ) {}
+    ) { }
 }
