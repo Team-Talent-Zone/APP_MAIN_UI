@@ -3,15 +3,16 @@
     <div class=" row">
         <div class="col-md-11">
             <h5 class=" section-title h2" *ngIf="userFUObjList.length > 1 && !issearchbydate;">
-                <p>We have {{name}} all over the locations.
-                    <br> Please choose the job start date and address to search for {{name}}.
+                <p>Below are the {{name}}'s all over the locations.
                 </p>
             </h5>
-            <h5 class=" section-title h2" *ngIf="userFUObjList.length == 1 && issearchbydate;">
+            <h5 class=" section-title h2" *ngIf="userFUObjList.length == 1 && issearchbydate &&
+            this.searchform.get('fulladdress').value.length > 0;">
                 Available {{name}} at <b> : </b>
                 {{this.searchform.get('fulladdress').value}}
             </h5>
-            <h5 class="section-title h2" *ngIf="userFUObjList.length > 1 && issearchbydate">
+            <h5 class="section-title h2" *ngIf="userFUObjList.length > 1 && issearchbydate && 
+                this.searchform.get('fulladdress').value.length > 0;">
                 Available {{name}}'s at
                 <b> : </b>{{this.searchform.get('fulladdress').value}}
             </h5>
@@ -107,6 +108,8 @@
                                     <div *ngIf="f.totalhoursofjob.errors.required">Total hours of job is
                                         required
                                     </div>
+                                    <div *ngIf="f.totalhoursofjob.errors.min">Can't be Zero.
+                                    </div>
                                     <div *ngIf="f.totalhoursofjob.errors.maxlength">Total hours of job cant
                                         exceed
                                         2
@@ -147,8 +150,8 @@
                                     <i class="fa fa-calendar   form-control-icon"></i>
                                 </span>
                                 <input readonly formControlName="jobendedon" class="form-control">
-                                <p *ngIf="enddatevalue != null"> 
-                                    Our Buffer Estimated End Date & Time Ends : {{enddatevalue}}
+                                <p *ngIf="enddatevalue != null">
+                                    Our auto estimated end date & time : {{enddatevalue}}
                                 </p>
                             </div>
                         </div>
@@ -173,7 +176,11 @@
                                     </div>
                                 </div>
                                 <p *ngIf=" avgHourlyRate != null">
-                                    Our estimatation quote of amount {{avgHourlyRate}}
+                                    Our auto estimated quote of amount between {{avgHourlyRate}} and
+                                    {{maxHourlyRateCal}}
+                                    <i class="fa fa-question-circle"
+                                        title="We calcuate estimated rates based on the hours of the work entered"
+                                        style="font-size:10px;color:rgb(76, 0, 255)"></i>
                                 </p>
                             </div>
                         </div>
@@ -237,53 +244,18 @@
             <div class="container">
                 <div class="row">
                     <div class="col-xs-12 col-sm-6 col-md-4" *ngFor="let fuuser of userFUObjList">
-                        <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
-                            <div class="mainflip">
-                                <div class="frontside">
-                                    <div class="card">
-                                        <div class="card-body text-center">
-                                            <p><img class=" img-fluid" src="{{fuuser.avtarurl}}" alt="card image">
-                                            </p>
-                                            <h4 class="card-title">{{fuuser.fullname}}</h4>
-                                            <p class="card-text">{{fuuser.shortaddress}}</p>
-                                            <a href="#" class="btn btn-primary btn-sm"><i
-                                                    class="fa fa-exchange "></i></a>
-                                        </div>
-                                        <div class="container">
-                                            <div class="row">
-                                                <div class="col-md-1"></div>
-                                                <div class="col-md-9">
-                                                    <div class="well well-sm">
-                                                        <div class="row">
-                                                            <div class="col-xs-12 col-md-9 text-xs-center">
-                                                                <div class="rating" *ngIf="fuuser.starRate != null">
-                                                                    <span class="fa fa-star "
-                                                                        *ngFor="let i of fuuser.starRate"></span>
-                                                                </div>
-                                                                <div>
-                                                                    <span class="fa fa-user"
-                                                                        *ngIf="fuuser.feedBackBy != null"> By
-                                                                        {{fuuser.feedBackBy}}</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3"></div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="backside">
-                                    <div class="card">
-                                        <div class="card-body text-center ">
-                                            <h4 class="card-title">About {{fuuser.fullname}}</h4>
-                                            <p class="card-text">{{fuuser.abt}}</p>
-                                            <p class="card-text">{{fuuser.username}}</p>
-                                        </div>
-                                    </div>
-                                </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <span class="fa fa-star" *ngFor="let i of fuuser.starRate"></span>
+                                <small *ngIf="fuuser.starRate !== null">/ out of 5</small>
+                            </div>
+                            <div class="card-body flex-column h-100 text-center">
+                                <p><img class="card-img-top img-fluid " src="{{fuuser.avtarurl}}" alt="card image">
+                                </p>
+                                <h4 class="card-title">{{fuuser.fullname}}</h4>
+                                <hr>
+                                <p class="card-text">{{fuuser.shortaddress}}</p>
+                                <p class="card-text">{{fuuser.username}}</p>
                             </div>
                         </div>
                     </div>
@@ -316,6 +288,9 @@
     </div>
 </div>
 <!-- Freelancer Search Section Ended -->
-<div *ngIf="userFUObjList.length == 0 && timelaps">
+<div *ngIf="userFUObjList.length == 0 && timelaps && this.searchform.get('fulladdress').value.length > 0">
     <h3> No {{name}} Found near the address {{this.searchform.get('fulladdress').value}}</h3>
+</div>
+<div *ngIf="userFUObjList.length == 0 && timelaps && this.searchform.get('fulladdress').value.length === 0">
+    <h3> Currently all our {{name}}'s are busy at work. Try search by job date and job location address</h3>
 </div>

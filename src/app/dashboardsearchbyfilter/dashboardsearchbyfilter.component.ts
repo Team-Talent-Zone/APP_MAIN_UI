@@ -34,7 +34,6 @@ export class DashboardsearchbyfilterComponent implements OnInit {
   maxHours = 0;
   code: string;
   name: string;
-  searchbyfiltername: string;
   userFUObjList: any = [];
   timelaps = false;
   iscreatejobdiv = false;
@@ -58,6 +57,7 @@ export class DashboardsearchbyfilterComponent implements OnInit {
   cityElementOne: string;
   cityElementTwo: string;
   bufferhours: number = 4;
+  maxHourlyRateCal: number;
 
   constructor(
     private routeA: ActivatedRoute,
@@ -81,7 +81,6 @@ export class DashboardsearchbyfilterComponent implements OnInit {
     routeA.params.subscribe(params => {
       this.code = params.code;
       this.name = params.name;
-      this.searchbyfiltername = params.filtername;
     });
   }
 
@@ -107,7 +106,7 @@ export class DashboardsearchbyfilterComponent implements OnInit {
   }
   createFormValidation() {
     this.createjobform = this.formBuilder.group({
-      totalhoursofjob: ['', [Validators.required, Validators.maxLength(2), Validators.pattern('^[0-9]*$')]],
+      totalhoursofjob: ['', [Validators.required, Validators.min(1), Validators.maxLength(2), Validators.pattern('^[0-9]*$')]],
       jobendedon: [''],
       jobstartedon: [''],
       amount: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
@@ -117,7 +116,13 @@ export class DashboardsearchbyfilterComponent implements OnInit {
       subcategory: this.code,
       updatedby: this.userService.currentUserValue.fullname,
       serviceId: [''],
-      status: ['']
+      status: [''],
+      route: [''],
+      city: [''],
+      state: [''],
+      country: [''],
+      lat: [''],
+      lng: ['']
     });
   }
 
@@ -172,6 +177,14 @@ export class DashboardsearchbyfilterComponent implements OnInit {
       this.referService.getReferenceLookupByShortKey(config.fu_job_created_shortkey.toString()).subscribe(
         refCode => {
           this.createjobform.patchValue({ status: refCode });
+          if (this.shortAddress !== null) {
+            this.createjobform.patchValue({ route: this.route });
+            this.createjobform.patchValue({ city: this.city });
+            this.createjobform.patchValue({ state: this.state });
+            this.createjobform.patchValue({ country: this.country });
+            this.createjobform.patchValue({ lat: this.lat });
+            this.createjobform.patchValue({ lng: this.lng });
+          }
           this.freelanceserviceService.saveFreelancerOnService(this.createjobform.value).subscribe((obj: any) => {
             if (obj.jobId > 0) {
               this.spinnerService.hide();
@@ -195,6 +208,10 @@ export class DashboardsearchbyfilterComponent implements OnInit {
   }
 
   openCreateJobInterface() {
+    this.issubmit = true;
+    if (this.searchform.invalid) {
+      return;
+    }
     this.usersrvDetails.getAllUserServiceDetailsByUserId(this.userService.currentUserValue.userId).subscribe(
       (listofusersrvDetails: any) => {
         if (listofusersrvDetails != null) {
@@ -252,7 +269,6 @@ export class DashboardsearchbyfilterComponent implements OnInit {
   addHoursToJobStartDateAndMinMaxAmount(event: any) {
     var hours = event.target.value;
     var totalhours = (Number.parseInt(hours) + this.bufferhours);
-    console.log('this is total hours :', totalhours);
     var jobEndDate = new Date();
     jobEndDate.setTime(this.startdate.getTime() + (totalhours * 60 * 60 * 1000));
     var dd = jobEndDate.getDate();
@@ -274,7 +290,9 @@ export class DashboardsearchbyfilterComponent implements OnInit {
       var minAmt = Math.min.apply(null, this.listofhourlyRateDetailsoffus);
       var maxHourlyRate = maxAmt * hours;
       var minHourlyRate = minAmt * hours;
-      this.avgHourlyRate = maxHourlyRate / minHourlyRate;
+      var addpercentage = 1.5; /* Add 15% more to avghourly to built the rate */
+      this.avgHourlyRate = (maxHourlyRate / minHourlyRate) * (addpercentage);
+      this.maxHourlyRateCal = maxHourlyRate;
       this.createjobform.patchValue({ jobendedon: this.enddatevalue });
     }
   }
@@ -326,8 +344,7 @@ export class DashboardsearchbyfilterComponent implements OnInit {
     this.timelaps = false;
     this.markPoints = [];
     this.markers = [];
-    if (this.searchbyfiltername === config.search_byfilter_fu.toString() &&
-      this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_cba.toString()) {
+    if (this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_cba.toString()) {
       if (startdate === null) {
         this.spinnerService.show();
         this.userFUObjList = [];
@@ -351,19 +368,24 @@ export class DashboardsearchbyfilterComponent implements OnInit {
         this.userService.getUserDetailsByJobAvailableByCreateOn(sdate, this.code).subscribe(
           (userObjList: any) => {
             this.userFUObjList = [];
-            setTimeout(() => {
-              userObjList.forEach(element => {
-                console.log('this.city', this.city);
-                if (this.city !== null) {
-                  if (element.city === this.city) {
-                    this.setuserObjList(element);
+            if (userObjList !== null) {
+              setTimeout(() => {
+                userObjList.forEach(element => {
+                  if (this.city !== null) {
+                    if (element.city === this.city) {
+                      this.setuserObjList(element);
+                    }
                   }
-                }
-              });
+                });
+                this.issearchbydate = true;
+                this.spinnerService.hide();
+                this.timelaps = true;
+              }, 1000);
+            } else {
               this.issearchbydate = true;
               this.spinnerService.hide();
               this.timelaps = true;
-            }, 1000);
+            }
           },
           error => {
             this.spinnerService.hide();

@@ -264,7 +264,8 @@ export class EditprofileComponent implements OnInit {
       if (this.edituserobj.freeLanceDetails.experienceInField != null &&
         this.edituserobj.freeLanceDetails.hourlyRate != null &&
         this.edituserobj.freeLanceDetails.uploadValidPhotoidImgUrl != null &&
-        this.edituserobj.userbizdetails.fulladdress != null) {
+        this.edituserobj.userbizdetails.fulladdress != null &&
+        !this.edituserobj.freeLanceDetails.isprofilecompleted) {
         this.edituserobj.freeLanceDetails.isprofilecompleted = true;
         this.edituserobj.freeLanceDetails.bgcurrentstatus = config.bg_code_completedprofile;
         this.edituserobj.freelancehistoryentity[0].bgstatus = config.bg_code_completedprofile;

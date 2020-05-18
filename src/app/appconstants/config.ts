@@ -58,14 +58,12 @@ export const config = {
   category_code_A_S: 'A_S',
   category_code_FS_S: 'FS_S',
   domain_code_SE_P: 'SE_P',
-  search_byfilter_fu: 'FU_SKILL_SEARCH',
   user_service_status_paymentpending_shortkey: 'payment-pending',
   user_service_status_paymentpending: 'PAYMENT_PENDING',
   user_service_status_published: 'PUBLISHED',
   user_service_status_paymentpaid: 'PAYMENT_PAID',
   refer_key_furegfee: 'FU_RegFee',
   fu_job_created_shortkey: 'fu-job-created',
-  
 };
 
 

@@ -94,7 +94,7 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'dashboard/:code/:name/:filtername',
+    path: 'dashboard/:code/:name',
     component: DashboardComponent,
     canActivate: [AuthgaurdService],
     children: [
