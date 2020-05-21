@@ -19,4 +19,8 @@ export class FreelanceserviceService {
   saveOrUpdateFreelancerOnService() {
 
   }
+
+  getUserAllJobDetailsByUserId(userId: number) {
+    return this.http.get(`${environment.apiUrl}/getUserAllJobDetailsByUserId/` + userId + '/');
+  }
 }

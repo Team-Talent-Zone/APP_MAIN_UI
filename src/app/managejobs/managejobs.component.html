@@ -4,7 +4,7 @@
             <h5 class="mb-0">
                 <a data-toggle="collapse" href="#collapseFUUpcomingJobs" aria-expanded="true"
                     aria-controls="collapseOne">
-                    On-going / Upcoming Jobs
+                    On-Going / Upcoming Jobs
                 </a>
             </h5>
         </div>
@@ -12,22 +12,33 @@
             data-parent="#accordion">
             <div class="card-body">
                 <div class="card-deck">
-                    <div class="col-sm-4 mb-3 mb-md-0" style="margin-bottom:8px !important">
-                        <div class="card text-center h-100">
+                    <div class="col-sm-4 mb-3 mb-md-0" style="margin-bottom:8px !important"
+                        *ngFor="let upcomingjob of upComingPostedJobs">
+                        <div class="card">
                             <div class="card-header">
-                                <h4> On-going / Upcoming Jobs</h4>
+                                <span class="display-4">{{upcomingjob.subcategorylabel}}
+                                    Job#{{upcomingjob.jobId}}</span>
                             </div>
                             <div class="card-body d-flex flex-column">
                                 <div class="card-title">
-                                    <span class="display-4"><i class="fa fa-inr">20000</i></span>
-                                    <span class="mb-4"> Start Date : 05-10-2020
-                                    </span>
+                                    <span class="display-4"><i class="fa fa-inr">{{upcomingjob.amount}}</i></span>
                                 </div>
                                 <div class="card-text">
-                                    End Date : 05-30-2020
+                                    Start Date : {{upcomingjob.jobstartedon}}
+                                </div>
+                                <div class="card-text">
+                                    End Date : {{upcomingjob.jobendedon}}
+                                </div>
+                                <div class="card-text">
+                                    <span> Freelance Details </span>
+                                    <i class="fa fa-user">{{upcomingjob.fullname}}</i>
                                 </div>
                             </div>
                             <div class="card-footer">
+                                <button class="btn  btn-success btn-sm" *ngIf="!upcomingjob.isjobcompleted"> Job
+                                    Done</button>
+                                <button class="btn  btn-primary btn-sm" *ngIf="upcomingjob.isjobcompleted"> Pay
+                                    Now</button>
                             </div>
                         </div>
                     </div>
@@ -48,22 +59,66 @@
             data-parent="#accordion">
             <div class="card-body">
                 <div class="card-deck">
-                    <div class="col-sm-4 mb-3 mb-md-0" style="margin-bottom:8px !important">
+                    <div class="col-sm-4 mb-3 mb-md-0" style="margin-bottom:8px !important"
+                        *ngFor="let newlyjob of newlyPostedJobs">
                         <div class="card text-center h-100">
                             <div class="card-header">
-                                <h4>Newly Created Jobs</h4>
+                                <span class="display-4">{{newlyjob.subcategorylabel}}
+                                    Job#{{newlyjob.jobId}}</span>
                             </div>
                             <div class="card-body d-flex flex-column">
                                 <div class="card-title">
-                                    <span class="display-4"><i class="fa fa-inr">20000</i></span>
-                                    <span class="mb-4"> Start Date : 05-10-2020
-                                    </span>
+                                    <span class="display-4"><i class="fa fa-inr">{{newlyjob.amount}}</i></span>
+                                </div>
+                                <div class="card-title">
+                                    <span class="mb-4"> Start Date : {{newlyjob.jobstartedon}} </span>
                                 </div>
                                 <div class="card-text">
-                                    End Date : 05-30-2020
+                                    End Date : {{newlyjob.jobendedon}}
                                 </div>
                             </div>
-                            <div class="card-footer">
+                            <div class="card-footer" *ngIf="newlyjob.isjobactive && newlyjob.isdeactive == null">
+                                <div class="row">
+                                    <small class="text-muted ">
+                                        <p class="text-primary">We will provide you the confirmation email once any
+                                            freelancer accepted this job.</p>
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="card-footer" *ngIf="!newlyjob.isjobactive && newlyjob.isdeactive == null">
+                                <div class="row">
+                                    <div class="col-sm-2">
+                                        <button class="btn  btn-danger btn-sm">Delete</button>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <button class="btn  btn-primary btn-sm">Activiate</button>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <button class="btn  btn-success btn-sm">Edit Job</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer" *ngIf="!newlyjob.isjobactive && newlyjob.isdeactive != null">
+                                <div class="row">
+                                    <small class="text-muted ">
+                                        <p class="text-danger">You have not activiated this job on time and now the job
+                                            start date has crossed current date.</p>
+                                    </small>
+                                </div>
+                                <div class="row">
+                                    <button class="btn  btn-danger btn-sm">Delete Job</button>
+                                </div>
+                            </div>
+                            <div class="card-footer" *ngIf="newlyjob.isjobactive && newlyjob.isdeactive != null">
+                                <div class="row">
+                                    <small class="text-muted ">
+                                        <p class="text-danger">No freelancer accepted this job and job start date has
+                                            crossed current date. Kindly search & create new job.</p>
+                                    </small>
+                                </div>
+                                <div class="row">
+                                    <button class="btn  btn-danger btn-sm">Delete Job</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -84,22 +139,28 @@
             data-parent="#accordion">
             <div class="card-body">
                 <div class="card-deck">
-                    <div class="col-sm-4 mb-3 mb-md-0" style="margin-bottom:8px !important">
+                    <div class="col-sm-4 mb-3 mb-md-0" style="margin-bottom:8px !important"
+                        *ngFor="let completedjob of completedJobs">
                         <div class="card text-center h-100">
                             <div class="card-header">
-                                <h4> Completed Jobs</h4>
+                                <span class="display-4">{{completedjob.subcategorylabel}}
+                                    Job#{{completedjob.jobId}}</span>
                             </div>
                             <div class="card-body d-flex flex-column">
                                 <div class="card-title">
-                                    <span class="display-4"><i class="fa fa-inr">20000</i></span>
-                                    <span class="mb-4"> Start Date : 05-10-2020
-                                    </span>
+                                    <span class="display-4"><i class="fa fa-inr">{{completedjob.amount}}</i></span>
+                                </div>
+                                <div class="card-title">
+                                    <span class="mb-4"> Start Date :{{completedjob.jobstartedon}} </span>
                                 </div>
                                 <div class="card-text">
-                                    End Date : 05-30-2020
+                                    End Date : {{completedjob.jobendedon}}
                                 </div>
                             </div>
                             <div class="card-footer">
+                                <button class="btn  btn-warning btn-sm"
+                                    *ngIf="completedjob.isjobamtpaidtocompany">Payment
+                                    Details</button>
                             </div>
                         </div>
                     </div>
