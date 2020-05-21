@@ -121,7 +121,8 @@
                             <div class="card-footer" *ngIf="newlyjob.isjobactive && newlyjob.isdeactive != null">
                                 <div class="row">
                                     <small class="text-muted ">
-                                        <p class="text-danger">No freelancer accepted this job . Kindly search & create new job again.</p>
+                                        <p class="text-danger">No freelancer accepted this job . Kindly search & create
+                                            new job again.</p>
                                     </small>
                                 </div>
                                 <div class="row">
@@ -175,10 +176,10 @@
                                     <i class="fa fa-user">{{completedjob.fullname}}</i>
                                 </div>
                             </div>
-                            <div class="card-footer">
-                                <button class="btn  btn-warning btn-sm"
-                                    *ngIf="completedjob.isjobamtpaidtocompany">Payment
+                            <div class="card-footer" *ngIf="completedjob.isjobamtpaidtocompany">
+                                <button class="btn  btn-warning btn-sm">Payment
                                     Details</button>
+                                <button class="btn  btn-warning btn-sm">Rate Freelance Work</button>
                             </div>
                         </div>
                     </div>
