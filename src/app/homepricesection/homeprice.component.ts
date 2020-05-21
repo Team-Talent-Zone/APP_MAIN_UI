@@ -73,7 +73,7 @@ export class HomepriceComponent implements OnInit {
   // tslint:disable-next-line: max-line-length
   openSignupModal(ourserviceid: number, packwithotherourserviceid: number, amount: string, validPeriodLabel: string, validPeriodCode: string, serviceendon: string, servicestarton: string) {
     // tslint:disable-next-line: max-line-length
-    var ourserviceidList = [{ ourserviceid, packwithotherourserviceid, amount, validPeriodLabel, validPeriodCode,serviceendon, servicestarton }];
+    var ourserviceidList = [{ ourserviceid, packwithotherourserviceid, amount, validPeriodLabel, validPeriodCode, serviceendon, servicestarton }];
     const initialState = {
       key: config.shortkey_role_cba,
       ourserviceids: ourserviceidList,
