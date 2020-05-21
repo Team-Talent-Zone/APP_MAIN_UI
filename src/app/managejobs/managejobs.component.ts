@@ -41,7 +41,7 @@ export class ManagejobsComponent implements OnInit {
           this.newlyPostedJobs.push(element);
         }
         // tslint:disable-next-line: max-line-length
-        if (element.isjobactive && element.isjobaccepted) {
+        if (element.isjobactive && element.isjobaccepted && !element.isjobamtpaidtocompany) {
           this.upComingPostedJobs.push(element);
         }
         // tslint:disable-next-line: max-line-length
