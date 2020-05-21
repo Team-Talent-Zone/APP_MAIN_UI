@@ -55,7 +55,8 @@
                 <div class="col-md-2">
                     <input type="submit" class="btn btn-primary" value="Search" />
                 </div>
-                <div class="col-md-2" *ngIf="issearchbydate && userFUObjList.length > 0">
+                <div class="col-md-2" *ngIf="issearchbydate && userFUObjList.length > 0 && 
+                            this.userService.currentUserValue.userroles.rolecode === 'CLIENT_BUSINESS_ADMINISTRATOR'">
                     <a (click)="openCreateJobInterface()" class="btn btn-warning"><i class="fa fa-plus"></i>
                         Create a Job Now</a>
                 </div>
@@ -252,10 +253,19 @@
                             <div class="card-body flex-column h-100 text-center">
                                 <p><img class="card-img-top img-fluid " src="{{fuuser.avtarurl}}" alt="card image">
                                 </p>
-                                <h4 class="card-title">{{fuuser.fullname}}</h4>
+                                <h4 *ngIf="this.userService.currentUserValue.userroles.rolecode === 'CLIENT_BUSINESS_ADMINISTRATOR'"
+                                    class="card-title">{{fuuser.fullname}}</h4>
+                                <h4 *ngIf="this.userService.currentUserValue.userroles.rolecode === 'CORE_SERVICE_SUPPORT_TEAM' || this.userService.currentUserValue.userroles.rolecode === 'CORE_SERVICE_SUPPORT_MANAGER'"
+                                    class="card-title">
+                                    <a href="javascript: return false;"
+                                        (click)='this.manageuserComponent.openViewAccountDetailsModal(fuuser.userId)'>
+                                        {{fuuser.fullname}}
+                                    </a>
+                                </h4>
                                 <hr>
                                 <p class="card-text">{{fuuser.shortaddress}}</p>
-                                <p class="card-text">{{fuuser.username}}</p>
+                                <p *ngIf="this.userService.currentUserValue.userroles.rolecode === 'CORE_SERVICE_SUPPORT_TEAM' || this.userService.currentUserValue.userroles.rolecode === 'CORE_SERVICE_SUPPORT_MANAGER'"
+                                    class="card-text">{{fuuser.username}}</p>
                             </div>
                         </div>
                     </div>

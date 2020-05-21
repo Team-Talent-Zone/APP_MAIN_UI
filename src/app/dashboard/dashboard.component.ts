@@ -79,7 +79,7 @@ export class DashboardComponent implements OnInit {
       this.resetLoggedInUser();
     }, 100);
 
-    if (this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_cba.toString()) {
+    if (this.userService.currentUserValue.userroles.rolecode !== config.user_rolecode_fu.toString()) {
       this.getAllAvailableFUSkills();
     }
   }

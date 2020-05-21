@@ -159,7 +159,6 @@ export class NewserviceComponent implements OnInit {
     }
     this.spinnerService.show();
     this.newservice = this.newserviceAdapter.adapt(this.newServiceForm.value);
-    console.log('this.newServiceForm.value', this.newServiceForm.value);
     if (id > 0 && !this.newservicecurrentObj.active) {
       this.preparetoupdatenewservice(this.newservicecurrentObj, this.newServiceForm.value);
     } else
@@ -196,6 +195,9 @@ export class NewserviceComponent implements OnInit {
                   this.utilService.uploadAvatarsInS3(this.serviceImgURL, this.userService.currentUserValue.userId, this.filename).subscribe(
                     (returnURL: string) => {
                       this.newservice.imageUrl = returnURL;
+                      if (this.newServiceForm.get('amount').value === '') {
+                        this.newservice.amount = 0;
+                      }
                       this.newsvcservice.saveNewService(
                         this.newservice
                       ).pipe(first()).subscribe(
@@ -462,8 +464,7 @@ export class NewserviceComponent implements OnInit {
 
   getListOfNewServicesByMapId(category: string) {
     this.listofnewservicebymapid = this.manageserviceComponent.listOfAllApprovedNewServices.
-      filter(x => (x.category === category || x.category === config.category_code_FS_S.toString()));
-    console.log('this is listofnewservicebymapid', this.listofnewservicebymapid);
+      filter(x => (x.packwithotherourserviceid == null && x.category === category || x.category === config.category_code_FS_S.toString()));
   }
   getServiceTerms() {
     this.spinnerService.show();

@@ -150,7 +150,6 @@ export class ManageuserComponent implements OnInit {
     this.spinnerService.show();
     this.userService.getUserByUserId(userId).pipe(first()).subscribe(
       (respuser: any) => {
-        console.log('respuser', respuser);
         const initialState = { usrdetailsObj: respuser };
         this.modalRef = this.modalService.show(ViewaccountdetailsComponent, Object.assign(
           {},
@@ -166,7 +165,7 @@ export class ManageuserComponent implements OnInit {
       });
   }
   openViewAccountDetailsModal(userId: number) {
-    this.usrObjTotalUsers.forEach((element: any) => {
+    this.userService.getUserByUserId(userId).pipe(first()).subscribe((element: any) => {
       const initialState = { usrdetailsObj: element };
       if (element.userId === userId) {
         this.modalRef = this.modalService.show(ViewaccountdetailsComponent, Object.assign(

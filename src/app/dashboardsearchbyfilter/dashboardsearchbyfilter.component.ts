@@ -11,6 +11,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FreelanceserviceService } from '../AppRestCall/freelanceservice/freelanceservice.service';
 import { ReferenceService } from '../AppRestCall/reference/reference.service';
 import { ApiService, Maps } from '../adapters/api.service';
+import { ManageuserComponent } from '../manageuser/manageuser.component';
 
 @Component({
   selector: 'app-dashboardsearchbyfilter',
@@ -72,6 +73,7 @@ export class DashboardsearchbyfilterComponent implements OnInit {
     private router: Router,
     private ngZone: NgZone,
     public apiService: ApiService,
+    public manageuserComponent: ManageuserComponent
   ) {
     setTimeout(() => {
       this.apiService.api.then(maps => {
@@ -242,6 +244,11 @@ export class DashboardsearchbyfilterComponent implements OnInit {
   backToSearch() {
     this.iscreatejobdiv = false;
     this.issearchbydate = false;
+    this.createjobform.patchValue({ totalhoursofjob: null });
+    this.createjobform.patchValue({ amount: null });
+    this.createjobform.patchValue({ jobendedon: null });
+    this.avgHourlyRate = null;
+    this.maxHourlyRateCal = null;
     setTimeout(() => {
       this.apiService.api.then(maps => {
         this.initAutocomplete(maps);
@@ -344,7 +351,7 @@ export class DashboardsearchbyfilterComponent implements OnInit {
     this.timelaps = false;
     this.markPoints = [];
     this.markers = [];
-    if (this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_cba.toString()) {
+    if (this.userService.currentUserValue.userroles.rolecode !== config.user_rolecode_fu.toString()) {
       if (startdate === null) {
         this.spinnerService.show();
         this.userFUObjList = [];
