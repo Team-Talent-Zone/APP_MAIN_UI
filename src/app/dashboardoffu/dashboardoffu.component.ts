@@ -7,6 +7,10 @@ import { PaymentComponent } from '../payment/payment.component';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AlertsService } from '../AppRestCall/alerts/alerts.service';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
+import { FreelanceOnSvcService } from '../AppRestCall/freelanceOnSvc/freelance-on-svc.service';
+import { FreelanceOnSvc } from '../appmodels/FreelanceOnSvc';
+import { FreelanceOnSvcAdapter } from '../adapters/freelanceonsvcadapter';
+import { subscribeOn } from 'rxjs/operators';
 
 @Component({
   selector: 'app-dashboardoffu',
@@ -27,6 +31,13 @@ export class DashboardoffuComponent implements OnInit {
   indiaTime = new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' });
   referenceobj: any;
   istimelap = false;
+  listofalljobs: any;
+  newJobList: any = [];
+  upcomingJobList: any = [];
+  completedJobList: any = [];
+  freelancesvcobj: FreelanceOnSvc;
+  freelancedetailsbyId: any;
+
 
   infoCards = [
     { name: 'Upcoming Pay', value: '1000' },
@@ -41,9 +52,11 @@ export class DashboardoffuComponent implements OnInit {
     private modalService: BsModalService,
     private spinnerService: Ng4LoadingSpinnerService,
     private alertService: AlertsService,
+    private freelanceSvc: FreelanceOnSvcService,
   ) { }
 
   ngOnInit() {
+    this.displayFUDetailsInCards();
     if (!this.userService.currentUserValue.freeLanceDetails.isregfeedone) {
       setTimeout(() => {
         this.spinnerService.show();
@@ -51,6 +64,7 @@ export class DashboardoffuComponent implements OnInit {
           this.referenceobj = refObj;
           this.spinnerService.hide();
           this.istimelap = true;
+
         },
           error => {
             this.spinnerService.hide();
@@ -61,7 +75,7 @@ export class DashboardoffuComponent implements OnInit {
 
     this.usrObj = this.userService.currentUserValue;
     if (this.usrObj.userroles.rolecode === config.user_rolecode_fu.toString()) {
-      if (this.usrObj.freeLanceDetails.isprofilecompleted ) {
+      if (this.usrObj.freeLanceDetails.isprofilecompleted) {
         this.stage1Img = this.stageCompletedImg;
       }
       if (this.usrObj.freeLanceDetails.isprofilecompleted && this.usrObj.freeLanceDetails.isregfeedone) {
@@ -80,6 +94,8 @@ export class DashboardoffuComponent implements OnInit {
           this.stage5Img = this.stageBgStatusRejectedImg;
         }
     }
+
+
   }
 
   openPaymentComponent() {
@@ -90,6 +106,84 @@ export class DashboardoffuComponent implements OnInit {
         productinfoParam: 'Freelancer Reg Fee For PlatForm'
       }
     });
+  }
+
+  displayFUDetailsInCards() {
+
+    this.newJobList = [];
+    this.upcomingJobList = [];
+    this.completedJobList = [];
+    this.spinnerService.show();
+    this.freelanceSvc.getUserAllJobDetails(this.userService.currentUserValue.freeLanceDetails.subCategory).subscribe((resp: any) => {
+      this.listofalljobs = resp;
+      for (let element of this.listofalljobs) {
+        if (element.isjobactive && !element.isjobaccepted && element.scategory == this.userService.currentUserValue.freeLanceDetails.subCategory) {
+          this.newJobList.push(element);
+        }
+        if (element.freelanceuserId == this.userService.currentUserValue.freeLanceDetails.freeLanceId && element.isjobaccepted) {
+          this.upcomingJobList.push(element);
+        }
+        if (element.isjobamtpaidtofu && element.freelanceuserId == this.userService.currentUserValue.userId
+          && element.scategory == this.userService.currentUserValue.freeLanceDetails.subCategory) {
+          element.isjobcompleted = true;
+          this.completedJobList.push(element);
+        }
+      }
+      this.spinnerService.hide();
+
+    },
+      error => {
+        this.spinnerService.hide();
+        this.alertService.error(error);
+      });
+  }
+
+  updateUserOnAccept(jobId: number) {
+      this.freelanceSvc.getAllFreelanceOnServiceDetailsByJobId(jobId).subscribe(
+        (freelancedetailsbyId: FreelanceOnSvc) => {
+          if (freelancedetailsbyId.isjobaccepted == false) {
+            freelancedetailsbyId.freelanceuserId = this.userService.currentUserValue.freeLanceDetails.freeLanceId;
+            freelancedetailsbyId.isjobaccepted = true;
+            console.log("resp from restapi :", freelancedetailsbyId);
+            this.freelanceSvc.saveOrUpdateFreeLanceOnService(freelancedetailsbyId).subscribe((updatedobjfreelanceservice: FreelanceOnSvc) => {
+              this.displayFUDetailsInCards();
+            },
+              error => {
+                this.spinnerService.hide();
+                this.alertService.error(error);
+              });
+          }
+          else {
+            this.alertService.error("Sorry! This jobs has been accepted")
+            this.displayFUDetailsInCards();
+          }
+        },
+        error => {
+          this.spinnerService.hide();
+          this.alertService.error(error);
+        });
+  }
+
+  updateUserOnCancel(jobId: number) {
+
+    this.freelanceSvc.getAllFreelanceOnServiceDetailsByJobId(jobId).subscribe(
+      (freelancedetailsbyId: FreelanceOnSvc) => {
+        freelancedetailsbyId.freelanceuserId = null;
+        freelancedetailsbyId.isjobaccepted = false;
+        console.log("resp from restapi :", freelancedetailsbyId);
+        this.freelanceSvc.saveOrUpdateFreeLanceOnService(freelancedetailsbyId).subscribe((updatedobjfreelanceservice: FreelanceOnSvc) => {
+          this.displayFUDetailsInCards();
+        },
+          error => {
+            this.spinnerService.hide();
+            this.alertService.error(error);
+          });
+      },
+      error => {
+        this.spinnerService.hide();
+        this.alertService.error(error);
+      });
+
   }
 
 }
