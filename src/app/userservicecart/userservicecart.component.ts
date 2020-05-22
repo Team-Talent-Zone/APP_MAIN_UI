@@ -4,9 +4,9 @@ import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { UsersrvdetailsService } from '../AppRestCall/userservice/usersrvdetails.service';
-import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { ReferenceService } from '../AppRestCall/reference/reference.service';
 import { AlertsService } from '../AppRestCall/alerts/alerts.service';
+import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 
 @Component({
   selector: 'app-userservicecart',
@@ -67,7 +67,6 @@ export class UserservicecartComponent implements OnInit {
       this.callServiceDeleteUserSVCDetails(serviceId);
       setTimeout(() => {
         this.modalRefUserSvc.hide();
-        console.log('dboard', this.displayUserServicesForCheckOut);
         this.router.navigateByUrl('dboard/', { skipLocationChange: true }).
           then(() => {
             this.router.navigate(['dashboard']);

@@ -19,6 +19,7 @@ export class PaymentComponent implements OnInit {
   @Input() totalAmountToPay: number;
   @Input() displayUserServicesForCheckOut: any;
   @Input() productinfoParam: string;
+  @Input() jobids: string;
 
   issubmit = false;
   disablePaymentButton: boolean = true;
@@ -26,7 +27,6 @@ export class PaymentComponent implements OnInit {
   paymentFormDetails: FormGroup;
   productinfo = '';
   serviceids = '';
-  jobids = '';
   usrobj: any;
 
   constructor(
@@ -42,6 +42,8 @@ export class PaymentComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('jobids', this.jobids);
+
     if (this.displayUserServicesForCheckOut != null) {
       this.displayUserServicesForCheckOut.forEach((element: any) => {
         this.productinfo = this.productinfo + '|' + element.name + '|';
@@ -49,6 +51,7 @@ export class PaymentComponent implements OnInit {
         this.serviceids = this.serviceids.concat(element.serviceId, ',');
       });
     } else {
+      console.log('productinfoParam', this.productinfoParam);
       this.productinfo = this.productinfoParam;
     }
   }

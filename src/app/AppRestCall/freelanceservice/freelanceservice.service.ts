@@ -16,11 +16,20 @@ export class FreelanceserviceService {
     return this.http.post(`${environment.apiUrl}/saveFreeLanceOnService/`, freelanceOnService);
   }
 
-  saveOrUpdateFreelancerOnService() {
-
+  saveOrUpdateFreelancerOnService(freelanceOnService: FreelanceOnSvc) {
+    return this.http.post(`${environment.apiUrl}/saveOrUpdateFreeLanceOnService/`, freelanceOnService);
   }
 
   getUserAllJobDetailsByUserId(userId: number) {
     return this.http.get(`${environment.apiUrl}/getUserAllJobDetailsByUserId/` + userId + '/');
+  }
+
+  getAllFreelanceOnServiceDetailsByJobId(jobId: number) {
+    return this.http.get(`${environment.apiUrl}/getAllFreelanceOnServiceDetailsByJobId/` + jobId + '/');
+  }
+
+  deleteFreelanceSVCDetails(freelanceOnService: FreelanceOnSvc) {
+    return this.http.post(`${environment.apiUrl}/deleteFreelanceSVCDetails/`, freelanceOnService);
+
   }
 }

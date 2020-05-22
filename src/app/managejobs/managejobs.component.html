@@ -38,9 +38,9 @@
                                 </div>
                             </div>
                             <div class="card-footer">
-                                <button class="btn  btn-success btn-sm" *ngIf="!upcomingjob.isjobcompleted"> Job
+                                <button type="button" (click)="jobDone(upcomingjob.jobId)" class="btn  btn-success btn-sm" *ngIf="!upcomingjob.isjobcompleted"> Job
                                     Done</button>
-                                <button class="btn  btn-primary btn-sm" *ngIf="upcomingjob.isjobcompleted"> Pay
+                                <button class="btn  btn-primary btn-sm"  (click)="openPaymentComponent(upcomingjob.amount, upcomingjob.jobId , upcomingjob.subcategorylabel)" *ngIf="upcomingjob.isjobcompleted"> Pay
                                     Now</button>
                             </div>
                         </div>
@@ -94,10 +94,10 @@
                             <div class="card-footer" *ngIf="!newlyjob.isjobactive && newlyjob.isdeactive == null">
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <button class="btn  btn-danger btn-sm">Delete Job</button>
+                                        <button type="button"   (click)="cancelJob(newlyjob.jobId)" class="btn  btn-danger btn-sm">Cancel</button>
                                     </div>
                                     <div class="col-sm-6">
-                                        <button class="btn  btn-primary btn-sm">Activiate</button>
+                                        <button type="button"  (click)="activateJob(newlyjob.jobId)"  class="btn  btn-primary btn-sm">Activiate</button>
                                     </div>
                                 </div>
                             </div>
@@ -111,7 +111,7 @@
                                 <div class="row">
                                     <div class="col-sm-3"></div>
                                     <div class="col-sm-4">
-                                        <button class="btn  btn-danger btn-sm">Delete Job</button>
+                                        <a  (click)="cancelJob(newlyjob.jobId)" class="btn  btn-danger btn-sm">Cancel</a>
                                     </div>
                                 </div>
                             </div>
@@ -125,7 +125,7 @@
                                 <div class="row">
                                     <div class="col-sm-3"></div>
                                     <div class="col-sm-4">
-                                        <button class="btn  btn-danger btn-sm">Delete Job</button>
+                                        <button type="button"  (click)="cancelJob(newlyjob.jobId)" class="btn  btn-danger btn-sm">Cancel</button>
                                     </div>
                                 </div>
                             </div>
