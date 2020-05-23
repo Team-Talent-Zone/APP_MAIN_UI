@@ -34,13 +34,13 @@ export class ManagejobsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.spinnerService.show();
     const sourcerefresh = timer(1000, 30000);
     sourcerefresh.subscribe((val: number) => {
       if (this.router.url === '/job') {
         this.getUserAllJobDetailsByUserId();
       }
     });
-
   }
 
   jobDone(jobId: number) {
@@ -124,7 +124,6 @@ export class ManagejobsComponent implements OnInit {
     this.newlyPostedJobs = [];
     this.completedJobs = [];
     this.upComingPostedJobs = [];
-    this.spinnerService.show();
     this.freelanceserviceService.getUserAllJobDetailsByUserId(this.userService.currentUserValue.userId).subscribe((onserviceList: any) => {
       onserviceList.forEach(element => {
         // tslint:disable-next-line: max-line-length

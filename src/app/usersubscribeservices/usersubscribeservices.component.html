@@ -27,13 +27,9 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="row">
+                        <div class="card-text">
                             <div *ngIf="svc.category ==='FS_S'">
-                                <h5>
-                                    <p>
-                                        Freelancer is already activated.
-                                    </p>
-                                </h5>
+                                <b class="text-danger">Freelancer Service Is Activated</b>
                             </div>
                         </div>
                         <div class="row">
@@ -68,9 +64,12 @@
                             <small class="text-muted">Expire on <b> {{svc.serviceendon}} </b> [i.e
                                 <b>{{svc.validdays}} days remaining </b> ] </small>
                         </div>
-                        <div class="card-text">
-                            Payment Details : <button class="btn btn-secondary" [routerLink]="['/payment',svc.txnid]">
-                                <i class="fa fa-inr">Payment</i></button>
+                        <div class="row">
+                            <div class="col-sm-3"></div>
+                            <div class="col-sm-6">
+                                <button class="btn  btn-secondary btn-sm" [routerLink]="['/payment',svc.txnid]">
+                                    Payment Details</button>
+                            </div>
                         </div>
                     </div>
                 </div>
