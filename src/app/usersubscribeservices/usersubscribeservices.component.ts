@@ -16,7 +16,7 @@ import { ReferenceService } from '../AppRestCall/reference/reference.service';
 })
 export class UsersubscribeservicesComponent implements OnInit {
 
-  listOfSubscribedServicesByUser: any = [];
+  listOfSubscribedServicesByUser: any;
   fullContent: any = [];
   istimelap = false;
   id: string;
@@ -34,7 +34,7 @@ export class UsersubscribeservicesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getAllUserServiceDetailsByUserId(this.userService.currentUserValue.userId);
+    this.getAllUserServiceDetailsByUserId();
   }
 
   publishNow(serviceId: number) {
@@ -51,7 +51,7 @@ export class UsersubscribeservicesComponent implements OnInit {
             this.usersrvDetails.saveOrUpdateUserSVCDetails(usrserviceobj).subscribe((obj: any) => {
               if (obj.status === config.user_service_status_published.toString()) {
                 this.alertService.success('Published Succesfully. Your site Is Activated');
-                this.getAllUserServiceDetailsByUserId(this.userService.currentUserValue.userId);
+                this.getAllUserServiceDetailsByUserId();
                 this.spinnerService.hide();
               }
             },
@@ -69,10 +69,10 @@ export class UsersubscribeservicesComponent implements OnInit {
     }
   }
   /** The below method will fetch all the user service for the user id */
-  getAllUserServiceDetailsByUserId(userId: number) {
+  getAllUserServiceDetailsByUserId() {
     this.listOfSubscribedServicesByUser = [];
     this.spinnerService.show();
-    this.usersrvDetails.getAllUserServiceDetailsByUserId(userId).subscribe(
+    this.usersrvDetails.getAllUserServiceDetailsByUserId(this.userService.currentUserValue.userId).subscribe(
       (listofusersrvDetails: any) => {
         if (listofusersrvDetails != null) {
           listofusersrvDetails.forEach((element: any) => {
@@ -82,8 +82,8 @@ export class UsersubscribeservicesComponent implements OnInit {
               this.listOfSubscribedServicesByUser.push(element);
             }
           });
-          this.spinnerService.hide();
         }
+        this.spinnerService.hide();
         this.istimelap = true;
       },
       error => {

@@ -4,7 +4,6 @@
             {{ 'DASHOARD_CBA_MAIN_BODY.SUBSCRIBEDSERVICES' | translate }}
         </h5>
     </div>
-
     <div class="card-body">
         <div class="card-deck">
             <div class="col-sm-4 mb-3 mb-md-0" style="margin-bottom:8px !important"
@@ -60,17 +59,19 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                     <div class="card-footer">
-                        <p class="card-text">
+                        <div class="card-text">
                             <small class="text-muted">Started on <b> {{svc.servicestarton}} </b> </small>
-                        </p>
-                        <p class="card-text">
+                        </div>
+                        <div class="card-text">
                             <small class="text-muted">Expire on <b> {{svc.serviceendon}} </b> [i.e
                                 <b>{{svc.validdays}} days remaining </b> ] </small>
-                        </p>
-                        Payment Details : <a [routerLink]="['/payment',svc.txnid]"> <i class="fa fa-inr"></i></a>
+                        </div>
+                        <div class="card-text">
+                            Payment Details : <button class="btn btn-secondary" [routerLink]="['/payment',svc.txnid]">
+                                <i class="fa fa-inr">Payment</i></button>
+                        </div>
                     </div>
                 </div>
             </div>
