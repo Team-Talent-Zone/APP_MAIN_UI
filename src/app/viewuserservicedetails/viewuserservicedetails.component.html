@@ -11,6 +11,7 @@
                     <th>Valid Period</th>
                     <th>Valid Days</th>
                     <th>Transction Id</th>
+                    <th>Job Details</th>
                 </tr>
             </thead>
             <tbody>
@@ -22,7 +23,8 @@
                     <td>{{usrvdetails.validPeriodLabel}}</td>
                     <td>{{usrvdetails.validdays}}</td>
                     <td><a [routerLink]="['/payment',usrvdetails.txnid]">{{usrvdetails.txnid}}</a></td>
-
+                    <td *ngIf="usrvdetails.category ==='FS_S'"></td>
+                    <td *ngIf="usrvdetails.category != 'FS_S'">N/A</td>
                 </tr>
             </tbody>
         </table>

@@ -10,8 +10,7 @@
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="combobox"
-        *ngIf="this.userService.currentUserValue.userroles.rolecode === 'CLIENT_BUSINESS_ADMINISTRATOR'">
+    <div class="combobox" *ngIf="this.userService.currentUserValue.userroles.rolecode !== 'FREELANCER_USER'">
         <input type="text" [(ngModel)]="inputItem" (ngModelChange)="getFilteredList()" class="combobox-input"
             (keyup)="onKeyPress($event)" (blur)="toggleListDisplay(0)" (focus)="toggleListDisplay(1)"
             placeholder="Search Freelance By Skill" [ngClass]="{'error': showError}">

@@ -54,7 +54,7 @@ export class EditprofileComponent implements OnInit {
   lng: number;
   cityElementOne: string;
   cityElementTwo: string;
-  isbiznamexist = true;
+  isbiznamexist = false;
   allUserCBAList: any;
 
   constructor(
@@ -230,8 +230,9 @@ export class EditprofileComponent implements OnInit {
   }
 
   preparetosaveorupdateeditprofile() {
-    this.isBizNameAlreadyExist(this.editprofileForm.get('bizname').value);
-    console.log('isbiznamexist', this.isbiznamexist);
+    if (this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_cba.toString()) {
+      this.isBizNameAlreadyExist(this.editprofileForm.get('bizname').value);
+    }
     if (!this.isbiznamexist) {
       this.saveorupdateeditprofile();
     }
@@ -406,17 +407,14 @@ export class EditprofileComponent implements OnInit {
   }
   isBizNameAlreadyExist(bizname: string) {
     this.isbiznamexist = false;
-    console.log('allUserCBAList' , this.allUserCBAList);
-    if (this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_cba.toString()) {
-      if (this.allUserCBAList != null) {
-        this.allUserCBAList.forEach(element => {
-          if (element.userbizdetails.bizname === bizname &&
-            element.userId !== this.userService.currentUserValue.userId) {
-            this.alertService.error('The Business Name ' + bizname + 'is already exist. Please change and save again');
-            this.isbiznamexist = true;
-          }
-        });
-      }
+    if (this.allUserCBAList != null) {
+      this.allUserCBAList.forEach(element => {
+        if (element.userbizdetails.bizname === bizname &&
+          element.userId !== this.userService.currentUserValue.userId) {
+          this.alertService.error('The Business Name ' + bizname + 'is already exist. Please change and save again');
+          this.isbiznamexist = true;
+        }
+      });
     }
   }
 }

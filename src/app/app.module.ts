@@ -61,6 +61,7 @@ import { ManagejobsComponent } from './managejobs/managejobs.component';
 import { CreateoreditwidgetComponent } from './createoreditwidget/createoreditwidget.component';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { ToastNotificationsModule } from 'ngx-toast-notifications';
+import { UserratingComponent } from './userrating/userrating.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -103,6 +104,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     UsersubscribeservicesComponent,
     ManagejobsComponent,
     CreateoreditwidgetComponent,
+    UserratingComponent,
   ],
   imports: [
     ToastNotificationsModule,

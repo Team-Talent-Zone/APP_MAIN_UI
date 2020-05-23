@@ -38,12 +38,12 @@ export class UsersubscribeservicesComponent implements OnInit {
   }
 
   publishNow(serviceId: number) {
-    this.spinnerService.show();
     let objstatus = false;
     if (this.userService.currentUserValue.userbizdetails.bizname === null) {
       this.alertService.error('To Publish , Please Complete The Profile . Go To Edit Profile');
     } else {
       if (this.listOfSubscribedServicesByUser != null) {
+        this.spinnerService.show();
         this.usersrvDetails.getUserServiceDetailsByServiceId(serviceId).subscribe((usrserviceobj: UserServiceDetails) => {
           if (usrserviceobj.serviceId == serviceId) {
             usrserviceobj.status = config.user_service_status_published.toString();
@@ -51,17 +51,7 @@ export class UsersubscribeservicesComponent implements OnInit {
             this.usersrvDetails.saveOrUpdateUserSVCDetails(usrserviceobj).subscribe((obj: any) => {
               if (obj.status === config.user_service_status_published.toString()) {
                 this.alertService.success('Published Succesfully. Your site Is Activated');
-                objstatus = true;
-                this.spinnerService.hide();
-              }
-              if (objstatus) {
-                this.spinnerService.show();
-                setTimeout(() => {
-                  this.router.navigateByUrl('dashboard/', { skipLocationChange: true }).
-                    then(() => {
-                      this.router.navigate(['usersubscribeservices/']);
-                    });
-                }, 2800);
+                this.getAllUserServiceDetailsByUserId(this.userService.currentUserValue.userId);
                 this.spinnerService.hide();
               }
             },

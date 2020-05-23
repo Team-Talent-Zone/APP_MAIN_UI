@@ -13,8 +13,8 @@ export class FreelanceOnSvc {
         public isjobactive: boolean,
         public totalhoursofjob: number,
         public amount: number,
-        public tocompanyamount: number,
-        public tofreelanceamount: number,
+        public tocompanyamount: string,
+        public tofreelanceamount: string,
         public isjobamtpaidtofu: boolean,
         public isjobcompleted: boolean,
         public isjobamtpaidtocompany: boolean,
@@ -27,7 +27,9 @@ export class FreelanceOnSvc {
         public country: string,
         public lat: number,
         public lng: number,
-        public jobdescription: string
+        public jobdescription: string,
+        public txnid: string,
+        public futxnid: string
     ) {
 
     }

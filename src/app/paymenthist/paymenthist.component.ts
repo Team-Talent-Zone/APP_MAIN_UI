@@ -34,16 +34,16 @@ export class PaymenthistComponent implements OnInit {
   ngOnInit() {
     if (this.txnid != null) {
       this.getPaymentDetailsByTxnId(this.txnid);
-    }
-    if (this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_fu.toString()) {
-      this.getPaymentFUDetailsByUserId(this.userService.currentUserValue.userId);
-    }
-
-    if (this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_cba.toString()) {
-      this.getPaymentCBADetailsByUserId(this.userService.currentUserValue.userId);
-    }
+    } else
+      if (this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_fu.toString()) {
+        this.getPaymentFUDetailsByUserId(this.userService.currentUserValue.userId);
+      } else
+        if (this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_cba.toString()) {
+          this.getPaymentCBADetailsByUserId(this.userService.currentUserValue.userId);
+        }
   }
   getPaymentDetailsByTxnId(txnid: string) {
+    this.paymentdetails = null;
     this.spinnerService.show();
     this.paymentService.getPaymentDetailsByTxnId(txnid).subscribe((paymentobj: any) => {
       this.paymentdetails = paymentobj;
@@ -57,6 +57,7 @@ export class PaymenthistComponent implements OnInit {
 
   getPaymentFUDetailsByUserId(userId: number) {
     this.spinnerService.show();
+    this.fupaymenthistorydetails = [];
     this.paymentService.getPaymentFUDetailsByUserId(userId).subscribe((fupaymentobjlist: any) => {
       fupaymentobjlist.forEach(element => {
         if (element.status != null) {
@@ -72,11 +73,12 @@ export class PaymenthistComponent implements OnInit {
   }
 
   getPaymentCBADetailsByUserId(userId: number) {
+    this.cbapaymenthistorydetails = [];
     this.spinnerService.show();
     this.paymentService.getPaymentCBADetailsByUserId(userId).subscribe((cbupaymentobjlist: any) => {
       cbupaymentobjlist.forEach(element => {
         if (element.status != null) {
-            this.cbapaymenthistorydetails.push(element);
+          this.cbapaymenthistorydetails.push(element);
         }
       });
       this.spinnerService.hide();

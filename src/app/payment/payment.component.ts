@@ -19,6 +19,7 @@ export class PaymentComponent implements OnInit {
   @Input() totalAmountToPay: number;
   @Input() displayUserServicesForCheckOut: any;
   @Input() productinfoParam: string;
+  @Input() jobids: string;
 
   issubmit = false;
   disablePaymentButton: boolean = true;
@@ -26,7 +27,6 @@ export class PaymentComponent implements OnInit {
   paymentFormDetails: FormGroup;
   productinfo = '';
   serviceids = '';
-  jobids = '';
   usrobj: any;
 
   constructor(
