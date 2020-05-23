@@ -28,7 +28,8 @@ export class FreelanceOnSvc {
         public lat: number,
         public lng: number,
         public jobdescription: string,
-        public txnid: string
+        public txnid: string,
+        public futxnid: string
     ) {
 
     }

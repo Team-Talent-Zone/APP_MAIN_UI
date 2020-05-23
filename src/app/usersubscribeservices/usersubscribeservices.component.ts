@@ -51,17 +51,7 @@ export class UsersubscribeservicesComponent implements OnInit {
             this.usersrvDetails.saveOrUpdateUserSVCDetails(usrserviceobj).subscribe((obj: any) => {
               if (obj.status === config.user_service_status_published.toString()) {
                 this.alertService.success('Published Succesfully. Your site Is Activated');
-                objstatus = true;
-                this.spinnerService.hide();
-              }
-              if (objstatus) {
-                this.spinnerService.show();
-                setTimeout(() => {
-                  this.router.navigateByUrl('dashboard/', { skipLocationChange: true }).
-                    then(() => {
-                      this.router.navigate(['usersubscribeservices/']);
-                    });
-                }, 3000);
+                this.getAllUserServiceDetailsByUserId(this.userService.currentUserValue.userId);
                 this.spinnerService.hide();
               }
             },

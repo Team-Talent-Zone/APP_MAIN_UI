@@ -175,7 +175,7 @@
                             </div>
                             <div class="card-footer" *ngIf="completedjob.isjobamtpaidtocompany">
                                 <div class="row">
-                                    <div class="col-sm-6"><button class="btn  btn-secondary btn-sm">Payment
+                                    <div class="col-sm-6"><button  [routerLink]="['/payment',completedjob.txnid]" class="btn  btn-secondary btn-sm">Payment
                                             Details</button></div>
                                     <div class="col-sm-6"><button class="btn  btn-warning btn-sm">Rate
                                             Work</button></div>

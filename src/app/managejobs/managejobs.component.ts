@@ -44,7 +44,7 @@ export class ManagejobsComponent implements OnInit {
       this.freelanceserviceService.saveOrUpdateFreelancerOnService(objfreelanceservice).subscribe((updatedobjfreelanceservice: FreelanceOnSvc) => {
         if (updatedobjfreelanceservice.jobId > 0) {
           // tslint:disable-next-line: max-line-length
-          this.alertService.success('The JobId: ' + jobId + ' is completed successfully. Please click on the payment now. ');
+          this.alertService.success('The JobId: ' + jobId + ' is completed successfully. Please click on the Pay. ');
           this.spinnerService.hide();
           this.getUserAllJobDetailsByUserId();
         }

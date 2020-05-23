@@ -34,6 +34,7 @@ export class FreelanceOnSvcAdapter implements Adapter<FreelanceOnSvc> {
             item.lng,
             item.jobdescription,
             item.txnid,
-            );      
+            item.futxnid,
+        );
     }
 }

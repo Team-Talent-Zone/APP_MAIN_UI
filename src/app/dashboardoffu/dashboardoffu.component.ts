@@ -37,12 +37,12 @@ export class DashboardoffuComponent implements OnInit {
   completedJobList: any = [];
   freelancesvcobj: FreelanceOnSvc;
   freelancedetailsbyId: any;
-
-
-  infoCards = [
-    { name: 'Upcoming Pay', value: '1000' },
-    { name: 'Total Earnings', value: '10000' },
-  ];
+  totalEarnings = 0;
+  earnFlag = false;
+  upcomingflag = false;
+  totalupcomingEarnings = 0;
+  infoCards = [];
+  cancelminsdiff: number;
 
   constructor(
     public userService: UserService,
@@ -56,7 +56,7 @@ export class DashboardoffuComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.displayFUDetailsInCards();
+    this.getUserAllJobDetailsByUserId();
     if (!this.userService.currentUserValue.freeLanceDetails.isregfeedone) {
       setTimeout(() => {
         this.spinnerService.show();
@@ -94,8 +94,6 @@ export class DashboardoffuComponent implements OnInit {
           this.stage5Img = this.stageBgStatusRejectedImg;
         }
     }
-
-
   }
 
   openPaymentComponent() {
@@ -108,29 +106,31 @@ export class DashboardoffuComponent implements OnInit {
     });
   }
 
-  displayFUDetailsInCards() {
-
+  getUserAllJobDetailsByUserId() {
     this.newJobList = [];
     this.upcomingJobList = [];
     this.completedJobList = [];
     this.spinnerService.show();
-    this.freelanceSvc.getUserAllJobDetails(this.userService.currentUserValue.freeLanceDetails.subCategory).subscribe((resp: any) => {
+    // tslint:disable-next-line: max-line-length
+    this.freelanceSvc.getUserAllJobDetails(this.userService.currentUserValue.freeLanceDetails.subCategory).subscribe((resp: FreelanceOnSvc) => {
       this.listofalljobs = resp;
-      for (let element of this.listofalljobs) {
+      for (const element of this.listofalljobs) {
+        // tslint:disable-next-line: max-line-length
         if (element.isjobactive && !element.isjobaccepted && element.scategory == this.userService.currentUserValue.freeLanceDetails.subCategory) {
           this.newJobList.push(element);
         }
-        if (element.freelanceuserId == this.userService.currentUserValue.freeLanceDetails.freeLanceId && element.isjobaccepted) {
+        if (element.freelanceuserId == this.userService.currentUserValue.userId && element.isjobaccepted) {
           this.upcomingJobList.push(element);
         }
-        if (element.isjobamtpaidtofu && element.freelanceuserId == this.userService.currentUserValue.userId
-          && element.scategory == this.userService.currentUserValue.freeLanceDetails.subCategory) {
-          element.isjobcompleted = true;
+        if (element.freelanceuserId == this.userService.currentUserValue.userId
+          && element.scategory === this.userService.currentUserValue.freeLanceDetails.subCategory && element.isjobcompleted) {
           this.completedJobList.push(element);
         }
       }
-      this.spinnerService.hide();
-
+      setTimeout(() => {
+        this.builtEarningCard();
+        this.spinnerService.hide();
+      }, 500);
     },
       error => {
         this.spinnerService.hide();
@@ -138,52 +138,107 @@ export class DashboardoffuComponent implements OnInit {
       });
   }
 
-  updateUserOnAccept(jobId: number) {
-      this.freelanceSvc.getAllFreelanceOnServiceDetailsByJobId(jobId).subscribe(
-        (freelancedetailsbyId: FreelanceOnSvc) => {
-          if (freelancedetailsbyId.isjobaccepted == false) {
-            freelancedetailsbyId.freelanceuserId = this.userService.currentUserValue.freeLanceDetails.freeLanceId;
-            freelancedetailsbyId.isjobaccepted = true;
-            console.log("resp from restapi :", freelancedetailsbyId);
-            this.freelanceSvc.saveOrUpdateFreeLanceOnService(freelancedetailsbyId).subscribe((updatedobjfreelanceservice: FreelanceOnSvc) => {
-              this.displayFUDetailsInCards();
-            },
-              error => {
-                this.spinnerService.hide();
-                this.alertService.error(error);
-              });
-          }
-          else {
-            this.alertService.error("Sorry! This jobs has been accepted")
-            this.displayFUDetailsInCards();
-          }
-        },
-        error => {
-          this.spinnerService.hide();
-          this.alertService.error(error);
-        });
+  builtEarningCard() {
+    if (this.completedJobList.length > 0) {
+      this.totalEarnings = 0;
+      this.earnFlag = false;
+      this.completedJobList.forEach(element => {
+        if (element.isjobamtpaidtofu) {
+          this.totalEarnings = this.totalEarnings + Number.parseFloat(element.tofreelanceamount);
+        }
+        this.earnFlag = true;
+      });
+    } else {
+      this.totalEarnings = 0;
+      this.earnFlag = true;
+    }
+    if (this.upcomingJobList.length > 0) {
+      this.totalupcomingEarnings = 0;
+      this.upcomingflag = false;
+
+      this.upcomingJobList.forEach(element => {
+        if (element.isupcoming === '1' && element.isjobaccepted) {
+          this.totalupcomingEarnings = this.totalupcomingEarnings + Number.parseFloat(element.tofreelanceamount);
+        }
+        this.upcomingflag = true;
+      });
+    } else {
+      this.totalupcomingEarnings = 0;
+      this.upcomingflag = true;
+    }
+
+    if (this.earnFlag && this.upcomingflag) {
+      this.infoCards = [
+        { name: 'Upcoming Pay', value: this.totalupcomingEarnings },
+        { name: 'Total Earnings', value: this.totalEarnings },
+      ];
+    }
   }
 
-  updateUserOnCancel(jobId: number) {
-
+  accept(jobId: number) {
+    this.spinnerService.show();
     this.freelanceSvc.getAllFreelanceOnServiceDetailsByJobId(jobId).subscribe(
       (freelancedetailsbyId: FreelanceOnSvc) => {
-        freelancedetailsbyId.freelanceuserId = null;
-        freelancedetailsbyId.isjobaccepted = false;
-        console.log("resp from restapi :", freelancedetailsbyId);
-        this.freelanceSvc.saveOrUpdateFreeLanceOnService(freelancedetailsbyId).subscribe((updatedobjfreelanceservice: FreelanceOnSvc) => {
-          this.displayFUDetailsInCards();
-        },
-          error => {
+        if (!freelancedetailsbyId.isjobaccepted) {
+          freelancedetailsbyId.freelanceuserId = this.userService.currentUserValue.userId;
+          freelancedetailsbyId.isjobaccepted = true;
+          this.freelanceSvc.saveOrUpdateFreeLanceOnService(freelancedetailsbyId).subscribe((updatedobjfreelanceservice: FreelanceOnSvc) => {
+            this.getUserAllJobDetailsByUserId();
             this.spinnerService.hide();
-            this.alertService.error(error);
-          });
+          },
+            error => {
+              this.spinnerService.hide();
+              this.alertService.error(error);
+            });
+        } else {
+          this.spinnerService.hide();
+          // tslint:disable-next-line: max-line-length
+          this.alertService.error('Sorry ' + this.userService.currentUserValue.firstname + '! This JobId#' + jobId + ' has been accepted by other freelancer');
+          this.getUserAllJobDetailsByUserId();
+        }
       },
       error => {
         this.spinnerService.hide();
         this.alertService.error(error);
       });
+  }
 
+  cancel(jobId: number) {
+    this.spinnerService.show();
+    this.freelanceSvc.getAllFreelanceOnServiceDetailsByJobId(jobId).subscribe(
+      (freelancedetailsbyId: FreelanceOnSvc) => {
+        this.cancelminsdiff = 0;
+        var todate = new Date();
+        var updateon = new Date(freelancedetailsbyId.updatedon);
+        this.diff_minutes(todate, updateon);
+        if (this.cancelminsdiff <= 15) {
+          freelancedetailsbyId.freelanceuserId = null;
+          freelancedetailsbyId.isjobaccepted = false;
+          freelancedetailsbyId.isjobcancel = false;
+          this.freelanceSvc.saveOrUpdateFreeLanceOnService(freelancedetailsbyId).subscribe((updatedobjfreelanceservice: FreelanceOnSvc) => {
+            this.getUserAllJobDetailsByUserId();
+            this.spinnerService.show();
+          },
+            error => {
+              this.spinnerService.hide();
+              this.alertService.error(error);
+            });
+        } else {
+          // tslint:disable-next-line: max-line-length
+          this.alertService.error('Cancellation only possible before 15 mins after accepting job .Any concerns, please call our core service support team');
+          this.spinnerService.hide();
+        }
+      },
+      error => {
+        this.spinnerService.hide();
+        this.alertService.error(error);
+      });
+  }
+
+  diff_minutes(dt2: Date, dt1: Date) {
+    var diff = (dt2.getTime() - dt1.getTime()) / 1000;
+    diff = diff /= 60;
+    this.cancelminsdiff = Math.abs(Math.round(diff));
   }
 
 }

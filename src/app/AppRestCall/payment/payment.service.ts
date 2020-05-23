@@ -13,7 +13,6 @@ export class PaymentService {
   ) { }
 
   savePayments(payment: Payment) {
-    console.log('payment', payment);
     return this.http.post(`${environment.apiUrl}/savePayments/`, payment);
   }
 
