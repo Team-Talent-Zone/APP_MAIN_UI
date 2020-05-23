@@ -70,6 +70,7 @@ export class UsersubscribeservicesComponent implements OnInit {
   }
   /** The below method will fetch all the user service for the user id */
   getAllUserServiceDetailsByUserId(userId: number) {
+    this.listOfSubscribedServicesByUser = [];
     this.spinnerService.show();
     this.usersrvDetails.getAllUserServiceDetailsByUserId(userId).subscribe(
       (listofusersrvDetails: any) => {

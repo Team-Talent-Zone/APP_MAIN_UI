@@ -47,13 +47,15 @@
                             <div class="col-sm-3"></div>
                             <div class="col-sm-4">
                                 <div *ngIf="svc.status === 'PAYMENT_PAID' && svc.category !=='FS_S'">
-                                    <a class="btn btn-success"  title="Click to Pubish the Site for {{svc.name}}" (click)="publishNow(svc.serviceId)">
-                                        <i class="fa fa-play"  title="Click to Pubish the Site for {{svc.name}}"
+                                    <a class="btn btn-success" title="Click to Pubish the Site for {{svc.name}}"
+                                        (click)="publishNow(svc.serviceId)">
+                                        <i class="fa fa-play" title="Click to Pubish the Site for {{svc.name}}"
                                             style="font-size:12px;color:rgb(76, 0, 255)"> </i>
                                     </a>
                                 </div>
-                                <div *ngIf="svc.status === 'PUBLISHED' && svc.category !=='FS_S'">
-                                    <a class="btn btn-success" href={{svc.publishedlinkurl}} target="_blank" title={{svc.publishedlinkurl}}>
+                                <div *ngIf="istimelap && svc.status === 'PUBLISHED' && svc.category !=='FS_S'">
+                                    <a class="btn btn-success" href={{svc.publishedlinkurl}} target="_blank"
+                                        title={{svc.publishedlinkurl}}>
                                         Go To Site</a>
                                 </div>
                             </div>
