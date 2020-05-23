@@ -15,12 +15,6 @@ export class DashboardmapbyuseroleComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_fu) {
-      this.getAllActiveJobsDetailsBySubCategory();
-    }
-  }
-  getAllActiveJobsDetailsBySubCategory() {
-
   }
 
 }

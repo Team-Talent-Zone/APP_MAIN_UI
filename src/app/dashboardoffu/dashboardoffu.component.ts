@@ -9,8 +9,10 @@ import { AlertsService } from '../AppRestCall/alerts/alerts.service';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { FreelanceOnSvcService } from '../AppRestCall/freelanceOnSvc/freelance-on-svc.service';
 import { FreelanceOnSvc } from '../appmodels/FreelanceOnSvc';
-import { FreelanceOnSvcAdapter } from '../adapters/freelanceonsvcadapter';
-import { subscribeOn } from 'rxjs/operators';
+import { ToastConfig, Toaster, ToastType } from 'ngx-toast-notifications';
+import { ConfigMsg } from '../appconstants/configmsg';
+import { timer } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboardoffu',
@@ -43,6 +45,8 @@ export class DashboardoffuComponent implements OnInit {
   totalupcomingEarnings = 0;
   infoCards = [];
   cancelminsdiff: number;
+  private types: Array<ToastType> = ['success', 'danger', 'warning', 'info', 'primary', 'secondary', 'dark', 'light'];
+
 
   constructor(
     public userService: UserService,
@@ -53,10 +57,23 @@ export class DashboardoffuComponent implements OnInit {
     private spinnerService: Ng4LoadingSpinnerService,
     private alertService: AlertsService,
     private freelanceSvc: FreelanceOnSvcService,
+    private toaster: Toaster,
+    private router: Router,
   ) { }
 
   ngOnInit() {
-    this.getUserAllJobDetailsByUserId();
+    const source = timer(1000, 20000);
+    const sourcerefresh = timer(1000, 30000);
+    source.subscribe((val: number) => {
+      this.autoToastNotificationsForFU();
+    });
+    sourcerefresh.subscribe((val: number) => {
+      if (this.router.url === '/dashboard') {
+        if (this.userService.currentUserValue.freeLanceDetails.isregfeedone) {
+          this.getUserAllJobDetailsByUserId();
+        }
+      }
+    });
     if (!this.userService.currentUserValue.freeLanceDetails.isregfeedone) {
       setTimeout(() => {
         this.spinnerService.show();
@@ -64,7 +81,6 @@ export class DashboardoffuComponent implements OnInit {
           this.referenceobj = refObj;
           this.spinnerService.hide();
           this.istimelap = true;
-
         },
           error => {
             this.spinnerService.hide();
@@ -241,4 +257,31 @@ export class DashboardoffuComponent implements OnInit {
     this.cancelminsdiff = Math.abs(Math.round(diff));
   }
 
+  autoToastNotificationsForFU() {
+    if (this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_fu.toString()) {
+      if (!this.userService.currentUserValue.freeLanceDetails.isprofilecompleted) {
+        // tslint:disable-next-line: max-line-length
+        let msg = 'Hi ' + this.userService.currentUserValue.fullname + ', ' + ConfigMsg.toast_notification_fu_isprofilenotcompelted;
+        this.showToastNotificationForFU(msg, this.types[3], 'Profile');
+      } else
+        if (!this.userService.currentUserValue.freeLanceDetails.isregfeedone) {
+          // tslint:disable-next-line: max-line-length
+          let msg = 'Hi ' + this.userService.currentUserValue.fullname + ', ' + ConfigMsg.toast_notification_fu_isregfeenotcompelted;
+          this.showToastNotificationForFU(msg, this.types[2], 'Payment');
+        }
+    }
+    if (this.upcomingJobList.length < 3 && this.newJobList.length > 0) {
+      let msg = 'Hi ' + this.userService.currentUserValue.fullname + ', ' + ConfigMsg.toast_notification_fu_acceptjobmsg.toString();
+      this.showToastNotificationForFU(msg, this.types[3], 'Job');
+    }
+
+  }
+  showToastNotificationForFU(txtmsg: string, typeName: any, toastheader: string) {
+    const type = typeName;
+    this.toaster.open({
+      text: txtmsg,
+      caption: toastheader + ' Notification',
+      type: type,
+    });
+  }
 }

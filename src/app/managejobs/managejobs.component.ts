@@ -7,6 +7,7 @@ import { FreelanceOnSvc } from '../appmodels/FreelanceOnSvc';
 import { PaymentComponent } from '../payment/payment.component';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { timer } from 'rxjs';
 
 @Component({
   selector: 'app-managejobs',
@@ -33,7 +34,13 @@ export class ManagejobsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getUserAllJobDetailsByUserId();
+    const sourcerefresh = timer(1000, 30000);
+    sourcerefresh.subscribe((val: number) => {
+      if (this.router.url === '/job') {
+        this.getUserAllJobDetailsByUserId();
+      }
+    });
+
   }
 
   jobDone(jobId: number) {
@@ -117,6 +124,7 @@ export class ManagejobsComponent implements OnInit {
     this.newlyPostedJobs = [];
     this.completedJobs = [];
     this.upComingPostedJobs = [];
+    this.spinnerService.show();
     this.freelanceserviceService.getUserAllJobDetailsByUserId(this.userService.currentUserValue.userId).subscribe((onserviceList: any) => {
       onserviceList.forEach(element => {
         // tslint:disable-next-line: max-line-length
@@ -132,7 +140,12 @@ export class ManagejobsComponent implements OnInit {
           this.completedJobs.push(element);
         }
       });
-    });
+      this.spinnerService.hide();
+    },
+      error => {
+        this.spinnerService.hide();
+        this.alertService.error(error);
+      });
   }
 
   openPaymentComponent(amount: number, jobId: string, subcategorylabel: string) {

@@ -66,15 +66,9 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    const source = timer(1000, 20000);
-    source.subscribe((val: number) => {
-      this.autoToastNotifications();
-    });
-
     if (this.txtid != null) {
       this.getPaymentDetailsByTxnId(this.txtid);
     }
-
     setTimeout(() => {
       this.resetLoggedInUser();
     }, 100);
@@ -82,42 +76,6 @@ export class DashboardComponent implements OnInit {
     if (this.userService.currentUserValue.userroles.rolecode !== config.user_rolecode_fu.toString()) {
       this.getAllAvailableFUSkills();
     }
-  }
-
-  autoToastNotifications() {
-    if (this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_fu.toString()) {
-      if (!this.userService.currentUserValue.freeLanceDetails.isprofilecompleted) {
-        // tslint:disable-next-line: max-line-length
-        let msg = 'Hi ' + this.userService.currentUserValue.fullname + ', ' + ConfigMsg.toast_notification_fu_isprofilenotcompelted;
-        this.showToastNotification(msg, this.types[3], 'Profile');
-      } else
-        if (!this.userService.currentUserValue.freeLanceDetails.isregfeedone) {
-          // tslint:disable-next-line: max-line-length
-          let msg = 'Hi ' + this.userService.currentUserValue.fullname + ', ' + ConfigMsg.toast_notification_fu_isregfeenotcompelted;
-          this.showToastNotification(msg, this.types[2], 'Payment');
-        }
-    }
-
-    if (this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_cba.toString()) {
-
-    }
-
-    if (this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_csct.toString()) {
-
-    }
-
-    if (this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_cscm.toString()) {
-
-    }
-
-  }
-  showToastNotification(txtmsg: string, typeName: any, toastheader: string) {
-    const type = typeName;
-    this.toaster.open({
-      text: txtmsg,
-      caption: toastheader + ' Notification',
-      type: type,
-    });
   }
 
   getNameInitials(fullname: string) {
