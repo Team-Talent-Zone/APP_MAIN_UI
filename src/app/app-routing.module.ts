@@ -149,7 +149,7 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'usersubscribeservices',
+    path: 'myservices',
     component: DashboardComponent,
     canActivate: [AuthgaurdService],
     children: [
