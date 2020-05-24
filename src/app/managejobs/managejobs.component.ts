@@ -8,6 +8,9 @@ import { PaymentComponent } from '../payment/payment.component';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { timer } from 'rxjs';
+import { FreelanceStarReview } from '../appmodels/FreelanceStarReview';
+import { timestamp } from 'rxjs/operators';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-managejobs',
@@ -20,8 +23,12 @@ export class ManagejobsComponent implements OnInit {
   newlyPostedJobs: any = [];
   completedJobs: any = [];
   upComingPostedJobs: any = [];
+  record: any = [];
+  freelancestarobj: FreelanceStarReview;
+  feedbackform: FormGroup;
 
   constructor(
+    public fb: FormBuilder,
     private route: ActivatedRoute,
     private alertService: AlertsService,
     public userService: UserService,
@@ -41,6 +48,7 @@ export class ManagejobsComponent implements OnInit {
         this.getUserAllJobDetailsByUserId();
       }
     });
+    this.feedbackformvalidation();
   }
 
   jobDone(jobId: number) {
@@ -156,5 +164,37 @@ export class ManagejobsComponent implements OnInit {
       }
     });
   }
+  data(jobId: number) {
+    for (let element of this.completedJobs) {
+      if (element.jobId == jobId) {
+        this.record = [];
+        this.record = element;
+      }
+    }
+  }
 
+  feedbackformvalidation()
+  {
+    this.feedbackform = this.fb.group({
+      starrate:['',Validators.required],
+      feedbackcomment:['',Validators.required]
+    });
+  }
+  savefeedback() {
+    console.log("im inside save method")
+    console.log(this.record);
+    //this.freelancestarobj.starrate = this.feedbackform.get('starrate').value;
+    console.log("this.feedbackform.get('starrate').value :",this.feedbackform.get('starrate').value)
+    console.log("this.feedbackform.get('feedbackcomment').value :",this.feedbackform.get('feedbackcomment').value)
+    this.freelancestarobj.feedbackcomment = this.feedbackform.get('feedbackcomment').value;
+    this.freelancestarobj.userId = this.record.userId;
+    this.freelancestarobj.freelanceuserId = this.record.freelanceuserId;
+    this.freelancestarobj.jobId=this.record.jobId;    
+    this.freelancestarobj.feedbackby=this.record.bizname 
+
+    this.freelanceserviceService.saveFreeLanceStarReviewFB(this.freelancestarobj).subscribe((response: FreelanceStarReview) => {
+
+    }
+    )
+  }
 }

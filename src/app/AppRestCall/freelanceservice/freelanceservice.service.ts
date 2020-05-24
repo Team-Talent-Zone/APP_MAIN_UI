@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { FreelanceOnSvc } from 'src/app/appmodels/FreelanceOnSvc';
+import { FreelanceStarReview } from 'src/app/appmodels/FreelanceStarReview';
 
 @Injectable({
   providedIn: 'root'
@@ -31,5 +32,10 @@ export class FreelanceserviceService {
   deleteFreelanceSVCDetails(freelanceOnService: FreelanceOnSvc) {
     return this.http.post(`${environment.apiUrl}/deleteFreelanceSVCDetails/`, freelanceOnService);
 
+  }
+
+  saveFreeLanceStarReviewFB(obj: FreelanceStarReview)
+  {
+    return this.http.post(`${environment.apiUrl}/saveFreeLanceStarReviewFB/`,obj);
   }
 }
