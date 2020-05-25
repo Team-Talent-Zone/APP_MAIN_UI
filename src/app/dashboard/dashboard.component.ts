@@ -6,13 +6,10 @@ import { config } from '../appconstants/config';
 import { ActivatedRoute } from '@angular/router';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { AlertsService } from '../AppRestCall/alerts/alerts.service';
-import { TranslateService } from '@ngx-translate/core';
 import { PaymentService } from '../AppRestCall/payment/payment.service';
-import { timer } from 'rxjs';
-import { ToastConfig, Toaster, ToastType } from 'ngx-toast-notifications';
-import { ConfigMsg } from '../appconstants/configmsg';
 import { ReferenceService } from '../AppRestCall/reference/reference.service';
-import { map, first } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-dashboard',
@@ -20,8 +17,6 @@ import { map, first } from 'rxjs/operators';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-
-  private types: Array<ToastType> = ['success', 'danger', 'warning', 'info', 'primary', 'secondary', 'dark', 'light'];
 
   name: string;
   list = [];
@@ -40,9 +35,8 @@ export class DashboardComponent implements OnInit {
   inputItemCode: string;
   txtid: string;
   ispaysuccess = false;
-
   defaultTxtImg: string = '//placehold.it/200/dddddd/fff?text=' + this.getNameInitials(this.userService.currentUserValue.fullname);
-
+  fullname: string;
 
   constructor(
     public userService: UserService,
@@ -50,11 +44,10 @@ export class DashboardComponent implements OnInit {
     private route: ActivatedRoute,
     private spinnerService: Ng4LoadingSpinnerService,
     private alertService: AlertsService,
-    public translate: TranslateService,
     private refAdapter: ReferenceAdapter,
     private paymentsvc: PaymentService,
-    private toaster: Toaster,
     private referService: ReferenceService,
+    public translate: TranslateService,
   ) {
     route.params.subscribe(params => {
       this.txtid = params.txtid;
@@ -71,10 +64,30 @@ export class DashboardComponent implements OnInit {
     }
     setTimeout(() => {
       this.resetLoggedInUser();
-    }, 100);
+    }, 1000);
 
     if (this.userService.currentUserValue.userroles.rolecode !== config.user_rolecode_fu.toString()) {
       this.getAllAvailableFUSkills();
+    }
+
+    if (this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_fu.toString()) {
+      this.fullname = null;
+      if (this.userService.currentUserValue.preferlang !== config.default_prefer_lang) {
+        // tslint:disable-next-line: max-line-length
+        this.referService.translatetext(this.userService.currentUserValue.fullname, this.userService.currentUserValue.preferlang).subscribe(
+          (trantxt: any) => {
+            this.fullname = trantxt.translateresp;
+          },
+          error => {
+            this.spinnerService.hide();
+            this.alertService.error(error);
+          }
+        );
+      } else {
+        this.fullname = this.userService.currentUserValue.fullname;
+      }
+    } else {
+      this.fullname = this.userService.currentUserValue.fullname;
     }
   }
 
@@ -108,30 +121,18 @@ export class DashboardComponent implements OnInit {
         this.spinnerService.hide();
       });
   }
+
   private resetLoggedInUser() {
     this.userService.getUserByUserId(this.userService.currentUserValue.userId).subscribe(
       (userresp: any) => {
         this.userService.setCurrentUserValue(userresp);
-        this.translateToLanguage(this.userService.currentUserValue.preferlang.toString());
+        this.translateToLanguage(userresp.preferlang.toString());
         this.spinnerService.hide();
       },
       error => {
         this.alertService.error(error);
         this.spinnerService.hide();
       });
-  }
-
-  translateToLanguage(preferedLang: string) {
-    if (preferedLang === config.lang_code_hi.toString()) {
-      preferedLang = config.lang_hindi_word.toString();
-    }
-    if (preferedLang === config.lang_code_te.toString()) {
-      preferedLang = config.lang_telugu_word.toString();
-    }
-    if (preferedLang === config.default_prefer_lang.toString()) {
-      preferedLang = config.lang_english_word.toString();
-    }
-    this.translate.use(preferedLang);
   }
 
   logout() {
@@ -231,5 +232,17 @@ export class DashboardComponent implements OnInit {
         }
       }, 500);
     }
+  }
+  translateToLanguage(preferedLang: string) {
+    if (preferedLang === config.lang_code_hi.toString()) {
+      preferedLang = config.lang_hindi_word.toString();
+    }
+    if (preferedLang === config.lang_code_te.toString()) {
+      preferedLang = config.lang_telugu_word.toString();
+    }
+    if (preferedLang === config.default_prefer_lang.toString()) {
+      preferedLang = config.lang_english_word.toString();
+    }
+    this.translate.use(preferedLang);
   }
 }

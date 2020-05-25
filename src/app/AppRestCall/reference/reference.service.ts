@@ -26,5 +26,4 @@ export class ReferenceService {
     return this.http.get(`${environment.apiUrl}/translatetext/` + targetText + '/' + langcode + '/');
   }
 
-   
 }

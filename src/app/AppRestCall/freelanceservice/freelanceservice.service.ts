@@ -31,11 +31,9 @@ export class FreelanceserviceService {
 
   deleteFreelanceSVCDetails(freelanceOnService: FreelanceOnSvc) {
     return this.http.post(`${environment.apiUrl}/deleteFreelanceSVCDetails/`, freelanceOnService);
-
   }
 
-  saveFreeLanceStarReviewFB(obj: FreelanceStarReview)
-  {
-    return this.http.post(`${environment.apiUrl}/saveFreeLanceStarReviewFB/`,obj);
+  saveFreeLanceStarReviewFB(obj: FreelanceStarReview) {
+    return this.http.post(`${environment.apiUrl}/saveFreeLanceStarReviewFB/`, obj);
   }
 }

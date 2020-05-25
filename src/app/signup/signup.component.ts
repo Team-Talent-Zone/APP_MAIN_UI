@@ -101,6 +101,7 @@ export class SignupComponent implements OnInit {
   getAllCategories(langcode: string) {
     this.reflookupdetails = [];
     this.referencedetailsmap = [];
+    this.referencedetailsmapsubcat = [];
     this.spinnerService.show();
     this.referService.getReferenceLookupByKey(config.key_domain.toString()).pipe(map((data: any[]) =>
       data.map(item => this.refAdapter.adapt(item))),
@@ -237,7 +238,6 @@ export class SignupComponent implements OnInit {
                         this.alertService.error(error);
                       });
                   }
-                  console.log('this.ourserviceids' , this.ourserviceids);
                   if (this.ourserviceids !== null) {
                     if (this.ourserviceids[0].packwithotherourserviceid != null) {
                       this.saveUserServiceDetailsForServicePkg(this.ourserviceids, this.usrObj);

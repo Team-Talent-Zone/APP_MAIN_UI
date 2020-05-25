@@ -184,7 +184,7 @@
                                             class="btn  btn-secondary btn-sm">Payment
                                             Details</button></div>
                                     <div class="col-sm-6"><button class="btn  btn-warning btn-sm" data-toggle="modal"
-                                            data-target="#rateit" (click)="data(completedjob.jobId)">Rate
+                                            data-target="#rateit" (click)="feedback(completedjob.jobId)">Rate
                                             Work</button></div>
                                 </div>
                             </div>
@@ -195,10 +195,7 @@
         </div>
     </div>
 </div>
-
-
-
-<div class="modal fade" id="rateit">
+<div class="modal fade" id="rateit" *ngIf="isratingdisplay">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -209,28 +206,37 @@
             </div>
             <div class="modal-body">
                 <form [formGroup]="feedbackform" (ngSubmit)="savefeedback()">
-                         Freelancer Name:
-                        {{record.fullname}}                        
-                 
+                    Freelancer Name:
+                    {{record.fullname}}
                     <div class="form-group">
-                        <label for="starrate"> Rating:</label>
-                        <select  id="starrate" class="form-control" formControlName="starrate">
+                        <span>
+                            <i class="fa fa fa-star	form-control-icon"></i>
+                          </span> 
+                        <select #sel class="form-control" formControlName="starrate"
+                            [ngClass]="{ 'is-invalid': issubmit && f.starrate.errors }">
+                            <option value=''>--Select Rate --</option>
                             <option value=5>5</option>
                             <option value=4>4</option>
                             <option value=3>3</option>
                             <option value=2>2</option>
                             <option value=1>1</option>
                         </select>
-                    </div>
-                    <div class="form-group">
-                        Description:
-                        <textarea placeholder="description" class="form-control" formControlName="feedbackcomment"
-                            [ngClass]="{ 'is-invalid': issubmit && f.feedbackcomment.errors }">
-                        <div *ngIf="issubmit && f.feedbackcomment.errors" class="invalid-feedback">
-                            <div *ngIf="f.feedbackcomment.errors.required">Please give some description 
+                        <div *ngIf="issubmit && f.starrate.errors" class="invalid-feedback">
+                            <div *ngIf="f.starrate.errors.required">Rating is required
                             </div>
                         </div>
-                        </textarea>
+                    </div>
+                    <div class="form-group">
+                        <span>
+                            <i class="fa fa-at form-control-icon"></i>
+                          </span>
+                        <textarea placeholder="Comment On JobId#{{record.jobId}}" class="form-control" formControlName="feedbackcomment"
+                            [ngClass]="{ 'is-invalid': issubmit && f.feedbackcomment.errors }">
+                         </textarea>
+                        <div *ngIf="issubmit && f.feedbackcomment.errors" class="invalid-feedback">
+                            <div *ngIf="f.feedbackcomment.errors.required">Comment is required
+                            </div>
+                        </div>
                     </div>
 
                     <div class="modal-footer">
@@ -239,7 +245,7 @@
 
                 </form>
             </div>
-            
+
         </div>
     </div>
 </div>
