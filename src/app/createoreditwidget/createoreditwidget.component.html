@@ -1,20 +1,98 @@
 <div class="container">
     <div class="row justify-content-center h-100">
-        <div class="col-md-6" id="yellow">
-            One of three columns
+        <div class="col-md-2">
+            <div class="avatar-upload">
+                <div class="avatar-edit">
+                    <input type='file' accept=".png,.jpg,.jpeg" #fileInputLogo
+                        (change)="uploadFile($event , 'logoId')" />
+                </div>
+                <div class="avatar-square-preview" *ngIf="logoId != null">
+                    <div id="imagePreview" [style.backgroundImage]="'url('+ logoId +')'">
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn btn-info btn-md" (click)="fileInputLogo.click()">
+                <span *ngIf="logoId != null ; else elseNoLogoID">Re-Upload
+                    Logo</span>
+                <ng-template #elseNoLogoID>
+                    Upload Logo
+                </ng-template>
+            </button>
+        </div>
+        <div class="col-md-3">
+            <div class="form-row">
+                <div class="form-group">
+                    <span>
+                        <i class=" fa fa-briefcase  form-control-icon"></i>
+                    </span>
+                    <input type="text" placeholder="Company Name*" class="form-control">
+                </div>
+            </div>
         </div>
         <div class="col-md-6">
-            One of three columns
+            <div class="avatar-upload">
+                <div class="avatar-edit">
+                    <input type='file' accept=".png,.jpg,.jpeg" #fileInputCmImgURLId
+                        (change)="uploadFile($event , 'companyimgurlId')" />
+                </div>
+                <div class="avatar-square-preview" *ngIf="companyimgurlId != null">
+                    <div id="imagePreview" [style.backgroundImage]="'url('+ companyimgurlId +')'">
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn btn-info btn-md" (click)="fileInputCmImgURLId.click()">
+                <span *ngIf="companyimgurlId != null ; else elseCompanyImgURLID">Re-Upload
+                    Company Image URL</span>
+                <ng-template #elseCompanyImgURLID>
+                    Upload Company Image URL
+                </ng-template>
+            </button>
         </div>
     </div>
     <div class="row align-items-center">
         <div class="col">
-            One of three columns
+            <div class="avatar-upload">
+                <div class="avatar-edit">
+                    <input type='file' accept=".png,.jpg,.jpeg" #fileInputCmBgId
+                        (change)="uploadFile($event , 'companybgurlId')" />
+                </div>
+                <div class="avatar-square-preview" *ngIf="companybgurlId != null">
+                    <div id="imagePreview" [style.backgroundImage]="'url('+ companybgurlId +')'">
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn btn-info btn-md" (click)="fileInputCmBgId.click()">
+                <span *ngIf="companybgurlId != null ; else elseCompanyBGImgURLID">Re-Upload
+                    Company Background Image URL</span>
+                <ng-template #elseCompanyBGImgURLID>
+                    Upload Company Background Image URL
+                </ng-template>
+            </button>
         </div>
     </div>
     <div class="row align-items-end">
         <div class="col">
-            One of three columns
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <span>
+                        <i class=" fa fa-address-book  form-control-icon"></i>
+                    </span>
+                    <textarea placeholder="Company Address*" class="form-control"></textarea>
+                </div>
+                <div class="form-group col-md-3">
+                    <span>
+                        <i class=" fa fa-address-book  form-control-icon"></i>
+                    </span>
+                    <textarea placeholder="Company Content" class="form-control"></textarea>
+                </div>
+                <div class="form-group col-md-3">
+                    <textarea placeholder="Company FaceBook URL" class="form-control"></textarea>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <textarea placeholder="Company Instagram URL" class="form-control"></textarea>
+                </div>
+            </div>
         </div>
     </div>
-</div>  
+    <button type="button">Save Widget Details</button>
