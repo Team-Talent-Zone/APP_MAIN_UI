@@ -35,11 +35,7 @@
                         <div class="row">
                             <div class="col-sm-4">
                                 <div *ngIf="svc.category !=='FS_S'">
-                                    <a *ngIf="svc.widgetId > 0" class="btn btn-warning"
-                                        [routerLink]="['/createoreditwidget',svc.widgetId]">
-                                        <i class="fa fa-window-restore">Custom Widget</i></a>
-                                    <a *ngIf="svc.widgetId == null" class="btn btn-warning"
-                                        [routerLink]="['/createoreditwidget',-1]">
+                                    <a class="btn btn-warning" [routerLink]="['/createoreditwidget',svc.ourserviceId]">
                                         <i class="fa fa-window-restore">Custom Widget</i></a>
                                 </div>
                             </div>
