@@ -1,7 +1,6 @@
 import { ActivatedRoute } from '@angular/router';
 import { NewServiceAdapter } from './../adapters/newserviceadapter';
 import { NewsvcService } from './../AppRestCall/newsvc/newsvc.service';
-import { NewService } from './../appmodels/NewService';
 import { Component, OnInit } from '@angular/core';
 import { DashboardofcbaComponent } from '../dashboardofcba/dashboardofcba.component';
 import { ManageserviceComponent } from '../manageservice/manageservice.component';

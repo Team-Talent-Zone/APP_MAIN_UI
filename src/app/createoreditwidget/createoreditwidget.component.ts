@@ -169,9 +169,7 @@ export class CreateoreditwidgetComponent implements OnInit {
     console.log(this.bgflag);
     this.spinnerService.show();
     setTimeout(() => {
-      console.log('this.widgetId ', this.widgetId);
       if (this.logoflag && this.companyimgflag && this.bgflag && this.widgetId == null) {
-        console.log('widigetsvc', this.widigetsvc);
         console.log(this.logoflag);
         console.log(this.companyimgflag);
         console.log(this.bgflag);
@@ -186,10 +184,8 @@ export class CreateoreditwidgetComponent implements OnInit {
             this.spinnerService.hide();
           });
       } else {
-        console.log('widigetsvc edit', this.widigetsvc);
         this.widgetService.saveOrUpdateWidget(this.widigetsvc).subscribe((obj: WidgetForService) => {
           if (obj.widgetId > 0) {
-            console.log('inside the edit');
             this.alertService.success('Customized Widget is changes saved');
             this.spinnerService.hide();
           }
@@ -216,7 +212,6 @@ export class CreateoreditwidgetComponent implements OnInit {
               this.companyimgflag = true;
               this.widgetlayout.companyimgurl = returnURL;
               this.filenameimgurl = null;
-              console.log('returnURL', returnURL);
             }
             if (type === config.widget_companybgurlId.toString()) {
               this.bgflag = true;
