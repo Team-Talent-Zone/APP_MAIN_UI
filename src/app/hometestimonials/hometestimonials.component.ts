@@ -5,6 +5,7 @@ import { FreelanceserviceService } from './../AppRestCall/freelanceservice/freel
 import { Component, OnInit } from '@angular/core';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { config } from 'src/app/appconstants/config';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-hometestimonials',
@@ -29,7 +30,6 @@ export class HometestimonialsComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('this name', this.name);
     if (this.name === config.lang_hindi_word.toString()) {
       this.getFUFeebackDetails(config.lang_code_hi);
 
@@ -48,10 +48,26 @@ export class HometestimonialsComponent implements OnInit {
       list.forEach((element: any) => {
         element.starrate = Array(element.starrate);
         if (langcode === config.lang_code_te || langcode === config.lang_code_hi) {
-          element.feedbackcomment = this.translateText(element.feedbackcomment, langcode);
-          element.label = this.translateText(element.label, langcode);
-          element.feedbackby = this.translateText(element.feedbackby, langcode);
-          element.fullname = this.translateText(element.fullname, langcode);
+          this.referService.translatetext(element.feedbackcomment, langcode).subscribe(
+            (txt: string) => {
+              element.feedbackcomment = txt;
+            }
+          );
+          this.referService.translatetext(element.fullname, langcode).subscribe(
+            (txt: string) => {
+              element.fullname = txt;
+            }
+          );
+          this.referService.translatetext(element.feedbackby, langcode).subscribe(
+            (txt: string) => {
+              element.feedbackby = txt;
+            }
+          );
+          this.referService.translatetext(element.label, langcode).subscribe(
+            (txt: string) => {
+              element.label = txt;
+            }
+          );
           this.listofTestimonals.push(element);
         } else {
           this.listofTestimonals.push(element);
@@ -64,15 +80,5 @@ export class HometestimonialsComponent implements OnInit {
       });
   }
 
-  translateText(targetTxt: string, preferlang: string) {
-    this.referService.translatetext(targetTxt, preferlang).subscribe(
-      (trantxt: any) => {
-        return trantxt.translateresp;
-      },
-      error => {
-        this.spinnerService.hide();
-        this.alertService.error(error);
-      }
-    );
-  }
+
 }

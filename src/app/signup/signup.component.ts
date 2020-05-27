@@ -115,9 +115,9 @@ export class SignupComponent implements OnInit {
             if (reflookupmap.code !== config.category_code_FS_S.toString()) {
               if (langcode !== config.default_prefer_lang.toString()) {
                 this.referService.translatetext(reflookupmap.label, langcode).subscribe(
-                  (resptranslatetxt: any) => {
-                    if (resptranslatetxt.translateresp != null) {
-                      reflookupmap.label = resptranslatetxt.translateresp;
+                  (resptranslatetxt: string) => {
+                    if (resptranslatetxt != null) {
+                      reflookupmap.label = resptranslatetxt;
                       this.referencedetailsmap.push(reflookupmap);
                     }
                   },
@@ -132,9 +132,9 @@ export class SignupComponent implements OnInit {
             for (const reflookupmapsubcat of reflookupmap.referencelookupmappingsubcategories) {
               if (langcode !== config.default_prefer_lang.toString()) {
                 this.referService.translatetext(reflookupmapsubcat.label, langcode).subscribe(
-                  (resptranslatetxt: any) => {
-                    if (resptranslatetxt.translateresp != null) {
-                      reflookupmapsubcat.label = resptranslatetxt.translateresp;
+                  (resptranslatetxt: string) => {
+                    if (resptranslatetxt != null) {
+                      reflookupmapsubcat.label = resptranslatetxt;
                       this.referencedetailsmapsubcat.push(reflookupmapsubcat);
                     }
                   },
