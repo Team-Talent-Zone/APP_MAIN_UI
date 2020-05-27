@@ -351,10 +351,10 @@ export class DashboardsearchbyfilterComponent implements OnInit {
     this.timelaps = false;
     this.markPoints = [];
     this.markers = [];
+    this.userFUObjList = [];
     if (this.userService.currentUserValue.userroles.rolecode !== config.user_rolecode_fu.toString()) {
       if (startdate === null) {
         this.spinnerService.show();
-        this.userFUObjList = [];
         this.userService.getUserDetailsByJobAvailable().subscribe(
           (userObjList: any) => {
             setTimeout(() => {
@@ -374,7 +374,6 @@ export class DashboardsearchbyfilterComponent implements OnInit {
         let sdate = this.getDateFormat(startdate);
         this.userService.getUserDetailsByJobAvailableByCreateOn(sdate, this.code).subscribe(
           (userObjList: any) => {
-            this.userFUObjList = [];
             if (userObjList !== null) {
               setTimeout(() => {
                 userObjList.forEach(element => {

@@ -38,9 +38,12 @@
                                 </div>
                             </div>
                             <div class="card-footer">
-                                <button type="button" (click)="jobDone(upcomingjob.jobId)" class="btn  btn-success btn-sm" *ngIf="!upcomingjob.isjobcompleted"> Job
+                                <button type="button" (click)="jobDone(upcomingjob.jobId)"
+                                    class="btn  btn-success btn-sm" *ngIf="!upcomingjob.isjobcompleted"> Job
                                     Done</button>
-                                <button class="btn  btn-primary btn-sm"  (click)="openPaymentComponent(upcomingjob.amount, upcomingjob.jobId , upcomingjob.subcategorylabel)" *ngIf="upcomingjob.isjobcompleted"> Pay
+                                <button class="btn  btn-primary btn-sm"
+                                    (click)="openPaymentComponent(upcomingjob.amount, upcomingjob.jobId , upcomingjob.subcategorylabel)"
+                                    *ngIf="upcomingjob.isjobcompleted"> Pay
                                     Now</button>
                             </div>
                         </div>
@@ -52,13 +55,12 @@
     <div class=" card">
         <div class="card-header" role="tab" id="headingOne">
             <h5 class="mb-0">
-                <a data-toggle="collapse" href="#collapseFUUpcomingJobs" aria-expanded="true"
-                    aria-controls="collapseOne">
+                <a data-toggle="collapse" href="#collapseFUNewJobs" aria-expanded="true" aria-controls="collapseOne">
                     Newly Created Jobs
                 </a>
             </h5>
         </div>
-        <div id="collapseFUUpcomingJobs" class="collapse show" role="tabpanel" aria-labelledby="headingOne"
+        <div id="collapseFUNewJobs" class="collapse show" role="tabpanel" aria-labelledby="headingOne"
             data-parent="#accordion">
             <div class="card-body">
                 <div class="card-deck">
@@ -94,10 +96,12 @@
                             <div class="card-footer" *ngIf="!newlyjob.isjobactive && newlyjob.isdeactive == null">
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <button type="button"   (click)="cancelJob(newlyjob.jobId)" class="btn  btn-danger btn-sm">Cancel</button>
+                                        <button type="button" (click)="cancelJob(newlyjob.jobId)"
+                                            class="btn  btn-danger btn-sm">Cancel</button>
                                     </div>
                                     <div class="col-sm-6">
-                                        <button type="button"  (click)="activateJob(newlyjob.jobId)"  class="btn  btn-primary btn-sm">Activiate</button>
+                                        <button type="button" (click)="activateJob(newlyjob.jobId)"
+                                            class="btn  btn-primary btn-sm">Activiate</button>
                                     </div>
                                 </div>
                             </div>
@@ -111,7 +115,7 @@
                                 <div class="row">
                                     <div class="col-sm-3"></div>
                                     <div class="col-sm-4">
-                                        <a  (click)="cancelJob(newlyjob.jobId)" class="btn  btn-danger btn-sm">Cancel</a>
+                                        <a (click)="cancelJob(newlyjob.jobId)" class="btn  btn-danger btn-sm">Cancel</a>
                                     </div>
                                 </div>
                             </div>
@@ -125,7 +129,8 @@
                                 <div class="row">
                                     <div class="col-sm-3"></div>
                                     <div class="col-sm-4">
-                                        <button type="button"  (click)="cancelJob(newlyjob.jobId)" class="btn  btn-danger btn-sm">Cancel</button>
+                                        <button type="button" (click)="cancelJob(newlyjob.jobId)"
+                                            class="btn  btn-danger btn-sm">Cancel</button>
                                     </div>
                                 </div>
                             </div>
@@ -138,13 +143,13 @@
     <div class=" card">
         <div class="card-header" role="tab" id="headingOne">
             <h5 class="mb-0">
-                <a data-toggle="collapse" href="#collapseFUUpcomingJobs" aria-expanded="true"
+                <a data-toggle="collapse" href="#collapseFUCompletedJobs" aria-expanded="true"
                     aria-controls="collapseOne">
                     Completed Jobs
                 </a>
             </h5>
         </div>
-        <div id="collapseFUUpcomingJobs" class="collapse show" role="tabpanel" aria-labelledby="headingOne"
+        <div id="collapseFUCompletedJobs" class="collapse show" role="tabpanel" aria-labelledby="headingOne"
             data-parent="#accordion">
             <div class="card-body">
                 <div class="card-deck">
@@ -175,9 +180,11 @@
                             </div>
                             <div class="card-footer" *ngIf="completedjob.isjobamtpaidtocompany">
                                 <div class="row">
-                                    <div class="col-sm-6"><button  [routerLink]="['/payment',completedjob.txnid]" class="btn  btn-secondary btn-sm">Payment
+                                    <div class="col-sm-6"><button [routerLink]="['/payment',completedjob.txnid]"
+                                            class="btn  btn-secondary btn-sm">Payment
                                             Details</button></div>
-                                    <div class="col-sm-6"><button class="btn  btn-warning btn-sm">Rate
+                                    <div class="col-sm-6"><button class="btn  btn-warning btn-sm" data-toggle="modal"
+                                            data-target="#rateit" (click)="feedback(completedjob.jobId)">Rate
                                             Work</button></div>
                                 </div>
                             </div>
@@ -185,6 +192,60 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="rateit" *ngIf="isratingdisplay">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Give your feedback !</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="feedbackform" (ngSubmit)="savefeedback()">
+                    Freelancer Name:
+                    {{record.fullname}}
+                    <div class="form-group">
+                        <span>
+                            <i class="fa fa fa-star	form-control-icon"></i>
+                          </span> 
+                        <select #sel class="form-control" formControlName="starrate"
+                            [ngClass]="{ 'is-invalid': issubmit && f.starrate.errors }">
+                            <option value=''>--Select Rate --</option>
+                            <option value=5>5</option>
+                            <option value=4>4</option>
+                            <option value=3>3</option>
+                            <option value=2>2</option>
+                            <option value=1>1</option>
+                        </select>
+                        <div *ngIf="issubmit && f.starrate.errors" class="invalid-feedback">
+                            <div *ngIf="f.starrate.errors.required">Rating is required
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <span>
+                            <i class="fa fa-at form-control-icon"></i>
+                          </span>
+                        <textarea placeholder="Comment On JobId#{{record.jobId}}" class="form-control" formControlName="feedbackcomment"
+                            [ngClass]="{ 'is-invalid': issubmit && f.feedbackcomment.errors }">
+                         </textarea>
+                        <div *ngIf="issubmit && f.feedbackcomment.errors" class="invalid-feedback">
+                            <div *ngIf="f.feedbackcomment.errors.required">Comment is required
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+
+                </form>
+            </div>
+
         </div>
     </div>
 </div>

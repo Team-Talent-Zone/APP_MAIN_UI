@@ -11,7 +11,7 @@ import { FreelanceOnSvcService } from '../AppRestCall/freelanceOnSvc/freelance-o
 import { FreelanceOnSvc } from '../appmodels/FreelanceOnSvc';
 import { ToastConfig, Toaster, ToastType } from 'ngx-toast-notifications';
 import { ConfigMsg } from '../appconstants/configmsg';
-import { timer } from 'rxjs';
+import { timer, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 
 @Component({
@@ -59,11 +59,12 @@ export class DashboardoffuComponent implements OnInit {
     private freelanceSvc: FreelanceOnSvcService,
     private toaster: Toaster,
     private router: Router,
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     const source = timer(1000, 20000);
-    const sourcerefresh = timer(1000, 30000);
+    const sourcerefresh = timer(1000, 60000);
     source.subscribe((val: number) => {
       this.autoToastNotificationsForFU();
     });
@@ -88,7 +89,6 @@ export class DashboardoffuComponent implements OnInit {
           });
       }, 500);
     }
-
     this.usrObj = this.userService.currentUserValue;
     if (this.usrObj.userroles.rolecode === config.user_rolecode_fu.toString()) {
       if (this.usrObj.freeLanceDetails.isprofilecompleted) {
@@ -112,12 +112,14 @@ export class DashboardoffuComponent implements OnInit {
     }
   }
 
+
+
   openPaymentComponent() {
     this.modalRef = this.modalService.show(PaymentComponent, {
       initialState: {
         totalAmountToPay: this.referenceobj[0].code,
         displayUserServicesForCheckOut: null,
-        productinfoParam: 'Freelancer Reg Fee For PlatForm'
+        productinfoParam: 'Registration Fee'
       }
     });
   }
@@ -131,8 +133,19 @@ export class DashboardoffuComponent implements OnInit {
     this.freelanceSvc.getUserAllJobDetails(this.userService.currentUserValue.freeLanceDetails.subCategory).subscribe((resp: FreelanceOnSvc) => {
       this.listofalljobs = resp;
       for (const element of this.listofalljobs) {
+        if (this.userService.currentUserValue.preferlang !== config.default_prefer_lang) {
+          this.referService.translatetext(element.bizname, this.userService.currentUserValue.preferlang).subscribe(
+            (trantxt: any) => {
+              element.bizname = trantxt.translateresp;
+            },
+            error => {
+              this.spinnerService.hide();
+              this.alertService.error(error);
+            }
+          );
+        }
         // tslint:disable-next-line: max-line-length
-        if (element.isjobactive && !element.isjobaccepted && element.scategory == this.userService.currentUserValue.freeLanceDetails.subCategory) {
+        if (element.isjobactive && !element.isjobaccepted && element.scategory === this.userService.currentUserValue.freeLanceDetails.subCategory) {
           this.newJobList.push(element);
         }
         if (element.freelanceuserId == this.userService.currentUserValue.userId && element.isjobaccepted) {
@@ -284,4 +297,5 @@ export class DashboardoffuComponent implements OnInit {
       type: type,
     });
   }
+
 }

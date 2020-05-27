@@ -22,9 +22,10 @@ export class ReferenceService {
     return this.http.get(`${environment.apiUrl}/getLookupTemplateEntityByShortkey/` + shortkey);
   }
 
-  translatetext(targetText: string, langcode: string) {
-    return this.http.get(`${environment.apiUrl}/translatetext/` + targetText + '/' + langcode + '/');
+  translatetext(targetText: string, langcode: string): Observable<string> {
+    return this.http.get(`${environment.apiUrl}/translatetext/` + targetText + '/' + langcode + '/').pipe(
+      map((data: any) => data.translateresp));
   }
 
-   
+
 }

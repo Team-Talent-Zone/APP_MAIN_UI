@@ -65,6 +65,9 @@ export const config = {
   user_service_status_paymentpaid: 'PAYMENT_PAID',
   refer_key_furegfee: 'FU_RegFee',
   fu_job_created_shortkey: 'fu-job-created',
+  widget_logo: 'logoId',
+  widget_companyimgurl: 'companyimgurlId',
+  widget_companybgurlId: 'companybgurlId',
 };
 
 

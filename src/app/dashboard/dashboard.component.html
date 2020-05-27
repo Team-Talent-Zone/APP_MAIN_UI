@@ -27,7 +27,7 @@
         <ul class="navbar-nav ml-auto">
             <li class="nav-item  btn btn-sm">
                 <h6 class="display-7">
-                    {{ 'DASHOARD_HEADER.WELCOMEBACK' | translate }} {{userService.currentUserValue.fullname}}
+                    {{ 'DASHOARD_HEADER.WELCOMEBACK' | translate }} {{fullname}}
                 </h6>
             </li>
             <li class="nav-item  btn btn-sm">
@@ -65,7 +65,7 @@
                 </li>
                 <li class="nav-item"
                     *ngIf="this.userService.currentUserValue.userroles.rolecode =='CLIENT_BUSINESS_ADMINISTRATOR'">
-                    <a class="nav-link" [routerLink]="['/usersubscribeservices']">My Services</a>
+                    <a class="nav-link" [routerLink]="['/myservices']">My Services</a>
                 </li>
                 <li class="nav-item"
                     *ngIf="this.userService.currentUserValue.userroles.rolecode =='CLIENT_BUSINESS_ADMINISTRATOR'">

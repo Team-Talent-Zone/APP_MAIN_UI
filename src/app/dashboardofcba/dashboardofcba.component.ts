@@ -56,7 +56,7 @@ export class DashboardofcbaComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getListOfAllActivePlatformServices(this.userService.currentUserValue.preferlang.toString());
+    this.getListOfAllActivePlatformServices();
     setTimeout(() => {
       this.getAllUserServiceDetailsByUserId(this.userService.currentUserValue.userId);
     }, 500);
@@ -86,7 +86,7 @@ export class DashboardofcbaComponent implements OnInit {
       });
   }
 
-  getListOfAllActivePlatformServices(lang: string) {
+  getListOfAllActivePlatformServices() {
     this.listOfAllApprovedNewServices = [];
     this.domainRealEstateIndustry = [];
     this.domainServiceProviderObj = [];

@@ -8,6 +8,9 @@ import { PaymentComponent } from '../payment/payment.component';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { timer } from 'rxjs';
+import { FreelanceStarReview } from '../appmodels/FreelanceStarReview';
+import { timestamp } from 'rxjs/operators';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-managejobs',
@@ -20,8 +23,14 @@ export class ManagejobsComponent implements OnInit {
   newlyPostedJobs: any = [];
   completedJobs: any = [];
   upComingPostedJobs: any = [];
+  record: any = [];
+  freelancestarobj: any;
+  feedbackform: FormGroup;
+  issubmit = false;
+  isratingdisplay = false;
 
   constructor(
+    public fb: FormBuilder,
     private route: ActivatedRoute,
     private alertService: AlertsService,
     public userService: UserService,
@@ -34,13 +43,13 @@ export class ManagejobsComponent implements OnInit {
   }
 
   ngOnInit() {
-    const sourcerefresh = timer(1000, 30000);
+    this.spinnerService.show();
+    const sourcerefresh = timer(1000, 50000);
     sourcerefresh.subscribe((val: number) => {
       if (this.router.url === '/job') {
         this.getUserAllJobDetailsByUserId();
       }
     });
-
   }
 
   jobDone(jobId: number) {
@@ -124,7 +133,6 @@ export class ManagejobsComponent implements OnInit {
     this.newlyPostedJobs = [];
     this.completedJobs = [];
     this.upComingPostedJobs = [];
-    this.spinnerService.show();
     this.freelanceserviceService.getUserAllJobDetailsByUserId(this.userService.currentUserValue.userId).subscribe((onserviceList: any) => {
       onserviceList.forEach(element => {
         // tslint:disable-next-line: max-line-length
@@ -158,4 +166,50 @@ export class ManagejobsComponent implements OnInit {
     });
   }
 
+  feedback(jobId: number) {
+    this.record = [];
+    this.feedbackformvalidation();
+    this.isratingdisplay = true;
+    for (let element of this.completedJobs) {
+      if (element.jobId == jobId) {
+        this.record = element;
+      }
+    }
+  }
+
+  feedbackformvalidation() {
+    this.feedbackform = this.fb.group({
+      starrate: ['', Validators.required],
+      feedbackcomment: ['', Validators.required]
+    });
+  }
+
+  savefeedback() {
+    this.issubmit = true;
+    if (this.feedbackform.invalid) {
+      return;
+    }
+    this.freelancestarobj = new FreelanceStarReview();
+    this.freelancestarobj.feedbackcomment = this.feedbackform.get('feedbackcomment').value;
+    this.freelancestarobj.userId = this.userService.currentUserValue.userId;
+    this.freelancestarobj.freelanceuserId = this.record.freelanceuserId;
+    this.freelancestarobj.jobId = this.record.jobId;
+    this.freelancestarobj.starrate = this.feedbackform.get('starrate').value;
+    this.freelancestarobj.feedbackby = this.userService.currentUserValue.userbizdetails.bizname;
+    this.spinnerService.show();
+    this.freelanceserviceService.saveFreeLanceStarReviewFB(this.freelancestarobj).subscribe((response: FreelanceStarReview) => {
+      if (response.id > 0) {
+        this.alertService.success('Thank you for the feedback');
+        this.spinnerService.hide();
+      }
+    },
+      error => {
+        this.spinnerService.hide();
+        this.alertService.error(error);
+      });
+  }
+
+  get f() {
+    return this.feedbackform.controls;
+  }
 }
