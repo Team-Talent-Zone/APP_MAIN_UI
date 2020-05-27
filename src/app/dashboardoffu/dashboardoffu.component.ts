@@ -148,7 +148,8 @@ export class DashboardoffuComponent implements OnInit {
         if (element.isjobactive && !element.isjobaccepted && element.scategory === this.userService.currentUserValue.freeLanceDetails.subCategory) {
           this.newJobList.push(element);
         }
-        if (element.freelanceuserId == this.userService.currentUserValue.userId && element.isjobaccepted) {
+        if (element.freelanceuserId == this.userService.currentUserValue.userId && element.isjobaccepted
+          && !element.isjobcompleted) {
           this.upcomingJobList.push(element);
         }
         if (element.freelanceuserId == this.userService.currentUserValue.userId
@@ -156,10 +157,15 @@ export class DashboardoffuComponent implements OnInit {
           this.completedJobList.push(element);
         }
       }
+
       setTimeout(() => {
         this.builtEarningCard();
+        if (this.upcomingJobList.length < 3 && this.newJobList.length > 0) {
+          let msg = 'Hi ' + this.userService.currentUserValue.fullname + ', ' + ConfigMsg.toast_notification_fu_acceptjobmsg.toString();
+          this.showToastNotificationForFU(msg, this.types[3], 'Job');
+        }
         this.spinnerService.hide();
-      }, 500);
+      }, 1000);
     },
       error => {
         this.spinnerService.hide();
@@ -283,10 +289,7 @@ export class DashboardoffuComponent implements OnInit {
           this.showToastNotificationForFU(msg, this.types[2], 'Payment');
         }
     }
-    if (this.upcomingJobList.length < 3 && this.newJobList.length > 0) {
-      let msg = 'Hi ' + this.userService.currentUserValue.fullname + ', ' + ConfigMsg.toast_notification_fu_acceptjobmsg.toString();
-      this.showToastNotificationForFU(msg, this.types[3], 'Job');
-    }
+
 
   }
   showToastNotificationForFU(txtmsg: string, typeName: any, toastheader: string) {
