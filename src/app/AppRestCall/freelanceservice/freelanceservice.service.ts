@@ -36,4 +36,9 @@ export class FreelanceserviceService {
   saveFreeLanceStarReviewFB(obj: FreelanceStarReview) {
     return this.http.post(`${environment.apiUrl}/saveFreeLanceStarReviewFB/`, obj);
   }
+
+  getFUFeebackDetails() {
+    return this.http.get(`${environment.apiUrl}/getFUFeebackDetails/`);
+  }
+
 }
