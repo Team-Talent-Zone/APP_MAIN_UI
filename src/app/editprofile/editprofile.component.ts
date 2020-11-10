@@ -161,7 +161,8 @@ export class EditprofileComponent implements OnInit {
         designation: ['', [Validators.required, Validators.maxLength(40)]],
       });
     } else
-      if (this.roleCode === config.user_rolecode_fu.toString()) {
+      if (this.roleCode === config.user_rolecode_fu.toString() &&
+        this.userService.currentUserValue.freeLanceDetails.bgcurrentstatus !== 'BG_APPROVED') {
         this.editprofileForm = this.formBuilder.group({
           username: ['', [Validators.required]],
           firstname: ['', [Validators.required, Validators.maxLength(40)]],
@@ -176,15 +177,34 @@ export class EditprofileComponent implements OnInit {
           avtarurl: ['', [Validators.required]],
           hourlyRate: ['', [Validators.required, Validators.maxLength(5), Validators.pattern('^[0-9]*$')]],
         });
-      } else {
-        this.editprofileForm = this.formBuilder.group({
-          username: ['', [Validators.required]],
-          firstname: ['', [Validators.required, Validators.maxLength(40)]],
-          lastname: ['', [Validators.required, Validators.maxLength(40)]],
-          preferlang: ['', [Validators.required]],
-          fulladdress: ['', [Validators.required]],
-        });
-      }
+      } else
+        if (this.roleCode === config.user_rolecode_fu.toString() &&
+          this.userService.currentUserValue.freeLanceDetails.bgcurrentstatus === 'BG_APPROVED') {
+          this.editprofileForm = this.formBuilder.group({
+            username: ['', [Validators.required]],
+            firstname: ['', [Validators.required, Validators.maxLength(40)]],
+            lastname: ['', [Validators.required, Validators.maxLength(40)]],
+            preferlang: ['', [Validators.required]],
+            fulladdress: ['', [Validators.required]],
+            subCategory: ['', [Validators.required]],
+            category: ['', [Validators.required]],
+            experienceInField: ['', [Validators.required, Validators.maxLength(2), Validators.pattern('^[0-9]*$')]],
+            abt: ['', [Validators.required]],
+            uploadValidPhotoidImgUrl: ['', [Validators.required]],
+            avtarurl: ['', [Validators.required]],
+            hourlyRate: ['', [Validators.required, Validators.maxLength(5), Validators.pattern('^[0-9]*$')]],
+            accountno: ['', [Validators.required, Validators.maxLength(15), Validators.pattern('^[0-9]*$')]],
+            ifsc: ['', [Validators.required, Validators.maxLength(8)]],
+          });
+        } else {
+          this.editprofileForm = this.formBuilder.group({
+            username: ['', [Validators.required]],
+            firstname: ['', [Validators.required, Validators.maxLength(40)]],
+            lastname: ['', [Validators.required, Validators.maxLength(40)]],
+            preferlang: ['', [Validators.required]],
+            fulladdress: ['', [Validators.required]],
+          });
+        }
   }
   get f() {
     return this.editprofileForm.controls;
@@ -220,6 +240,8 @@ export class EditprofileComponent implements OnInit {
             this.editprofileForm.patchValue({ hourlyRate: this.edituserobj.freeLanceDetails.hourlyRate });
             this.nationalIDURL = this.edituserobj.freeLanceDetails.uploadValidPhotoidImgUrl;
             this.editprofileForm.patchValue({ uploadValidPhotoidImgUrl: this.edituserobj.freeLanceDetails.uploadValidPhotoidImgUrl });
+            this.editprofileForm.patchValue({ accountno: this.edituserobj.freeLanceDetails.accountno });
+            this.editprofileForm.patchValue({ ifsc: this.edituserobj.freeLanceDetails.ifsc });
           }
         },
         error => {
@@ -280,6 +302,10 @@ export class EditprofileComponent implements OnInit {
       this.edituserobj.freeLanceDetails.abt = this.editprofileForm.get('abt').value;
       this.edituserobj.freeLanceDetails.hourlyRate = this.editprofileForm.get('hourlyRate').value;
       this.edituserobj.freeLanceDetails.uploadValidPhotoidImgUrl = this.editprofileForm.get('uploadValidPhotoidImgUrl').value;
+      if (this.editprofileForm.get('accountno').value != null) {
+        this.edituserobj.freeLanceDetails.accountno = this.editprofileForm.get('accountno').value;
+        this.edituserobj.freeLanceDetails.ifsc = this.editprofileForm.get('ifsc').value;
+      }
       if (this.edituserobj.freeLanceDetails.experienceInField != null &&
         this.edituserobj.freeLanceDetails.hourlyRate != null &&
         this.edituserobj.freeLanceDetails.uploadValidPhotoidImgUrl != null &&

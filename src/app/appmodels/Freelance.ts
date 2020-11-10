@@ -1,5 +1,5 @@
 export class Freelance {
-    public freeLanceId:number;
+    public freeLanceId: number;
     public userId: number;
     public uploadValidPhotoidImgUrl: string;
     public isbgdone: boolean;
@@ -14,6 +14,8 @@ export class Freelance {
     public percentageDeduct: number;
     public isregfeedone: boolean;
     public bgcurrentstatus: string;
+    public accountno: number;
+    public ifsc: string;
     constructor(
     ) {
     }

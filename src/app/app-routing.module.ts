@@ -1,3 +1,4 @@
+import { ViewfureviewsComponent } from './viewfureviews/viewfureviews.component';
 import { CreateoreditwidgetComponent } from './createoreditwidget/createoreditwidget.component';
 import { UsersubscribeservicesComponent } from './usersubscribeservices/usersubscribeservices.component';
 import { ViewuserservicedetailsComponent } from './viewuserservicedetails/viewuserservicedetails.component';
@@ -216,6 +217,17 @@ const routes: Routes = [
       {
         path: '',
         component: PaymenthistComponent
+      }
+    ]
+  },
+  {
+    path: 'fureviews',
+    component: DashboardComponent,
+    canActivate: [AuthgaurdService],
+    children: [
+      {
+        path: '',
+        component: ViewfureviewsComponent
       }
     ]
   },

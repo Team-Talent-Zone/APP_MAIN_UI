@@ -13,6 +13,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UserAdapter } from 'src/app/adapters/useradapter';
 import { UserNotification } from 'src/app/appmodels/UserNotification';
+import { HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -37,11 +38,27 @@ export class UserService {
   public setCurrentUserValue(userobj: User) {
     this.currentUserSubject.next(userobj);
   }
+  /*loginUserByUsername(username: string, password: string) {
+    const headers = new HttpHeaders({
+      Authorization: 'Basic ' + btoa(username + ':' + password)
+    });
+    // tslint:disable-next-line: max-line-length
+    return this.http.get(`${environment.apiUrl}/findByUsername/` + username + '/' ,  { headers }).pipe(map(result => {
+      console.log('this is this.userobj', result);
+      this.usrObj = this.userAdapter.adapt(result);
+      // store user details and jwt token in local storage to keep user logged in between page refreshes
+      localStorage.setItem('currentUser', JSON.stringify(this.usrObj));
+      localStorage.setItem('currentPwd', password);
+      this.currentUserSubject.next(this.usrObj);
+    }));
+  }*/
+
   loginUserByUsername(username: string, password: string) {
-    return this.http.get(`${environment.apiUrl}/findByUsername/` + username + '/' + password + '/').pipe(map(user => {
+    return this.http.get(`${environment.apiUrl}/findByUsername/` + username + '/').pipe(map(user => {
       this.usrObj = this.userAdapter.adapt(user);
       // store user details and jwt token in local storage to keep user logged in between page refreshes
       localStorage.setItem('currentUser', JSON.stringify(this.usrObj));
+      localStorage.setItem('currentPwd', password);
       this.currentUserSubject.next(this.usrObj);
     }));
   }
@@ -49,6 +66,7 @@ export class UserService {
   logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('currentUser');
+    localStorage.removeItem('currentPwd');
     this.currentUserSubject.next(null);
   }
 

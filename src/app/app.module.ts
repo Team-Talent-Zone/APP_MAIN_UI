@@ -62,13 +62,15 @@ import { CreateoreditwidgetComponent } from './createoreditwidget/createoreditwi
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { ToastNotificationsModule } from 'ngx-toast-notifications';
 import { HometestimonialsComponent } from './hometestimonials/hometestimonials.component';
+import { HomeclienttestimonalsComponent } from './homeclienttestimonals/homeclienttestimonals.component';
+import { ViewfureviewsComponent } from './viewfureviews/viewfureviews.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
 }
 
 @NgModule({
-  declarations: [
+  declarations: [	
     AppComponent,
     HomeComponent,
     FooterComponent,
@@ -105,7 +107,9 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ManagejobsComponent,
     CreateoreditwidgetComponent,
     HometestimonialsComponent,
-  ],
+    HomeclienttestimonalsComponent,
+      ViewfureviewsComponent
+   ],
   imports: [
     ToastNotificationsModule,
     OwlDateTimeModule,
@@ -150,11 +154,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     UserServicedetailsAdapter,
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: HttpErrorInterceptor,
+      useClass: BasicAuthHtppInterceptorService,
       multi: true
-    },
-    {
-      provide: HTTP_INTERCEPTORS, useClass: BasicAuthHtppInterceptorService, multi: true
     }
   ],
   entryComponents: [

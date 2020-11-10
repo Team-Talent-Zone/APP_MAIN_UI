@@ -47,7 +47,7 @@ export class AlertComponent implements OnInit {
   }
 
   openModal(template: TemplateRef<any>) {
-    console.log(' this.message',  this.message);
+    console.log(' this alerts message : ',  this.message);
     var errorcode = this.message.text[0].errorcode;
     this.errormsg = this.message.text[0].errorMsg;
     if (errorcode === 504) {

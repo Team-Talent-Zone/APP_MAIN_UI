@@ -11,6 +11,8 @@ import { timer } from 'rxjs';
 import { FreelanceStarReview } from '../appmodels/FreelanceStarReview';
 import { timestamp } from 'rxjs/operators';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Toaster, ToastType } from 'ngx-toast-notifications';
+import { ConfigMsg } from '../appconstants/configmsg';
 
 @Component({
   selector: 'app-managejobs',
@@ -28,8 +30,10 @@ export class ManagejobsComponent implements OnInit {
   feedbackform: FormGroup;
   issubmit = false;
   isratingdisplay = false;
+  private types: Array<ToastType> = ['success', 'danger', 'warning', 'info', 'primary', 'secondary', 'dark', 'light'];
 
   constructor(
+    private toaster: Toaster,
     public fb: FormBuilder,
     private route: ActivatedRoute,
     private alertService: AlertsService,
@@ -44,14 +48,26 @@ export class ManagejobsComponent implements OnInit {
 
   ngOnInit() {
     this.spinnerService.show();
-    const sourcerefresh = timer(1000, 50000);
-    sourcerefresh.subscribe((val: number) => {
-      if (this.router.url === '/job') {
+    if (this.router.url.toString() === '/job'.toString()) {
+      const sourcerefresh = timer(1000, 50000);
+      sourcerefresh.subscribe((val: number) => {
         this.getUserAllJobDetailsByUserId();
-      }
-    });
+      });
+    }
   }
 
+  autoToastNotificationsForCBA(fullmsg: string, typetxt: string, toasttitle: string) {
+    this.showToastNotificationForFCBA(fullmsg, typetxt, toasttitle);
+  }
+
+  showToastNotificationForFCBA(txtmsg: string, typeName: any, toastheader: string) {
+    const type = typeName;
+    this.toaster.open({
+      text: txtmsg,
+      caption: toastheader + ' Notification',
+      type: type,
+    });
+  }
   jobDone(jobId: number) {
     this.spinnerService.show();
     this.freelanceserviceService.getAllFreelanceOnServiceDetailsByJobId(jobId).subscribe((objfreelanceservice: FreelanceOnSvc) => {
@@ -138,10 +154,23 @@ export class ManagejobsComponent implements OnInit {
         // tslint:disable-next-line: max-line-length
         if (!element.isjobcancel && !element.isjobcompleted && !element.isjobamtpaidtocompany && !element.isjobaccepted) {
           this.newlyPostedJobs.push(element);
+          if (!element.isjobactive) {
+            // tslint:disable-next-line: max-line-length
+            const fullmsg = 'Hi ' + this.userService.currentUserValue.fullname + ', JobId:' + element.jobId + ' is not active yet. Please activiate it to make freelancer visible';
+            this.autoToastNotificationsForCBA(fullmsg, this.types[2], 'Job');
+          }
         }
         // tslint:disable-next-line: max-line-length
         if (element.isjobactive && element.isjobaccepted && !element.isjobamtpaidtocompany) {
           this.upComingPostedJobs.push(element);
+          if (element.isjobcompleted) {
+            // tslint:disable-next-line: max-line-length
+            const ref = timer(10000, 50000);
+            ref.subscribe((val: number) => {
+              const fullmsg = 'Hi ' + this.userService.currentUserValue.fullname + ', For the JobId:' + element.jobId + ' pay now.';
+              this.autoToastNotificationsForCBA(fullmsg, this.types[1], 'Job Payment Pending');
+            });
+          }
         }
         // tslint:disable-next-line: max-line-length
         if (element.isjobactive && element.isjobcompleted && element.isjobamtpaidtocompany && element.isjobaccepted) {

@@ -85,7 +85,7 @@ export class LoginComponent implements OnInit {
         this.userService.loginUserByUsername(
           this.loginForm.get('username').value,
           this.loginForm.get('password').value)
-          .pipe(first()).subscribe(
+          .subscribe(
             (resp) => {
               this.spinnerService.hide();
               this.router.navigate(['/dashboard']);
