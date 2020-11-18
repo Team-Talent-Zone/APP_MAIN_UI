@@ -64,32 +64,48 @@ export class ManageuserComponent implements OnInit {
     this.getReferenceDataByKey(config.key_bgstatus.toString());
     this.spinnerService.show();
     this.userService.getAllUsers().subscribe(
-      (usrObjRsp: User[]) => {
-        usrObjRsp.forEach(element => {
-          this.usrObj = this.userAdapter.adapt(element);
-          this.usrObjTotalUsers.push(this.userAdapter.adapt(element));
-          if (this.usrObj.userroles.rolecode === config.user_rolecode_cba.toString()) {
-            this.usrObjCBAs.push(this.usrObj);
-          }
-          if (this.usrObj.freelancehistoryentity != null) {
-            this.usrObj.freelancehistoryentity.forEach((elementFhistory: any) => {
-              if (elementFhistory.islocked && elementFhistory.decisionbyemailid ===
-                this.userService.currentUserValue.username) {
-                this.usrObj.freelancehistoryentity = elementFhistory;
-                this.usrObjMyWork.push(this.usrObj);
-              }
-              if (this.usrObj.freeLanceDetails.bgcurrentstatus === elementFhistory.bgstatus ||
-                elementFhistory.islocked) {
-                this.usrObj.freelancehistoryentity = elementFhistory;
-                this.usrObjFUs.push(this.usrObj);
-              }
-            });
-          }
-          if (this.usrObj.userroles.rolecode === config.user_rolecode_csct.toString() ||
-            this.usrObj.userroles.rolecode === config.user_rolecode_cscm.toString()) {
-            this.usrObjPlatformAdmins.push(this.usrObj);
-          }
-        });
+      (usrObjRsp: any) => {
+        if (usrObjRsp != null) {
+          usrObjRsp.forEach((element: any) => {
+            if (element.userroles.rolecode !== config.user_rolecode_basicauth.toString()) {
+              this.usrObjTotalUsers.push(element);
+            }
+          });
+          usrObjRsp.forEach((element: any) => {
+            this.usrObj = this.userAdapter.adapt(element);
+            if (this.usrObj.userroles.rolecode === config.user_rolecode_cba.toString()) {
+              this.usrObjCBAs.push(this.usrObj);
+            }
+            if (this.usrObj.freelancehistoryentity != null && this.usrObj.userroles.rolecode === config.user_rolecode_fu.toString()) {
+              this.usrObj.freelancehistoryentity.forEach((elementFhistory: any) => {
+                if (elementFhistory.islocked && elementFhistory.decisionbyemailid ===
+                  this.userService.currentUserValue.username) {
+                  this.usrObj.freelancehistoryentity = elementFhistory;
+                  this.usrObjMyWork.push(this.usrObj);
+                }
+                if (elementFhistory.islocked && 
+                  this.usrObj.freeLanceDetails.bgcurrentstatus === elementFhistory.bgstatus
+                ) {
+                  this.usrObj.freelancehistoryentity = elementFhistory;
+                  this.usrObjFUs.push(this.usrObj);
+                } else
+                  if (!elementFhistory.islocked &&
+                    elementFhistory.bgstatus === config.bg_code_incompleteprofile.toString() ||
+                    elementFhistory.bgstatus === config.bg_code_completedprofile.toString() ||
+                    elementFhistory.bgstatus === config.bg_code_approved.toString() ||
+                    elementFhistory.bgstatus === config.bg_code_rejected.toString()
+                  ) {
+                    this.usrObj.freelancehistoryentity = elementFhistory;
+                    this.usrObjFUs.push(this.usrObj);
+                  }
+              });
+            }
+            if (this.usrObj.userroles.rolecode === config.user_rolecode_csct.toString() ||
+              this.usrObj.userroles.rolecode === config.user_rolecode_cscm.toString()) {
+              this.usrObjPlatformAdmins.push(this.usrObj);
+            }
+          });
+        }
         this.spinnerService.hide();
       },
       error => {
@@ -180,6 +196,7 @@ export class ManageuserComponent implements OnInit {
   }
 
   processbgverficiationopenmodal(userId: number) {
+    console.log('usrObjTotalUsers', this.usrObjTotalUsers);
     this.usrObjTotalUsers.forEach((element: any) => {
       if (element.userId === userId) {
         this.usrObjMyWork.forEach((myworkusrobj: any) => {

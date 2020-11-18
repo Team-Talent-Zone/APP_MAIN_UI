@@ -1,5 +1,5 @@
 <!-- Our Services-->
-<div class="section-7-container section-container">
+<div class="section-7-container section-container" *ngIf="listOfAllApprovedNewServices.length > 0" >
   <div class="container">
     <div class="row">
       <div class="col section-7 section-description wow fadeIn">
@@ -25,7 +25,7 @@
 </div>
 <!-- End Our Services-->
 <!-- Pricing -->
-<div class="section-5-container">
+<div class="section-5-container" *ngIf="listofAllIndividualServices.length > 0">
   <div class="container">
     <div class="container p-0">
       <h1>{{ 'PRICE.TITLE' | translate }}</h1>

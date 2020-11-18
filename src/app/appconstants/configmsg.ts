@@ -1,16 +1,12 @@
 export const ConfigMsg = {
     signup_successmsg: 'Signup is successfully and email sent to register email address',
-    username_already_exist: 'This email address is already exist. Please use the different email address.',
     fwdpassword_successmsg: 'Password sent to registered email address . Thank you for connecting with us',
     // tslint:disable-next-line: max-line-length
-    server_503_error: 'Looks like we are having some server issues. Go back to the previous page and try again.Sorry for  the Inconvenience',
-    server_404_error: 'Oops, the page you are looking for does not exist.You may want to head back to the homepage.',
-    server_otherall_error: 'Unexpected Error. Sorry for the Inconvenience . Please try again after sometime or reach out to us.',
     email_default_fromuser: 'team.spprt2019@gmail.com',
     email_verficationemailaddress_subj: 'Email Confirmation',
     email_forgotpasswordemailaddress_subj: 'Forgot Password',
     email_welcomeemailaddress_subj: 'Welcome To Company',
-    email_verficationemailaddress_successmsg: 'Welcome Back Again Please Login',
+    email_verficationemailaddress_successmsg: 'Your email verfiication is completed. Please Login',
     email_verficationemailaddress_alreadydone: 'Your email verfiication is already completed. \n Please login with your username.',
     login_invalid_password: 'You entered invalid password',
     email_bgverification_subj: 'Background verification of ',

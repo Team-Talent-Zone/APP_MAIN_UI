@@ -64,13 +64,14 @@ import { ToastNotificationsModule } from 'ngx-toast-notifications';
 import { HometestimonialsComponent } from './hometestimonials/hometestimonials.component';
 import { HomeclienttestimonalsComponent } from './homeclienttestimonals/homeclienttestimonals.component';
 import { ViewfureviewsComponent } from './viewfureviews/viewfureviews.component';
+import { Error404pageComponent } from './error404page/error404page.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
 }
 
 @NgModule({
-  declarations: [	
+  declarations: [
     AppComponent,
     HomeComponent,
     FooterComponent,
@@ -108,8 +109,9 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     CreateoreditwidgetComponent,
     HometestimonialsComponent,
     HomeclienttestimonalsComponent,
-      ViewfureviewsComponent
-   ],
+    ViewfureviewsComponent,
+    Error404pageComponent
+  ],
   imports: [
     ToastNotificationsModule,
     OwlDateTimeModule,

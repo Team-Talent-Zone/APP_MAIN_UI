@@ -1,3 +1,16 @@
-<p>
-  viewfureviews works!
-</p>
+<div class="container" *ngFor="let item of fureviews; index as i">
+	<div class="card">
+	    <div class="card-body">
+	        <div class="row">
+        	    <div class="col-md-10">
+        	        <p>
+        	            <a class="float-left"><strong>{{item.feedbackby}} - On {{item.feedbackon}} </strong></a>
+                      <i class="fas fa-star" *ngFor="let i of item.starrate"> </i>
+        	       </p>
+        	       <div class="clearfix"></div>
+        	        <p>{{item.feedbackcomment}}</p>
+        	    </div>
+	        </div>
+	    </div>
+	</div>
+</div>

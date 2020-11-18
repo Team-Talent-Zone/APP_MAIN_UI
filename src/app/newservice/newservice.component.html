@@ -57,7 +57,7 @@
                                             [ngClass]="{ 'is-invalid': issubmit && f.domain.errors }">
                                             <option value="">Select Domain</option>
                                             <option
-                                                *ngFor="let referencelookup of this.signupcomponent.reflookupdetails"
+                                                *ngFor="let referencelookup of this.signupcomponent.fullRefLookupDetails"
                                                 value="{{referencelookup.refId}}">
                                                 {{referencelookup.label}}</option>
                                         </select>
@@ -73,7 +73,7 @@
                                             </span>
                                             <select disabled class="form-control" formControlName="domain">
                                                 <option
-                                                    *ngFor="let referencelookup of this.signupcomponent.reflookupdetails"
+                                                    *ngFor="let referencelookup of this.signupcomponent.fullRefLookupDetails"
                                                     value="{{referencelookup.refId}}">
                                                     {{referencelookup.label}}</option>
                                             </select>

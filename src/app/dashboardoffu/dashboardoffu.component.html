@@ -51,8 +51,14 @@
         </div>
     </div>
     <div *ngIf="this.userService.currentUserValue.freeLanceDetails.isregfeedone && 
-        this.userService.currentUserValue.freeLanceDetails.bgcurrentstatus == 'BG_APPROVED' &&
-        this.userService.currentUserValue.freeLanceDetails.accountno != null" >
+    this.userService.currentUserValue.freeLanceDetails.bgcurrentstatus == 'BG_APPROVED' &&
+    this.userService.currentUserValue.freeLanceDetails.accountno == null">
+        <a class="btn bt" routerLink='/vieworeditprofile/{{userService.currentUserValue.userId}}'>
+            <h6>We need bank details to pay you on job invoice, please update bank details </h6>
+        </a>
+    </div>
+    <div *ngIf="this.userService.currentUserValue.freeLanceDetails.isregfeedone && 
+        this.userService.currentUserValue.freeLanceDetails.bgcurrentstatus == 'BG_APPROVED' ">
         <div class="row">
             <div class="col-sm-2"></div>
             <div class="col-sm-6 col-lg-4 mb-3" *ngFor="let card of infoCards, index as i">
@@ -264,11 +270,5 @@
             </div>
         </div>
     </div>
-    <div *ngIf="this.userService.currentUserValue.freeLanceDetails.isregfeedone && 
-        this.userService.currentUserValue.freeLanceDetails.bgcurrentstatus == 'BG_APPROVED' &&
-        this.userService.currentUserValue.freeLanceDetails.accountno == null" >
-        <a class="btn bt" routerLink='/vieworeditprofile/{{userService.currentUserValue.userId}}'>
-        <h6>We need bank details to pay you on job invoice, please update bank details </h6>
-    </a>
-    </div>
+
 </div>

@@ -24,14 +24,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
             errorMessage = `Error: ${error.error.message}`;
           } else {
             // server-side error
-            if (error.status === 503) {
-              errorMessage = ConfigMsg.server_503_error;
-            } else
-              if (error.status === 404) {
-                errorMessage = ConfigMsg.server_404_error;
-              } else {
                 errorMessage = `${error.error.errormessage}`;
-              }
           }
           errorJSON = [{ errorMsg: errorMessage, errorcode: error.status }];
           return throwError(errorJSON);

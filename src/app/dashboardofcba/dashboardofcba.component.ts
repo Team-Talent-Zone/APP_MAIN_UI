@@ -24,12 +24,13 @@ export class DashboardofcbaComponent implements OnInit {
   newServiceCommentHistory: any = [];
   listOfAllApprovedNewServices: any = [];
   domainRealEstateIndustry: any = [];
-  domainServiceProviderObj: any = [];
+  
   show: string = 'show';
   fullContentArray: any = [];
   userservicedetailsList: any = [];
   userservicedetailsAddedList: any = [];
   userservicedetailsExistingIds: any = [];
+  domainServiceProviderObj: any = [];
 
   config: ModalOptions = {
     class: 'modal-lg', backdrop: 'static',

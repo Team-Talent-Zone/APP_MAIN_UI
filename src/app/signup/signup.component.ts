@@ -41,6 +41,7 @@ export class SignupComponent implements OnInit {
   referencedetailsmap = [];
   referencedetailsmapsubcat = [];
   referencedetailsmapsubcatselectedmapId: any = [];
+  referencedetailsfullmap = [];
   usrObj: User;
   templateObj: ReferenceLookUpTemplate;
   util: Util;
@@ -49,6 +50,8 @@ export class SignupComponent implements OnInit {
   today = new Date();
   user: User;
   reflookupdetails: any;
+  fullRefLookupDetails: any;
+  fullReferencedetailsmap = [];
   langcode: string;
   usersrvobj: UserServiceDetails;
   ourserviceids: any;
@@ -102,6 +105,9 @@ export class SignupComponent implements OnInit {
     this.reflookupdetails = [];
     this.referencedetailsmap = [];
     this.referencedetailsmapsubcat = [];
+    this.referencedetailsfullmap = [];
+    this.fullReferencedetailsmap = [];
+    this.fullRefLookupDetails = [];
     this.spinnerService.show();
     this.referService.getReferenceLookupByKey(config.key_domain.toString()).pipe(map((data: any[]) =>
       data.map(item => this.refAdapter.adapt(item))),
@@ -111,6 +117,7 @@ export class SignupComponent implements OnInit {
           if (reflookup.code !== config.domain_code_SE_P.toString()) {
             this.reflookupdetails.push(reflookup);
           }
+          this.fullRefLookupDetails.push(reflookup);
           for (const reflookupmap of reflookup.referencelookupmapping) {
             if (reflookupmap.code !== config.category_code_FS_S.toString()) {
               if (langcode !== config.default_prefer_lang.toString()) {
@@ -129,6 +136,7 @@ export class SignupComponent implements OnInit {
                 this.referencedetailsmap.push(reflookupmap);
               }
             }
+            this.fullReferencedetailsmap.push(reflookupmap);
             for (const reflookupmapsubcat of reflookupmap.referencelookupmappingsubcategories) {
               if (langcode !== config.default_prefer_lang.toString()) {
                 this.referService.translatetext(reflookupmapsubcat.label, langcode).subscribe(
@@ -205,7 +213,7 @@ export class SignupComponent implements OnInit {
                         this.util.touser = this.usrObj.username;
                         this.util.templateurl = this.templateObj.url;
                         this.util.templatedynamicdata = JSON.stringify({
-                          firstName: this.usrObj.firstname,
+                          firstname: this.usrObj.firstname,
                           platformURL: `${environment.uiUrl}` + config.confirmation_fullpathname.toString()
                             + '/' + this.usrObj.userId
                         });
@@ -254,9 +262,6 @@ export class SignupComponent implements OnInit {
                 }
               );
             });
-        } else {
-          this.spinnerService.hide();
-          this.alertService.error(ConfigMsg.username_already_exist.toString());
         }
       },
       error => {

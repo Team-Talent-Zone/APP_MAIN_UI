@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   apiUrl: '/RestAPI',
-  uiUrl: 'http://localhost:4200/'
+  uiUrl: 'http://localhost:4200'
 };
  
 /*

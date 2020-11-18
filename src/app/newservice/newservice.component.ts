@@ -252,7 +252,7 @@ export class NewserviceComponent implements OnInit {
                 });
             } else {
               this.spinnerService.hide();
-              this.alertService.error(ConfigMsg.newservice_alreadyexist_msg);
+              this.alertService.info(ConfigMsg.newservice_alreadyexist_msg);
             }
           },
           error => {
@@ -459,12 +459,12 @@ export class NewserviceComponent implements OnInit {
   }
 
   getCategoryByRefId(value: string) {
-    this.referencedetailsmap = this.signupcomponent.referencedetailsmap.filter(x => x.refId == value);
+    this.referencedetailsmap = this.signupcomponent.fullReferencedetailsmap.filter(x => x.refId == value);
   }
 
   getListOfNewServicesByMapId(category: string) {
     this.listofnewservicebymapid = this.manageserviceComponent.listOfAllApprovedNewServices.
-      filter(x => (x.packwithotherourserviceid == null && x.category === category || x.category === config.category_code_FS_S.toString()));
+      filter(x => (x.packwithotherourserviceid == null && x.category !== category));
   }
   getServiceTerms() {
     this.spinnerService.show();

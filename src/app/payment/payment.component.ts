@@ -56,10 +56,10 @@ export class PaymentComponent implements OnInit {
   confirmPayment() {
     var phonenoreg = new RegExp('^[0-9]*$');
     if (this.payuform.phone == null || this.payuform.phone.length === 0) {
-      this.alertService.error('Enter Mobile number');
+      this.alertService.info('Enter Mobile number');
     } else
       if (this.payuform.phone != null && (this.payuform.phone.length > 10 || this.payuform.phone.length < 10)) {
-        this.alertService.error('Mobile number must be 10 digits');
+        this.alertService.info('Mobile number must be 10 digits');
       } else {
         if (phonenoreg.test(this.payuform.phone)) {
           this.spinnerService.show();
@@ -102,7 +102,7 @@ export class PaymentComponent implements OnInit {
               this.alertService.error(error);
             });
         } else {
-          this.alertService.error('Enter only digits');
+          this.alertService.info('Enter only digits');
         }
       }
   }

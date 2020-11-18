@@ -42,6 +42,7 @@ export class ProcessbgverificationComponent implements OnInit {
   refDataObj: any = [];
   statusTxt: string;
   bgshortkeyTxt: string;
+  isdocname = false;
 
   constructor(
     public modalRef: BsModalRef,
@@ -58,15 +59,23 @@ export class ProcessbgverificationComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log('this freelancehistoryentity', this.usrdetailsObj);
     this.bgformValidations();
   }
 
   bgformValidations() {
-    this.bgverificationForm = this.formBuilder.group({
-      bgstatus: ['', [Validators.required]],
-      bgcomment: ['', [Validators.required]],
-      docname: ['', [Validators.required]]
-    });
+    if (this.userService.currentUserValue.userroles.rolecode === config.user_rolecode_csct.toString()) {
+      this.bgverificationForm = this.formBuilder.group({
+        bgstatus: ['', [Validators.required]],
+        bgcomment: ['', [Validators.required]],
+        docname: ['', [Validators.required]]
+      });
+    } else {
+      this.bgverificationForm = this.formBuilder.group({
+        bgstatus: ['', [Validators.required]],
+        bgcomment: ['', [Validators.required]],
+      });
+    }
   }
   get f() {
     return this.bgverificationForm.controls;
@@ -77,7 +86,7 @@ export class ProcessbgverificationComponent implements OnInit {
       this.bgverificationForm.patchValue({ bgstatus: config.bg_code_senttoccsm.toString() });
     }
     if (this.additiondocreturnURL === null) {
-      this.bgverificationForm.patchValue({ docname: 'Document Name Here' });
+      this.bgverificationForm.patchValue({ docname: '' });
     }
     this.issubmit = true;
     if (this.bgverificationForm.invalid) {
@@ -141,9 +150,9 @@ export class ProcessbgverificationComponent implements OnInit {
                                   this.spinnerService.hide();
                                 });
                             } else {
-                              this.modalRef.hide();
                               this.spinnerService.hide();
                               this.alertService.success(' Sent BG verification to your manager ' + freehisObj.decisionby);
+                              this.modalRef.hide();
                             }
                           },
                           error => {
@@ -335,7 +344,7 @@ export class ProcessbgverificationComponent implements OnInit {
         this.cd.markForCheck();
       }
     } else {
-      this.alertService.error('Invalid file format. it should be .pdf,.zip');
+      this.alertService.info('Invalid file format. it should be .pdf,.zip');
     }
   }
 }

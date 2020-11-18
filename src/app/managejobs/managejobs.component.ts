@@ -154,7 +154,7 @@ export class ManagejobsComponent implements OnInit {
         // tslint:disable-next-line: max-line-length
         if (!element.isjobcancel && !element.isjobcompleted && !element.isjobamtpaidtocompany && !element.isjobaccepted) {
           this.newlyPostedJobs.push(element);
-          if (!element.isjobactive) {
+          if (!element.isjobactive && !element.isdeactive) {
             // tslint:disable-next-line: max-line-length
             const fullmsg = 'Hi ' + this.userService.currentUserValue.fullname + ', JobId:' + element.jobId + ' is not active yet. Please activiate it to make freelancer visible';
             this.autoToastNotificationsForCBA(fullmsg, this.types[2], 'Job');
@@ -178,6 +178,7 @@ export class ManagejobsComponent implements OnInit {
         }
       });
       this.spinnerService.hide();
+      console.log('this.newlyPostedJobs' , this.newlyPostedJobs);
     },
       error => {
         this.spinnerService.hide();

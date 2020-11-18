@@ -45,34 +45,36 @@ export class HometestimonialsComponent implements OnInit {
     this.spinnerService.show();
     this.listofTestimonals = [];
     this.freelanceserviceService.getFUFeebackDetails().subscribe((list: any) => {
-      list.forEach((element: any) => {
-        element.starrate = Array(element.starrate);
-        if (langcode === config.lang_code_te || langcode === config.lang_code_hi) {
-          this.referService.translatetext(element.feedbackcomment, langcode).subscribe(
-            (txt: string) => {
-              element.feedbackcomment = txt;
-            }
-          );
-          this.referService.translatetext(element.fullname, langcode).subscribe(
-            (txt: string) => {
-              element.fullname = txt;
-            }
-          );
-          this.referService.translatetext(element.feedbackby, langcode).subscribe(
-            (txt: string) => {
-              element.feedbackby = txt;
-            }
-          );
-          this.referService.translatetext(element.label, langcode).subscribe(
-            (txt: string) => {
-              element.label = txt;
-            }
-          );
-          this.listofTestimonals.push(element);
-        } else {
-          this.listofTestimonals.push(element);
-        }
-      });
+      if (list != null) {
+        list.forEach((element: any) => {
+          element.starrate = Array(element.starrate);
+          if (langcode === config.lang_code_te || langcode === config.lang_code_hi) {
+            this.referService.translatetext(element.feedbackcomment, langcode).subscribe(
+              (txt: string) => {
+                element.feedbackcomment = txt;
+              }
+            );
+            this.referService.translatetext(element.fullname, langcode).subscribe(
+              (txt: string) => {
+                element.fullname = txt;
+              }
+            );
+            this.referService.translatetext(element.feedbackby, langcode).subscribe(
+              (txt: string) => {
+                element.feedbackby = txt;
+              }
+            );
+            this.referService.translatetext(element.label, langcode).subscribe(
+              (txt: string) => {
+                element.label = txt;
+              }
+            );
+            this.listofTestimonals.push(element);
+          } else {
+            this.listofTestimonals.push(element);
+          }
+        });
+      }
     },
       error => {
         this.spinnerService.hide();

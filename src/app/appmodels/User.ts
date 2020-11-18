@@ -13,7 +13,7 @@ export class User {
         public firstname: string,
         public lastname: string,
         public fullname: string,
-        public isrecoverypwd: string,
+        public isrecoverypwd: boolean,
         public reasonofdeactivation: string,
         public createdon: string,
         public createdby: string,

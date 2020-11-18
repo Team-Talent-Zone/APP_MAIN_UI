@@ -184,7 +184,7 @@
                             <tbody>
                                 <tr *ngFor="let fu of usrObjFUs">
                                     <td
-                                        *ngIf="userService.currentUserValue.userroles.rolecode == 'CORE_SERVICE_SUPPORT_TEAM' && 
+                                        *ngIf="userService.currentUserValue.userroles.rolecode == 'CORE_SERVICE_SUPPORT_TEAM' || 
                                         userService.currentUserValue.userroles.rolecode == 'CORE_SERVICE_SUPPORT_MANAGER'">
                                         <a *ngIf="fu.freeLanceDetails.isprofilecompleted && fu.freeLanceDetails.isregfeedone
                                          && !fu.freeLanceDetails.isbgstarted" class="btn  btn-sm"

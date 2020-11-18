@@ -143,7 +143,7 @@ export class DashboardComponent implements OnInit {
   search(inputItemCode: string, inputItem: string) {
     const obj = this.list.filter((item) => item.code.startsWith(inputItemCode));
     if (obj.length === 0) {
-      this.alertService.error('Enter Valid Skill Keyword To Search');
+      this.alertService.info('Enter Valid Skill Keyword To Search');
     } else {
       this.router.navigateByUrl('fusearch/', { skipLocationChange: true }).
         then(() => {

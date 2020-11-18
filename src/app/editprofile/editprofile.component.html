@@ -260,12 +260,8 @@
                                             <span>
                                                 <i class="fa fa-bullhorn form-control-icon"></i>
                                             </span>
-                                            <textarea class="form-control" placeholder="About You" formControlName="abt"
-                                                [ngClass]="{ 'is-invalid': issubmit && f.abt.errors }"></textarea>
-                                            <div *ngIf="issubmit && f.abt.errors" class="invalid-feedback">
-                                                <div *ngIf="f.abt.errors.required">About-You is required
-                                                </div>
-                                            </div>
+                                            <textarea class="form-control" placeholder="About You"
+                                                formControlName="abt"></textarea>
                                         </div>
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
@@ -347,52 +343,52 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-8">
-                                            <div class="form-group">
-                                                <span>
-                                                    <i class="fa fa-university  form-control-icon"></i>
-                                                </span>
-                                                <input type="text" placeholder="Bank Account Number*" class="form-control"
-                                                    formControlName="accountno"
-                                                    [ngClass]="{ 'is-invalid': issubmit && f.accountno.errors }">
-                                                <div *ngIf="issubmit && f.accountno.errors" class="invalid-feedback">
-                                                    <div *ngIf="f.accountno.errors.required">Account Number is
-                                                        required
-                                                    </div>
-                                                    <div *ngIf="f.accountno.errors.maxlength">Account Number cant
-                                                        exceed
-                                                        13
-                                                        digits</div>
-                                                    <div *ngIf="f.accountno.errors.pattern">Must be digit only
-                                                    </div>
+                                        <div class="form-group">
+                                            <span>
+                                                <i class="fa fa-university  form-control-icon"></i>
+                                            </span>
+                                            <input type="text" placeholder="Bank Account Number*" class="form-control"
+                                                formControlName="accountno"
+                                                [ngClass]="{ 'is-invalid': issubmit && f.accountno.errors }">
+                                            <div *ngIf="issubmit && f.accountno.errors" class="invalid-feedback">
+                                                <div *ngIf="f.accountno.errors.required">Account Number is
+                                                    required
+                                                </div>
+                                                <div *ngIf="f.accountno.errors.maxlength">Account Number cant
+                                                    exceed
+                                                    13
+                                                    digits</div>
+                                                <div *ngIf="f.accountno.errors.pattern">Must be digit only
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                <span>
-                                                    <i class="fa fa-barcode  form-control-icon"></i>
-                                                </span>
-                                                <input type="text" placeholder="IFSC CODE*" class="form-control"
-                                                    formControlName="ifsc"
-                                                    [ngClass]="{ 'is-invalid': issubmit && f.ifsc.errors }">
-                                                <div *ngIf="issubmit && f.ifsc.errors" class="invalid-feedback">
-                                                    <div *ngIf="f.ifsc.errors.required">IFSC Code is required
-                                                    </div>
-                                                    <div *ngIf="f.ifsc.errors.maxlength">IFSC Code cant exceed 8
-                                                        digits</div>
-                                                    <div *ngIf="f.ifsc.errors.pattern">Must be digit only</div>
+                                        </div>
+                                        <div class="form-group">
+                                            <span>
+                                                <i class="fa fa-barcode  form-control-icon"></i>
+                                            </span>
+                                            <input type="text" placeholder="IFSC CODE*" class="form-control"
+                                                formControlName="ifsc"
+                                                [ngClass]="{ 'is-invalid': issubmit && f.ifsc.errors }">
+                                            <div *ngIf="issubmit && f.ifsc.errors" class="invalid-feedback">
+                                                <div *ngIf="f.ifsc.errors.required">IFSC Code is required
                                                 </div>
+                                                <div *ngIf="f.ifsc.errors.maxlength">IFSC Code cant exceed 8
+                                                    digits</div>
+                                                <div *ngIf="f.ifsc.errors.pattern">Must be digit only</div>
                                             </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary">Save Changes</button>
                         </div>
                     </form>
                 </div>
                 <div class="tab-pane fade" id="password" role="tabpanel">
-                    <form>
+                    <form [formGroup]="pwdForm" (ngSubmit)="savePwdDetails()">
                         <div class="card">
                             <div class="card-header">
                                 <div class="card-actions float-right">
@@ -402,11 +398,26 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     <label for="inputPasswordNew">New password</label>
-                                    <input type="password" class="form-control" id="inputPasswordNew">
+                                    <input type="password" formControlName="newpassword" class="form-control"
+                                        [ngClass]="{ 'is-invalid': ispwdsubmit && p.newpassword.errors }">
+                                    <div *ngIf="ispwdsubmit && p.newpassword.errors" class="invalid-feedback">
+                                        <div *ngIf="p.newpassword.errors.required">New Password is required
+                                        </div>
+                                        <div *ngIf="p.newpassword.errors.minlength">New Password must be at least 8
+                                            characters</div>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="inputPasswordNew2">Verify password</label>
-                                    <input type="password" class="form-control" id="inputPasswordNew2">
+                                    <input type="password" formControlName="verifypassword" class="form-control"
+                                        [ngClass]="{ 'is-invalid': ispwdsubmit && p.verifypassword.errors }">
+                                    <div *ngIf="ispwdsubmit && p.verifypassword.errors" class="invalid-feedback">
+                                        <div *ngIf="p.verifypassword.errors.required">Verify Password is required
+                                        </div>
+                                        <div *ngIf="p.verifypassword.errors.minlength">Verify Password must be at least
+                                            8
+                                            characters</div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="modal-footer">

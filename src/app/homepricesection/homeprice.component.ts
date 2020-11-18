@@ -65,7 +65,6 @@ export class HomepriceComponent implements OnInit {
       (allNewServiceObjs: any) => {
         if (allNewServiceObjs != null) {
           allNewServiceObjs.forEach(element => {
-
             if (this.langcode === config.lang_code_hi || this.langcode === config.lang_code_te) {
               this.referService.translatetext(element.name, this.langcode).subscribe(
                 (txt: string) => {
@@ -83,7 +82,14 @@ export class HomepriceComponent implements OnInit {
                 }
               );
               var array = element.fullcontent.split(',');
-              element.fullcontent = array;
+              // tslint:disable-next-line: no-shadowed-variable
+              this.referService.translatetext(array, this.langcode).subscribe(
+                (txt: string) => {
+                  element.fullcontent = txt;
+                  var arry = element.fullcontent.split(',');
+                  element.fullcontent = arry;
+                }
+              );
               this.listOfAllApprovedNewServices.push(element);
             } else {
               var array = element.fullcontent.split(',');
@@ -91,7 +97,6 @@ export class HomepriceComponent implements OnInit {
               this.listOfAllApprovedNewServices.push(element);
             }
             if (this.listOfAllApprovedNewServices != null) {
-              console.log('listOfAllApprovedNewServices', this.listOfAllApprovedNewServices);
               this.divideByIndOrPackageService();
             }
           });

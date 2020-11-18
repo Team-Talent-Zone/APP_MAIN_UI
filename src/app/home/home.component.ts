@@ -68,6 +68,7 @@ export class HomeComponent implements OnInit {
           if (this.usrObj.userId > 0 && this.usrObj.isactive === false) {
             this.usrObj.updateby = this.usrObj.firstname;
             this.usrObj.isactive = true;
+            this.spinnerService.show();
             this.userService.saveorupdate(this.usrObj).pipe(first()).subscribe(
               (userObj) => {
                 this.usrObj = this.userAdapter.adapt(userObj);
@@ -77,6 +78,7 @@ export class HomeComponent implements OnInit {
                   } else {
                     this.shortkeybyrolecode = config.shortkey_email_welcometofu.toString();
                   }
+                  this.spinnerService.show();
                   this.referService.getLookupTemplateEntityByShortkey(this.shortkeybyrolecode).subscribe(
                     referencetemplate => {
                       this.templateObj = this.reflookuptemplateAdapter.adapt(referencetemplate);
@@ -90,6 +92,7 @@ export class HomeComponent implements OnInit {
                         firstName: this.usrObj.firstname,
                         platformURL: `${environment.uiUrl}`
                       });
+                      this.spinnerService.show();
                       this.sendemailService.sendEmail(this.util).subscribe(
                         (util: any) => {
                           if (util.lastreturncode === 250) {

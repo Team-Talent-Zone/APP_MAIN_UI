@@ -38,6 +38,7 @@ export class EditprofileComponent implements OnInit {
   nationalIDReturnURL: any;
   editprofileuserId: number;
   editprofileForm: FormGroup;
+  pwdForm: FormGroup;
   usrObj: User;
   langSelected = config.default_prefer_lang.toString();
   filename: string;
@@ -56,7 +57,8 @@ export class EditprofileComponent implements OnInit {
   cityElementTwo: string;
   isbiznamexist = false;
   allUserCBAList: any;
-
+  ispwdsubmit = false;
+  isbankenabled = false;
   constructor(
     public fb: FormBuilder,
     private cd: ChangeDetectorRef,
@@ -83,6 +85,7 @@ export class EditprofileComponent implements OnInit {
     this.roleCode = this.userService.currentUserValue.userroles.rolecode;
     this.openEditUser();
     this.editProfileFormValidations();
+    this.pwdFormValidation();
     if (this.roleCode === config.user_rolecode_fu.toString()) {
       this.signupComponent.getAllCategories(this.userService.currentUserValue.preferlang);
     }
@@ -102,6 +105,7 @@ export class EditprofileComponent implements OnInit {
     let initialsfinal = ((initials.shift() || '') + (initials.pop() || '')).toUpperCase();
     return initialsfinal;
   }
+
   initAutocomplete(maps: Maps) {
     let autocomplete = new maps.places.Autocomplete(this.searchElementRef.nativeElement);
     autocomplete.addListener('place_changed', () => {
@@ -144,7 +148,6 @@ export class EditprofileComponent implements OnInit {
     });
   }
 
-
   editProfileFormValidations() {
     if (this.roleCode === config.user_rolecode_cba.toString()) {
       this.editprofileForm = this.formBuilder.group({
@@ -172,7 +175,7 @@ export class EditprofileComponent implements OnInit {
           subCategory: ['', [Validators.required]],
           category: ['', [Validators.required]],
           experienceInField: ['', [Validators.required, Validators.maxLength(2), Validators.pattern('^[0-9]*$')]],
-          abt: ['', [Validators.required]],
+          abt: [''],
           uploadValidPhotoidImgUrl: ['', [Validators.required]],
           avtarurl: ['', [Validators.required]],
           hourlyRate: ['', [Validators.required, Validators.maxLength(5), Validators.pattern('^[0-9]*$')]],
@@ -180,6 +183,7 @@ export class EditprofileComponent implements OnInit {
       } else
         if (this.roleCode === config.user_rolecode_fu.toString() &&
           this.userService.currentUserValue.freeLanceDetails.bgcurrentstatus === 'BG_APPROVED') {
+          this.isbankenabled = true;
           this.editprofileForm = this.formBuilder.group({
             username: ['', [Validators.required]],
             firstname: ['', [Validators.required, Validators.maxLength(40)]],
@@ -189,7 +193,7 @@ export class EditprofileComponent implements OnInit {
             subCategory: ['', [Validators.required]],
             category: ['', [Validators.required]],
             experienceInField: ['', [Validators.required, Validators.maxLength(2), Validators.pattern('^[0-9]*$')]],
-            abt: ['', [Validators.required]],
+            abt: [''],
             uploadValidPhotoidImgUrl: ['', [Validators.required]],
             avtarurl: ['', [Validators.required]],
             hourlyRate: ['', [Validators.required, Validators.maxLength(5), Validators.pattern('^[0-9]*$')]],
@@ -206,9 +210,11 @@ export class EditprofileComponent implements OnInit {
           });
         }
   }
+
   get f() {
     return this.editprofileForm.controls;
   }
+
   openEditUser() {
     if (this.id > 0) {
       this.spinnerService.show();
@@ -286,7 +292,6 @@ export class EditprofileComponent implements OnInit {
       this.edituserobj.userbizdetails.lat = this.lat;
       this.edituserobj.userbizdetails.lng = this.lng;
     }
-
     if (this.roleCode === config.user_rolecode_cba.toString()) {
       this.edituserobj.userbizdetails.bizname = this.editprofileForm.get('bizname').value;
       this.edituserobj.userbizdetails.biztype = this.editprofileForm.get('biztype').value;
@@ -302,7 +307,7 @@ export class EditprofileComponent implements OnInit {
       this.edituserobj.freeLanceDetails.abt = this.editprofileForm.get('abt').value;
       this.edituserobj.freeLanceDetails.hourlyRate = this.editprofileForm.get('hourlyRate').value;
       this.edituserobj.freeLanceDetails.uploadValidPhotoidImgUrl = this.editprofileForm.get('uploadValidPhotoidImgUrl').value;
-      if (this.editprofileForm.get('accountno').value != null) {
+      if (this.isbankenabled) {
         this.edituserobj.freeLanceDetails.accountno = this.editprofileForm.get('accountno').value;
         this.edituserobj.freeLanceDetails.ifsc = this.editprofileForm.get('ifsc').value;
       }
@@ -328,6 +333,7 @@ export class EditprofileComponent implements OnInit {
           this.msgflag = true;
         }
     if (this.typenationalid !== config.profiletype_nationalid.toString() && this.typeavt !== config.profiletype_avatar.toString()) {
+      console.log('===Update Edit====', this.msgflag);
       this.saveorupdateedituser(this.edituserobj);
       if (this.msgflag) {
         this.alertService.success(this.edituserobj.firstname + ' your account details is updated');
@@ -363,7 +369,6 @@ export class EditprofileComponent implements OnInit {
             this.msgflag = false;
             this.typenationalid = null;
             this.spinnerService.hide();
-
           }
           if (this.msgflagboth) {
             this.alertService.success(this.edituserobj.firstname + ' your account details is updated');
@@ -378,7 +383,6 @@ export class EditprofileComponent implements OnInit {
   }
 
   private saveorupdateedituser(edituserobj: User) {
-
     this.userService.saveorupdate(edituserobj).subscribe(
       (userObj: any) => {
         this.usrObj = this.userAdapter.adapt(userObj);
@@ -431,6 +435,7 @@ export class EditprofileComponent implements OnInit {
       this.alertService.error('Invalid file format. it should be .png,.jpg,.jpeg');
     }
   }
+
   isBizNameAlreadyExist(bizname: string) {
     this.isbiznamexist = false;
     if (this.allUserCBAList != null) {
@@ -443,4 +448,39 @@ export class EditprofileComponent implements OnInit {
       });
     }
   }
+
+  get p() {
+    return this.pwdForm.controls;
+  }
+  pwdFormValidation() {
+    this.pwdForm = this.formBuilder.group({
+      newpassword: ['', [Validators.required, Validators.minLength(8)]],
+      verifypassword: ['', [Validators.required, Validators.minLength(8)]],
+    });
+  }
+  savePwdDetails() {
+    this.ispwdsubmit = true;
+    if (this.pwdForm.invalid) {
+      return;
+    }
+    if (this.pwdForm.get('newpassword').value !== this.pwdForm.get('verifypassword').value) {
+      this.alertService.error('Verify Password is not matching');
+      this.spinnerService.hide();
+    } else {
+      this.spinnerService.show();
+      this.usrObj = this.userAdapter.adapt(this.userService.currentUserValue);
+      this.usrObj.password = this.pwdForm.get('newpassword').value;
+      this.usrObj.isrecoverypwd = true;
+      this.userService.saveorupdate(this.usrObj).subscribe(
+        (userObj: any) => {
+          this.alertService.success(this.edituserobj.fullname + ' your password is updated');
+          this.spinnerService.hide();
+        },
+        error => {
+          this.spinnerService.hide();
+          this.alertService.error(error);
+        });
+    }
+  }
 }
+

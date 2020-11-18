@@ -1,3 +1,4 @@
+import { Error404pageComponent } from './error404page/error404page.component';
 import { ViewfureviewsComponent } from './viewfureviews/viewfureviews.component';
 import { CreateoreditwidgetComponent } from './createoreditwidget/createoreditwidget.component';
 import { UsersubscribeservicesComponent } from './usersubscribeservices/usersubscribeservices.component';
@@ -207,7 +208,10 @@ const routes: Routes = [
   {
     path: '504error',
     component: Error504pageComponent,
-    canActivate: [AuthgaurdService]
+  },
+  {
+    path: '404error',
+    component: Error404pageComponent,
   },
   {
     path: 'paymenthistory',

@@ -38,6 +38,9 @@ export class AlertComponent implements OnInit {
           case 'error':
             message.cssClass = 'alert alert-danger';
             break;
+          case 'info':
+            message.cssClass = 'alert alert-danger';
+            break;
         }
         this.message = message;
         if (this.message != null) {
@@ -47,18 +50,33 @@ export class AlertComponent implements OnInit {
   }
 
   openModal(template: TemplateRef<any>) {
-    console.log(' this alerts message : ',  this.message);
-    var errorcode = this.message.text[0].errorcode;
-    this.errormsg = this.message.text[0].errorMsg;
-    if (errorcode === 504) {
-      this.router.navigate(['504error']);
-    } else {
-      if (this.errorCallCount === 0 && this.errormsg != null) {
-        this.modalRef = this.modalService.show(template, this.config);
-        this.errorCallCount = this.errorCallCount + 1;
+    console.log(' this alerts message status: ', this.message);
+
+    if (this.message.type === 'error') {
+      // tslint:disable-next-line: radix
+      if (Number.parseInt(this.message.text.status) === 504) {
+        this.router.navigate(['504error']);
       } else {
-        this.modalRef = this.modalService.show(template, this.config);
+        // tslint:disable-next-line: radix
+        if (Number.parseInt(this.message.text.status) === 404) {
+          // tslint:disable-next-line: max-line-length
+          this.router.navigate(['404error']);
+        } else {
+          // tslint:disable-next-line: radix
+          if (Number.parseInt(this.message.text.status) !== 404 && Number.parseInt(this.message.text.status) !== 504) {
+            this.errormsg = this.message.text.error.errormessage;
+          }
+          if (this.errorCallCount === 0 && this.errormsg != null) {
+            this.modalRef = this.modalService.show(template, this.config);
+            this.errorCallCount = this.errorCallCount + 1;
+          } else {
+            this.modalRef = this.modalService.show(template, this.config);
+          }
+        }
       }
+    } else {
+      this.errormsg = this.message.text;
+      this.modalRef = this.modalService.show(template, this.config);
     }
   }
 

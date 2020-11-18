@@ -1,14 +1,17 @@
 <ng-template #template>
     <div *ngIf="message">
-        <div class="modal-header"
-            [ngClass]="{ 'alert': message, 'alert-success': message.type === 'success', 'alert-danger': message.type === 'error' }">
+        <div class="modal-header" [ngClass]="{ 'alert': message, 'alert-success': message.type === 'success', 'alert-danger': message.type === 'error',
+            'alert-info': message.type === 'info'  }">
             <h4 class="modal-title">
-                <div *ngIf="message.type === 'success' else elseFU">
-                    Awesome !
+                <div *ngIf="message.type === 'success'">
+                    Well Done !
                 </div>
-                <ng-template #elseFU>
-                    Oh snap !
-                </ng-template>
+                <div *ngIf="message.type === 'error'">
+                    Oh Snap !
+                </div>
+                <div *ngIf="message.type === 'info'" >
+                    Something is missing..
+                </div>
             </h4>
             <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
                 <span aria-hidden="true">&times;</span>

@@ -211,31 +211,35 @@ export class DashboardoffuComponent implements OnInit {
   }
 
   accept(jobId: number) {
-    this.spinnerService.show();
-    this.freelanceSvc.getAllFreelanceOnServiceDetailsByJobId(jobId).subscribe(
-      (freelancedetailsbyId: FreelanceOnSvc) => {
-        if (!freelancedetailsbyId.isjobaccepted) {
-          freelancedetailsbyId.freelanceuserId = this.userService.currentUserValue.userId;
-          freelancedetailsbyId.isjobaccepted = true;
-          this.freelanceSvc.saveOrUpdateFreeLanceOnService(freelancedetailsbyId).subscribe((updatedobjfreelanceservice: FreelanceOnSvc) => {
-            this.getUserAllJobDetailsByUserId();
-            this.spinnerService.hide();
-          },
-            error => {
+    if (this.userService.currentUserValue.freeLanceDetails.accountno == null) {
+      this.alertService.info('We need bank details before you accept the job, please update bank details from edit profile ');
+    } else {
+      this.spinnerService.show();
+      this.freelanceSvc.getAllFreelanceOnServiceDetailsByJobId(jobId).subscribe(
+        (freelancedetailsbyId: FreelanceOnSvc) => {
+          if (!freelancedetailsbyId.isjobaccepted) {
+            freelancedetailsbyId.freelanceuserId = this.userService.currentUserValue.userId;
+            freelancedetailsbyId.isjobaccepted = true;
+            this.freelanceSvc.saveOrUpdateFreeLanceOnService(freelancedetailsbyId).subscribe((updatedobjfreelanceservice: FreelanceOnSvc) => {
+              this.getUserAllJobDetailsByUserId();
               this.spinnerService.hide();
-              this.alertService.error(error);
-            });
-        } else {
+            },
+              error => {
+                this.spinnerService.hide();
+                this.alertService.error(error);
+              });
+          } else {
+            this.spinnerService.hide();
+            // tslint:disable-next-line: max-line-length
+            this.alertService.info('Sorry ' + this.userService.currentUserValue.firstname + '! This JobId#' + jobId + ' has been accepted by other freelancer');
+            this.getUserAllJobDetailsByUserId();
+          }
+        },
+        error => {
           this.spinnerService.hide();
-          // tslint:disable-next-line: max-line-length
-          this.alertService.error('Sorry ' + this.userService.currentUserValue.firstname + '! This JobId#' + jobId + ' has been accepted by other freelancer');
-          this.getUserAllJobDetailsByUserId();
-        }
-      },
-      error => {
-        this.spinnerService.hide();
-        this.alertService.error(error);
-      });
+          this.alertService.error(error);
+        });
+    }
   }
 
   cancel(jobId: number) {
@@ -260,7 +264,7 @@ export class DashboardoffuComponent implements OnInit {
             });
         } else {
           // tslint:disable-next-line: max-line-length
-          this.alertService.error('Cancellation only possible before 15 mins after accepting job .Any concerns, please call our core service support team');
+          this.alertService.info('Cancellation only possible before 15 mins after accepting job .Any concerns, please call our core service support team');
           this.spinnerService.hide();
         }
       },

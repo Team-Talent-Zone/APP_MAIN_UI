@@ -301,6 +301,6 @@
 <div *ngIf="userFUObjList.length == 0 && timelaps && this.searchform.get('fulladdress').value.length > 0">
     <h3> No {{name}} Found near the address {{this.searchform.get('fulladdress').value}}</h3>
 </div>
-<div *ngIf="userFUObjList.length == 0 && timelaps && this.searchform.get('fulladdress').value.length === 0">
+<div *ngIf="userFUObjList.length == 0 && !timelaps && this.searchform.get('fulladdress').value.length === 0">
     <h3> Currently all our {{name}}'s are busy at work. Try search by job date and job location address</h3>
 </div>

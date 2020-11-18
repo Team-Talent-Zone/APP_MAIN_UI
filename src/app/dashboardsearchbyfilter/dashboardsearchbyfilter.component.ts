@@ -174,6 +174,7 @@ export class DashboardsearchbyfilterComponent implements OnInit {
     if (this.createjobform.invalid) {
       return;
     }
+
     if (this.createjobform.get('amount').value >= this.avgHourlyRate) {
       this.spinnerService.show();
       this.referService.getReferenceLookupByShortKey(config.fu_job_created_shortkey.toString()).subscribe(
@@ -205,8 +206,9 @@ export class DashboardsearchbyfilterComponent implements OnInit {
         });
     } else {
       // tslint:disable-next-line: max-line-length
-      this.alertService.error('The amount ' + this.createjobform.get('amount').value + ' is must greater than ' + this.avgHourlyRate);
+      this.alertService.info('The amount ' + this.createjobform.get('amount').value + ' is must greater than ' + this.avgHourlyRate);
     }
+
   }
 
   openCreateJobInterface() {
@@ -219,21 +221,27 @@ export class DashboardsearchbyfilterComponent implements OnInit {
         if (listofusersrvDetails != null) {
           listofusersrvDetails.forEach((element: any) => {
             if (element.category === config.category_code_FS_S && element.isservicepurchased
-              && this.getDateFormat(element.serviceendon) > this.getDateFormat(new Date())) {
+              && this.getDateFormat(element.serviceendon) >= this.getDateFormat(new Date())) {
               this.isfreelancerservicesubscribed = true;
               this.createjobform.patchValue({ serviceId: element.serviceId });
             }
           });
           this.createjobform.patchValue({ jobstartedon: this.getDateTimeFormat(this.startdate) });
         }
-        if (this.isfreelancerservicesubscribed) {
-          this.iscreatejobdiv = true;
-        }
-        if (!this.isfreelancerservicesubscribed) {
+        if (this.userService.currentUserValue.userbizdetails.bizname === null) {
           // tslint:disable-next-line: max-line-length
-          let errorMsg = 'Please purchase Freelancer Service , before you create a job for ' + this.name;
-          this.alertService.error(errorMsg);
-        }
+          this.alertService.info('We need your business details before you create a job for ' + this.name + ', Go to Edit Profile & update');
+        } else
+          if (this.isfreelancerservicesubscribed) {
+            this.iscreatejobdiv = true;
+          }
+          else {
+            if (!this.isfreelancerservicesubscribed) {
+              // tslint:disable-next-line: max-line-length
+              let errorMsg = 'Please purchase Freelancer Service , before you create a job for ' + this.name;
+              this.alertService.success(errorMsg);
+            }
+          }
       },
       error => {
         this.alertService.error(error);
@@ -297,8 +305,9 @@ export class DashboardsearchbyfilterComponent implements OnInit {
       var minAmt = Math.min.apply(null, this.listofhourlyRateDetailsoffus);
       var maxHourlyRate = maxAmt * hours;
       var minHourlyRate = minAmt * hours;
-      var addpercentage = 1.5; /* Add 15% more to avghourly to built the rate */
-      this.avgHourlyRate = (maxHourlyRate / minHourlyRate) * (addpercentage);
+      //   var addpercentage = 1.5; /* Add 15% more to avghourly to built the rate */
+      //   this.avgHourlyRate = (maxHourlyRate / minHourlyRate) * (addpercentage);
+      this.avgHourlyRate = minHourlyRate;
       this.maxHourlyRateCal = maxHourlyRate;
       this.createjobform.patchValue({ jobendedon: this.enddatevalue });
     }
@@ -352,23 +361,27 @@ export class DashboardsearchbyfilterComponent implements OnInit {
     this.markPoints = [];
     this.markers = [];
     this.userFUObjList = [];
+
     if (this.userService.currentUserValue.userroles.rolecode !== config.user_rolecode_fu.toString()) {
       if (startdate === null) {
         this.spinnerService.show();
         this.userService.getUserDetailsByJobAvailable().subscribe(
           (userObjList: any) => {
-            setTimeout(() => {
-              userObjList.forEach(element => {
-                this.setuserObjList(element);
-              });
+            if (userObjList !== null) {
+              setTimeout(() => {
+                userObjList.forEach(element => {
+                  this.setuserObjList(element);
+                });
+                this.spinnerService.hide();
+              }, 1000);
               this.timelaps = true;
-              this.spinnerService.hide();
-            }, 1000);
+            }
           },
           error => {
             this.spinnerService.hide();
             this.alertService.error(error);
           });
+        console.log('timelaps', this.timelaps);
       } else {
         this.spinnerService.show();
         let sdate = this.getDateFormat(startdate);
@@ -416,6 +429,7 @@ export class DashboardsearchbyfilterComponent implements OnInit {
         avtarurl: element.avtarurl
       };
       this.markers.push(this.markPoints);
+
     }
   }
 }
